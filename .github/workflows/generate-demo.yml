@@ -1,0 +1,49 @@
+name: Generate Demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      industry:
+        description: "Industry to generate (or 'all')"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - all
+          - horizon-books
+          - contoso-energy
+          - northwind-hrfinance
+          - fabrikam-manufacturing
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    name: Generate ${{ github.event.inputs.industry }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate industry output
+        run: |
+          if [ "${{ github.event.inputs.industry }}" = "all" ]; then
+            for ind in horizon-books contoso-energy northwind-hrfinance fabrikam-manufacturing; do
+              echo "=== Generating $ind ==="
+              python generate.py -i "$ind"
+            done
+          else
+            python generate.py -i "${{ github.event.inputs.industry }}"
+          fi
+
+      - name: Upload output artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fabric-output-${{ github.event.inputs.industry }}
+          path: output/
+          retention-days: 14
