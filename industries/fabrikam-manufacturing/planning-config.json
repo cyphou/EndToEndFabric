@@ -1,0 +1,85 @@
+{
+  "planningModels": [
+    {
+      "name": "ProductionPlan",
+      "description": "Production volume and capacity planning by plant and product line",
+      "sourceTable": "FactProductionOrders",
+      "valueColumn": "QuantityOrdered",
+      "planningSchema": "planning",
+      "columns": [
+        {"name": "PlanYear", "dataType": "INT"},
+        {"name": "PlantName", "dataType": "NVARCHAR(100)"},
+        {"name": "ProductCategory", "dataType": "NVARCHAR(100)"},
+        {"name": "PlannedUnits", "dataType": "INT"},
+        {"name": "PlannedCapacityUtilization", "dataType": "DECIMAL(5,2)"},
+        {"name": "Scenario", "dataType": "NVARCHAR(50)"}
+      ]
+    },
+    {
+      "name": "QualityTarget",
+      "description": "Quality improvement targets by plant",
+      "sourceTable": "FactQualityInspections",
+      "valueColumn": "DefectsFound",
+      "planningSchema": "planning",
+      "columns": [
+        {"name": "FiscalYear", "dataType": "INT"},
+        {"name": "PlantName", "dataType": "NVARCHAR(100)"},
+        {"name": "TargetOEE", "dataType": "DECIMAL(5,2)"},
+        {"name": "TargetFPY", "dataType": "DECIMAL(5,2)"},
+        {"name": "TargetDPPM", "dataType": "INT"},
+        {"name": "Scenario", "dataType": "NVARCHAR(50)"}
+      ]
+    },
+    {
+      "name": "ProcurementBudget",
+      "description": "Material procurement budget by category",
+      "sourceTable": "FactPurchaseOrders",
+      "valueColumn": "TotalCost",
+      "planningSchema": "planning",
+      "columns": [
+        {"name": "FiscalYear", "dataType": "INT"},
+        {"name": "FiscalQuarter", "dataType": "INT"},
+        {"name": "MaterialCategory", "dataType": "NVARCHAR(100)"},
+        {"name": "PlannedSpend", "dataType": "DECIMAL(18,2)"},
+        {"name": "PlannedOrders", "dataType": "INT"},
+        {"name": "Scenario", "dataType": "NVARCHAR(50)"}
+      ]
+    },
+    {
+      "name": "MaintenanceBudget",
+      "description": "Maintenance CapEx and labor budget by plant",
+      "sourceTable": "FactMaintenanceWorkOrders",
+      "valueColumn": "PartsCost",
+      "planningSchema": "planning",
+      "columns": [
+        {"name": "FiscalYear", "dataType": "INT"},
+        {"name": "PlantName", "dataType": "NVARCHAR(100)"},
+        {"name": "PlannedPartsBudget", "dataType": "DECIMAL(18,2)"},
+        {"name": "PlannedLaborBudget", "dataType": "DECIMAL(18,2)"},
+        {"name": "PlannedWorkOrders", "dataType": "INT"},
+        {"name": "Scenario", "dataType": "NVARCHAR(50)"}
+      ]
+    },
+    {
+      "name": "PlanVsActual",
+      "description": "Plan vs actual comparison across manufacturing domains",
+      "sourceTable": null,
+      "valueColumn": null,
+      "planningSchema": "planning",
+      "columns": [
+        {"name": "FiscalYear", "dataType": "INT"},
+        {"name": "Domain", "dataType": "NVARCHAR(100)"},
+        {"name": "KPI", "dataType": "NVARCHAR(200)"},
+        {"name": "PlannedValue", "dataType": "DECIMAL(18,2)"},
+        {"name": "ActualValue", "dataType": "DECIMAL(18,2)"},
+        {"name": "Scenario", "dataType": "NVARCHAR(50)"}
+      ]
+    }
+  ],
+  "scenarios": [
+    {"name": "Base", "description": "Steady-state operations, 3% organic growth", "growthRate": 0.03},
+    {"name": "LeanExpansion", "description": "New production line in Pune, +20% capacity", "growthRate": 0.12},
+    {"name": "CostReduction", "description": "Focus on waste reduction and OEE improvement, flat volume", "growthRate": 0.01}
+  ],
+  "fiscalYears": ["FY2024", "FY2025", "FY2026"]
+}

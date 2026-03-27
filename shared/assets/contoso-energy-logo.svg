@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="400" height="120">
+  <defs>
+    <linearGradient id="ce-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2E7D32"/>
+      <stop offset="100%" stop-color="#66BB6A"/>
+    </linearGradient>
+  </defs>
+  <!-- Icon circle -->
+  <circle cx="60" cy="60" r="50" fill="url(#ce-grad)"/>
+  <!-- Lightning bolt -->
+  <polygon points="68,20 45,58 60,58 52,100 75,55 60,55" fill="#FFA726"/>
+  <!-- Leaf accent -->
+  <path d="M30,38 Q42,22 58,30 Q46,34 38,44 Z" fill="#FFFFFF" opacity="0.35"/>
+  <!-- Company name -->
+  <text x="125" y="50" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="32" fill="#2E7D32">Contoso</text>
+  <text x="125" y="82" font-family="Segoe UI, Arial, sans-serif" font-weight="400" font-size="24" fill="#FF6F00">Energy</text>
+  <!-- Tagline -->
+  <text x="125" y="105" font-family="Segoe UI, Arial, sans-serif" font-weight="300" font-size="12" fill="#666666">Renewable Power &amp; Grid Operations</text>
+</svg>

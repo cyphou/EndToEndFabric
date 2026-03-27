@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="400" height="120">
+  <defs>
+    <linearGradient id="hb-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1B3A5C"/>
+      <stop offset="100%" stop-color="#4A90D9"/>
+    </linearGradient>
+  </defs>
+  <!-- Icon circle -->
+  <circle cx="60" cy="60" r="50" fill="url(#hb-grad)"/>
+  <!-- Open book icon -->
+  <g transform="translate(60,60)">
+    <!-- Left page -->
+    <path d="M-4,18 L-4,-16 Q-4,-22 -18,-24 L-30,-24 L-30,14 Q-18,12 -4,18 Z" fill="#FFFFFF" opacity="0.9"/>
+    <!-- Right page -->
+    <path d="M4,18 L4,-16 Q4,-22 18,-24 L30,-24 L30,14 Q18,12 4,18 Z" fill="#FFFFFF" opacity="0.75"/>
+    <!-- Spine -->
+    <line x1="0" y1="-20" x2="0" y2="20" stroke="#E8A838" stroke-width="2.5"/>
+    <!-- Page lines left -->
+    <line x1="-24" y1="-14" x2="-8" y2="-12" stroke="#1B3A5C" stroke-width="1" opacity="0.3"/>
+    <line x1="-24" y1="-6" x2="-8" y2="-4" stroke="#1B3A5C" stroke-width="1" opacity="0.3"/>
+    <line x1="-24" y1="2" x2="-8" y2="4" stroke="#1B3A5C" stroke-width="1" opacity="0.3"/>
+    <!-- Page lines right -->
+    <line x1="24" y1="-14" x2="8" y2="-12" stroke="#1B3A5C" stroke-width="1" opacity="0.3"/>
+    <line x1="24" y1="-6" x2="8" y2="-4" stroke="#1B3A5C" stroke-width="1" opacity="0.3"/>
+    <line x1="24" y1="2" x2="8" y2="4" stroke="#1B3A5C" stroke-width="1" opacity="0.3"/>
+  </g>
+  <!-- Company name -->
+  <text x="125" y="50" font-family="Segoe UI, Arial, sans-serif" font-weight="700" font-size="32" fill="#1B3A5C">Horizon</text>
+  <text x="125" y="82" font-family="Segoe UI, Arial, sans-serif" font-weight="400" font-size="24" fill="#E8A838">Books</text>
+  <!-- Tagline -->
+  <text x="125" y="105" font-family="Segoe UI, Arial, sans-serif" font-weight="300" font-size="12" fill="#666666">Publishing &amp; Distribution</text>
+</svg>

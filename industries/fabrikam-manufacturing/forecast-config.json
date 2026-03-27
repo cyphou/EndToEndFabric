@@ -1,0 +1,64 @@
+{
+  "forecastModels": [
+    {
+      "name": "DemandForecast",
+      "description": "Forecast production demand by product category",
+      "table": "FactProductionOrders",
+      "dateColumn": "OrderDate",
+      "valueColumn": "QuantityOrdered",
+      "groupBy": "ProductID",
+      "algorithm": "HoltWinters",
+      "params": {"seasonal": "additive", "alpha": 0.3, "beta": 0.1, "gamma": 0.15, "seasonalPeriods": 12},
+      "horizonMonths": 6
+    },
+    {
+      "name": "CapacityUtilization",
+      "description": "Forecast production line utilization and OEE trend",
+      "table": "FactProductionOutput",
+      "dateColumn": "ProductionDate",
+      "valueColumn": "GoodUnits",
+      "groupBy": "LineID",
+      "algorithm": "HoltWinters",
+      "params": {"seasonal": "additive", "alpha": 0.25, "beta": 0.1, "gamma": 0.2, "seasonalPeriods": 12},
+      "horizonMonths": 6
+    },
+    {
+      "name": "MaterialRequirements",
+      "description": "Forecast material procurement needs",
+      "table": "FactPurchaseOrders",
+      "dateColumn": "OrderDate",
+      "valueColumn": "TotalCost",
+      "groupBy": "MaterialID",
+      "algorithm": "HoltWinters",
+      "params": {"seasonal": "additive", "alpha": 0.3, "beta": 0.1, "gamma": 0.1, "seasonalPeriods": 12},
+      "horizonMonths": 6
+    },
+    {
+      "name": "QualityTrend",
+      "description": "Forecast defect rates and cost of quality",
+      "table": "FactQualityInspections",
+      "dateColumn": "InspectionDate",
+      "valueColumn": "DefectsFound",
+      "groupBy": null,
+      "algorithm": "HoltWinters",
+      "params": {"seasonal": "additive", "alpha": 0.2, "beta": 0.05, "gamma": 0.1, "seasonalPeriods": 12},
+      "horizonMonths": 12
+    },
+    {
+      "name": "MaintenancePrediction",
+      "description": "Forecast equipment failure probability and maintenance needs",
+      "table": "FactDowntime",
+      "dateColumn": "DowntimeStart",
+      "valueColumn": "DurationMinutes",
+      "groupBy": "EquipmentID",
+      "algorithm": "HoltWinters",
+      "params": {"seasonal": "additive", "alpha": 0.3, "beta": 0.1, "gamma": 0.15, "seasonalPeriods": 12},
+      "horizonMonths": 6
+    }
+  ],
+  "mlflow": {
+    "experimentName": "FabrikamManufacturing_Forecasting",
+    "trackMetrics": ["rmse", "mae", "mape"],
+    "logModel": true
+  }
+}

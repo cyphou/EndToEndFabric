@@ -1,0 +1,148 @@
+{
+  "reports": [
+    {
+      "name": "FabrikamManufacturing-Analytics",
+      "theme": {"primary": "#0D47A1", "secondary": "#E65100", "background": "#FAFAFA"},
+      "pages": [
+        {"name": "Executive Dashboard", "visuals": [
+          {"type": "card", "measure": "OEE Overall"},
+          {"type": "card", "measure": "Total Units Produced"},
+          {"type": "card", "measure": "Cost of Quality"},
+          {"type": "card", "measure": "Total Safety Incidents"},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["OEE Overall", "First Pass Yield %"]},
+          {"type": "clusteredBarChart", "axis": "DimPlants[PlantName]", "values": ["Total Units Produced"]}
+        ]},
+        {"name": "Production Performance", "visuals": [
+          {"type": "card", "measure": "Total Units Produced"},
+          {"type": "card", "measure": "Schedule Adherence %"},
+          {"type": "clusteredBarChart", "axis": "DimProductionLines[LineName]", "values": ["Total Units Produced", "Total Scrap Units"]},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Avg Cycle Time (min)"]},
+          {"type": "matrix", "rows": ["DimShifts[ShiftName]"], "columns": ["DimPlants[PlantName]"], "values": ["Total Units Produced"]}
+        ]},
+        {"name": "OEE Analysis", "visuals": [
+          {"type": "card", "measure": "OEE Overall"},
+          {"type": "card", "measure": "OEE Availability"},
+          {"type": "card", "measure": "OEE Performance"},
+          {"type": "card", "measure": "OEE Quality"},
+          {"type": "waterfallChart", "category": "OEE Component", "values": ["OEE Availability", "OEE Performance", "OEE Quality"]},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["OEE Overall"]},
+          {"type": "clusteredBarChart", "axis": "DimProductionLines[LineName]", "values": ["Total Downtime (hrs)"]}
+        ]},
+        {"name": "Quality Control", "visuals": [
+          {"type": "card", "measure": "First Pass Yield %"},
+          {"type": "card", "measure": "DPPM"},
+          {"type": "card", "measure": "Inspection Pass Rate %"},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["First Pass Yield %", "DPPM"]},
+          {"type": "clusteredBarChart", "axis": "DimDefectTypes[DefectName]", "values": ["Total NCRs"]},
+          {"type": "pieChart", "legend": "FactNonConformance[Disposition]", "values": ["Total NCRs"]}
+        ]},
+        {"name": "Supply Chain", "visuals": [
+          {"type": "card", "measure": "Total PO Value"},
+          {"type": "card", "measure": "On-Time Delivery %"},
+          {"type": "clusteredBarChart", "axis": "DimSuppliers[SupplierName]", "values": ["Total PO Value"]},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["On-Time Delivery %", "Goods Receipt Accept Rate"]},
+          {"type": "table", "columns": ["DimSuppliers[SupplierName]", "DimSuppliers[Country]", "Total PO Value", "On-Time Delivery %"]}
+        ]},
+        {"name": "Inventory Management", "visuals": [
+          {"type": "card", "measure": "Total Inventory Value"},
+          {"type": "card", "measure": "Avg Inventory On Hand"},
+          {"type": "clusteredBarChart", "axis": "DimMaterials[MaterialType]", "values": ["Total Inventory Value"]},
+          {"type": "table", "columns": ["DimWarehouses[WarehouseName]", "DimWarehouses[WarehouseType]", "Total Inventory Value"]},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Inventory Value"]}
+        ]},
+        {"name": "Maintenance & Reliability", "visuals": [
+          {"type": "card", "measure": "Total Maintenance WOs"},
+          {"type": "card", "measure": "Total Maintenance Cost"},
+          {"type": "card", "measure": "PM Compliance %"},
+          {"type": "clusteredBarChart", "axis": "DimMaintenanceTypes[TypeName]", "values": ["Total Maintenance WOs"]},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Downtime Hrs", "Unplanned Downtime %"]},
+          {"type": "table", "columns": ["DimEquipment[EquipmentName]", "DimEquipment[EquipmentType]", "Total Maintenance Cost"]}
+        ]},
+        {"name": "Plant Comparison", "visuals": [
+          {"type": "clusteredBarChart", "axis": "DimPlants[PlantName]", "values": ["OEE Overall", "First Pass Yield %"]},
+          {"type": "matrix", "rows": ["DimPlants[PlantName]"], "columns": ["DimDate[Quarter]"], "values": ["Total Units Produced"]},
+          {"type": "table", "columns": ["DimPlants[PlantName]", "DimPlants[Country]", "Total Units Produced", "OEE Overall", "Total Safety Incidents"]}
+        ]},
+        {"name": "Financial Overview", "visuals": [
+          {"type": "card", "measure": "Total PO Value"},
+          {"type": "card", "measure": "Cost of Quality"},
+          {"type": "card", "measure": "Total Maintenance Cost"},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total PO Value", "Cost of Quality"]},
+          {"type": "stackedBarChart", "axis": "DimDate[Quarter]", "values": ["Total Maintenance Cost", "Cost of Quality", "Safety Cost"]}
+        ]},
+        {"name": "Geographic Supply Map", "visuals": [
+          {"type": "map", "location": "DimSuppliers[Country]", "size": "Total PO Value"},
+          {"type": "treemap", "category": "DimSuppliers[Category]", "values": ["Total PO Value"]},
+          {"type": "card", "measure": "Avg Days Late"}
+        ]},
+        {"name": "EHS Dashboard", "visuals": [
+          {"type": "card", "measure": "Total Safety Incidents"},
+          {"type": "card", "measure": "Lost Time Days"},
+          {"type": "card", "measure": "Environmental Compliance %"},
+          {"type": "clusteredBarChart", "axis": "DimHazards[HazardName]", "values": ["Total Safety Incidents"]},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Safety Incidents", "Lost Time Days"]},
+          {"type": "table", "columns": ["DimPlants[PlantName]", "Total Safety Incidents", "Near Miss Ratio", "Environmental Compliance %"]}
+        ]},
+        {"name": "KPI Summary", "visuals": [
+          {"type": "card", "measure": "OEE Overall"},
+          {"type": "card", "measure": "First Pass Yield %"},
+          {"type": "card", "measure": "On-Time Delivery %"},
+          {"type": "card", "measure": "PM Compliance %"},
+          {"type": "gauge", "value": "OEE Overall", "target": 0.85},
+          {"type": "gauge", "value": "First Pass Yield %", "target": 0.95},
+          {"type": "gauge", "value": "On-Time Delivery %", "target": 0.95},
+          {"type": "gauge", "value": "Environmental Compliance %", "target": 0.98}
+        ]}
+      ]
+    },
+    {
+      "name": "FabrikamManufacturing-Forecasting",
+      "theme": {"primary": "#0D47A1", "secondary": "#E65100", "background": "#FAFAFA"},
+      "pages": [
+        {"name": "Demand Forecast", "visuals": [
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Units Produced"], "forecast": true},
+          {"type": "clusteredBarChart", "axis": "DimProducts[ProductCategory]", "values": ["Total Units Ordered"]}
+        ]},
+        {"name": "Capacity Forecast", "visuals": [
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["OEE Overall"], "forecast": true},
+          {"type": "areaChart", "axis": "DimDate[MonthName]", "values": ["Total Downtime (hrs)"]}
+        ]},
+        {"name": "Material Requirements", "visuals": [
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total PO Value"], "forecast": true},
+          {"type": "clusteredBarChart", "axis": "DimMaterials[MaterialType]", "values": ["Total Inventory Value"]}
+        ]},
+        {"name": "Quality Trend", "visuals": [
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["DPPM", "First Pass Yield %"], "forecast": true},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Cost of Quality"]}
+        ]},
+        {"name": "Model Accuracy", "visuals": [
+          {"type": "table", "columns": ["ModelName", "RMSE", "MAE", "MAPE"]},
+          {"type": "lineChart", "axis": "Epoch", "values": ["TrainingLoss", "ValidationLoss"]}
+        ]}
+      ]
+    },
+    {
+      "name": "FabrikamManufacturing-HTAP",
+      "theme": {"primary": "#0D47A1", "secondary": "#E65100", "background": "#FAFAFA"},
+      "pages": [
+        {"name": "Real-Time Production", "visuals": [
+          {"type": "card", "measure": "Total Good Units"},
+          {"type": "card", "measure": "Total Defect Units"},
+          {"type": "lineChart", "axis": "Timestamp", "values": ["GoodUnits", "DefectUnits"], "streaming": true},
+          {"type": "table", "columns": ["DimProductionLines[LineName]", "Total Good Units", "Avg Cycle Time (min)"]}
+        ]},
+        {"name": "Quality Event Stream", "visuals": [
+          {"type": "card", "measure": "Events Per Second"},
+          {"type": "card", "measure": "DPPM"},
+          {"type": "clusteredBarChart", "axis": "DefectType", "values": ["EventCount"]},
+          {"type": "table", "columns": ["InspectionPoint", "Result", "MeasuredValue", "Timestamp"]}
+        ]},
+        {"name": "Equipment Health", "visuals": [
+          {"type": "card", "measure": "Active Alarms"},
+          {"type": "lineChart", "axis": "Timestamp", "values": ["Vibration", "Temperature"], "streaming": true},
+          {"type": "table", "columns": ["DimEquipment[EquipmentName]", "HealthScore", "LastAlert", "Status"]}
+        ]}
+      ]
+    }
+  ]
+}

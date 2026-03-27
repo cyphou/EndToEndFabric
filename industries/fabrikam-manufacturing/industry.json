@@ -1,0 +1,37 @@
+{
+  "industry": {
+    "id": "fabrikam-manufacturing",
+    "name": "FabrikamManufacturing",
+    "displayName": "Fabrikam Manufacturing",
+    "description": "Precision automotive parts manufacturer operating 4 plants across Detroit, Guadalajara, Stuttgart, and Pune with 1,200 SKUs and 180 suppliers.",
+    "icon": "🏭",
+    "domains": ["Production", "Quality", "SupplyChain", "Maintenance", "EHS"],
+    "dataYears": ["FY2024", "FY2025", "FY2026"],
+    "headquarters": "Detroit, MI",
+    "operations": ["4 plants (Detroit, Guadalajara, Stuttgart, Pune)", "1,200 SKUs", "180 suppliers", "3 shifts per plant"],
+    "theme": {
+      "primary": "#0D47A1",
+      "secondary": "#E65100",
+      "background": "#F5F5F5",
+      "foreground": "#FFFFFF",
+      "accent1": "#42A5F5",
+      "accent2": "#FF8F00"
+    }
+  },
+  "fabricArtifacts": {
+    "workspacePrefix": "FabrikamManufacturing",
+    "lakehouses": {
+      "bronze": "BronzeLH",
+      "silver": "SilverLH",
+      "gold": "GoldLH"
+    },
+    "schemas": {
+      "silver": ["production", "quality", "supplychain", "maintenance", "ehs", "web"],
+      "gold": ["dim", "fact", "analytics", "planning"]
+    },
+    "notebooks": 6,
+    "dataflows": 5,
+    "reports": 3,
+    "pipelines": 1
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "eventhouse": {
+    "name": "FabrikamManufacturingEventhouse",
+    "kqlDatabase": "FabrikamManufacturingRealtime",
+    "retentionDays": 730
+  },
+  "eventStreams": [
+    {
+      "name": "ProductionLineTelemetry",
+      "description": "Real-time PLC/MES output from production lines — cycle times, unit counts, scrap per part",
+      "eventsPerSecond": 50,
+      "schema": [
+        {"name": "LineID", "type": "int"},
+        {"name": "Timestamp", "type": "datetime"},
+        {"name": "ProductID", "type": "int"},
+        {"name": "CycleTimeSeconds", "type": "real"},
+        {"name": "GoodUnit", "type": "bool"},
+        {"name": "DefectCode", "type": "string"},
+        {"name": "OperatorID", "type": "string"}
+      ],
+      "kqlTable": "ProductionLineEvents",
+      "kqlAggregations": [
+        "ProductionLineEvents | summarize GoodCount=countif(GoodUnit), DefectCount=countif(not(GoodUnit)), AvgCycle=avg(CycleTimeSeconds) by LineID, bin(Timestamp, 1m)",
+        "ProductionLineEvents | summarize TotalOutput=count(), ScrapRate=round(todouble(countif(not(GoodUnit))) / count() * 100, 2) by LineID, ProductID, bin(Timestamp, 1h)"
+      ]
+    },
+    {
+      "name": "QualityInspectionStream",
+      "description": "Inline SPC measurement results from inspection stations",
+      "eventsPerSecond": 20,
+      "schema": [
+        {"name": "InspectionPointID", "type": "int"},
+        {"name": "Timestamp", "type": "datetime"},
+        {"name": "ProductID", "type": "int"},
+        {"name": "MeasuredValue", "type": "real"},
+        {"name": "UpperSpec", "type": "real"},
+        {"name": "LowerSpec", "type": "real"},
+        {"name": "Result", "type": "string"},
+        {"name": "SerialNumber", "type": "string"}
+      ],
+      "kqlTable": "QualityInspectionEvents",
+      "kqlAggregations": [
+        "QualityInspectionEvents | summarize AvgMeasured=avg(MeasuredValue), StdDev=stdev(MeasuredValue), FailCount=countif(Result == 'Fail') by InspectionPointID, bin(Timestamp, 5m)",
+        "QualityInspectionEvents | summarize Cpk=round((min(UpperSpec) - max(LowerSpec)) / (6 * stdev(MeasuredValue)), 2) by InspectionPointID, ProductID, bin(Timestamp, 1h)"
+      ]
+    },
+    {
+      "name": "EquipmentSensors",
+      "description": "IoT vibration, temperature, and power sensors on critical equipment",
+      "eventsPerSecond": 100,
+      "schema": [
+        {"name": "EquipmentID", "type": "int"},
+        {"name": "Timestamp", "type": "datetime"},
+        {"name": "SensorType", "type": "string"},
+        {"name": "Value", "type": "real"},
+        {"name": "Unit", "type": "string"},
+        {"name": "IsAlarm", "type": "bool"}
+      ],
+      "kqlTable": "EquipmentSensorEvents",
+      "kqlAggregations": [
+        "EquipmentSensorEvents | summarize AvgValue=avg(Value), MaxValue=max(Value), AlarmCount=countif(IsAlarm) by EquipmentID, SensorType, bin(Timestamp, 1m)",
+        "EquipmentSensorEvents | where IsAlarm | summarize AlarmCount=count() by EquipmentID, SensorType, bin(Timestamp, 5m) | where AlarmCount > 3"
+      ]
+    },
+    {
+      "name": "MaterialConsumption",
+      "description": "Barcode scan events for material issues from warehouse to production",
+      "eventsPerSecond": 5,
+      "schema": [
+        {"name": "MaterialID", "type": "int"},
+        {"name": "Timestamp", "type": "datetime"},
+        {"name": "WarehouseID", "type": "int"},
+        {"name": "LineID", "type": "int"},
+        {"name": "QuantityIssued", "type": "real"},
+        {"name": "BatchNumber", "type": "string"}
+      ],
+      "kqlTable": "MaterialConsumptionEvents",
+      "kqlAggregations": [
+        "MaterialConsumptionEvents | summarize TotalIssued=sum(QuantityIssued), IssueCount=count() by MaterialID, bin(Timestamp, 1h)",
+        "MaterialConsumptionEvents | summarize TotalIssued=sum(QuantityIssued) by MaterialID, WarehouseID, bin(Timestamp, 1d)"
+      ]
+    }
+  ],
+  "bridgeQueries": [
+    {
+      "name": "ProductionBridge",
+      "description": "Bridge hot production telemetry with cold production orders",
+      "hotTable": "ProductionLineEvents",
+      "coldTable": "FactProductionOutput",
+      "joinKey": "LineID"
+    },
+    {
+      "name": "QualityBridge",
+      "description": "Bridge real-time SPC data with cold quality inspections",
+      "hotTable": "QualityInspectionEvents",
+      "coldTable": "FactQualityInspections",
+      "joinKey": "InspectionPointID"
+    },
+    {
+      "name": "EquipmentHealthBridge",
+      "description": "Bridge sensor data with maintenance work orders",
+      "hotTable": "EquipmentSensorEvents",
+      "coldTable": "FactDowntime",
+      "joinKey": "EquipmentID"
+    }
+  ]
+}
