@@ -1,0 +1,125 @@
+{
+  "webEnrichment": {
+    "enabled": true,
+    "targetLakehouse": "SilverLH",
+    "schema": "web",
+    "sources": [
+      {
+        "name": "CommodityPrices",
+        "description": "Daily commodity prices for raw materials",
+        "endpoint": "https://commodities-api.com/api/latest",
+        "method": "GET",
+        "schedule": "daily",
+        "tableName": "WebCommodityPrices",
+        "columns": [
+          {
+            "name": "CommodityName",
+            "type": "string"
+          },
+          {
+            "name": "PriceDate",
+            "type": "date"
+          },
+          {
+            "name": "PriceUSD",
+            "type": "double"
+          },
+          {
+            "name": "Unit",
+            "type": "string"
+          },
+          {
+            "name": "Change24h",
+            "type": "double"
+          }
+        ]
+      },
+      {
+        "name": "ExchangeRates",
+        "description": "Exchange rates for international supply chain",
+        "endpoint": "https://api.exchangerate.host/latest?base=USD",
+        "method": "GET",
+        "schedule": "daily",
+        "tableName": "WebExchangeRates",
+        "columns": [
+          {
+            "name": "BaseCurrency",
+            "type": "string"
+          },
+          {
+            "name": "TargetCurrency",
+            "type": "string"
+          },
+          {
+            "name": "Rate",
+            "type": "double"
+          },
+          {
+            "name": "AsOfDate",
+            "type": "date"
+          }
+        ]
+      },
+      {
+        "name": "WeatherForecast",
+        "description": "Weather data for plant locations and logistics",
+        "endpoint": "https://api.open-meteo.com/v1/forecast",
+        "method": "GET",
+        "schedule": "daily",
+        "tableName": "WebWeatherForecast",
+        "columns": [
+          {
+            "name": "Latitude",
+            "type": "double"
+          },
+          {
+            "name": "Longitude",
+            "type": "double"
+          },
+          {
+            "name": "ForecastDate",
+            "type": "date"
+          },
+          {
+            "name": "TemperatureMax",
+            "type": "double"
+          },
+          {
+            "name": "Precipitation",
+            "type": "double"
+          }
+        ]
+      },
+      {
+        "name": "SupplierRiskScores",
+        "description": "Third-party supplier risk assessment scores",
+        "endpoint": "https://api.supplierrisk.example.com/v1/scores",
+        "method": "GET",
+        "schedule": "weekly",
+        "tableName": "WebSupplierRiskScores",
+        "columns": [
+          {
+            "name": "SupplierName",
+            "type": "string"
+          },
+          {
+            "name": "RiskScore",
+            "type": "double"
+          },
+          {
+            "name": "RiskCategory",
+            "type": "string"
+          },
+          {
+            "name": "AssessmentDate",
+            "type": "date"
+          },
+          {
+            "name": "Country",
+            "type": "string"
+          }
+        ]
+      }
+    ]
+  }
+}

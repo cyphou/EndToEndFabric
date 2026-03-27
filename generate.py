@@ -35,6 +35,7 @@ from core.tmdl_generator import generate_semantic_model
 from core.report_generator import generate_reports
 from core.pipeline_generator import generate_pipeline
 from core.deploy_generator import generate_deploy_scripts
+from core.agent_generator import generate_data_agent
 
 
 def main():
@@ -71,6 +72,10 @@ Examples:
         help="Skip Forecasting & Planning generation",
     )
     parser.add_argument(
+        "--skip-writeback", action="store_true",
+        help="Skip Writeback generation",
+    )
+    parser.add_argument(
         "--skip-deploy", action="store_true",
         help="Skip deployment script generation",
     )
@@ -105,7 +110,7 @@ Examples:
     try:
         # Step 1: Load and validate all configs
         step_start = time.time()
-        print("[1/7] Loading configs...", end=" ", flush=True)
+        print("[1/12] Loading configs...", end=" ", flush=True)
         configs = load_all_configs(industry_id)
         print(f"OK ({time.time() - step_start:.1f}s)")
 
@@ -123,17 +128,17 @@ Examples:
         # Step 2: Generate sample CSV data
         if configs.get("sample_data"):
             step_start = time.time()
-            print("[2/7] Generating sample CSV data...", end=" ", flush=True)
+            print("[2/12] Generating sample CSV data...", end=" ", flush=True)
             csv_paths = generate_all_csvs(configs["sample_data"], output_dir, seed=args.seed)
             summary["csv_files"] = len(csv_paths)
             print(f"OK — {len(csv_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[2/7] Skipping CSV generation (no sample-data.json)")
+            print("[2/12] Skipping CSV generation (no sample-data.json)")
             summary["csv_files"] = 0
 
         # Step 3: Generate notebooks
         step_start = time.time()
-        print("[3/7] Generating notebooks...", end=" ", flush=True)
+        print("[3/12] Generating notebooks...", end=" ", flush=True)
         nb_paths = generate_notebooks(
             configs["industry"],
             configs.get("sample_data"),
@@ -145,7 +150,7 @@ Examples:
         # Step 4: Generate dataflows
         if configs.get("sample_data"):
             step_start = time.time()
-            print("[4/7] Generating Dataflow Gen2 configs...", end=" ", flush=True)
+            print("[4/12] Generating Dataflow Gen2 configs...", end=" ", flush=True)
             df_paths = generate_dataflows(
                 configs["industry"],
                 configs["sample_data"],
@@ -154,13 +159,13 @@ Examples:
             summary["dataflows"] = len(df_paths)
             print(f"OK — {len(df_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[4/7] Skipping Dataflow generation")
+            print("[4/12] Skipping Dataflow generation")
             summary["dataflows"] = 0
 
         # Step 5: Generate semantic model (TMDL)
         if configs.get("semantic_model"):
             step_start = time.time()
-            print("[5/7] Generating Semantic Model (TMDL)...", end=" ", flush=True)
+            print("[5/12] Generating Semantic Model (TMDL)...", end=" ", flush=True)
             sm_result = generate_semantic_model(
                 configs["industry"],
                 configs["semantic_model"],
@@ -171,14 +176,14 @@ Examples:
             summary["tmdl_relationships"] = len(sm_result.get("relationships", []))
             print(f"OK — {summary['tmdl_tables']} tables, {summary['tmdl_relationships']} relationships ({time.time() - step_start:.1f}s)")
         else:
-            print("[5/7] Skipping Semantic Model (no semantic-model.json)")
+            print("[5/12] Skipping Semantic Model (no semantic-model.json)")
             summary["tmdl_tables"] = 0
             summary["tmdl_relationships"] = 0
 
         # Step 6: Generate reports
         if configs.get("reports"):
             step_start = time.time()
-            print("[6/7] Generating Power BI Reports...", end=" ", flush=True)
+            print("[6/12] Generating Power BI Reports...", end=" ", flush=True)
             report_paths = generate_reports(
                 configs["industry"],
                 configs["reports"],
@@ -187,12 +192,12 @@ Examples:
             summary["report_files"] = len(report_paths)
             print(f"OK — {len(report_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[6/7] Skipping Reports (no reports.json)")
+            print("[6/12] Skipping Reports (no reports.json)")
             summary["report_files"] = 0
 
         # Step 7: Pipeline
         step_start = time.time()
-        print("[7/10] Generating Pipeline...", end=" ", flush=True)
+        print("[7/12] Generating Pipeline...", end=" ", flush=True)
         pl_paths = generate_pipeline(
             configs["industry"],
             configs.get("sample_data"),
@@ -204,31 +209,54 @@ Examples:
         # Step 8: Forecast & Planning
         if not args.skip_forecast and configs.get("forecast"):
             step_start = time.time()
-            print("[8/10] Generating Forecasting...", end=" ", flush=True)
+            print("[8/12] Generating Forecasting...", end=" ", flush=True)
             from core.forecast_generator import generate_forecast
             fc_paths = generate_forecast(configs["industry"], configs["forecast"], output_dir)
             summary["forecast"] = f"{len(fc_paths)} files"
             print(f"OK — {len(fc_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[8/10] Skipping Forecasting" + (" (no config)" if not configs.get("forecast") else " (--skip-forecast)"))
+            print("[8/12] Skipping Forecasting" + (" (no config)" if not configs.get("forecast") else " (--skip-forecast)"))
             summary["forecast"] = "skipped"
 
         # Step 9: HTAP
         if not args.skip_htap and configs.get("htap"):
             step_start = time.time()
-            print("[9/10] Generating HTAP...", end=" ", flush=True)
+            print("[9/12] Generating HTAP...", end=" ", flush=True)
             from core.htap_generator import generate_htap
             htap_paths = generate_htap(configs["industry"], configs["htap"], output_dir)
             summary["htap"] = f"{len(htap_paths)} files"
             print(f"OK — {len(htap_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[9/10] Skipping HTAP" + (" (no config)" if not configs.get("htap") else " (--skip-htap)"))
+            print("[9/12] Skipping HTAP" + (" (no config)" if not configs.get("htap") else " (--skip-htap)"))
             summary["htap"] = "skipped"
 
-        # Step 10: Deploy scripts
+        # Step 10: Writeback
+        if not args.skip_writeback and configs.get("writeback"):
+            step_start = time.time()
+            print("[10/12] Generating Writeback...", end=" ", flush=True)
+            from core.writeback_generator import generate_writeback
+            wb_paths = generate_writeback(configs["industry"], configs["writeback"], output_dir)
+            summary["writeback"] = f"{len(wb_paths)} files"
+            print(f"OK — {len(wb_paths)} files ({time.time() - step_start:.1f}s)")
+        else:
+            print("[10/12] Skipping Writeback" + (" (no config)" if not configs.get("writeback") else " (--skip-writeback)"))
+            summary["writeback"] = "skipped"
+
+        # Step 11: Data Agent
+        if configs.get("data_agent"):
+            step_start = time.time()
+            print("[11/12] Generating Data Agent...", end=" ", flush=True)
+            agent_paths = generate_data_agent(configs["industry"], configs["data_agent"], output_dir)
+            summary["agent"] = f"{len(agent_paths)} files"
+            print(f"OK — {len(agent_paths)} files ({time.time() - step_start:.1f}s)")
+        else:
+            print("[11/12] Skipping Data Agent (no data-agent.json)")
+            summary["agent"] = "skipped"
+
+        # Step 12: Deploy scripts
         if not args.skip_deploy:
             step_start = time.time()
-            print("[10/10] Generating deploy scripts...", end=" ", flush=True)
+            print("[12/12] Generating deploy scripts...", end=" ", flush=True)
             deploy_paths = generate_deploy_scripts(
                 configs["industry"],
                 configs.get("sample_data"),
@@ -237,7 +265,7 @@ Examples:
             summary["deploy_files"] = len(deploy_paths)
             print(f"OK — {len(deploy_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[10/10] Skipping deploy scripts (--skip-deploy)")
+            print("[12/12] Skipping deploy scripts (--skip-deploy)")
             summary["deploy_files"] = 0
 
         # Summary
@@ -253,6 +281,8 @@ Examples:
         print(f"  Pipeline:       {summary['pipeline_files']}")
         print(f"  Forecast:       {summary['forecast']}")
         print(f"  HTAP:           {summary['htap']}")
+        print(f"  Writeback:      {summary.get('writeback', 'skipped')}")
+        print(f"  Data Agent:     {summary.get('agent', 'skipped')}")
         print(f"  Deploy scripts: {summary.get('deploy_files', 0)}")
         print(f"  Output:         {output_dir}")
         print()

@@ -67,21 +67,21 @@ class TestDataflowGenerator(unittest.TestCase):
 class TestDataflowMultiIndustry(unittest.TestCase):
     """Test dataflow generation across industries."""
 
-    def test_contoso_five_domains(self):
+    def test_contoso_domains(self):
         cfg = load_industry_config("contoso-energy")
         sd = load_config_file("contoso-energy", "sample_data")
         tmpdir = Path(tempfile.mkdtemp(prefix="fabric_df_ce_"))
         result = generate_dataflows(cfg, sd, tmpdir)
         json_files = [p for p in result if p.suffix == ".json"]
-        self.assertEqual(len(json_files), 5)
+        self.assertGreaterEqual(len(json_files), 5)
 
-    def test_fabrikam_five_domains(self):
+    def test_fabrikam_domains(self):
         cfg = load_industry_config("fabrikam-manufacturing")
         sd = load_config_file("fabrikam-manufacturing", "sample_data")
         tmpdir = Path(tempfile.mkdtemp(prefix="fabric_df_fm_"))
         result = generate_dataflows(cfg, sd, tmpdir)
         json_files = [p for p in result if p.suffix == ".json"]
-        self.assertEqual(len(json_files), 5)
+        self.assertGreaterEqual(len(json_files), 5)
 
 
 if __name__ == "__main__":

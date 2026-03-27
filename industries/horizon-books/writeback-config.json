@@ -1,0 +1,79 @@
+{
+  "writebackConfig": {
+    "enabled": true,
+    "targetLakehouse": "GoldLH",
+    "schema": "writeback",
+    "tables": [
+      {
+        "name": "SalesTargets",
+        "description": "Editable sales targets by title and imprint",
+        "columns": [
+          {"name": "TargetId", "dataType": "STRING", "isKey": true},
+          {"name": "FiscalYear", "dataType": "INT"},
+          {"name": "FiscalQuarter", "dataType": "INT"},
+          {"name": "Imprint", "dataType": "STRING"},
+          {"name": "Genre", "dataType": "STRING"},
+          {"name": "TargetRevenue", "dataType": "DECIMAL(18,2)"},
+          {"name": "TargetUnitsSold", "dataType": "INT"},
+          {"name": "Notes", "dataType": "STRING"},
+          {"name": "ModifiedBy", "dataType": "STRING"},
+          {"name": "ModifiedDate", "dataType": "TIMESTAMP"}
+        ],
+        "partitionBy": ["FiscalYear"]
+      },
+      {
+        "name": "InventoryOverrides",
+        "description": "Manual inventory level overrides for warehouse planning",
+        "columns": [
+          {"name": "OverrideId", "dataType": "STRING", "isKey": true},
+          {"name": "WarehouseId", "dataType": "STRING"},
+          {"name": "ISBN", "dataType": "STRING"},
+          {"name": "OverrideQty", "dataType": "INT"},
+          {"name": "ReasonCode", "dataType": "STRING"},
+          {"name": "EffectiveDate", "dataType": "DATE"},
+          {"name": "ModifiedBy", "dataType": "STRING"},
+          {"name": "ModifiedDate", "dataType": "TIMESTAMP"}
+        ],
+        "partitionBy": ["WarehouseId"]
+      },
+      {
+        "name": "RoyaltyAdjustments",
+        "description": "Royalty rate adjustments submitted by finance team",
+        "columns": [
+          {"name": "AdjustmentId", "dataType": "STRING", "isKey": true},
+          {"name": "AuthorId", "dataType": "STRING"},
+          {"name": "ContractYear", "dataType": "INT"},
+          {"name": "CurrentRate", "dataType": "DECIMAL(5,2)"},
+          {"name": "ProposedRate", "dataType": "DECIMAL(5,2)"},
+          {"name": "Justification", "dataType": "STRING"},
+          {"name": "Status", "dataType": "STRING", "default": "Pending"},
+          {"name": "SubmittedBy", "dataType": "STRING"},
+          {"name": "SubmittedDate", "dataType": "TIMESTAMP"},
+          {"name": "ApprovedBy", "dataType": "STRING"},
+          {"name": "ApprovedDate", "dataType": "TIMESTAMP"}
+        ],
+        "partitionBy": ["ContractYear"]
+      }
+    ],
+    "storedProcedures": [
+      {
+        "name": "usp_UpsertSalesTarget",
+        "table": "SalesTargets",
+        "operation": "upsert",
+        "keyColumns": ["TargetId"]
+      },
+      {
+        "name": "usp_UpsertInventoryOverride",
+        "table": "InventoryOverrides",
+        "operation": "upsert",
+        "keyColumns": ["OverrideId"]
+      },
+      {
+        "name": "usp_UpsertRoyaltyAdjustment",
+        "table": "RoyaltyAdjustments",
+        "operation": "upsert",
+        "keyColumns": ["AdjustmentId"]
+      }
+    ]
+  }
+}

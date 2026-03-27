@@ -1,0 +1,23 @@
+{
+  "dataAgent": {
+    "name": "ContosoEnergy-Agent",
+    "displayName": "Contoso Energy AI Assistant",
+    "description": "AI-powered Q&A agent for Contoso Energy analytics, connected to the ContosoEnergyModel semantic model.",
+    "semanticModel": "ContosoEnergyModel",
+    "systemPrompt": "You are an AI assistant for Contoso Energy, a regional energy provider. You help analysts, engineers, and executives explore energy generation, grid operations, customer billing, sustainability, and field operations data. Answer questions using the ContosoEnergyModel semantic model. Always provide context for numbers (units, time periods). When discussing emissions use metric tons CO2e. For generation use MWh. For financial data use USD.",
+    "exampleQuestions": [
+      "What is our total generation for this fiscal year by fuel type?",
+      "Which substations had the most outages last quarter?",
+      "What is our renewable energy percentage compared to last year?",
+      "Show me the top 5 customers by billing amount.",
+      "What are our CO2 emissions by scope?",
+      "How does plant efficiency compare across our facilities?",
+      "What is the average outage duration by cause category?"
+    ],
+    "capabilities": {
+      "requiresF64": true,
+      "supportsFollowUp": true,
+      "supportsVisualization": true
+    }
+  }
+}

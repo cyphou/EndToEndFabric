@@ -20,11 +20,11 @@ No external Python packages are required for core generation.
 
 ```
 FabricEndtoEnd/
-├── generate.py              # CLI entry point
+├── generate.py              # CLI entry point (12-step pipeline)
 ├── core/                    # Generator modules (one per pipeline step)
-├── industries/              # Per-industry JSON configs
-├── templates/               # .tpl template files
-├── tests/core/              # pytest unit tests
+├── industries/              # Per-industry JSON configs (8 files each)
+├── templates/               # .tpl template files (deploy, kql, notebooks, reports, tmdl)
+├── tests/                   # pytest tests (core, industries, integration)
 ├── docs/                    # Documentation + PNG diagrams
 ├── shared/                  # Shared deployment templates
 └── .github/agents/          # Agent definitions
@@ -41,31 +41,30 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for full details.
 ```bash
 git clone <repo-url>
 cd FabricEndtoEnd
-python -m pytest tests/core/ -v
+python -m pytest tests/ -v
 ```
 
-All 73 tests should pass before making changes.
+All 213+ tests should pass before making changes.
 
 ### 2. Make changes
 
 - **New generator feature** → edit the relevant module in `core/`
-- **New industry** → add a folder under `industries/<id>/` with 7 JSON configs
+- **New industry** → add a folder under `industries/<id>/` with 8 JSON configs
 - **Template change** → edit `.tpl` files under `templates/`
 - **New test** → add to the corresponding `tests/core/test_<module>.py`
 
 ### 3. Run tests
 
 ```bash
-python -m pytest tests/core/ -v
-```
-
-### 4. Validate generation
+python -m pytest tests/ -v
+```. Validate generation
 
 ```bash
-# Generate all 3 industries and check for errors
+# Generate all 4 industries and check for errors
 python generate.py -i horizon-books
 python generate.py -i contoso-energy
 python generate.py -i northwind-hrfinance
+python generate.py -i fabrikam-manufacturing
 ```
 
 ### 5. Submit a pull request
@@ -79,7 +78,7 @@ python generate.py -i northwind-hrfinance
 ## Adding a New Industry
 
 1. Create `industries/<new-id>/`
-2. Author these 7 JSON config files:
+2. Author these 8 JSON config files:
 
 | File | Purpose |
 |---|---|
@@ -90,9 +89,10 @@ python generate.py -i northwind-hrfinance
 | `forecast-config.json` | Forecast models and parameters |
 | `planning-config.json` | Planning tables, scenarios, growth rates |
 | `htap-config.json` | Eventhouse, KQL database, event streams |
+| `web-enrichment.json` | External API sources for Silver-layer enrichment |
 
 3. Validate configs match the JSON schemas in `core/schemas/`
-4. Run `python generate.py -i <new-id>` to verify all 10 steps succeed
+4. Run `python generate.py -i <new-id>` to verify all 12 steps succeed
 5. Add tests if introducing new column types or visual types
 
 ---

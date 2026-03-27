@@ -1,0 +1,56 @@
+{
+  "_comment": "Writeback report page template — editable table visual backed by Delta writeback tables.",
+  "page": {
+    "name": "{{PAGE_ID}}",
+    "displayName": "Data Entry",
+    "displayOption": "FitToPage",
+    "width": 1280,
+    "height": 720
+  },
+  "visuals": [
+    {
+      "type": "textbox",
+      "position": {"x": 20, "y": 10, "width": 600, "height": 40},
+      "config": {
+        "text": "{{PAGE_TITLE}} — Data Entry",
+        "fontSize": 20,
+        "fontWeight": "bold"
+      }
+    },
+    {
+      "type": "textbox",
+      "position": {"x": 20, "y": 55, "width": 800, "height": 30},
+      "config": {
+        "text": "Edit values directly in the table below. Changes are saved to the writeback Delta table via the Writeback API notebook.",
+        "fontSize": 11,
+        "fontColor": "#666666"
+      }
+    },
+    {
+      "type": "table",
+      "position": {"x": 20, "y": 100, "width": 1240, "height": 500},
+      "config": {
+        "columns": "{{TABLE_COLUMNS}}",
+        "editableColumns": "{{EDITABLE_COLUMNS}}",
+        "sortBy": "{{SORT_COLUMN}}",
+        "sortOrder": "ascending"
+      }
+    },
+    {
+      "type": "card",
+      "position": {"x": 20, "y": 620, "width": 200, "height": 80},
+      "config": {
+        "measure": "Rows Modified",
+        "label": "Pending Changes"
+      }
+    },
+    {
+      "type": "card",
+      "position": {"x": 240, "y": 620, "width": 200, "height": 80},
+      "config": {
+        "measure": "Last Sync",
+        "label": "Last Synced"
+      }
+    }
+  ]
+}

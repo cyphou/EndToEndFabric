@@ -40,6 +40,18 @@
           {
             "name": "FiscalQuarter",
             "dataType": "Int64"
+          },
+          {
+            "name": "DayOfWeek",
+            "dataType": "String"
+          },
+          {
+            "name": "IsWeekend",
+            "dataType": "Boolean"
+          },
+          {
+            "name": "IsHoliday",
+            "dataType": "Boolean"
           }
         ]
       },
@@ -75,6 +87,18 @@
           {
             "name": "IsRenewable",
             "dataType": "Boolean"
+          },
+          {
+            "name": "PlantStatus",
+            "dataType": "String"
+          },
+          {
+            "name": "Latitude",
+            "dataType": "Double"
+          },
+          {
+            "name": "Longitude",
+            "dataType": "Double"
           }
         ]
       },
@@ -101,6 +125,18 @@
           },
           {
             "name": "Capacity",
+            "dataType": "Double"
+          },
+          {
+            "name": "SubstationType",
+            "dataType": "String"
+          },
+          {
+            "name": "Latitude",
+            "dataType": "Double"
+          },
+          {
+            "name": "Longitude",
             "dataType": "Double"
           }
         ]
@@ -129,6 +165,14 @@
           {
             "name": "ServiceAddress",
             "dataType": "String"
+          },
+          {
+            "name": "EnrollmentDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "IsSmartMeter",
+            "dataType": "Boolean"
           }
         ]
       },
@@ -152,6 +196,10 @@
           {
             "name": "FixedCharge",
             "dataType": "Double"
+          },
+          {
+            "name": "PlanCategory",
+            "dataType": "String"
           }
         ]
       },
@@ -198,6 +246,165 @@
           {
             "name": "Region",
             "dataType": "String"
+          },
+          {
+            "name": "CrewSize",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "DimRegions",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "RegionID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "RegionName",
+            "dataType": "String"
+          },
+          {
+            "name": "State",
+            "dataType": "String"
+          },
+          {
+            "name": "TimeZone",
+            "dataType": "String"
+          },
+          {
+            "name": "RegulatoryBody",
+            "dataType": "String"
+          },
+          {
+            "name": "Latitude",
+            "dataType": "Double"
+          },
+          {
+            "name": "Longitude",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "DimWeatherStations",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "StationID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "StationName",
+            "dataType": "String"
+          },
+          {
+            "name": "Region",
+            "dataType": "String"
+          },
+          {
+            "name": "Latitude",
+            "dataType": "Double"
+          },
+          {
+            "name": "Longitude",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "DimVehicles",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "VehicleID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "VehicleType",
+            "dataType": "String"
+          },
+          {
+            "name": "Make",
+            "dataType": "String"
+          },
+          {
+            "name": "Year",
+            "dataType": "Int64"
+          },
+          {
+            "name": "IsElectric",
+            "dataType": "Boolean"
+          },
+          {
+            "name": "AssignedCrewID",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "DimAssets",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "AssetID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "AssetName",
+            "dataType": "String"
+          },
+          {
+            "name": "AssetType",
+            "dataType": "String"
+          },
+          {
+            "name": "InstallDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "ExpectedLifeYears",
+            "dataType": "Int64"
+          },
+          {
+            "name": "SubstationID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Manufacturer",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "DimPrograms",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "ProgramID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "ProgramName",
+            "dataType": "String"
+          },
+          {
+            "name": "ProgramType",
+            "dataType": "String"
+          },
+          {
+            "name": "StartDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Budget",
+            "dataType": "Double"
           }
         ]
       },
@@ -229,6 +436,22 @@
           {
             "name": "CO2EmissionsTons",
             "dataType": "Double"
+          },
+          {
+            "name": "AvailabilityPct",
+            "dataType": "Double"
+          },
+          {
+            "name": "ForcedOutageHours",
+            "dataType": "Double"
+          },
+          {
+            "name": "FuelCost",
+            "dataType": "Double"
+          },
+          {
+            "name": "RevenueGenerated",
+            "dataType": "Double"
           }
         ]
       },
@@ -256,6 +479,18 @@
           {
             "name": "PeakIndicator",
             "dataType": "Boolean"
+          },
+          {
+            "name": "Frequency",
+            "dataType": "Double"
+          },
+          {
+            "name": "VoltageLevel",
+            "dataType": "Double"
+          },
+          {
+            "name": "PowerFactor",
+            "dataType": "Double"
           }
         ]
       },
@@ -287,6 +522,18 @@
           {
             "name": "Cause",
             "dataType": "String"
+          },
+          {
+            "name": "IsPlanned",
+            "dataType": "Boolean"
+          },
+          {
+            "name": "RestorationTime",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "EstimatedDamageCost",
+            "dataType": "Double"
           }
         ]
       },
@@ -322,6 +569,14 @@
           {
             "name": "PaymentStatus",
             "dataType": "String"
+          },
+          {
+            "name": "DemandCharges",
+            "dataType": "Double"
+          },
+          {
+            "name": "LateFees",
+            "dataType": "Double"
           }
         ]
       },
@@ -353,6 +608,10 @@
           {
             "name": "CarbonCreditsPurchased",
             "dataType": "Int64"
+          },
+          {
+            "name": "CarbonIntensity",
+            "dataType": "Double"
           }
         ]
       },
@@ -396,6 +655,10 @@
           {
             "name": "Status",
             "dataType": "String"
+          },
+          {
+            "name": "CompletionDate",
+            "dataType": "DateTime"
           }
         ]
       },
@@ -427,6 +690,311 @@
           {
             "name": "LostTimeDays",
             "dataType": "Int64"
+          },
+          {
+            "name": "RootCause",
+            "dataType": "String"
+          },
+          {
+            "name": "IsRecordable",
+            "dataType": "Boolean"
+          }
+        ]
+      },
+      {
+        "name": "FactWeather",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "WeatherID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "StationID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "RecordDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "TemperatureF",
+            "dataType": "Double"
+          },
+          {
+            "name": "WindSpeedMPH",
+            "dataType": "Double"
+          },
+          {
+            "name": "SolarIrradiance",
+            "dataType": "Double"
+          },
+          {
+            "name": "Precipitation",
+            "dataType": "Double"
+          },
+          {
+            "name": "Humidity",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactMeterReadings",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "ReadingID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ReadingDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "KWhReading",
+            "dataType": "Double"
+          },
+          {
+            "name": "DemandKW",
+            "dataType": "Double"
+          },
+          {
+            "name": "PowerFactor",
+            "dataType": "Double"
+          },
+          {
+            "name": "ReadingType",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactAssetCondition",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "ConditionID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "AssetID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "InspectionDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "ConditionScore",
+            "dataType": "Double"
+          },
+          {
+            "name": "RemainingLifePct",
+            "dataType": "Double"
+          },
+          {
+            "name": "ReplacementCost",
+            "dataType": "Double"
+          },
+          {
+            "name": "InspectorNotes",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactCustomerComplaints",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "ComplaintID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ComplaintDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Category",
+            "dataType": "String"
+          },
+          {
+            "name": "ResolutionDays",
+            "dataType": "Int64"
+          },
+          {
+            "name": "SatisfactionScore",
+            "dataType": "Double"
+          },
+          {
+            "name": "Status",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactDemandResponse",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "EventID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "ProgramID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "EventDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "DurationHours",
+            "dataType": "Double"
+          },
+          {
+            "name": "MWReduced",
+            "dataType": "Double"
+          },
+          {
+            "name": "ParticipantsCount",
+            "dataType": "Int64"
+          },
+          {
+            "name": "IncentivePaid",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactVehicleUsage",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "TripID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "VehicleID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "TripDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "MilesDriven",
+            "dataType": "Double"
+          },
+          {
+            "name": "FuelGallons",
+            "dataType": "Double"
+          },
+          {
+            "name": "IdleHours",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactRegulatoryFiling",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "FilingID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "FilingDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "FilingType",
+            "dataType": "String"
+          },
+          {
+            "name": "Status",
+            "dataType": "String"
+          },
+          {
+            "name": "PenaltyAmount",
+            "dataType": "Double"
+          },
+          {
+            "name": "ComplianceScore",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "DimRegulatoryBodies",
+        "schema": "dim",
+        "tableType": "dim",
+        "columns": [
+          {
+            "name": "RegulatoryBodyID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "BodyName",
+            "dataType": "String"
+          },
+          {
+            "name": "Jurisdiction",
+            "dataType": "String"
+          },
+          {
+            "name": "ContactEmail",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "DimTariffPlans",
+        "schema": "dim",
+        "tableType": "dim",
+        "columns": [
+          {
+            "name": "TariffPlanID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "PlanName",
+            "dataType": "String"
+          },
+          {
+            "name": "RatePerKWh",
+            "dataType": "Double"
+          },
+          {
+            "name": "PeakRate",
+            "dataType": "Double"
+          },
+          {
+            "name": "OffPeakRate",
+            "dataType": "Double"
+          },
+          {
+            "name": "EffectiveDate",
+            "dataType": "DateTime"
           }
         ]
       }
@@ -451,8 +1019,7 @@
         "fromColumn": "SubstationID",
         "toTable": "DimSubstations",
         "toColumn": "SubstationID",
-        "cardinality": "ManyToOne",
-        "isActive": false
+        "cardinality": "ManyToOne"
       },
       {
         "fromTable": "FactBilling",
@@ -495,8 +1062,182 @@
         "fromColumn": "CrewID",
         "toTable": "DimCrews",
         "toColumn": "CrewID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactGeneration",
+        "fromColumn": "GenerationDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactGridLoad",
+        "fromColumn": "ReadingDateTime",
+        "toTable": "DimDate",
+        "toColumn": "Date",
         "cardinality": "ManyToOne",
         "isActive": false
+      },
+      {
+        "fromTable": "FactOutages",
+        "fromColumn": "OutageStart",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactBilling",
+        "fromColumn": "BillingMonth",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactEmissions",
+        "fromColumn": "ReportingMonth",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactWorkOrders",
+        "fromColumn": "OrderDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactSafetyIncidents",
+        "fromColumn": "IncidentDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactWeather",
+        "fromColumn": "StationID",
+        "toTable": "DimWeatherStations",
+        "toColumn": "StationID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactWeather",
+        "fromColumn": "RecordDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactMeterReadings",
+        "fromColumn": "CustomerID",
+        "toTable": "DimCustomers",
+        "toColumn": "CustomerID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactMeterReadings",
+        "fromColumn": "ReadingDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactAssetCondition",
+        "fromColumn": "AssetID",
+        "toTable": "DimAssets",
+        "toColumn": "AssetID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "DimAssets",
+        "fromColumn": "SubstationID",
+        "toTable": "DimSubstations",
+        "toColumn": "SubstationID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactCustomerComplaints",
+        "fromColumn": "CustomerID",
+        "toTable": "DimCustomers",
+        "toColumn": "CustomerID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactDemandResponse",
+        "fromColumn": "ProgramID",
+        "toTable": "DimPrograms",
+        "toColumn": "ProgramID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactVehicleUsage",
+        "fromColumn": "VehicleID",
+        "toTable": "DimVehicles",
+        "toColumn": "VehicleID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "DimVehicles",
+        "fromColumn": "AssignedCrewID",
+        "toTable": "DimCrews",
+        "toColumn": "CrewID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactRegulatoryFiling",
+        "fromColumn": "FilingDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactAssetCondition",
+        "fromColumn": "InspectionDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactCustomerComplaints",
+        "fromColumn": "ComplaintDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactDemandResponse",
+        "fromColumn": "EventDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactVehicleUsage",
+        "fromColumn": "TripDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactRegulatoryFiling",
+        "fromColumn": "RegulatoryBodyID",
+        "toTable": "DimRegulatoryBodies",
+        "toColumn": "RegulatoryBodyID"
       }
     ],
     "measures": [
@@ -526,6 +1267,83 @@
         "table": "FactGeneration",
         "expression": "DIVIDE(CALCULATE(SUM(FactGeneration[MWhGenerated]), DimPowerPlants[IsRenewable] = TRUE()), SUM(FactGeneration[MWhGenerated]))",
         "formatString": "0.0%",
+        "displayFolder": "Generation"
+      },
+      {
+        "name": "Generation YoY Growth",
+        "table": "FactGeneration",
+        "expression": "VAR _CY = SUM(FactGeneration[MWhGenerated]) VAR _PY = CALCULATE(SUM(FactGeneration[MWhGenerated]), DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)",
+        "formatString": "0.0%",
+        "displayFolder": "Generation"
+      },
+      {
+        "name": "Capacity Factor",
+        "table": "FactGeneration",
+        "expression": "DIVIDE(SUM(FactGeneration[MWhGenerated]), SUMX(RELATEDTABLE(DimPowerPlants), DimPowerPlants[CapacityMW] * 8760))",
+        "formatString": "0.0%",
+        "displayFolder": "Generation"
+      },
+      {
+        "name": "Total Fuel Cost",
+        "table": "FactGeneration",
+        "expression": "SUM(FactGeneration[FuelCost])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Generation"
+      },
+      {
+        "name": "Cost per MWh",
+        "table": "FactGeneration",
+        "expression": "DIVIDE(SUM(FactGeneration[FuelCost]), SUM(FactGeneration[MWhGenerated]))",
+        "formatString": "$#,0.00",
+        "displayFolder": "Generation"
+      },
+      {
+        "name": "Plant Availability %",
+        "table": "FactGeneration",
+        "expression": "AVERAGE(FactGeneration[AvailabilityPct])",
+        "formatString": "0.0%",
+        "displayFolder": "Generation"
+      },
+      {
+        "name": "Forced Outage Rate",
+        "table": "FactGeneration",
+        "expression": "DIVIDE(SUM(FactGeneration[ForcedOutageHours]), SUM(FactGeneration[ForcedOutageHours]) + SUM(FactGeneration[MWhGenerated]))",
+        "formatString": "0.0%",
+        "displayFolder": "Generation"
+      },
+      {
+        "name": "Generation Revenue",
+        "table": "FactGeneration",
+        "expression": "SUM(FactGeneration[RevenueGenerated])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Generation"
+      },
+      {
+        "name": "Heat Rate BTU/kWh",
+        "table": "FactGeneration",
+        "expression": "DIVIDE(3412, AVERAGE(FactGeneration[Efficiency]))",
+        "formatString": "#,0",
+        "displayFolder": "Generation"
+      },
+      {
+        "name": "Renewable Capacity MW",
+        "table": "DimPowerPlants",
+        "expression": "CALCULATE(SUM(DimPowerPlants[CapacityMW]), DimPowerPlants[IsRenewable] = TRUE())",
+        "formatString": "#,0.0",
+        "displayFolder": "Generation"
+      },
+      {
+        "name": "Total Installed Capacity",
+        "table": "DimPowerPlants",
+        "expression": "SUM(DimPowerPlants[CapacityMW])",
+        "formatString": "#,0.0",
+        "displayFolder": "Generation"
+      },
+      {
+        "name": "Generation MoM Change",
+        "table": "FactGeneration",
+        "expression": "VAR _CM = SUM(FactGeneration[MWhGenerated]) VAR _PM = CALCULATE(SUM(FactGeneration[MWhGenerated]), DATEADD(DimDate[Date], -1, MONTH)) RETURN _CM - _PM",
+        "formatString": "#,0.0",
         "displayFolder": "Generation"
       },
       {
@@ -564,6 +1382,76 @@
         "displayFolder": "Grid Operations"
       },
       {
+        "name": "SAIDI",
+        "table": "FactOutages",
+        "expression": "DIVIDE(SUMX(FactOutages, FactOutages[DurationMinutes] * FactOutages[AffectedCustomers]), COUNTROWS(DimCustomers))",
+        "formatString": "#,0.0",
+        "displayFolder": "Grid Operations"
+      },
+      {
+        "name": "SAIFI",
+        "table": "FactOutages",
+        "expression": "DIVIDE(SUM(FactOutages[AffectedCustomers]), COUNTROWS(DimCustomers))",
+        "formatString": "0.00",
+        "displayFolder": "Grid Operations"
+      },
+      {
+        "name": "CAIDI",
+        "table": "FactOutages",
+        "expression": "DIVIDE(SUM(FactOutages[DurationMinutes]), COUNTROWS(FactOutages))",
+        "formatString": "#,0.0",
+        "displayFolder": "Grid Operations"
+      },
+      {
+        "name": "Unplanned Outage Count",
+        "table": "FactOutages",
+        "expression": "CALCULATE(COUNTROWS(FactOutages), FactOutages[IsPlanned] = FALSE())",
+        "formatString": "#,0",
+        "displayFolder": "Grid Operations"
+      },
+      {
+        "name": "Load Factor %",
+        "table": "FactGridLoad",
+        "expression": "DIVIDE(AVERAGE(FactGridLoad[LoadMW]), MAX(FactGridLoad[LoadMW]))",
+        "formatString": "0.0%",
+        "displayFolder": "Grid Operations"
+      },
+      {
+        "name": "Reserve Margin %",
+        "table": "FactGridLoad",
+        "expression": "DIVIDE(SUM(DimPowerPlants[CapacityMW]) - MAX(FactGridLoad[LoadMW]), MAX(FactGridLoad[LoadMW]))",
+        "formatString": "0.0%",
+        "displayFolder": "Grid Operations"
+      },
+      {
+        "name": "Avg Power Factor",
+        "table": "FactGridLoad",
+        "expression": "AVERAGE(FactGridLoad[PowerFactor])",
+        "formatString": "0.00",
+        "displayFolder": "Grid Operations"
+      },
+      {
+        "name": "Peak Hours Count",
+        "table": "FactGridLoad",
+        "expression": "CALCULATE(COUNTROWS(FactGridLoad), FactGridLoad[PeakIndicator] = TRUE())",
+        "formatString": "#,0",
+        "displayFolder": "Grid Operations"
+      },
+      {
+        "name": "Outage Damage Cost",
+        "table": "FactOutages",
+        "expression": "SUM(FactOutages[EstimatedDamageCost])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Grid Operations"
+      },
+      {
+        "name": "Grid Frequency Avg",
+        "table": "FactGridLoad",
+        "expression": "AVERAGE(FactGridLoad[Frequency])",
+        "formatString": "0.000",
+        "displayFolder": "Grid Operations"
+      },
+      {
         "name": "Total Revenue",
         "table": "FactBilling",
         "expression": "SUM(FactBilling[AmountBilled])",
@@ -592,6 +1480,83 @@
         "displayFolder": "Billing"
       },
       {
+        "name": "Revenue YoY Growth",
+        "table": "FactBilling",
+        "expression": "VAR _CY = SUM(FactBilling[AmountBilled]) VAR _PY = CALCULATE(SUM(FactBilling[AmountBilled]), DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)",
+        "formatString": "0.0%",
+        "displayFolder": "Billing"
+      },
+      {
+        "name": "Avg Revenue per Customer",
+        "table": "FactBilling",
+        "expression": "DIVIDE(SUM(FactBilling[AmountBilled]), DISTINCTCOUNT(FactBilling[CustomerID]))",
+        "formatString": "$#,0.00",
+        "displayFolder": "Billing"
+      },
+      {
+        "name": "Overdue Balance",
+        "table": "FactBilling",
+        "expression": "CALCULATE(SUM(FactBilling[AmountBilled]), FactBilling[PaymentStatus] = \"Overdue\")",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Billing"
+      },
+      {
+        "name": "Demand Charges Total",
+        "table": "FactBilling",
+        "expression": "SUM(FactBilling[DemandCharges])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Billing"
+      },
+      {
+        "name": "Late Fees Collected",
+        "table": "FactBilling",
+        "expression": "SUM(FactBilling[LateFees])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Billing"
+      },
+      {
+        "name": "Residential Revenue",
+        "table": "FactBilling",
+        "expression": "CALCULATE(SUM(FactBilling[AmountBilled]), DimCustomers[AccountType] = \"Residential\")",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Billing"
+      },
+      {
+        "name": "Commercial Revenue",
+        "table": "FactBilling",
+        "expression": "CALCULATE(SUM(FactBilling[AmountBilled]), DimCustomers[AccountType] = \"Commercial\")",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Billing"
+      },
+      {
+        "name": "Industrial Revenue",
+        "table": "FactBilling",
+        "expression": "CALCULATE(SUM(FactBilling[AmountBilled]), DimCustomers[AccountType] = \"Industrial\")",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Billing"
+      },
+      {
+        "name": "Revenue per KWh",
+        "table": "FactBilling",
+        "expression": "DIVIDE(SUM(FactBilling[AmountBilled]), SUM(FactBilling[KWhConsumed]))",
+        "formatString": "$0.000",
+        "displayFolder": "Billing"
+      },
+      {
+        "name": "Customer Count",
+        "table": "DimCustomers",
+        "expression": "COUNTROWS(DimCustomers)",
+        "formatString": "#,0",
+        "displayFolder": "Billing"
+      },
+      {
+        "name": "Smart Meter Adoption %",
+        "table": "DimCustomers",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(DimCustomers), DimCustomers[IsSmartMeter] = TRUE()), COUNTROWS(DimCustomers))",
+        "formatString": "0.0%",
+        "displayFolder": "Billing"
+      },
+      {
         "name": "Total CO2e Tons",
         "table": "FactEmissions",
         "expression": "SUM(FactEmissions[CO2eTons])",
@@ -610,6 +1575,55 @@
         "table": "FactEmissions",
         "expression": "SUM(FactEmissions[CarbonCreditsPurchased])",
         "formatString": "#,0",
+        "displayFolder": "Sustainability"
+      },
+      {
+        "name": "Carbon Intensity kg/MWh",
+        "table": "FactEmissions",
+        "expression": "DIVIDE(SUM(FactEmissions[CO2eTons]) * 1000, SUM(FactGeneration[MWhGenerated]))",
+        "formatString": "#,0.0",
+        "displayFolder": "Sustainability"
+      },
+      {
+        "name": "Scope 1 Emissions",
+        "table": "FactEmissions",
+        "expression": "CALCULATE(SUM(FactEmissions[CO2eTons]), DimEmissionSources[Scope] = \"Scope 1\")",
+        "formatString": "#,0",
+        "displayFolder": "Sustainability"
+      },
+      {
+        "name": "Scope 2 Emissions",
+        "table": "FactEmissions",
+        "expression": "CALCULATE(SUM(FactEmissions[CO2eTons]), DimEmissionSources[Scope] = \"Scope 2\")",
+        "formatString": "#,0",
+        "displayFolder": "Sustainability"
+      },
+      {
+        "name": "Scope 3 Emissions",
+        "table": "FactEmissions",
+        "expression": "CALCULATE(SUM(FactEmissions[CO2eTons]), DimEmissionSources[Scope] = \"Scope 3\")",
+        "formatString": "#,0",
+        "displayFolder": "Sustainability"
+      },
+      {
+        "name": "Net Carbon Footprint",
+        "table": "FactEmissions",
+        "expression": "SUM(FactEmissions[CO2eTons]) - DIVIDE(SUM(FactEmissions[RenewableOffsetMWh]) * 0.4, 1)",
+        "formatString": "#,0",
+        "displayFolder": "Sustainability"
+      },
+      {
+        "name": "Emissions YoY Change",
+        "table": "FactEmissions",
+        "expression": "VAR _CY = SUM(FactEmissions[CO2eTons]) VAR _PY = CALCULATE(SUM(FactEmissions[CO2eTons]), DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)",
+        "formatString": "0.0%",
+        "displayFolder": "Sustainability"
+      },
+      {
+        "name": "Renewable Energy Ratio",
+        "table": "FactEmissions",
+        "expression": "DIVIDE(SUM(FactEmissions[RenewableOffsetMWh]), SUM(FactGeneration[MWhGenerated]))",
+        "formatString": "0.0%",
         "displayFolder": "Sustainability"
       },
       {
@@ -639,6 +1653,384 @@
         "expression": "SUM(FactSafetyIncidents[LostTimeDays])",
         "formatString": "#,0",
         "displayFolder": "Field Ops"
+      },
+      {
+        "name": "Work Order Completion Rate",
+        "table": "FactWorkOrders",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactWorkOrders), FactWorkOrders[Status] = \"Completed\"), COUNTROWS(FactWorkOrders))",
+        "formatString": "0.0%",
+        "displayFolder": "Field Ops"
+      },
+      {
+        "name": "Avg Response Time Hours",
+        "table": "FactWorkOrders",
+        "expression": "AVERAGE(FactWorkOrders[DurationHours])",
+        "formatString": "0.0",
+        "displayFolder": "Field Ops"
+      },
+      {
+        "name": "Total Maintenance Cost",
+        "table": "FactWorkOrders",
+        "expression": "SUM(FactWorkOrders[Cost])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Field Ops"
+      },
+      {
+        "name": "Preventive Maintenance %",
+        "table": "FactWorkOrders",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactWorkOrders), FactWorkOrders[WorkType] = \"Preventive Maintenance\"), COUNTROWS(FactWorkOrders))",
+        "formatString": "0.0%",
+        "displayFolder": "Field Ops"
+      },
+      {
+        "name": "Emergency Work Orders",
+        "table": "FactWorkOrders",
+        "expression": "CALCULATE(COUNTROWS(FactWorkOrders), FactWorkOrders[WorkType] = \"Emergency Repair\")",
+        "formatString": "#,0",
+        "displayFolder": "Field Ops"
+      },
+      {
+        "name": "Critical Priority Count",
+        "table": "FactWorkOrders",
+        "expression": "CALCULATE(COUNTROWS(FactWorkOrders), FactWorkOrders[Priority] = \"Critical\")",
+        "formatString": "#,0",
+        "displayFolder": "Field Ops"
+      },
+      {
+        "name": "TRIR",
+        "table": "FactSafetyIncidents",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactSafetyIncidents), FactSafetyIncidents[IsRecordable] = TRUE()) * 200000, SUM(FactWorkOrders[DurationHours]))",
+        "formatString": "0.00",
+        "displayFolder": "Field Ops"
+      },
+      {
+        "name": "Lost Time Injury Rate",
+        "table": "FactSafetyIncidents",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactSafetyIncidents), FactSafetyIncidents[LostTimeDays] > 0) * 200000, SUM(FactWorkOrders[DurationHours]))",
+        "formatString": "0.00",
+        "displayFolder": "Field Ops"
+      },
+      {
+        "name": "Days Since Last Incident",
+        "table": "FactSafetyIncidents",
+        "expression": "DATEDIFF(MAX(FactSafetyIncidents[IncidentDate]), TODAY(), DAY)",
+        "formatString": "#,0",
+        "displayFolder": "Field Ops"
+      },
+      {
+        "name": "Crew Utilization %",
+        "table": "FactWorkOrders",
+        "expression": "DIVIDE(SUM(FactWorkOrders[DurationHours]), COUNTROWS(DimCrews) * 2080)",
+        "formatString": "0.0%",
+        "displayFolder": "Field Ops"
+      },
+      {
+        "name": "Backlog Count",
+        "table": "FactWorkOrders",
+        "expression": "CALCULATE(COUNTROWS(FactWorkOrders), FactWorkOrders[Status] = \"Scheduled\")",
+        "formatString": "#,0",
+        "displayFolder": "Field Ops"
+      },
+      {
+        "name": "Avg Temperature F",
+        "table": "FactWeather",
+        "expression": "AVERAGE(FactWeather[TemperatureF])",
+        "formatString": "0.0",
+        "displayFolder": "Weather & Demand"
+      },
+      {
+        "name": "Avg Wind Speed MPH",
+        "table": "FactWeather",
+        "expression": "AVERAGE(FactWeather[WindSpeedMPH])",
+        "formatString": "0.0",
+        "displayFolder": "Weather & Demand"
+      },
+      {
+        "name": "Avg Solar Irradiance",
+        "table": "FactWeather",
+        "expression": "AVERAGE(FactWeather[SolarIrradiance])",
+        "formatString": "0.0",
+        "displayFolder": "Weather & Demand"
+      },
+      {
+        "name": "Total Precipitation",
+        "table": "FactWeather",
+        "expression": "SUM(FactWeather[Precipitation])",
+        "formatString": "0.00",
+        "displayFolder": "Weather & Demand"
+      },
+      {
+        "name": "Cooling Degree Days",
+        "table": "FactWeather",
+        "expression": "SUMX(FactWeather, MAX(FactWeather[TemperatureF] - 65, 0))",
+        "formatString": "#,0",
+        "displayFolder": "Weather & Demand"
+      },
+      {
+        "name": "Heating Degree Days",
+        "table": "FactWeather",
+        "expression": "SUMX(FactWeather, MAX(65 - FactWeather[TemperatureF], 0))",
+        "formatString": "#,0",
+        "displayFolder": "Weather & Demand"
+      },
+      {
+        "name": "DR Events Count",
+        "table": "FactDemandResponse",
+        "expression": "COUNTROWS(FactDemandResponse)",
+        "formatString": "#,0",
+        "displayFolder": "Weather & Demand"
+      },
+      {
+        "name": "DR MW Reduced",
+        "table": "FactDemandResponse",
+        "expression": "SUM(FactDemandResponse[MWReduced])",
+        "formatString": "#,0.0",
+        "displayFolder": "Weather & Demand"
+      },
+      {
+        "name": "DR Incentives Paid",
+        "table": "FactDemandResponse",
+        "expression": "SUM(FactDemandResponse[IncentivePaid])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Weather & Demand"
+      },
+      {
+        "name": "DR Participation Rate",
+        "table": "FactDemandResponse",
+        "expression": "DIVIDE(SUM(FactDemandResponse[ParticipantsCount]), COUNTROWS(DimCustomers))",
+        "formatString": "0.0%",
+        "displayFolder": "Weather & Demand"
+      },
+      {
+        "name": "Total Meter Readings",
+        "table": "FactMeterReadings",
+        "expression": "COUNTROWS(FactMeterReadings)",
+        "formatString": "#,0",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Avg Demand KW",
+        "table": "FactMeterReadings",
+        "expression": "AVERAGE(FactMeterReadings[DemandKW])",
+        "formatString": "#,0.0",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Total Complaints",
+        "table": "FactCustomerComplaints",
+        "expression": "COUNTROWS(FactCustomerComplaints)",
+        "formatString": "#,0",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Avg Complaint Resolution Days",
+        "table": "FactCustomerComplaints",
+        "expression": "AVERAGE(FactCustomerComplaints[ResolutionDays])",
+        "formatString": "0.0",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Customer Satisfaction Score",
+        "table": "FactCustomerComplaints",
+        "expression": "AVERAGE(FactCustomerComplaints[SatisfactionScore])",
+        "formatString": "0.00",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Complaint Resolution Rate",
+        "table": "FactCustomerComplaints",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactCustomerComplaints), FactCustomerComplaints[Status] = \"Resolved\"), COUNTROWS(FactCustomerComplaints))",
+        "formatString": "0.0%",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Open Complaints",
+        "table": "FactCustomerComplaints",
+        "expression": "CALCULATE(COUNTROWS(FactCustomerComplaints), FactCustomerComplaints[Status] = \"Open\")",
+        "formatString": "#,0",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Avg Asset Condition Score",
+        "table": "FactAssetCondition",
+        "expression": "AVERAGE(FactAssetCondition[ConditionScore])",
+        "formatString": "0.00",
+        "displayFolder": "Asset Management"
+      },
+      {
+        "name": "Assets Below Threshold",
+        "table": "FactAssetCondition",
+        "expression": "CALCULATE(COUNTROWS(FactAssetCondition), FactAssetCondition[ConditionScore] < 60)",
+        "formatString": "#,0",
+        "displayFolder": "Asset Management"
+      },
+      {
+        "name": "Total Replacement Cost",
+        "table": "FactAssetCondition",
+        "expression": "SUM(FactAssetCondition[ReplacementCost])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Asset Management"
+      },
+      {
+        "name": "Avg Remaining Life %",
+        "table": "FactAssetCondition",
+        "expression": "AVERAGE(FactAssetCondition[RemainingLifePct])",
+        "formatString": "0.0%",
+        "displayFolder": "Asset Management"
+      },
+      {
+        "name": "Total Asset Count",
+        "table": "DimAssets",
+        "expression": "COUNTROWS(DimAssets)",
+        "formatString": "#,0",
+        "displayFolder": "Asset Management"
+      },
+      {
+        "name": "Avg Asset Age Years",
+        "table": "DimAssets",
+        "expression": "AVERAGEX(DimAssets, DATEDIFF(DimAssets[InstallDate], TODAY(), YEAR))",
+        "formatString": "0.0",
+        "displayFolder": "Asset Management"
+      },
+      {
+        "name": "Fleet Miles Driven",
+        "table": "FactVehicleUsage",
+        "expression": "SUM(FactVehicleUsage[MilesDriven])",
+        "formatString": "#,0",
+        "displayFolder": "Fleet"
+      },
+      {
+        "name": "Fleet Fuel Consumed",
+        "table": "FactVehicleUsage",
+        "expression": "SUM(FactVehicleUsage[FuelGallons])",
+        "formatString": "#,0.0",
+        "displayFolder": "Fleet"
+      },
+      {
+        "name": "Fleet MPG",
+        "table": "FactVehicleUsage",
+        "expression": "DIVIDE(SUM(FactVehicleUsage[MilesDriven]), SUM(FactVehicleUsage[FuelGallons]))",
+        "formatString": "0.0",
+        "displayFolder": "Fleet"
+      },
+      {
+        "name": "EV Fleet %",
+        "table": "DimVehicles",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(DimVehicles), DimVehicles[IsElectric] = TRUE()), COUNTROWS(DimVehicles))",
+        "formatString": "0.0%",
+        "displayFolder": "Fleet"
+      },
+      {
+        "name": "Idle Hours Total",
+        "table": "FactVehicleUsage",
+        "expression": "SUM(FactVehicleUsage[IdleHours])",
+        "formatString": "#,0.0",
+        "displayFolder": "Fleet"
+      },
+      {
+        "name": "Vehicle Count",
+        "table": "DimVehicles",
+        "expression": "COUNTROWS(DimVehicles)",
+        "formatString": "#,0",
+        "displayFolder": "Fleet"
+      },
+      {
+        "name": "Regulatory Filings Count",
+        "table": "FactRegulatoryFiling",
+        "expression": "COUNTROWS(FactRegulatoryFiling)",
+        "formatString": "#,0",
+        "displayFolder": "Compliance"
+      },
+      {
+        "name": "Total Penalties",
+        "table": "FactRegulatoryFiling",
+        "expression": "SUM(FactRegulatoryFiling[PenaltyAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Compliance"
+      },
+      {
+        "name": "Avg Compliance Score",
+        "table": "FactRegulatoryFiling",
+        "expression": "AVERAGE(FactRegulatoryFiling[ComplianceScore])",
+        "formatString": "0.00",
+        "displayFolder": "Compliance"
+      },
+      {
+        "name": "Filings On Time %",
+        "table": "FactRegulatoryFiling",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactRegulatoryFiling), FactRegulatoryFiling[Status] = \"Approved\"), COUNTROWS(FactRegulatoryFiling))",
+        "formatString": "0.0%",
+        "displayFolder": "Compliance"
+      },
+      {
+        "name": "Revenue Running Total",
+        "table": "FactBilling",
+        "expression": "CALCULATE(SUM(FactBilling[AmountBilled]), DATESYTD(DimDate[Date]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Generation Running Total",
+        "table": "FactGeneration",
+        "expression": "CALCULATE(SUM(FactGeneration[MWhGenerated]), DATESYTD(DimDate[Date]))",
+        "formatString": "#,0.0",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Revenue 3M Moving Avg",
+        "table": "FactBilling",
+        "expression": "AVERAGEX(DATESINPERIOD(DimDate[Date], MAX(DimDate[Date]), -3, MONTH), CALCULATE(SUM(FactBilling[AmountBilled])))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Emissions Running Total",
+        "table": "FactEmissions",
+        "expression": "CALCULATE(SUM(FactEmissions[CO2eTons]), DATESYTD(DimDate[Date]))",
+        "formatString": "#,0",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Gross Margin %",
+        "table": "FactBilling",
+        "expression": "DIVIDE(SUM(FactBilling[AmountBilled]) - SUM(FactGeneration[FuelCost]), SUM(FactBilling[AmountBilled]))",
+        "formatString": "0.0%",
+        "displayFolder": "Financial"
+      },
+      {
+        "name": "Total Operating Cost",
+        "table": "FactWorkOrders",
+        "expression": "SUM(FactWorkOrders[Cost]) + SUM(FactGeneration[FuelCost])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Financial"
+      },
+      {
+        "name": "Net Income",
+        "table": "FactBilling",
+        "expression": "SUM(FactBilling[AmountBilled]) - SUM(FactWorkOrders[Cost]) - SUM(FactGeneration[FuelCost])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Financial"
+      },
+      {
+        "name": "CapEx (Asset Replacement)",
+        "table": "FactAssetCondition",
+        "expression": "CALCULATE(SUM(FactAssetCondition[ReplacementCost]), FactAssetCondition[ConditionScore] < 40)",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Financial"
+      },
+      {
+        "name": "Revenue per Employee",
+        "table": "FactBilling",
+        "expression": "DIVIDE(SUM(FactBilling[AmountBilled]), COUNTROWS(DimCrews) * 5)",
+        "formatString": "$#,0",
+        "displayFolder": "Financial"
+      },
+      {
+        "name": "Cost per Customer",
+        "table": "FactWorkOrders",
+        "expression": "DIVIDE(SUM(FactWorkOrders[Cost]), COUNTROWS(DimCustomers))",
+        "formatString": "$#,0.00",
+        "displayFolder": "Financial"
       }
     ]
   }

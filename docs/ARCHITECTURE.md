@@ -40,13 +40,14 @@ This document describes the architecture of the **Fabric End-to-End Industry Dem
           │                    │                     │
           ▼                    ▼                     ▼
     ┌───────────────────────────────────────────────────┐
-    │          10-Step Generation Pipeline               │
+    │          12-Step Generation Pipeline               │
     │                                                    │
-    │  1. Config Loader     6. Report Generator          │
-    │  2. CSV Generator     7. Pipeline Generator        │
-    │  3. Notebook Gen      8. Forecast Generator        │
-    │  4. Dataflow Gen      9. HTAP Generator            │
-    │  5. TMDL Generator   10. Deploy Generator          │
+    │  1. Config Loader     7. Pipeline Generator        │
+    │  2. CSV Generator     8. Forecast Generator        │
+    │  3. Notebook Gen      9. HTAP Generator            │
+    │  4. Dataflow Gen     10. Writeback Generator      │
+    │  5. TMDL Generator   11. Data Agent Generator      │
+    │  6. Report Generator 12. Deploy Generator          │
     └───────────────────────────────────────────────────┘
                                │
                     ┌──────────▼──────────┐
@@ -76,6 +77,8 @@ Generated notebooks follow the **Bronze → Silver → Gold** medallion pattern:
 - **NB04** — Holt-Winters forecasting with MLflow experiment tracking
 - **NB05** — HTAP event simulator (real-time streaming data generation)
 - **NB06** — Diagnostic (table inventory, null audit, row counts, schema validation)
+- **NB07** — Writeback Setup (creates writeback schema + Delta tables)
+- **NB08** — Writeback API (REST API-callable notebook for upserts)
 
 ---
 
@@ -85,7 +88,7 @@ Generated notebooks follow the **Bronze → Silver → Gold** medallion pattern:
 
 | File | Role |
 |---|---|
-| `generate.py` | CLI orchestrator — parses args, loads configs, runs all 10 steps |
+| `generate.py` | CLI orchestrator — parses args, loads configs, runs all 12 steps |
 | `generate.ps1` | PowerShell wrapper around `generate.py` |
 
 ### Core Generators (`core/`)
@@ -101,7 +104,9 @@ Generated notebooks follow the **Bronze → Silver → Gold** medallion pattern:
 | `pipeline_generator.py` | 7 | `industry.json` + `sample-data.json` | Fabric Pipeline JSON |
 | `forecast_generator.py` | 8 | `industry.json` + `forecast-config.json` | Holt-Winters notebook + config |
 | `htap_generator.py` | 9 | `industry.json` + `htap-config.json` | Eventhouse, KQL, event simulator |
-| `deploy_generator.py` | 10 | `industry.json` | PowerShell deploy scripts |
+| `writeback_generator.py` | 10 | `industry.json` + `writeback-config.json` | NB07/NB08 writeback notebooks |
+| `deploy_generator.py` | 12 | `industry.json` | PowerShell deploy scripts |
+| `agent_generator.py` | 11 | `industry.json` + `data-agent.json` | Fabric Data Agent config + README |
 
 ### Supporting Modules
 
@@ -110,16 +115,17 @@ Generated notebooks follow the **Bronze → Silver → Gold** medallion pattern:
 | `template_engine.py` | `{{PLACEHOLDER}}`, `{{#if}}`, `{{#each}}` template rendering |
 | `planning_generator.py` | Planning IQ table schemas + scenario notebooks |
 | `pester_generator.py` | Pester 5 test suite for deployment validation |
+| `pester_generator.py` | Pester 5 test suite for deployment validation |
 
 ### Templates (`templates/`)
 
 ```
 templates/
-├── deploy/         # PowerShell .tpl files (Deploy-Full, Upload, Validate)
-├── kql/            # KQL database scripts, bridge queries
-├── notebooks/      # NB01–NB06 PySpark templates
+├── deploy/         # Deploy-Full.ps1.tpl, Upload-SampleData.ps1.tpl, Validate-Deployment.ps1.tpl
+├── kql/            # eventhouse.kql.tpl, kql-database.kql.tpl, bridge.kql.tpl
+├── notebooks/      # NB01–NB06 PySpark templates (.py.tpl)
 ├── reports/        # PBIR report.json, page.json, visual.json templates
-└── tmdl/           # model.tmdl, table.tmdl, measure templates
+└── tmdl/           # model.tmdl.tpl, table.tmdl.tpl, relationship.tmdl.tpl
 ```
 
 Templates use `{{PLACEHOLDER}}` syntax for simple substitutions and `{{#each items}}...{{/each}}` for iteration. The `template_engine.py` module handles all rendering.
@@ -142,7 +148,7 @@ Validation runs at Step 1 before any generation begins.
   <img src="images/config-driven-design.png" alt="Config-Driven Design" width="100%">
 </p>
 
-Each industry lives in `industries/<id>/` with 7 JSON files:
+Each industry lives in `industries/<id>/` with up to 8 JSON files:
 
 | Config File | Contents |
 |---|---|
@@ -153,13 +159,14 @@ Each industry lives in `industries/<id>/` with 7 JSON files:
 | `forecast-config.json` | Forecast models, parameters (alpha/beta/gamma), horizons |
 | `planning-config.json` | Planning tables, scenarios, growth rates |
 | `htap-config.json` | Eventhouse, KQL database, event stream definitions |
+| `web-enrichment.json` | External API sources for Silver-layer enrichment |
 
 ### Adding a New Industry
 
 1. Create `industries/<new-id>/`
-2. Author the 7 JSON config files (or copy/modify from an existing industry)
+2. Author the 8 JSON config files (or copy/modify from an existing industry)
 3. Run `python generate.py -i <new-id>`
-4. All 10 pipeline steps produce output tailored to the new industry
+4. All 12 pipeline steps produce output tailored to the new industry
 
 No Python code changes required.
 
@@ -205,7 +212,9 @@ output/<industry>/
 │   ├── NB01_Bronze_to_Silver.py
 │   ├── NB02_Web_Enrichment.py
 │   ├── NB03_Silver_to_Gold.py
-│   └── NB06_Diagnostic.py
+│   ├── NB06_Diagnostic.py
+│   ├── NB07_WritebackCapture.py
+│   └── NB08_WritebackApply.py
 ├── Dataflows/            ← Step 4: Dataflow Generator
 │   └── DF_<domain>_ingestion.json
 ├── SemanticModel/        ← Step 5: TMDL Generator
@@ -228,7 +237,15 @@ output/<industry>/
 │   ├── kql-database-script.kql
 │   ├── NB05_EventSimulator.py
 │   └── bridge-queries.kql
-└── Deploy/               ← Step 10: Deploy Generator
+├── Writeback/            ← Step 10: Writeback Generator
+│   ├── writeback-config.json
+│   ├── NB07_WritebackSetup.py
+│   ├── NB08_WritebackAPI.py
+│   └── stored_procedures/
+├── DataAgent/            ← Step 11: Agent Generator
+│   ├── agent-config.json
+│   └── README.md
+└── Deploy/               ← Step 12: Deploy Generator
     ├── Deploy-Full.ps1
     ├── <Company>.psm1
     ├── Upload-SampleData.ps1
@@ -288,22 +305,30 @@ The semantic model generator converts `semantic-model.json` definitions into TMD
 ## Testing Architecture
 
 ```
-tests/core/
-├── test_config_loader.py      # 18 tests — config load, validation, schema errors
-├── test_csv_generator.py      # 11 tests — FK integrity, determinism, edge cases
-├── test_report_generator.py   # 14 tests — PBIR pages, visuals, themes
-├── test_template_engine.py    # 14 tests — {{if}}, {{each}}, nested rendering
-└── test_tmdl_generator.py     # 16 tests — tables, measures, relationships
+tests/
+├── core/
+│   ├── test_config_loader.py        # Config load, validation, schema errors
+│   ├── test_csv_generator.py        # FK integrity, determinism, edge cases
+│   ├── test_report_generator.py     # PBIR pages, visuals, themes
+│   ├── test_template_engine.py      # {{if}}, {{each}}, nested rendering
+│   ├── test_tmdl_generator.py       # Tables, measures, relationships
+│   ├── test_dataflow_generator.py   # Dataflow Gen2 per-domain configs
+│   ├── test_agent_generator.py      # Data Agent config + README generation
+│   └── ...                          # Additional generator tests
+├── industries/
+│   └── test_per_industry_generation.py  # PLAN.md §10.3 target validation
+└── integration/
+    └── test_full_pipeline.py        # End-to-end pipeline + idempotency
 ```
 
-**73 tests total**, all passing. Tests cover:
+**213+ tests** (plus 80+ subtests), all passing. Tests cover:
 - Config loading with invalid inputs (missing fields, bad schemas)
 - CSV generation determinism (same seed → same output)
 - FK integrity validation (child references match parent values)
 - Template rendering edge cases (missing vars, nested blocks)
 - TMDL schema correctness (valid Direct Lake expressions)
 
-Run: `python -m pytest tests/core/ -v`
+Run: `python -m pytest tests/ -v`
 
 ---
 

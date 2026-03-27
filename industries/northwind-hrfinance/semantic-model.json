@@ -675,6 +675,316 @@
             "dataType": "Double"
           }
         ]
+      },
+      {
+        "name": "DimLocations",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "LocationID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "LocationName",
+            "dataType": "String"
+          },
+          {
+            "name": "City",
+            "dataType": "String"
+          },
+          {
+            "name": "Country",
+            "dataType": "String"
+          },
+          {
+            "name": "Region",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "DimTrainingCourses",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "CourseID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CourseName",
+            "dataType": "String"
+          },
+          {
+            "name": "Category",
+            "dataType": "String"
+          },
+          {
+            "name": "DurationHours",
+            "dataType": "Double"
+          },
+          {
+            "name": "CostPerPerson",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "DimLeaveTypes",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "LeaveTypeID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "LeaveTypeName",
+            "dataType": "String"
+          },
+          {
+            "name": "IsPaid",
+            "dataType": "Boolean"
+          },
+          {
+            "name": "MaxDaysPerYear",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "DimProjects",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "ProjectID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "ProjectName",
+            "dataType": "String"
+          },
+          {
+            "name": "DepartmentID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Budget",
+            "dataType": "Double"
+          },
+          {
+            "name": "StartDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Status",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactTrainingRecords",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "RecordID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "EmployeeID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "CourseID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "CompletionDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Score",
+            "dataType": "Double"
+          },
+          {
+            "name": "Status",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactLeaveRequests",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "LeaveID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "EmployeeID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "LeaveTypeID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "StartDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "EndDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "DaysTaken",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Status",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactTimesheet",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "TimesheetID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "EmployeeID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ProjectID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "WeekEndDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "RegularHours",
+            "dataType": "Double"
+          },
+          {
+            "name": "OvertimeHours",
+            "dataType": "Double"
+          },
+          {
+            "name": "BillableHours",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactExpenseClaims",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "ClaimID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "EmployeeID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ClaimDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Category",
+            "dataType": "String"
+          },
+          {
+            "name": "Amount",
+            "dataType": "Double"
+          },
+          {
+            "name": "Status",
+            "dataType": "String"
+          },
+          {
+            "name": "CostCenterID",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "FactCashFlow",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "CashFlowID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "FlowDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Category",
+            "dataType": "String"
+          },
+          {
+            "name": "Inflow",
+            "dataType": "Double"
+          },
+          {
+            "name": "Outflow",
+            "dataType": "Double"
+          },
+          {
+            "name": "AccountID",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "FactFixedAssets",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "AssetID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "AssetName",
+            "dataType": "String"
+          },
+          {
+            "name": "AcquisitionDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "OriginalCost",
+            "dataType": "Double"
+          },
+          {
+            "name": "AccumulatedDepreciation",
+            "dataType": "Double"
+          },
+          {
+            "name": "BookValue",
+            "dataType": "Double"
+          },
+          {
+            "name": "DepartmentID",
+            "dataType": "Int64"
+          }
+        ]
       }
     ],
     "relationships": [
@@ -794,6 +1104,201 @@
         "toTable": "DimKPIs",
         "toColumn": "KPIID",
         "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactTrainingRecords",
+        "fromColumn": "EmployeeID",
+        "toTable": "DimEmployees",
+        "toColumn": "EmployeeID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactTrainingRecords",
+        "fromColumn": "CourseID",
+        "toTable": "DimTrainingCourses",
+        "toColumn": "CourseID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactLeaveRequests",
+        "fromColumn": "EmployeeID",
+        "toTable": "DimEmployees",
+        "toColumn": "EmployeeID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactLeaveRequests",
+        "fromColumn": "LeaveTypeID",
+        "toTable": "DimLeaveTypes",
+        "toColumn": "LeaveTypeID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactTimesheet",
+        "fromColumn": "EmployeeID",
+        "toTable": "DimEmployees",
+        "toColumn": "EmployeeID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactTimesheet",
+        "fromColumn": "ProjectID",
+        "toTable": "DimProjects",
+        "toColumn": "ProjectID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactExpenseClaims",
+        "fromColumn": "EmployeeID",
+        "toTable": "DimEmployees",
+        "toColumn": "EmployeeID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactExpenseClaims",
+        "fromColumn": "CostCenterID",
+        "toTable": "DimCostCenters",
+        "toColumn": "CostCenterID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactCashFlow",
+        "fromColumn": "AccountID",
+        "toTable": "DimAccounts",
+        "toColumn": "AccountID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactFixedAssets",
+        "fromColumn": "DepartmentID",
+        "toTable": "DimDepartments",
+        "toColumn": "DepartmentID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "DimProjects",
+        "fromColumn": "DepartmentID",
+        "toTable": "DimDepartments",
+        "toColumn": "DepartmentID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactRecruitment",
+        "fromColumn": "OpenDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactPerformanceReviews",
+        "fromColumn": "ReviewDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactAttrition",
+        "fromColumn": "TerminationDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactPayroll",
+        "fromColumn": "PayPeriodDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactBenefits",
+        "fromColumn": "EffectiveDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactJournalEntries",
+        "fromColumn": "EntryDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactAccountsPayable",
+        "fromColumn": "InvoiceDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactAccountsReceivable",
+        "fromColumn": "InvoiceDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactTrainingRecords",
+        "fromColumn": "CompletionDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactLeaveRequests",
+        "fromColumn": "StartDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactTimesheet",
+        "fromColumn": "WeekEndDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactExpenseClaims",
+        "fromColumn": "ClaimDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactCashFlow",
+        "fromColumn": "FlowDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactFixedAssets",
+        "fromColumn": "AcquisitionDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
       }
     ],
     "measures": [
@@ -964,6 +1469,748 @@
         "expression": "CALCULATE(COUNTROWS(FactKPIResults), FactKPIResults[ActualValue] >= FactKPIResults[TargetValue])",
         "formatString": "#,0",
         "displayFolder": "Performance"
+      },
+      {
+        "name": "Attrition Rate %",
+        "table": "FactAttrition",
+        "expression": "DIVIDE([Attrition Count], [Headcount])",
+        "formatString": "0.0%",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Avg Tenure Years",
+        "table": "DimEmployees",
+        "expression": "AVERAGEX(FILTER(DimEmployees, DimEmployees[EmploymentStatus] = \"Active\"), DATEDIFF(DimEmployees[HireDate], TODAY(), YEAR))",
+        "formatString": "0.0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Goals Met %",
+        "table": "FactPerformanceReviews",
+        "expression": "AVERAGE(FactPerformanceReviews[GoalsMetPct])",
+        "formatString": "0.0%",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Manager Rating Avg",
+        "table": "FactPerformanceReviews",
+        "expression": "AVERAGE(FactPerformanceReviews[ManagerRating])",
+        "formatString": "0.00",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "High Performers",
+        "table": "FactPerformanceReviews",
+        "expression": "CALCULATE(COUNTROWS(FactPerformanceReviews), FactPerformanceReviews[OverallRating] >= 4)",
+        "formatString": "#,0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Low Performers",
+        "table": "FactPerformanceReviews",
+        "expression": "CALCULATE(COUNTROWS(FactPerformanceReviews), FactPerformanceReviews[OverallRating] <= 2)",
+        "formatString": "#,0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Applicant to Hire Ratio",
+        "table": "FactRecruitment",
+        "expression": "DIVIDE(SUM(FactRecruitment[Applicants]), SUM(FactRecruitment[Hired]))",
+        "formatString": "0.0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Open Requisitions",
+        "table": "FactRecruitment",
+        "expression": "CALCULATE(COUNTROWS(FactRecruitment), ISBLANK(FactRecruitment[CloseDate]))",
+        "formatString": "#,0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Headcount YoY Change",
+        "table": "DimEmployees",
+        "expression": "VAR _CY = [Headcount] VAR _PY = CALCULATE([Headcount], DATEADD(DimDate[Date], -1, YEAR)) RETURN _CY - _PY",
+        "formatString": "#,0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Revenue per Employee",
+        "table": "FactJournalEntries",
+        "expression": "DIVIDE(SUM(FactJournalEntries[CreditAmount]), [Headcount])",
+        "formatString": "$#,0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Cost per Employee",
+        "table": "FactPayroll",
+        "expression": "DIVIDE([Total Gross Pay], DISTINCTCOUNT(FactPayroll[EmployeeID]))",
+        "formatString": "$#,0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Voluntary Turnover Count",
+        "table": "FactAttrition",
+        "expression": "CALCULATE(COUNTROWS(FactAttrition), FactAttrition[IsVoluntary] = TRUE())",
+        "formatString": "#,0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Involuntary Turnover Count",
+        "table": "FactAttrition",
+        "expression": "CALCULATE(COUNTROWS(FactAttrition), FactAttrition[IsVoluntary] = FALSE())",
+        "formatString": "#,0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Avg Attrition Tenure",
+        "table": "FactAttrition",
+        "expression": "AVERAGE(FactAttrition[TenureYears])",
+        "formatString": "0.0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Diversity Index",
+        "table": "DimEmployees",
+        "expression": "DISTINCTCOUNT(DimEmployees[Location])",
+        "formatString": "#,0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Overtime Cost",
+        "table": "FactPayroll",
+        "expression": "SUMX(FactPayroll, FactPayroll[OvertimeHours] * DIVIDE(FactPayroll[GrossPay], FactPayroll[Hours]) * 1.5)",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Overtime %",
+        "table": "FactPayroll",
+        "expression": "DIVIDE(SUM(FactPayroll[OvertimeHours]), SUM(FactPayroll[Hours]))",
+        "formatString": "0.0%",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Payroll YoY Growth",
+        "table": "FactPayroll",
+        "expression": "VAR _CY = [Total Gross Pay] VAR _PY = CALCULATE([Total Gross Pay], DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)",
+        "formatString": "0.0%",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Payroll Running Total",
+        "table": "FactPayroll",
+        "expression": "CALCULATE([Total Gross Pay], DATESYTD(DimDate[Date]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Benefits per Employee",
+        "table": "FactBenefits",
+        "expression": "DIVIDE([Total Benefits Cost], DISTINCTCOUNT(FactBenefits[EmployeeID]))",
+        "formatString": "$#,0",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Employer Benefits Cost",
+        "table": "FactBenefits",
+        "expression": "SUM(FactBenefits[EmployerCost])",
+        "formatString": "$#,0",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Employee Benefits Cost",
+        "table": "FactBenefits",
+        "expression": "SUM(FactBenefits[EmployeeCost])",
+        "formatString": "$#,0",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Benefits Participation %",
+        "table": "FactBenefits",
+        "expression": "DIVIDE(DISTINCTCOUNT(FactBenefits[EmployeeID]), [Headcount])",
+        "formatString": "0.0%",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Avg Hours per Period",
+        "table": "FactPayroll",
+        "expression": "AVERAGE(FactPayroll[Hours])",
+        "formatString": "0.0",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Total Hours Worked",
+        "table": "FactPayroll",
+        "expression": "SUM(FactPayroll[Hours])",
+        "formatString": "#,0",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Deduction per Employee",
+        "table": "FactPayroll",
+        "expression": "DIVIDE([Total Deductions], DISTINCTCOUNT(FactPayroll[EmployeeID]))",
+        "formatString": "$#,0",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Payroll as % of Revenue",
+        "table": "FactPayroll",
+        "expression": "DIVIDE([Total Gross Pay], SUM(FactJournalEntries[CreditAmount]))",
+        "formatString": "0.0%",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Total Revenue (GL)",
+        "table": "FactJournalEntries",
+        "expression": "SUM(FactJournalEntries[CreditAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Total Expenses (GL)",
+        "table": "FactJournalEntries",
+        "expression": "SUM(FactJournalEntries[DebitAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Net Journal Balance",
+        "table": "FactJournalEntries",
+        "expression": "SUM(FactJournalEntries[CreditAmount]) - SUM(FactJournalEntries[DebitAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "AP Aging 30",
+        "table": "FactAccountsPayable",
+        "expression": "CALCULATE(SUM(FactAccountsPayable[Amount]) - SUM(FactAccountsPayable[PaidAmount]), FactAccountsPayable[Status] <> \"Paid\")",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "AP Payment Rate",
+        "table": "FactAccountsPayable",
+        "expression": "DIVIDE(SUM(FactAccountsPayable[PaidAmount]), SUM(FactAccountsPayable[Amount]))",
+        "formatString": "0.0%",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "AR Aging 30",
+        "table": "FactAccountsReceivable",
+        "expression": "CALCULATE(SUM(FactAccountsReceivable[Amount]) - SUM(FactAccountsReceivable[CollectedAmount]), FactAccountsReceivable[AgingBucket] = \"30-60\")",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "AR Aging 60",
+        "table": "FactAccountsReceivable",
+        "expression": "CALCULATE(SUM(FactAccountsReceivable[Amount]) - SUM(FactAccountsReceivable[CollectedAmount]), FactAccountsReceivable[AgingBucket] = \"60-90\")",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "AR Aging 90+",
+        "table": "FactAccountsReceivable",
+        "expression": "CALCULATE(SUM(FactAccountsReceivable[Amount]) - SUM(FactAccountsReceivable[CollectedAmount]), FactAccountsReceivable[AgingBucket] = \"90+\")",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "DSO (Days Sales Outstanding)",
+        "table": "FactAccountsReceivable",
+        "expression": "DIVIDE([AR Outstanding], SUM(FactJournalEntries[CreditAmount])) * 365",
+        "formatString": "0.0",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "DPO (Days Payable Outstanding)",
+        "table": "FactAccountsPayable",
+        "expression": "DIVIDE([AP Outstanding], SUM(FactJournalEntries[DebitAmount])) * 365",
+        "formatString": "0.0",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Net Cash Position",
+        "table": "FactCashFlow",
+        "expression": "SUM(FactCashFlow[Inflow]) - SUM(FactCashFlow[Outflow])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Total Cash Inflow",
+        "table": "FactCashFlow",
+        "expression": "SUM(FactCashFlow[Inflow])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Total Cash Outflow",
+        "table": "FactCashFlow",
+        "expression": "SUM(FactCashFlow[Outflow])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Cash Burn Rate",
+        "table": "FactCashFlow",
+        "expression": "DIVIDE(SUM(FactCashFlow[Outflow]), DISTINCTCOUNT(DimDate[Month]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Revenue Running Total",
+        "table": "FactJournalEntries",
+        "expression": "CALCULATE(SUM(FactJournalEntries[CreditAmount]), DATESYTD(DimDate[Date]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Total Fixed Assets Value",
+        "table": "FactFixedAssets",
+        "expression": "SUM(FactFixedAssets[BookValue])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Total Depreciation",
+        "table": "FactFixedAssets",
+        "expression": "SUM(FactFixedAssets[AccumulatedDepreciation])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Original Asset Cost",
+        "table": "FactFixedAssets",
+        "expression": "SUM(FactFixedAssets[OriginalCost])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Budget by Department",
+        "table": "FactBudget",
+        "expression": "SUM(FactBudget[BudgetAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Budgeting"
+      },
+      {
+        "name": "Actual by Department",
+        "table": "FactBudget",
+        "expression": "SUM(FactBudget[ActualAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Budgeting"
+      },
+      {
+        "name": "Favorable Variance Count",
+        "table": "FactBudget",
+        "expression": "CALCULATE(COUNTROWS(FactBudget), FactBudget[Variance] > 0)",
+        "formatString": "#,0",
+        "displayFolder": "Budgeting"
+      },
+      {
+        "name": "Unfavorable Variance Count",
+        "table": "FactBudget",
+        "expression": "CALCULATE(COUNTROWS(FactBudget), FactBudget[Variance] < 0)",
+        "formatString": "#,0",
+        "displayFolder": "Budgeting"
+      },
+      {
+        "name": "Budget Variance YTD",
+        "table": "FactBudget",
+        "expression": "CALCULATE([Budget Variance], DATESYTD(DimDate[Date]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Budgeting"
+      },
+      {
+        "name": "Budget Forecast Accuracy",
+        "table": "FactBudget",
+        "expression": "1 - ABS(DIVIDE([Budget Variance], [Budget Amount]))",
+        "formatString": "0.0%",
+        "displayFolder": "Budgeting"
+      },
+      {
+        "name": "Training Completion Rate",
+        "table": "FactTrainingRecords",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactTrainingRecords), FactTrainingRecords[Status] = \"Completed\"), COUNTROWS(FactTrainingRecords))",
+        "formatString": "0.0%",
+        "displayFolder": "Training"
+      },
+      {
+        "name": "Avg Training Score",
+        "table": "FactTrainingRecords",
+        "expression": "AVERAGE(FactTrainingRecords[Score])",
+        "formatString": "0.00",
+        "displayFolder": "Training"
+      },
+      {
+        "name": "Total Training Cost",
+        "table": "FactTrainingRecords",
+        "expression": "COUNTROWS(FactTrainingRecords) * AVERAGE(DimTrainingCourses[CostPerPerson])",
+        "formatString": "$#,0",
+        "displayFolder": "Training"
+      },
+      {
+        "name": "Training Hours per Employee",
+        "table": "FactTrainingRecords",
+        "expression": "DIVIDE(SUMX(FactTrainingRecords, RELATED(DimTrainingCourses[DurationHours])), [Headcount])",
+        "formatString": "0.0",
+        "displayFolder": "Training"
+      },
+      {
+        "name": "Courses Completed",
+        "table": "FactTrainingRecords",
+        "expression": "CALCULATE(COUNTROWS(FactTrainingRecords), FactTrainingRecords[Status] = \"Completed\")",
+        "formatString": "#,0",
+        "displayFolder": "Training"
+      },
+      {
+        "name": "Total Leave Days",
+        "table": "FactLeaveRequests",
+        "expression": "SUM(FactLeaveRequests[DaysTaken])",
+        "formatString": "#,0",
+        "displayFolder": "Training"
+      },
+      {
+        "name": "Avg Leave Days per Employee",
+        "table": "FactLeaveRequests",
+        "expression": "DIVIDE(SUM(FactLeaveRequests[DaysTaken]), DISTINCTCOUNT(FactLeaveRequests[EmployeeID]))",
+        "formatString": "0.0",
+        "displayFolder": "Training"
+      },
+      {
+        "name": "Leave Approval Rate",
+        "table": "FactLeaveRequests",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactLeaveRequests), FactLeaveRequests[Status] = \"Approved\"), COUNTROWS(FactLeaveRequests))",
+        "formatString": "0.0%",
+        "displayFolder": "Training"
+      },
+      {
+        "name": "Pending Leave Requests",
+        "table": "FactLeaveRequests",
+        "expression": "CALCULATE(COUNTROWS(FactLeaveRequests), FactLeaveRequests[Status] = \"Pending\")",
+        "formatString": "#,0",
+        "displayFolder": "Training"
+      },
+      {
+        "name": "Sick Leave Days",
+        "table": "FactLeaveRequests",
+        "expression": "CALCULATE(SUM(FactLeaveRequests[DaysTaken]), DimLeaveTypes[LeaveTypeName] = \"Sick Leave\")",
+        "formatString": "#,0",
+        "displayFolder": "Training"
+      },
+      {
+        "name": "Total Regular Hours",
+        "table": "FactTimesheet",
+        "expression": "SUM(FactTimesheet[RegularHours])",
+        "formatString": "#,0",
+        "displayFolder": "Timesheet"
+      },
+      {
+        "name": "Total OT Hours",
+        "table": "FactTimesheet",
+        "expression": "SUM(FactTimesheet[OvertimeHours])",
+        "formatString": "#,0",
+        "displayFolder": "Timesheet"
+      },
+      {
+        "name": "Billable Hours",
+        "table": "FactTimesheet",
+        "expression": "SUM(FactTimesheet[BillableHours])",
+        "formatString": "#,0",
+        "displayFolder": "Timesheet"
+      },
+      {
+        "name": "Billable Utilization %",
+        "table": "FactTimesheet",
+        "expression": "DIVIDE(SUM(FactTimesheet[BillableHours]), SUM(FactTimesheet[RegularHours]) + SUM(FactTimesheet[OvertimeHours]))",
+        "formatString": "0.0%",
+        "displayFolder": "Timesheet"
+      },
+      {
+        "name": "Avg Weekly Hours",
+        "table": "FactTimesheet",
+        "expression": "AVERAGEX(VALUES(FactTimesheet[WeekEndDate]), CALCULATE(SUM(FactTimesheet[RegularHours])))",
+        "formatString": "0.0",
+        "displayFolder": "Timesheet"
+      },
+      {
+        "name": "Total Expense Claims",
+        "table": "FactExpenseClaims",
+        "expression": "SUM(FactExpenseClaims[Amount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Timesheet"
+      },
+      {
+        "name": "Avg Expense per Claim",
+        "table": "FactExpenseClaims",
+        "expression": "AVERAGE(FactExpenseClaims[Amount])",
+        "formatString": "$#,0.00",
+        "displayFolder": "Timesheet"
+      },
+      {
+        "name": "Pending Expense Claims",
+        "table": "FactExpenseClaims",
+        "expression": "CALCULATE(SUM(FactExpenseClaims[Amount]), FactExpenseClaims[Status] = \"Pending\")",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Timesheet"
+      },
+      {
+        "name": "Travel Expenses",
+        "table": "FactExpenseClaims",
+        "expression": "CALCULATE(SUM(FactExpenseClaims[Amount]), FactExpenseClaims[Category] = \"Travel\")",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Timesheet"
+      },
+      {
+        "name": "Expense Claims Count",
+        "table": "FactExpenseClaims",
+        "expression": "COUNTROWS(FactExpenseClaims)",
+        "formatString": "#,0",
+        "displayFolder": "Timesheet"
+      },
+      {
+        "name": "KPIs Below Target",
+        "table": "FactKPIResults",
+        "expression": "CALCULATE(COUNTROWS(FactKPIResults), FactKPIResults[ActualValue] < FactKPIResults[TargetValue])",
+        "formatString": "#,0",
+        "displayFolder": "Performance"
+      },
+      {
+        "name": "KPI Achievement Rate",
+        "table": "FactKPIResults",
+        "expression": "DIVIDE([KPIs On Target], COUNTROWS(FactKPIResults))",
+        "formatString": "0.0%",
+        "displayFolder": "Performance"
+      },
+      {
+        "name": "Avg Target Value",
+        "table": "FactKPIResults",
+        "expression": "AVERAGE(FactKPIResults[TargetValue])",
+        "formatString": "#,0.00",
+        "displayFolder": "Performance"
+      },
+      {
+        "name": "Avg Actual Value",
+        "table": "FactKPIResults",
+        "expression": "AVERAGE(FactKPIResults[ActualValue])",
+        "formatString": "#,0.00",
+        "displayFolder": "Performance"
+      },
+      {
+        "name": "KPI Variance",
+        "table": "FactKPIResults",
+        "expression": "AVERAGE(FactKPIResults[ActualValue]) - AVERAGE(FactKPIResults[TargetValue])",
+        "formatString": "#,0.00",
+        "displayFolder": "Performance"
+      },
+      {
+        "name": "KPI Score Trend",
+        "table": "FactKPIResults",
+        "expression": "VAR _CM = AVERAGE(FactKPIResults[Score]) VAR _PM = CALCULATE(AVERAGE(FactKPIResults[Score]), DATEADD(DimDate[Date], -1, MONTH)) RETURN _CM - _PM",
+        "formatString": "0.00",
+        "displayFolder": "Performance"
+      },
+      {
+        "name": "Revenue YTD",
+        "table": "FactJournalEntries",
+        "expression": "CALCULATE(SUM(FactJournalEntries[CreditAmount]), DATESYTD(DimDate[Date]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Expenses YTD",
+        "table": "FactJournalEntries",
+        "expression": "CALCULATE(SUM(FactJournalEntries[DebitAmount]), DATESYTD(DimDate[Date]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Payroll YTD",
+        "table": "FactPayroll",
+        "expression": "CALCULATE([Total Gross Pay], DATESYTD(DimDate[Date]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Budget YTD",
+        "table": "FactBudget",
+        "expression": "CALCULATE([Budget Amount], DATESYTD(DimDate[Date]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Revenue Prev Year",
+        "table": "FactJournalEntries",
+        "expression": "CALCULATE(SUM(FactJournalEntries[CreditAmount]), DATEADD(DimDate[Date], -1, YEAR))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Revenue MoM Change",
+        "table": "FactJournalEntries",
+        "expression": "SUM(FactJournalEntries[CreditAmount]) - CALCULATE(SUM(FactJournalEntries[CreditAmount]), DATEADD(DimDate[Date], -1, MONTH))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Payroll Prev Month",
+        "table": "FactPayroll",
+        "expression": "CALCULATE([Total Gross Pay], DATEADD(DimDate[Date], -1, MONTH))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "AP Outstanding YTD",
+        "table": "FactAccountsPayable",
+        "expression": "CALCULATE([AP Outstanding], DATESYTD(DimDate[Date]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "AR Outstanding YTD",
+        "table": "FactAccountsReceivable",
+        "expression": "CALCULATE([AR Outstanding], DATESYTD(DimDate[Date]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Cash Flow YTD",
+        "table": "FactCashFlow",
+        "expression": "CALCULATE([Net Cash Position], DATESYTD(DimDate[Date]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Engagement Score",
+        "table": "FactPerformanceReviews",
+        "expression": "AVERAGEX(FactPerformanceReviews, FactPerformanceReviews[OverallRating] * 20)",
+        "formatString": "0.0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Span of Control",
+        "table": "DimEmployees",
+        "expression": "DIVIDE(COUNTROWS(DimEmployees), DISTINCTCOUNT(DimEmployees[ManagerID]))",
+        "formatString": "0.0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Compensation Ratio",
+        "table": "FactPayroll",
+        "expression": "DIVIDE([Avg Salary], AVERAGE(DimJobTitles[MarketMedian]))",
+        "formatString": "0.00",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Internal Promotion Rate",
+        "table": "DimEmployees",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(DimEmployees), NOT ISBLANK(DimEmployees[PromotionDate])), COUNTROWS(DimEmployees))",
+        "formatString": "0.0%",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Onboarding Time Days",
+        "table": "FactRecruitment",
+        "expression": "AVERAGE(FactRecruitment[DaysToFill])",
+        "formatString": "0.0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Total Applicants",
+        "table": "FactRecruitment",
+        "expression": "SUM(FactRecruitment[Applicants])",
+        "formatString": "#,0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Offer Acceptance Rate",
+        "table": "FactRecruitment",
+        "expression": "DIVIDE(SUM(FactRecruitment[Hired]), SUM(FactRecruitment[Offers]))",
+        "formatString": "0.0%",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Exit Interview Score",
+        "table": "FactAttrition",
+        "expression": "AVERAGE(FactAttrition[ExitInterviewScore])",
+        "formatString": "0.00",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Regrettable Attrition",
+        "table": "FactAttrition",
+        "expression": "CALCULATE(COUNTROWS(FactAttrition), FactAttrition[PerformanceAtExit] >= 3 && FactAttrition[IsVoluntary] = TRUE())",
+        "formatString": "#,0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Retention Rate %",
+        "table": "DimEmployees",
+        "expression": "1 - DIVIDE([Attrition Count], [Headcount])",
+        "formatString": "0.0%",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Current Ratio",
+        "table": "FactJournalEntries",
+        "expression": "DIVIDE(CALCULATE(SUM(FactJournalEntries[DebitAmount]), DimAccounts[AccountType] = \"Current Asset\"), CALCULATE(SUM(FactJournalEntries[CreditAmount]), DimAccounts[AccountType] = \"Current Liability\"))",
+        "formatString": "0.00",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Quick Ratio",
+        "table": "FactJournalEntries",
+        "expression": "DIVIDE(CALCULATE(SUM(FactJournalEntries[DebitAmount]), DimAccounts[AccountType] = \"Cash\" || DimAccounts[AccountType] = \"Current Asset\"), CALCULATE(SUM(FactJournalEntries[CreditAmount]), DimAccounts[AccountType] = \"Current Liability\"))",
+        "formatString": "0.00",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Debt to Equity Ratio",
+        "table": "FactJournalEntries",
+        "expression": "DIVIDE(CALCULATE(SUM(FactJournalEntries[CreditAmount]), DimAccounts[AccountType] = \"Long Term Liability\"), CALCULATE(SUM(FactJournalEntries[CreditAmount]), DimAccounts[AccountType] = \"Equity\"))",
+        "formatString": "0.00",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Total AP Amount",
+        "table": "FactAccountsPayable",
+        "expression": "SUM(FactAccountsPayable[Amount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Total AR Amount",
+        "table": "FactAccountsReceivable",
+        "expression": "SUM(FactAccountsReceivable[Amount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "AR Collection Rate",
+        "table": "FactAccountsReceivable",
+        "expression": "DIVIDE(SUM(FactAccountsReceivable[CollectedAmount]), SUM(FactAccountsReceivable[Amount]))",
+        "formatString": "0.0%",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Journal Entries Count",
+        "table": "FactJournalEntries",
+        "expression": "COUNTROWS(FactJournalEntries)",
+        "formatString": "#,0",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Unique Vendors",
+        "table": "FactAccountsPayable",
+        "expression": "DISTINCTCOUNT(FactAccountsPayable[VendorID])",
+        "formatString": "#,0",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Unique Customers (AR)",
+        "table": "FactAccountsReceivable",
+        "expression": "DISTINCTCOUNT(FactAccountsReceivable[CustomerID])",
+        "formatString": "#,0",
+        "displayFolder": "Finance"
       }
     ]
   }

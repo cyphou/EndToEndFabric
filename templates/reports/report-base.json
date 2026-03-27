@@ -1,0 +1,21 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/4.0.0/schema.json",
+  "_comment": "Base report template — tokens resolved at generation time.",
+  "id": "{{REPORT_ID}}",
+  "name": "{{REPORT_NAME}}",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "{{COMPANY}}Theme",
+      "reportVersionAtImport": "5.56",
+      "type": "SharedResources"
+    }
+  },
+  "pageCollection": {
+    "pages": []
+  },
+  "defaultDrillFilterOtherVisuals": true,
+  "linguisticMetadata": {
+    "version": "1.0.0",
+    "language": "en-US"
+  }
+}

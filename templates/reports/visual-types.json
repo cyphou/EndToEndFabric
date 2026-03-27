@@ -1,0 +1,71 @@
+{
+  "_comment": "Visual type templates — reusable visual configs for PBIR generation.",
+  "visualTypes": {
+    "card": {
+      "type": "card",
+      "defaultSize": {"width": 200, "height": 120},
+      "config": {
+        "singleVisualStyleIdentifier": "card",
+        "objects": {
+          "labels": [{"properties": {"fontSize": {"expr": {"literal": {"value": "20D"}}}}}]
+        }
+      }
+    },
+    "lineChart": {
+      "type": "lineChart",
+      "defaultSize": {"width": 600, "height": 350}
+    },
+    "clusteredBarChart": {
+      "type": "clusteredBarChart",
+      "defaultSize": {"width": 600, "height": 350}
+    },
+    "donutChart": {
+      "type": "donutChart",
+      "defaultSize": {"width": 400, "height": 350}
+    },
+    "pieChart": {
+      "type": "pieChart",
+      "defaultSize": {"width": 400, "height": 350}
+    },
+    "areaChart": {
+      "type": "areaChart",
+      "defaultSize": {"width": 600, "height": 350}
+    },
+    "table": {
+      "type": "tableEx",
+      "defaultSize": {"width": 800, "height": 400}
+    },
+    "matrix": {
+      "type": "pivotTable",
+      "defaultSize": {"width": 800, "height": 400}
+    },
+    "treemap": {
+      "type": "treemap",
+      "defaultSize": {"width": 500, "height": 350}
+    },
+    "waterfallChart": {
+      "type": "waterfallChart",
+      "defaultSize": {"width": 600, "height": 350}
+    },
+    "gauge": {
+      "type": "gauge",
+      "defaultSize": {"width": 300, "height": 250}
+    },
+    "kpi": {
+      "type": "multiRowCard",
+      "defaultSize": {"width": 400, "height": 200}
+    },
+    "map": {
+      "type": "map",
+      "defaultSize": {"width": 600, "height": 400}
+    },
+    "scatterChart": {
+      "type": "scatterChart",
+      "defaultSize": {"width": 600, "height": 400}
+    },
+    "textbox": {
+      "type": "textbox",
+      "defaultSize": {"width": 400, "height": 60}
+    }
+  }
+}

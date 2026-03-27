@@ -23,6 +23,7 @@ CONFIG_FILES = {
     "planning":       "planning-config.json",
     "htap":           "htap-config.json",
     "reports":        "reports.json",
+    "writeback":      "writeback-config.json",
     "data_agent":     "data-agent.json",
     "web_enrichment": "web-enrichment.json",
 }

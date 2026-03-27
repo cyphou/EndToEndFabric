@@ -1,0 +1,84 @@
+{
+  "writebackConfig": {
+    "enabled": true,
+    "targetLakehouse": "GoldLH",
+    "schema": "writeback",
+    "tables": [
+      {
+        "name": "HeadcountPlan",
+        "description": "Headcount planning targets by department and role",
+        "columns": [
+          {"name": "PlanId", "dataType": "STRING", "isKey": true},
+          {"name": "FiscalYear", "dataType": "INT"},
+          {"name": "FiscalQuarter", "dataType": "INT"},
+          {"name": "Department", "dataType": "STRING"},
+          {"name": "RoleCategory", "dataType": "STRING"},
+          {"name": "PlannedHeadcount", "dataType": "INT"},
+          {"name": "PlannedCostPerFTE", "dataType": "DECIMAL(18,2)"},
+          {"name": "Notes", "dataType": "STRING"},
+          {"name": "ModifiedBy", "dataType": "STRING"},
+          {"name": "ModifiedDate", "dataType": "TIMESTAMP"}
+        ],
+        "partitionBy": ["FiscalYear"]
+      },
+      {
+        "name": "BudgetLineItems",
+        "description": "GL budget line items editable by finance controllers",
+        "columns": [
+          {"name": "LineItemId", "dataType": "STRING", "isKey": true},
+          {"name": "FiscalYear", "dataType": "INT"},
+          {"name": "FiscalPeriod", "dataType": "INT"},
+          {"name": "CostCenter", "dataType": "STRING"},
+          {"name": "GLAccount", "dataType": "STRING"},
+          {"name": "BudgetAmount", "dataType": "DECIMAL(18,2)"},
+          {"name": "RevisedAmount", "dataType": "DECIMAL(18,2)"},
+          {"name": "Variance", "dataType": "DECIMAL(18,2)"},
+          {"name": "Justification", "dataType": "STRING"},
+          {"name": "Status", "dataType": "STRING", "default": "Draft"},
+          {"name": "ModifiedBy", "dataType": "STRING"},
+          {"name": "ModifiedDate", "dataType": "TIMESTAMP"}
+        ],
+        "partitionBy": ["FiscalYear"]
+      },
+      {
+        "name": "CompensationReview",
+        "description": "Salary review and adjustment proposals",
+        "columns": [
+          {"name": "ReviewId", "dataType": "STRING", "isKey": true},
+          {"name": "EmployeeId", "dataType": "STRING"},
+          {"name": "ReviewCycle", "dataType": "STRING"},
+          {"name": "CurrentSalary", "dataType": "DECIMAL(18,2)"},
+          {"name": "ProposedSalary", "dataType": "DECIMAL(18,2)"},
+          {"name": "AdjustmentPct", "dataType": "DECIMAL(5,2)"},
+          {"name": "PerformanceRating", "dataType": "STRING"},
+          {"name": "Status", "dataType": "STRING", "default": "Pending"},
+          {"name": "SubmittedBy", "dataType": "STRING"},
+          {"name": "SubmittedDate", "dataType": "TIMESTAMP"},
+          {"name": "ApprovedBy", "dataType": "STRING"},
+          {"name": "ApprovedDate", "dataType": "TIMESTAMP"}
+        ],
+        "partitionBy": ["ReviewCycle"]
+      }
+    ],
+    "storedProcedures": [
+      {
+        "name": "usp_UpsertHeadcountPlan",
+        "table": "HeadcountPlan",
+        "operation": "upsert",
+        "keyColumns": ["PlanId"]
+      },
+      {
+        "name": "usp_UpsertBudgetLineItem",
+        "table": "BudgetLineItems",
+        "operation": "upsert",
+        "keyColumns": ["LineItemId"]
+      },
+      {
+        "name": "usp_UpsertCompensationReview",
+        "table": "CompensationReview",
+        "operation": "upsert",
+        "keyColumns": ["ReviewId"]
+      }
+    ]
+  }
+}

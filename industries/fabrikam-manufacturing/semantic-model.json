@@ -5,357 +5,2212 @@
     "defaultSchema": "gold",
     "tables": [
       {
-        "name": "DimDate", "schema": "dim",
+        "name": "DimDate",
+        "schema": "dim",
         "columns": [
-          {"name": "DateKey", "dataType": "Int64", "isKey": true},
-          {"name": "Date", "dataType": "DateTime"},
-          {"name": "Year", "dataType": "Int64"},
-          {"name": "Month", "dataType": "Int64"},
-          {"name": "Quarter", "dataType": "Int64"},
-          {"name": "MonthName", "dataType": "String"},
-          {"name": "FiscalYear", "dataType": "Int64"},
-          {"name": "FiscalQuarter", "dataType": "Int64"}
+          {
+            "name": "DateKey",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "Date",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Year",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Month",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Quarter",
+            "dataType": "Int64"
+          },
+          {
+            "name": "MonthName",
+            "dataType": "String"
+          },
+          {
+            "name": "FiscalYear",
+            "dataType": "Int64"
+          },
+          {
+            "name": "FiscalQuarter",
+            "dataType": "Int64"
+          }
         ]
       },
       {
-        "name": "DimProducts", "schema": "dim",
+        "name": "DimProducts",
+        "schema": "dim",
         "columns": [
-          {"name": "ProductID", "dataType": "Int64", "isKey": true},
-          {"name": "ProductName", "dataType": "String"},
-          {"name": "ProductCategory", "dataType": "String"},
-          {"name": "SKU", "dataType": "String"},
-          {"name": "UnitCost", "dataType": "Double"},
-          {"name": "UnitPrice", "dataType": "Double"},
-          {"name": "WeightKg", "dataType": "Double"}
+          {
+            "name": "ProductID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "ProductName",
+            "dataType": "String"
+          },
+          {
+            "name": "ProductCategory",
+            "dataType": "String"
+          },
+          {
+            "name": "SKU",
+            "dataType": "String"
+          },
+          {
+            "name": "UnitCost",
+            "dataType": "Double"
+          },
+          {
+            "name": "UnitPrice",
+            "dataType": "Double"
+          },
+          {
+            "name": "WeightKg",
+            "dataType": "Double"
+          }
         ]
       },
       {
-        "name": "DimPlants", "schema": "dim",
+        "name": "DimPlants",
+        "schema": "dim",
         "columns": [
-          {"name": "PlantID", "dataType": "Int64", "isKey": true},
-          {"name": "PlantName", "dataType": "String"},
-          {"name": "Country", "dataType": "String"},
-          {"name": "City", "dataType": "String"},
-          {"name": "CapacityUnitsPerDay", "dataType": "Int64"},
-          {"name": "ShiftCount", "dataType": "Int64"}
+          {
+            "name": "PlantID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "PlantName",
+            "dataType": "String"
+          },
+          {
+            "name": "Country",
+            "dataType": "String"
+          },
+          {
+            "name": "City",
+            "dataType": "String"
+          },
+          {
+            "name": "CapacityUnitsPerDay",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ShiftCount",
+            "dataType": "Int64"
+          }
         ]
       },
       {
-        "name": "DimProductionLines", "schema": "dim",
+        "name": "DimProductionLines",
+        "schema": "dim",
         "columns": [
-          {"name": "LineID", "dataType": "Int64", "isKey": true},
-          {"name": "LineName", "dataType": "String"},
-          {"name": "PlantID", "dataType": "Int64"},
-          {"name": "LineType", "dataType": "String"},
-          {"name": "MaxThroughputPerHour", "dataType": "Int64"}
+          {
+            "name": "LineID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "LineName",
+            "dataType": "String"
+          },
+          {
+            "name": "PlantID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "LineType",
+            "dataType": "String"
+          },
+          {
+            "name": "MaxThroughputPerHour",
+            "dataType": "Int64"
+          }
         ]
       },
       {
-        "name": "DimShifts", "schema": "dim",
+        "name": "DimShifts",
+        "schema": "dim",
         "columns": [
-          {"name": "ShiftID", "dataType": "Int64", "isKey": true},
-          {"name": "ShiftName", "dataType": "String"},
-          {"name": "StartHour", "dataType": "Int64"},
-          {"name": "EndHour", "dataType": "Int64"}
+          {
+            "name": "ShiftID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "ShiftName",
+            "dataType": "String"
+          },
+          {
+            "name": "StartHour",
+            "dataType": "Int64"
+          },
+          {
+            "name": "EndHour",
+            "dataType": "Int64"
+          }
         ]
       },
       {
-        "name": "DimInspectionPoints", "schema": "dim",
+        "name": "DimInspectionPoints",
+        "schema": "dim",
         "columns": [
-          {"name": "InspectionPointID", "dataType": "Int64", "isKey": true},
-          {"name": "PointName", "dataType": "String"},
-          {"name": "LineID", "dataType": "Int64"},
-          {"name": "InspectionType", "dataType": "String"},
-          {"name": "CriticalCharacteristic", "dataType": "Boolean"}
+          {
+            "name": "InspectionPointID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "PointName",
+            "dataType": "String"
+          },
+          {
+            "name": "LineID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "InspectionType",
+            "dataType": "String"
+          },
+          {
+            "name": "CriticalCharacteristic",
+            "dataType": "Boolean"
+          }
         ]
       },
       {
-        "name": "DimDefectTypes", "schema": "dim",
+        "name": "DimDefectTypes",
+        "schema": "dim",
         "columns": [
-          {"name": "DefectTypeID", "dataType": "Int64", "isKey": true},
-          {"name": "DefectName", "dataType": "String"},
-          {"name": "Severity", "dataType": "String"},
-          {"name": "Category", "dataType": "String"}
+          {
+            "name": "DefectTypeID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "DefectName",
+            "dataType": "String"
+          },
+          {
+            "name": "Severity",
+            "dataType": "String"
+          },
+          {
+            "name": "Category",
+            "dataType": "String"
+          }
         ]
       },
       {
-        "name": "DimSuppliers", "schema": "dim",
+        "name": "DimSuppliers",
+        "schema": "dim",
         "columns": [
-          {"name": "SupplierID", "dataType": "Int64", "isKey": true},
-          {"name": "SupplierName", "dataType": "String"},
-          {"name": "Country", "dataType": "String"},
-          {"name": "Category", "dataType": "String"},
-          {"name": "LeadTimeDays", "dataType": "Int64"},
-          {"name": "QualityRating", "dataType": "Double"}
+          {
+            "name": "SupplierID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "SupplierName",
+            "dataType": "String"
+          },
+          {
+            "name": "Country",
+            "dataType": "String"
+          },
+          {
+            "name": "Category",
+            "dataType": "String"
+          },
+          {
+            "name": "LeadTimeDays",
+            "dataType": "Int64"
+          },
+          {
+            "name": "QualityRating",
+            "dataType": "Double"
+          }
         ]
       },
       {
-        "name": "DimMaterials", "schema": "dim",
+        "name": "DimMaterials",
+        "schema": "dim",
         "columns": [
-          {"name": "MaterialID", "dataType": "Int64", "isKey": true},
-          {"name": "MaterialName", "dataType": "String"},
-          {"name": "MaterialType", "dataType": "String"},
-          {"name": "UnitOfMeasure", "dataType": "String"},
-          {"name": "UnitCost", "dataType": "Double"}
+          {
+            "name": "MaterialID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "MaterialName",
+            "dataType": "String"
+          },
+          {
+            "name": "MaterialType",
+            "dataType": "String"
+          },
+          {
+            "name": "UnitOfMeasure",
+            "dataType": "String"
+          },
+          {
+            "name": "UnitCost",
+            "dataType": "Double"
+          }
         ]
       },
       {
-        "name": "DimWarehouses", "schema": "dim",
+        "name": "DimWarehouses",
+        "schema": "dim",
         "columns": [
-          {"name": "WarehouseID", "dataType": "Int64", "isKey": true},
-          {"name": "WarehouseName", "dataType": "String"},
-          {"name": "PlantID", "dataType": "Int64"},
-          {"name": "WarehouseType", "dataType": "String"},
-          {"name": "CapacityPallets", "dataType": "Int64"}
+          {
+            "name": "WarehouseID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "WarehouseName",
+            "dataType": "String"
+          },
+          {
+            "name": "PlantID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "WarehouseType",
+            "dataType": "String"
+          },
+          {
+            "name": "CapacityPallets",
+            "dataType": "Int64"
+          }
         ]
       },
       {
-        "name": "DimEquipment", "schema": "dim",
+        "name": "DimEquipment",
+        "schema": "dim",
         "columns": [
-          {"name": "EquipmentID", "dataType": "Int64", "isKey": true},
-          {"name": "EquipmentName", "dataType": "String"},
-          {"name": "LineID", "dataType": "Int64"},
-          {"name": "EquipmentType", "dataType": "String"},
-          {"name": "Manufacturer", "dataType": "String"},
-          {"name": "InstallDate", "dataType": "DateTime"},
-          {"name": "CriticalityRating", "dataType": "String"}
+          {
+            "name": "EquipmentID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "EquipmentName",
+            "dataType": "String"
+          },
+          {
+            "name": "LineID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "EquipmentType",
+            "dataType": "String"
+          },
+          {
+            "name": "Manufacturer",
+            "dataType": "String"
+          },
+          {
+            "name": "InstallDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "CriticalityRating",
+            "dataType": "String"
+          }
         ]
       },
       {
-        "name": "DimMaintenanceTypes", "schema": "dim",
+        "name": "DimMaintenanceTypes",
+        "schema": "dim",
         "columns": [
-          {"name": "MaintenanceTypeID", "dataType": "Int64", "isKey": true},
-          {"name": "TypeName", "dataType": "String"},
-          {"name": "IsPlanned", "dataType": "Boolean"}
+          {
+            "name": "MaintenanceTypeID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "TypeName",
+            "dataType": "String"
+          },
+          {
+            "name": "IsPlanned",
+            "dataType": "Boolean"
+          }
         ]
       },
       {
-        "name": "DimHazards", "schema": "dim",
+        "name": "DimHazards",
+        "schema": "dim",
         "columns": [
-          {"name": "HazardID", "dataType": "Int64", "isKey": true},
-          {"name": "HazardName", "dataType": "String"},
-          {"name": "Category", "dataType": "String"},
-          {"name": "RiskLevel", "dataType": "String"}
+          {
+            "name": "HazardID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "HazardName",
+            "dataType": "String"
+          },
+          {
+            "name": "Category",
+            "dataType": "String"
+          },
+          {
+            "name": "RiskLevel",
+            "dataType": "String"
+          }
         ]
       },
       {
-        "name": "FactProductionOrders", "schema": "fact",
+        "name": "FactProductionOrders",
+        "schema": "fact",
         "columns": [
-          {"name": "OrderID", "dataType": "Int64", "isKey": true},
-          {"name": "ProductID", "dataType": "Int64"},
-          {"name": "LineID", "dataType": "Int64"},
-          {"name": "ShiftID", "dataType": "Int64"},
-          {"name": "OrderDate", "dataType": "DateTime"},
-          {"name": "QuantityOrdered", "dataType": "Int64"},
-          {"name": "QuantityProduced", "dataType": "Int64"},
-          {"name": "QuantityScrapped", "dataType": "Int64"},
-          {"name": "CycleTimeMinutes", "dataType": "Double"},
-          {"name": "Status", "dataType": "String"}
+          {
+            "name": "OrderID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "ProductID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "LineID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ShiftID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "OrderDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "QuantityOrdered",
+            "dataType": "Int64"
+          },
+          {
+            "name": "QuantityProduced",
+            "dataType": "Int64"
+          },
+          {
+            "name": "QuantityScrapped",
+            "dataType": "Int64"
+          },
+          {
+            "name": "CycleTimeMinutes",
+            "dataType": "Double"
+          },
+          {
+            "name": "Status",
+            "dataType": "String"
+          }
         ]
       },
       {
-        "name": "FactProductionOutput", "schema": "fact",
+        "name": "FactProductionOutput",
+        "schema": "fact",
         "columns": [
-          {"name": "OutputID", "dataType": "Int64", "isKey": true},
-          {"name": "LineID", "dataType": "Int64"},
-          {"name": "ShiftID", "dataType": "Int64"},
-          {"name": "ProductionDate", "dataType": "DateTime"},
-          {"name": "GoodUnits", "dataType": "Int64"},
-          {"name": "DefectUnits", "dataType": "Int64"},
-          {"name": "PlannedRunTimeMinutes", "dataType": "Int64"},
-          {"name": "ActualRunTimeMinutes", "dataType": "Int64"},
-          {"name": "DowntimeMinutes", "dataType": "Int64"}
+          {
+            "name": "OutputID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "LineID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ShiftID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ProductionDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "GoodUnits",
+            "dataType": "Int64"
+          },
+          {
+            "name": "DefectUnits",
+            "dataType": "Int64"
+          },
+          {
+            "name": "PlannedRunTimeMinutes",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ActualRunTimeMinutes",
+            "dataType": "Int64"
+          },
+          {
+            "name": "DowntimeMinutes",
+            "dataType": "Int64"
+          }
         ]
       },
       {
-        "name": "FactQualityInspections", "schema": "fact",
+        "name": "FactQualityInspections",
+        "schema": "fact",
         "columns": [
-          {"name": "InspectionID", "dataType": "Int64", "isKey": true},
-          {"name": "InspectionPointID", "dataType": "Int64"},
-          {"name": "ProductID", "dataType": "Int64"},
-          {"name": "InspectionDate", "dataType": "DateTime"},
-          {"name": "SampleSize", "dataType": "Int64"},
-          {"name": "DefectsFound", "dataType": "Int64"},
-          {"name": "MeasuredValue", "dataType": "Double"},
-          {"name": "UpperSpec", "dataType": "Double"},
-          {"name": "LowerSpec", "dataType": "Double"},
-          {"name": "Result", "dataType": "String"}
+          {
+            "name": "InspectionID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "InspectionPointID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ProductID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "InspectionDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "SampleSize",
+            "dataType": "Int64"
+          },
+          {
+            "name": "DefectsFound",
+            "dataType": "Int64"
+          },
+          {
+            "name": "MeasuredValue",
+            "dataType": "Double"
+          },
+          {
+            "name": "UpperSpec",
+            "dataType": "Double"
+          },
+          {
+            "name": "LowerSpec",
+            "dataType": "Double"
+          },
+          {
+            "name": "Result",
+            "dataType": "String"
+          }
         ]
       },
       {
-        "name": "FactNonConformance", "schema": "fact",
+        "name": "FactNonConformance",
+        "schema": "fact",
         "columns": [
-          {"name": "NCRID", "dataType": "Int64", "isKey": true},
-          {"name": "ProductID", "dataType": "Int64"},
-          {"name": "DefectTypeID", "dataType": "Int64"},
-          {"name": "LineID", "dataType": "Int64"},
-          {"name": "NCRDate", "dataType": "DateTime"},
-          {"name": "QuantityAffected", "dataType": "Int64"},
-          {"name": "Disposition", "dataType": "String"},
-          {"name": "CostOfQuality", "dataType": "Double"},
-          {"name": "RootCause", "dataType": "String"}
+          {
+            "name": "NCRID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "ProductID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "DefectTypeID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "LineID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "NCRDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "QuantityAffected",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Disposition",
+            "dataType": "String"
+          },
+          {
+            "name": "CostOfQuality",
+            "dataType": "Double"
+          },
+          {
+            "name": "RootCause",
+            "dataType": "String"
+          }
         ]
       },
       {
-        "name": "FactPurchaseOrders", "schema": "fact",
+        "name": "FactPurchaseOrders",
+        "schema": "fact",
         "columns": [
-          {"name": "POID", "dataType": "Int64", "isKey": true},
-          {"name": "SupplierID", "dataType": "Int64"},
-          {"name": "MaterialID", "dataType": "Int64"},
-          {"name": "OrderDate", "dataType": "DateTime"},
-          {"name": "QuantityOrdered", "dataType": "Double"},
-          {"name": "TotalCost", "dataType": "Double"},
-          {"name": "ExpectedDelivery", "dataType": "DateTime"},
-          {"name": "Status", "dataType": "String"}
+          {
+            "name": "POID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "SupplierID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "MaterialID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "OrderDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "QuantityOrdered",
+            "dataType": "Double"
+          },
+          {
+            "name": "TotalCost",
+            "dataType": "Double"
+          },
+          {
+            "name": "ExpectedDelivery",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Status",
+            "dataType": "String"
+          }
         ]
       },
       {
-        "name": "FactGoodsReceipt", "schema": "fact",
+        "name": "FactGoodsReceipt",
+        "schema": "fact",
         "columns": [
-          {"name": "ReceiptID", "dataType": "Int64", "isKey": true},
-          {"name": "POID", "dataType": "Int64"},
-          {"name": "WarehouseID", "dataType": "Int64"},
-          {"name": "ReceiptDate", "dataType": "DateTime"},
-          {"name": "QuantityReceived", "dataType": "Double"},
-          {"name": "QualityCheckResult", "dataType": "String"},
-          {"name": "DaysLateOrEarly", "dataType": "Int64"}
+          {
+            "name": "ReceiptID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "POID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "WarehouseID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ReceiptDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "QuantityReceived",
+            "dataType": "Double"
+          },
+          {
+            "name": "QualityCheckResult",
+            "dataType": "String"
+          },
+          {
+            "name": "DaysLateOrEarly",
+            "dataType": "Int64"
+          }
         ]
       },
       {
-        "name": "FactInventory", "schema": "fact",
+        "name": "FactInventory",
+        "schema": "fact",
         "columns": [
-          {"name": "InventoryID", "dataType": "Int64", "isKey": true},
-          {"name": "MaterialID", "dataType": "Int64"},
-          {"name": "WarehouseID", "dataType": "Int64"},
-          {"name": "SnapshotDate", "dataType": "DateTime"},
-          {"name": "QuantityOnHand", "dataType": "Double"},
-          {"name": "ReorderPoint", "dataType": "Double"},
-          {"name": "InventoryValue", "dataType": "Double"}
+          {
+            "name": "InventoryID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "MaterialID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "WarehouseID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "SnapshotDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "QuantityOnHand",
+            "dataType": "Double"
+          },
+          {
+            "name": "ReorderPoint",
+            "dataType": "Double"
+          },
+          {
+            "name": "InventoryValue",
+            "dataType": "Double"
+          }
         ]
       },
       {
-        "name": "FactMaintenanceWorkOrders", "schema": "fact",
+        "name": "FactMaintenanceWorkOrders",
+        "schema": "fact",
         "columns": [
-          {"name": "WorkOrderID", "dataType": "Int64", "isKey": true},
-          {"name": "EquipmentID", "dataType": "Int64"},
-          {"name": "MaintenanceTypeID", "dataType": "Int64"},
-          {"name": "OrderDate", "dataType": "DateTime"},
-          {"name": "CompletionDate", "dataType": "DateTime"},
-          {"name": "LaborHours", "dataType": "Double"},
-          {"name": "PartsCost", "dataType": "Double"},
-          {"name": "LaborCost", "dataType": "Double"},
-          {"name": "Status", "dataType": "String"}
+          {
+            "name": "WorkOrderID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "EquipmentID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "MaintenanceTypeID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "OrderDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "CompletionDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "LaborHours",
+            "dataType": "Double"
+          },
+          {
+            "name": "PartsCost",
+            "dataType": "Double"
+          },
+          {
+            "name": "LaborCost",
+            "dataType": "Double"
+          },
+          {
+            "name": "Status",
+            "dataType": "String"
+          }
         ]
       },
       {
-        "name": "FactDowntime", "schema": "fact",
+        "name": "FactDowntime",
+        "schema": "fact",
         "columns": [
-          {"name": "DowntimeID", "dataType": "Int64", "isKey": true},
-          {"name": "EquipmentID", "dataType": "Int64"},
-          {"name": "LineID", "dataType": "Int64"},
-          {"name": "DowntimeStart", "dataType": "DateTime"},
-          {"name": "DurationMinutes", "dataType": "Int64"},
-          {"name": "Cause", "dataType": "String"},
-          {"name": "IsUnplanned", "dataType": "Boolean"}
+          {
+            "name": "DowntimeID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "EquipmentID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "LineID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "DowntimeStart",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "DurationMinutes",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Cause",
+            "dataType": "String"
+          },
+          {
+            "name": "IsUnplanned",
+            "dataType": "Boolean"
+          }
         ]
       },
       {
-        "name": "FactSafetyIncidents", "schema": "fact",
+        "name": "FactSafetyIncidents",
+        "schema": "fact",
         "columns": [
-          {"name": "IncidentID", "dataType": "Int64", "isKey": true},
-          {"name": "PlantID", "dataType": "Int64"},
-          {"name": "HazardID", "dataType": "Int64"},
-          {"name": "IncidentDate", "dataType": "DateTime"},
-          {"name": "IncidentType", "dataType": "String"},
-          {"name": "Severity", "dataType": "String"},
-          {"name": "LostTimeDays", "dataType": "Int64"},
-          {"name": "CostUSD", "dataType": "Double"}
+          {
+            "name": "IncidentID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "PlantID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "HazardID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "IncidentDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "IncidentType",
+            "dataType": "String"
+          },
+          {
+            "name": "Severity",
+            "dataType": "String"
+          },
+          {
+            "name": "LostTimeDays",
+            "dataType": "Int64"
+          },
+          {
+            "name": "CostUSD",
+            "dataType": "Double"
+          }
         ]
       },
       {
-        "name": "FactEnvironmentalReadings", "schema": "fact",
+        "name": "FactEnvironmentalReadings",
+        "schema": "fact",
         "columns": [
-          {"name": "ReadingID", "dataType": "Int64", "isKey": true},
-          {"name": "PlantID", "dataType": "Int64"},
-          {"name": "ReadingDate", "dataType": "DateTime"},
-          {"name": "MeasurementType", "dataType": "String"},
-          {"name": "Value", "dataType": "Double"},
-          {"name": "RegulatoryLimit", "dataType": "Double"},
-          {"name": "IsCompliant", "dataType": "Boolean"}
+          {
+            "name": "ReadingID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "PlantID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ReadingDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "MeasurementType",
+            "dataType": "String"
+          },
+          {
+            "name": "Value",
+            "dataType": "Double"
+          },
+          {
+            "name": "RegulatoryLimit",
+            "dataType": "Double"
+          },
+          {
+            "name": "IsCompliant",
+            "dataType": "Boolean"
+          }
+        ]
+      },
+      {
+        "name": "DimCustomers",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "CustomerID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerName",
+            "dataType": "String"
+          },
+          {
+            "name": "Country",
+            "dataType": "String"
+          },
+          {
+            "name": "Segment",
+            "dataType": "String"
+          },
+          {
+            "name": "CreditLimit",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactSalesOrders",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "SalesOrderID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ProductID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "OrderDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Quantity",
+            "dataType": "Int64"
+          },
+          {
+            "name": "UnitPrice",
+            "dataType": "Double"
+          },
+          {
+            "name": "TotalAmount",
+            "dataType": "Double"
+          },
+          {
+            "name": "ShipDate",
+            "dataType": "DateTime"
+          }
+        ]
+      },
+      {
+        "name": "FactScrapWaste",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "ScrapID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "LineID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ProductID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ScrapDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "QuantityScrapped",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ScrapCost",
+            "dataType": "Double"
+          },
+          {
+            "name": "Reason",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactEnergyUsage",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "UsageID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "PlantID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "RecordDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "ElectricityKWh",
+            "dataType": "Double"
+          },
+          {
+            "name": "NaturalGasTherms",
+            "dataType": "Double"
+          },
+          {
+            "name": "WaterGallons",
+            "dataType": "Double"
+          },
+          {
+            "name": "CostTotal",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactShipments",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "ShipmentID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "SalesOrderID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ShipDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "DeliveryDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "CarrierName",
+            "dataType": "String"
+          },
+          {
+            "name": "FreightCost",
+            "dataType": "Double"
+          },
+          {
+            "name": "OnTimeDelivery",
+            "dataType": "Boolean"
+          }
+        ]
+      },
+      {
+        "name": "DimWorkCenters",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "WorkCenterID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "WorkCenterName",
+            "dataType": "String"
+          },
+          {
+            "name": "PlantID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "CostPerHour",
+            "dataType": "Double"
+          },
+          {
+            "name": "MaxCapacity",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "FactTooling",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "ToolingID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "ToolName",
+            "dataType": "String"
+          },
+          {
+            "name": "LineID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "InstallDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "UsageCycles",
+            "dataType": "Int64"
+          },
+          {
+            "name": "MaxCycles",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ReplacementCost",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactReturnsClaims",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "ClaimID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ProductID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ClaimDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Quantity",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Reason",
+            "dataType": "String"
+          },
+          {
+            "name": "CreditAmount",
+            "dataType": "Double"
+          }
         ]
       }
     ],
     "relationships": [
-      {"fromTable": "DimProductionLines", "fromColumn": "PlantID", "toTable": "DimPlants", "toColumn": "PlantID", "cardinality": "ManyToOne"},
-      {"fromTable": "DimInspectionPoints", "fromColumn": "LineID", "toTable": "DimProductionLines", "toColumn": "LineID", "cardinality": "ManyToOne"},
-      {"fromTable": "DimEquipment", "fromColumn": "LineID", "toTable": "DimProductionLines", "toColumn": "LineID", "cardinality": "ManyToOne"},
-      {"fromTable": "DimWarehouses", "fromColumn": "PlantID", "toTable": "DimPlants", "toColumn": "PlantID", "cardinality": "ManyToOne", "isActive": false},
-      {"fromTable": "FactProductionOrders", "fromColumn": "ProductID", "toTable": "DimProducts", "toColumn": "ProductID", "cardinality": "ManyToOne"},
-      {"fromTable": "FactProductionOrders", "fromColumn": "LineID", "toTable": "DimProductionLines", "toColumn": "LineID", "cardinality": "ManyToOne"},
-      {"fromTable": "FactProductionOrders", "fromColumn": "ShiftID", "toTable": "DimShifts", "toColumn": "ShiftID", "cardinality": "ManyToOne"},
-      {"fromTable": "FactProductionOutput", "fromColumn": "LineID", "toTable": "DimProductionLines", "toColumn": "LineID", "cardinality": "ManyToOne", "isActive": false},
-      {"fromTable": "FactProductionOutput", "fromColumn": "ShiftID", "toTable": "DimShifts", "toColumn": "ShiftID", "cardinality": "ManyToOne", "isActive": false},
-      {"fromTable": "FactQualityInspections", "fromColumn": "InspectionPointID", "toTable": "DimInspectionPoints", "toColumn": "InspectionPointID", "cardinality": "ManyToOne"},
-      {"fromTable": "FactQualityInspections", "fromColumn": "ProductID", "toTable": "DimProducts", "toColumn": "ProductID", "cardinality": "ManyToOne", "isActive": false},
-      {"fromTable": "FactNonConformance", "fromColumn": "ProductID", "toTable": "DimProducts", "toColumn": "ProductID", "cardinality": "ManyToOne", "isActive": false},
-      {"fromTable": "FactNonConformance", "fromColumn": "DefectTypeID", "toTable": "DimDefectTypes", "toColumn": "DefectTypeID", "cardinality": "ManyToOne"},
-      {"fromTable": "FactNonConformance", "fromColumn": "LineID", "toTable": "DimProductionLines", "toColumn": "LineID", "cardinality": "ManyToOne", "isActive": false},
-      {"fromTable": "FactPurchaseOrders", "fromColumn": "SupplierID", "toTable": "DimSuppliers", "toColumn": "SupplierID", "cardinality": "ManyToOne"},
-      {"fromTable": "FactPurchaseOrders", "fromColumn": "MaterialID", "toTable": "DimMaterials", "toColumn": "MaterialID", "cardinality": "ManyToOne"},
-      {"fromTable": "FactGoodsReceipt", "fromColumn": "POID", "toTable": "FactPurchaseOrders", "toColumn": "POID", "cardinality": "ManyToOne"},
-      {"fromTable": "FactGoodsReceipt", "fromColumn": "WarehouseID", "toTable": "DimWarehouses", "toColumn": "WarehouseID", "cardinality": "ManyToOne"},
-      {"fromTable": "FactInventory", "fromColumn": "MaterialID", "toTable": "DimMaterials", "toColumn": "MaterialID", "cardinality": "ManyToOne", "isActive": false},
-      {"fromTable": "FactInventory", "fromColumn": "WarehouseID", "toTable": "DimWarehouses", "toColumn": "WarehouseID", "cardinality": "ManyToOne", "isActive": false},
-      {"fromTable": "FactMaintenanceWorkOrders", "fromColumn": "EquipmentID", "toTable": "DimEquipment", "toColumn": "EquipmentID", "cardinality": "ManyToOne"},
-      {"fromTable": "FactMaintenanceWorkOrders", "fromColumn": "MaintenanceTypeID", "toTable": "DimMaintenanceTypes", "toColumn": "MaintenanceTypeID", "cardinality": "ManyToOne"},
-      {"fromTable": "FactDowntime", "fromColumn": "EquipmentID", "toTable": "DimEquipment", "toColumn": "EquipmentID", "cardinality": "ManyToOne", "isActive": false},
-      {"fromTable": "FactDowntime", "fromColumn": "LineID", "toTable": "DimProductionLines", "toColumn": "LineID", "cardinality": "ManyToOne", "isActive": false},
-      {"fromTable": "FactSafetyIncidents", "fromColumn": "PlantID", "toTable": "DimPlants", "toColumn": "PlantID", "cardinality": "ManyToOne", "isActive": false},
-      {"fromTable": "FactSafetyIncidents", "fromColumn": "HazardID", "toTable": "DimHazards", "toColumn": "HazardID", "cardinality": "ManyToOne"},
-      {"fromTable": "FactEnvironmentalReadings", "fromColumn": "PlantID", "toTable": "DimPlants", "toColumn": "PlantID", "cardinality": "ManyToOne", "isActive": false}
+      {
+        "fromTable": "DimProductionLines",
+        "fromColumn": "PlantID",
+        "toTable": "DimPlants",
+        "toColumn": "PlantID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "DimInspectionPoints",
+        "fromColumn": "LineID",
+        "toTable": "DimProductionLines",
+        "toColumn": "LineID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "DimEquipment",
+        "fromColumn": "LineID",
+        "toTable": "DimProductionLines",
+        "toColumn": "LineID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "DimWarehouses",
+        "fromColumn": "PlantID",
+        "toTable": "DimPlants",
+        "toColumn": "PlantID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactProductionOrders",
+        "fromColumn": "ProductID",
+        "toTable": "DimProducts",
+        "toColumn": "ProductID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactProductionOrders",
+        "fromColumn": "LineID",
+        "toTable": "DimProductionLines",
+        "toColumn": "LineID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactProductionOrders",
+        "fromColumn": "ShiftID",
+        "toTable": "DimShifts",
+        "toColumn": "ShiftID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactProductionOutput",
+        "fromColumn": "LineID",
+        "toTable": "DimProductionLines",
+        "toColumn": "LineID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactProductionOutput",
+        "fromColumn": "ShiftID",
+        "toTable": "DimShifts",
+        "toColumn": "ShiftID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactQualityInspections",
+        "fromColumn": "InspectionPointID",
+        "toTable": "DimInspectionPoints",
+        "toColumn": "InspectionPointID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactQualityInspections",
+        "fromColumn": "ProductID",
+        "toTable": "DimProducts",
+        "toColumn": "ProductID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactNonConformance",
+        "fromColumn": "ProductID",
+        "toTable": "DimProducts",
+        "toColumn": "ProductID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactNonConformance",
+        "fromColumn": "DefectTypeID",
+        "toTable": "DimDefectTypes",
+        "toColumn": "DefectTypeID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactNonConformance",
+        "fromColumn": "LineID",
+        "toTable": "DimProductionLines",
+        "toColumn": "LineID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactPurchaseOrders",
+        "fromColumn": "SupplierID",
+        "toTable": "DimSuppliers",
+        "toColumn": "SupplierID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactPurchaseOrders",
+        "fromColumn": "MaterialID",
+        "toTable": "DimMaterials",
+        "toColumn": "MaterialID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactGoodsReceipt",
+        "fromColumn": "POID",
+        "toTable": "FactPurchaseOrders",
+        "toColumn": "POID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactGoodsReceipt",
+        "fromColumn": "WarehouseID",
+        "toTable": "DimWarehouses",
+        "toColumn": "WarehouseID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactInventory",
+        "fromColumn": "MaterialID",
+        "toTable": "DimMaterials",
+        "toColumn": "MaterialID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactInventory",
+        "fromColumn": "WarehouseID",
+        "toTable": "DimWarehouses",
+        "toColumn": "WarehouseID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactMaintenanceWorkOrders",
+        "fromColumn": "EquipmentID",
+        "toTable": "DimEquipment",
+        "toColumn": "EquipmentID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactMaintenanceWorkOrders",
+        "fromColumn": "MaintenanceTypeID",
+        "toTable": "DimMaintenanceTypes",
+        "toColumn": "MaintenanceTypeID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactDowntime",
+        "fromColumn": "EquipmentID",
+        "toTable": "DimEquipment",
+        "toColumn": "EquipmentID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactDowntime",
+        "fromColumn": "LineID",
+        "toTable": "DimProductionLines",
+        "toColumn": "LineID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactSafetyIncidents",
+        "fromColumn": "PlantID",
+        "toTable": "DimPlants",
+        "toColumn": "PlantID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactSafetyIncidents",
+        "fromColumn": "HazardID",
+        "toTable": "DimHazards",
+        "toColumn": "HazardID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactEnvironmentalReadings",
+        "fromColumn": "PlantID",
+        "toTable": "DimPlants",
+        "toColumn": "PlantID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactSalesOrders",
+        "fromColumn": "CustomerID",
+        "toTable": "DimCustomers",
+        "toColumn": "CustomerID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactSalesOrders",
+        "fromColumn": "ProductID",
+        "toTable": "DimProducts",
+        "toColumn": "ProductID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactSalesOrders",
+        "fromColumn": "OrderDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactScrapWaste",
+        "fromColumn": "LineID",
+        "toTable": "DimProductionLines",
+        "toColumn": "LineID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactScrapWaste",
+        "fromColumn": "ProductID",
+        "toTable": "DimProducts",
+        "toColumn": "ProductID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactEnergyUsage",
+        "fromColumn": "PlantID",
+        "toTable": "DimPlants",
+        "toColumn": "PlantID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactShipments",
+        "fromColumn": "SalesOrderID",
+        "toTable": "FactSalesOrders",
+        "toColumn": "SalesOrderID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactEnergyUsage",
+        "fromColumn": "RecordDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "DimWorkCenters",
+        "fromColumn": "PlantID",
+        "toTable": "DimPlants",
+        "toColumn": "PlantID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactTooling",
+        "fromColumn": "LineID",
+        "toTable": "DimProductionLines",
+        "toColumn": "LineID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactReturnsClaims",
+        "fromColumn": "CustomerID",
+        "toTable": "DimCustomers",
+        "toColumn": "CustomerID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      }
     ],
     "measures": [
-      {"name": "Total Units Produced", "table": "FactProductionOrders", "expression": "SUM(FactProductionOrders[QuantityProduced])", "formatString": "#,0", "displayFolder": "Production"},
-      {"name": "Total Units Ordered", "table": "FactProductionOrders", "expression": "SUM(FactProductionOrders[QuantityOrdered])", "formatString": "#,0", "displayFolder": "Production"},
-      {"name": "Total Scrap Units", "table": "FactProductionOrders", "expression": "SUM(FactProductionOrders[QuantityScrapped])", "formatString": "#,0", "displayFolder": "Production"},
-      {"name": "Schedule Adherence %", "table": "FactProductionOrders", "expression": "DIVIDE(SUM(FactProductionOrders[QuantityProduced]), SUM(FactProductionOrders[QuantityOrdered]))", "formatString": "0.0%", "displayFolder": "Production"},
-      {"name": "Avg Cycle Time (min)", "table": "FactProductionOrders", "expression": "AVERAGE(FactProductionOrders[CycleTimeMinutes])", "formatString": "#,0.0", "displayFolder": "Production"},
-      {"name": "Total Good Units", "table": "FactProductionOutput", "expression": "SUM(FactProductionOutput[GoodUnits])", "formatString": "#,0", "displayFolder": "Production"},
-      {"name": "Total Defect Units", "table": "FactProductionOutput", "expression": "SUM(FactProductionOutput[DefectUnits])", "formatString": "#,0", "displayFolder": "Production"},
-      {"name": "First Pass Yield %", "table": "FactProductionOutput", "expression": "DIVIDE(SUM(FactProductionOutput[GoodUnits]), SUM(FactProductionOutput[GoodUnits]) + SUM(FactProductionOutput[DefectUnits]))", "formatString": "0.0%", "displayFolder": "Production"},
-      {"name": "OEE Availability", "table": "FactProductionOutput", "expression": "DIVIDE(SUM(FactProductionOutput[ActualRunTimeMinutes]), SUM(FactProductionOutput[PlannedRunTimeMinutes]))", "formatString": "0.0%", "displayFolder": "OEE"},
-      {"name": "OEE Performance", "table": "FactProductionOutput", "expression": "DIVIDE(SUM(FactProductionOutput[GoodUnits]) + SUM(FactProductionOutput[DefectUnits]), SUM(FactProductionOutput[ActualRunTimeMinutes]) * 10)", "formatString": "0.0%", "displayFolder": "OEE"},
-      {"name": "OEE Quality", "table": "FactProductionOutput", "expression": "DIVIDE(SUM(FactProductionOutput[GoodUnits]), SUM(FactProductionOutput[GoodUnits]) + SUM(FactProductionOutput[DefectUnits]))", "formatString": "0.0%", "displayFolder": "OEE"},
-      {"name": "OEE Overall", "table": "FactProductionOutput", "expression": "[OEE Availability] * [OEE Performance] * [OEE Quality]", "formatString": "0.0%", "displayFolder": "OEE"},
-      {"name": "Total Downtime (hrs)", "table": "FactProductionOutput", "expression": "DIVIDE(SUM(FactProductionOutput[DowntimeMinutes]), 60)", "formatString": "#,0.0", "displayFolder": "OEE"},
-      {"name": "Total Inspections", "table": "FactQualityInspections", "expression": "COUNTROWS(FactQualityInspections)", "formatString": "#,0", "displayFolder": "Quality"},
-      {"name": "Total Defects Found", "table": "FactQualityInspections", "expression": "SUM(FactQualityInspections[DefectsFound])", "formatString": "#,0", "displayFolder": "Quality"},
-      {"name": "Inspection Pass Rate %", "table": "FactQualityInspections", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactQualityInspections), FactQualityInspections[Result] = \"Pass\"), COUNTROWS(FactQualityInspections))", "formatString": "0.0%", "displayFolder": "Quality"},
-      {"name": "DPPM", "table": "FactQualityInspections", "expression": "DIVIDE(SUM(FactQualityInspections[DefectsFound]), SUM(FactQualityInspections[SampleSize])) * 1000000", "formatString": "#,0", "displayFolder": "Quality"},
-      {"name": "Total NCRs", "table": "FactNonConformance", "expression": "COUNTROWS(FactNonConformance)", "formatString": "#,0", "displayFolder": "Quality"},
-      {"name": "Cost of Quality", "table": "FactNonConformance", "expression": "SUM(FactNonConformance[CostOfQuality])", "formatString": "$#,0;($#,0)", "displayFolder": "Quality"},
-      {"name": "NCR Qty Affected", "table": "FactNonConformance", "expression": "SUM(FactNonConformance[QuantityAffected])", "formatString": "#,0", "displayFolder": "Quality"},
-      {"name": "Total PO Value", "table": "FactPurchaseOrders", "expression": "SUM(FactPurchaseOrders[TotalCost])", "formatString": "$#,0;($#,0)", "displayFolder": "Supply Chain"},
-      {"name": "Total POs", "table": "FactPurchaseOrders", "expression": "COUNTROWS(FactPurchaseOrders)", "formatString": "#,0", "displayFolder": "Supply Chain"},
-      {"name": "On-Time Delivery %", "table": "FactGoodsReceipt", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactGoodsReceipt), FactGoodsReceipt[DaysLateOrEarly] <= 0), COUNTROWS(FactGoodsReceipt))", "formatString": "0.0%", "displayFolder": "Supply Chain"},
-      {"name": "Avg Days Late", "table": "FactGoodsReceipt", "expression": "AVERAGE(FactGoodsReceipt[DaysLateOrEarly])", "formatString": "#,0.0", "displayFolder": "Supply Chain"},
-      {"name": "Goods Receipt Accept Rate", "table": "FactGoodsReceipt", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactGoodsReceipt), FactGoodsReceipt[QualityCheckResult] = \"Accepted\"), COUNTROWS(FactGoodsReceipt))", "formatString": "0.0%", "displayFolder": "Supply Chain"},
-      {"name": "Total Inventory Value", "table": "FactInventory", "expression": "SUM(FactInventory[InventoryValue])", "formatString": "$#,0;($#,0)", "displayFolder": "Supply Chain"},
-      {"name": "Avg Inventory On Hand", "table": "FactInventory", "expression": "AVERAGE(FactInventory[QuantityOnHand])", "formatString": "#,0", "displayFolder": "Supply Chain"},
-      {"name": "Total Maintenance WOs", "table": "FactMaintenanceWorkOrders", "expression": "COUNTROWS(FactMaintenanceWorkOrders)", "formatString": "#,0", "displayFolder": "Maintenance"},
-      {"name": "Total Maintenance Cost", "table": "FactMaintenanceWorkOrders", "expression": "SUM(FactMaintenanceWorkOrders[PartsCost]) + SUM(FactMaintenanceWorkOrders[LaborCost])", "formatString": "$#,0;($#,0)", "displayFolder": "Maintenance"},
-      {"name": "Avg Labor Hours", "table": "FactMaintenanceWorkOrders", "expression": "AVERAGE(FactMaintenanceWorkOrders[LaborHours])", "formatString": "#,0.0", "displayFolder": "Maintenance"},
-      {"name": "PM Compliance %", "table": "FactMaintenanceWorkOrders", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactMaintenanceWorkOrders), FactMaintenanceWorkOrders[Status] = \"Completed\"), COUNTROWS(FactMaintenanceWorkOrders))", "formatString": "0.0%", "displayFolder": "Maintenance"},
-      {"name": "Downtime Events", "table": "FactDowntime", "expression": "COUNTROWS(FactDowntime)", "formatString": "#,0", "displayFolder": "Maintenance"},
-      {"name": "Total Downtime Hrs", "table": "FactDowntime", "expression": "DIVIDE(SUM(FactDowntime[DurationMinutes]), 60)", "formatString": "#,0.0", "displayFolder": "Maintenance"},
-      {"name": "Avg Downtime Duration (min)", "table": "FactDowntime", "expression": "AVERAGE(FactDowntime[DurationMinutes])", "formatString": "#,0", "displayFolder": "Maintenance"},
-      {"name": "Unplanned Downtime %", "table": "FactDowntime", "expression": "DIVIDE(CALCULATE(SUM(FactDowntime[DurationMinutes]), FactDowntime[IsUnplanned] = TRUE()), SUM(FactDowntime[DurationMinutes]))", "formatString": "0.0%", "displayFolder": "Maintenance"},
-      {"name": "Total Safety Incidents", "table": "FactSafetyIncidents", "expression": "COUNTROWS(FactSafetyIncidents)", "formatString": "#,0", "displayFolder": "EHS"},
-      {"name": "Lost Time Days", "table": "FactSafetyIncidents", "expression": "SUM(FactSafetyIncidents[LostTimeDays])", "formatString": "#,0", "displayFolder": "EHS"},
-      {"name": "Safety Cost", "table": "FactSafetyIncidents", "expression": "SUM(FactSafetyIncidents[CostUSD])", "formatString": "$#,0;($#,0)", "displayFolder": "EHS"},
-      {"name": "Near Miss Ratio", "table": "FactSafetyIncidents", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactSafetyIncidents), FactSafetyIncidents[IncidentType] = \"Near Miss\"), COUNTROWS(FactSafetyIncidents))", "formatString": "0.0%", "displayFolder": "EHS"},
-      {"name": "Environmental Compliance %", "table": "FactEnvironmentalReadings", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactEnvironmentalReadings), FactEnvironmentalReadings[IsCompliant] = TRUE()), COUNTROWS(FactEnvironmentalReadings))", "formatString": "0.0%", "displayFolder": "EHS"},
-      {"name": "Total Environmental Readings", "table": "FactEnvironmentalReadings", "expression": "COUNTROWS(FactEnvironmentalReadings)", "formatString": "#,0", "displayFolder": "EHS"}
+      {
+        "name": "Total Units Produced",
+        "table": "FactProductionOrders",
+        "expression": "SUM(FactProductionOrders[QuantityProduced])",
+        "formatString": "#,0",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Total Units Ordered",
+        "table": "FactProductionOrders",
+        "expression": "SUM(FactProductionOrders[QuantityOrdered])",
+        "formatString": "#,0",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Total Scrap Units",
+        "table": "FactProductionOrders",
+        "expression": "SUM(FactProductionOrders[QuantityScrapped])",
+        "formatString": "#,0",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Schedule Adherence %",
+        "table": "FactProductionOrders",
+        "expression": "DIVIDE(SUM(FactProductionOrders[QuantityProduced]), SUM(FactProductionOrders[QuantityOrdered]))",
+        "formatString": "0.0%",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Avg Cycle Time (min)",
+        "table": "FactProductionOrders",
+        "expression": "AVERAGE(FactProductionOrders[CycleTimeMinutes])",
+        "formatString": "#,0.0",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Total Good Units",
+        "table": "FactProductionOutput",
+        "expression": "SUM(FactProductionOutput[GoodUnits])",
+        "formatString": "#,0",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Total Defect Units",
+        "table": "FactProductionOutput",
+        "expression": "SUM(FactProductionOutput[DefectUnits])",
+        "formatString": "#,0",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "First Pass Yield %",
+        "table": "FactProductionOutput",
+        "expression": "DIVIDE(SUM(FactProductionOutput[GoodUnits]), SUM(FactProductionOutput[GoodUnits]) + SUM(FactProductionOutput[DefectUnits]))",
+        "formatString": "0.0%",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "OEE Availability",
+        "table": "FactProductionOutput",
+        "expression": "DIVIDE(SUM(FactProductionOutput[ActualRunTimeMinutes]), SUM(FactProductionOutput[PlannedRunTimeMinutes]))",
+        "formatString": "0.0%",
+        "displayFolder": "OEE"
+      },
+      {
+        "name": "OEE Performance",
+        "table": "FactProductionOutput",
+        "expression": "DIVIDE(SUM(FactProductionOutput[GoodUnits]) + SUM(FactProductionOutput[DefectUnits]), SUM(FactProductionOutput[ActualRunTimeMinutes]) * 10)",
+        "formatString": "0.0%",
+        "displayFolder": "OEE"
+      },
+      {
+        "name": "OEE Quality",
+        "table": "FactProductionOutput",
+        "expression": "DIVIDE(SUM(FactProductionOutput[GoodUnits]), SUM(FactProductionOutput[GoodUnits]) + SUM(FactProductionOutput[DefectUnits]))",
+        "formatString": "0.0%",
+        "displayFolder": "OEE"
+      },
+      {
+        "name": "OEE Overall",
+        "table": "FactProductionOutput",
+        "expression": "[OEE Availability] * [OEE Performance] * [OEE Quality]",
+        "formatString": "0.0%",
+        "displayFolder": "OEE"
+      },
+      {
+        "name": "Total Downtime (hrs)",
+        "table": "FactProductionOutput",
+        "expression": "DIVIDE(SUM(FactProductionOutput[DowntimeMinutes]), 60)",
+        "formatString": "#,0.0",
+        "displayFolder": "OEE"
+      },
+      {
+        "name": "Total Inspections",
+        "table": "FactQualityInspections",
+        "expression": "COUNTROWS(FactQualityInspections)",
+        "formatString": "#,0",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "Total Defects Found",
+        "table": "FactQualityInspections",
+        "expression": "SUM(FactQualityInspections[DefectsFound])",
+        "formatString": "#,0",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "Inspection Pass Rate %",
+        "table": "FactQualityInspections",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactQualityInspections), FactQualityInspections[Result] = \"Pass\"), COUNTROWS(FactQualityInspections))",
+        "formatString": "0.0%",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "DPPM",
+        "table": "FactQualityInspections",
+        "expression": "DIVIDE(SUM(FactQualityInspections[DefectsFound]), SUM(FactQualityInspections[SampleSize])) * 1000000",
+        "formatString": "#,0",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "Total NCRs",
+        "table": "FactNonConformance",
+        "expression": "COUNTROWS(FactNonConformance)",
+        "formatString": "#,0",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "Cost of Quality",
+        "table": "FactNonConformance",
+        "expression": "SUM(FactNonConformance[CostOfQuality])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "NCR Qty Affected",
+        "table": "FactNonConformance",
+        "expression": "SUM(FactNonConformance[QuantityAffected])",
+        "formatString": "#,0",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "Total PO Value",
+        "table": "FactPurchaseOrders",
+        "expression": "SUM(FactPurchaseOrders[TotalCost])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Total POs",
+        "table": "FactPurchaseOrders",
+        "expression": "COUNTROWS(FactPurchaseOrders)",
+        "formatString": "#,0",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "On-Time Delivery %",
+        "table": "FactGoodsReceipt",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactGoodsReceipt), FactGoodsReceipt[DaysLateOrEarly] <= 0), COUNTROWS(FactGoodsReceipt))",
+        "formatString": "0.0%",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Avg Days Late",
+        "table": "FactGoodsReceipt",
+        "expression": "AVERAGE(FactGoodsReceipt[DaysLateOrEarly])",
+        "formatString": "#,0.0",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Goods Receipt Accept Rate",
+        "table": "FactGoodsReceipt",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactGoodsReceipt), FactGoodsReceipt[QualityCheckResult] = \"Accepted\"), COUNTROWS(FactGoodsReceipt))",
+        "formatString": "0.0%",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Total Inventory Value",
+        "table": "FactInventory",
+        "expression": "SUM(FactInventory[InventoryValue])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Avg Inventory On Hand",
+        "table": "FactInventory",
+        "expression": "AVERAGE(FactInventory[QuantityOnHand])",
+        "formatString": "#,0",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Total Maintenance WOs",
+        "table": "FactMaintenanceWorkOrders",
+        "expression": "COUNTROWS(FactMaintenanceWorkOrders)",
+        "formatString": "#,0",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "Total Maintenance Cost",
+        "table": "FactMaintenanceWorkOrders",
+        "expression": "SUM(FactMaintenanceWorkOrders[PartsCost]) + SUM(FactMaintenanceWorkOrders[LaborCost])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "Avg Labor Hours",
+        "table": "FactMaintenanceWorkOrders",
+        "expression": "AVERAGE(FactMaintenanceWorkOrders[LaborHours])",
+        "formatString": "#,0.0",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "PM Compliance %",
+        "table": "FactMaintenanceWorkOrders",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactMaintenanceWorkOrders), FactMaintenanceWorkOrders[Status] = \"Completed\"), COUNTROWS(FactMaintenanceWorkOrders))",
+        "formatString": "0.0%",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "Downtime Events",
+        "table": "FactDowntime",
+        "expression": "COUNTROWS(FactDowntime)",
+        "formatString": "#,0",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "Total Downtime Hrs",
+        "table": "FactDowntime",
+        "expression": "DIVIDE(SUM(FactDowntime[DurationMinutes]), 60)",
+        "formatString": "#,0.0",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "Avg Downtime Duration (min)",
+        "table": "FactDowntime",
+        "expression": "AVERAGE(FactDowntime[DurationMinutes])",
+        "formatString": "#,0",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "Unplanned Downtime %",
+        "table": "FactDowntime",
+        "expression": "DIVIDE(CALCULATE(SUM(FactDowntime[DurationMinutes]), FactDowntime[IsUnplanned] = TRUE()), SUM(FactDowntime[DurationMinutes]))",
+        "formatString": "0.0%",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "Total Safety Incidents",
+        "table": "FactSafetyIncidents",
+        "expression": "COUNTROWS(FactSafetyIncidents)",
+        "formatString": "#,0",
+        "displayFolder": "EHS"
+      },
+      {
+        "name": "Lost Time Days",
+        "table": "FactSafetyIncidents",
+        "expression": "SUM(FactSafetyIncidents[LostTimeDays])",
+        "formatString": "#,0",
+        "displayFolder": "EHS"
+      },
+      {
+        "name": "Safety Cost",
+        "table": "FactSafetyIncidents",
+        "expression": "SUM(FactSafetyIncidents[CostUSD])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "EHS"
+      },
+      {
+        "name": "Near Miss Ratio",
+        "table": "FactSafetyIncidents",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactSafetyIncidents), FactSafetyIncidents[IncidentType] = \"Near Miss\"), COUNTROWS(FactSafetyIncidents))",
+        "formatString": "0.0%",
+        "displayFolder": "EHS"
+      },
+      {
+        "name": "Environmental Compliance %",
+        "table": "FactEnvironmentalReadings",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactEnvironmentalReadings), FactEnvironmentalReadings[IsCompliant] = TRUE()), COUNTROWS(FactEnvironmentalReadings))",
+        "formatString": "0.0%",
+        "displayFolder": "EHS"
+      },
+      {
+        "name": "Total Environmental Readings",
+        "table": "FactEnvironmentalReadings",
+        "expression": "COUNTROWS(FactEnvironmentalReadings)",
+        "formatString": "#,0",
+        "displayFolder": "EHS"
+      },
+      {
+        "name": "Production YoY Growth",
+        "table": "FactProductionOutput",
+        "expression": "VAR _CY = SUM(FactProductionOutput[GoodQuantity]) VAR _PY = CALCULATE(SUM(FactProductionOutput[GoodQuantity]), DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)",
+        "formatString": "0.0%",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Units per Hour",
+        "table": "FactProductionOutput",
+        "expression": "DIVIDE(SUM(FactProductionOutput[GoodQuantity]), SUM(FactProductionOutput[RunTimeHours]))",
+        "formatString": "#,0.0",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Setup Time %",
+        "table": "FactProductionOutput",
+        "expression": "DIVIDE(SUM(FactProductionOutput[SetupTimeHours]), SUM(FactProductionOutput[RunTimeHours]) + SUM(FactProductionOutput[SetupTimeHours]))",
+        "formatString": "0.0%",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Total Production Cost",
+        "table": "FactProductionOutput",
+        "expression": "SUMX(FactProductionOutput, FactProductionOutput[GoodQuantity] * RELATED(DimProducts[UnitCost]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Production Revenue",
+        "table": "FactProductionOutput",
+        "expression": "SUMX(FactProductionOutput, FactProductionOutput[GoodQuantity] * RELATED(DimProducts[UnitPrice]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Gross Margin %",
+        "table": "FactProductionOutput",
+        "expression": "DIVIDE([Production Revenue] - [Total Production Cost], [Production Revenue])",
+        "formatString": "0.0%",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Avg Cycle Time Hours",
+        "table": "FactProductionOrders",
+        "expression": "AVERAGE(FactProductionOrders[ActualHours])",
+        "formatString": "0.0",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Open Orders",
+        "table": "FactProductionOrders",
+        "expression": "CALCULATE(COUNTROWS(FactProductionOrders), FactProductionOrders[Status] = \"Open\")",
+        "formatString": "#,0",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Units Scrapped",
+        "table": "FactProductionOutput",
+        "expression": "SUM(FactProductionOutput[ScrapQuantity])",
+        "formatString": "#,0",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "WIP Value",
+        "table": "FactProductionOrders",
+        "expression": "CALCULATE(SUMX(FactProductionOrders, FactProductionOrders[QuantityOrdered] * RELATED(DimProducts[UnitCost])), FactProductionOrders[Status] = \"In Progress\")",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Capacity Utilization %",
+        "table": "FactProductionOutput",
+        "expression": "DIVIDE(SUM(FactProductionOutput[RunTimeHours]), SUMX(DimProductionLines, DimProductionLines[MaxThroughputPerHour] * 24))",
+        "formatString": "0.0%",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Line Efficiency Variance",
+        "table": "FactProductionOutput",
+        "expression": "AVERAGE(FactProductionOutput[Efficiency]) - 0.85",
+        "formatString": "0.0%",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Shift Output (Day)",
+        "table": "FactProductionOutput",
+        "expression": "CALCULATE(SUM(FactProductionOutput[GoodQuantity]), DimShifts[ShiftName] = \"Day\")",
+        "formatString": "#,0",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Shift Output (Night)",
+        "table": "FactProductionOutput",
+        "expression": "CALCULATE(SUM(FactProductionOutput[GoodQuantity]), DimShifts[ShiftName] = \"Night\")",
+        "formatString": "#,0",
+        "displayFolder": "Production"
+      },
+      {
+        "name": "Defects per Million (DPMO)",
+        "table": "FactNonConformance",
+        "expression": "DIVIDE(SUM(FactNonConformance[DefectQuantity]), SUM(FactQualityInspections[SampleSize])) * 1000000",
+        "formatString": "#,0",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "Sigma Level",
+        "table": "FactNonConformance",
+        "expression": "VAR _dpmo = DIVIDE(SUM(FactNonConformance[DefectQuantity]), SUM(FactQualityInspections[SampleSize])) * 1000000 RETURN IF(_dpmo > 0, 0.8406 + SQRT(29.37 - 2.221 * LN(_dpmo)), BLANK())",
+        "formatString": "0.00",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "Inspection Count",
+        "table": "FactQualityInspections",
+        "expression": "COUNTROWS(FactQualityInspections)",
+        "formatString": "#,0",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "Critical Defects",
+        "table": "FactNonConformance",
+        "expression": "CALCULATE(COUNTROWS(FactNonConformance), RELATED(DimDefectTypes[Severity]) = \"Critical\")",
+        "formatString": "#,0",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "Rework Rate %",
+        "table": "FactNonConformance",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactNonConformance), FactNonConformance[Disposition] = \"Rework\"), COUNTROWS(FactNonConformance))",
+        "formatString": "0.0%",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "Scrap Rate %",
+        "table": "FactNonConformance",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactNonConformance), FactNonConformance[Disposition] = \"Scrap\"), COUNTROWS(FactNonConformance))",
+        "formatString": "0.0%",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "Supplier Defect Rate",
+        "table": "FactNonConformance",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactNonConformance), FactNonConformance[Disposition] <> BLANK()), SUM(FactQualityInspections[SampleSize]))",
+        "formatString": "0.0%",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "FPY Trend MoM",
+        "table": "FactQualityInspections",
+        "expression": "VAR _CM = DIVIDE(CALCULATE(COUNTROWS(FactQualityInspections), FactQualityInspections[PassFail] = \"Pass\"), COUNTROWS(FactQualityInspections)) VAR _PM = CALCULATE(DIVIDE(CALCULATE(COUNTROWS(FactQualityInspections), FactQualityInspections[PassFail] = \"Pass\"), COUNTROWS(FactQualityInspections)), DATEADD(DimDate[Date], -1, MONTH)) RETURN _CM - _PM",
+        "formatString": "0.0%",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "Total Scrap Qty",
+        "table": "FactScrapWaste",
+        "expression": "SUM(FactScrapWaste[QuantityScrapped])",
+        "formatString": "#,0",
+        "displayFolder": "Quality"
+      },
+      {
+        "name": "PO YoY Growth",
+        "table": "FactPurchaseOrders",
+        "expression": "VAR _CY = COUNTROWS(FactPurchaseOrders) VAR _PY = CALCULATE(COUNTROWS(FactPurchaseOrders), DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)",
+        "formatString": "0.0%",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Avg Lead Time Days",
+        "table": "DimSuppliers",
+        "expression": "AVERAGE(DimSuppliers[LeadTimeDays])",
+        "formatString": "0.0",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Supplier Quality Avg",
+        "table": "DimSuppliers",
+        "expression": "AVERAGE(DimSuppliers[QualityRating])",
+        "formatString": "0.00",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Open PO Value",
+        "table": "FactPurchaseOrders",
+        "expression": "CALCULATE(SUMX(FactPurchaseOrders, FactPurchaseOrders[Quantity] * FactPurchaseOrders[UnitPrice]), FactPurchaseOrders[Status] = \"Open\")",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "GR Variance %",
+        "table": "FactGoodsReceipt",
+        "expression": "DIVIDE(SUM(FactGoodsReceipt[ReceivedQuantity]) - SUM(FactGoodsReceipt[OrderedQuantity]), SUM(FactGoodsReceipt[OrderedQuantity]))",
+        "formatString": "0.0%",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Inventory Days of Supply",
+        "table": "FactInventory",
+        "expression": "DIVIDE(SUM(FactInventory[QuantityOnHand]), DIVIDE(SUM(FactProductionOutput[GoodQuantity]), 365))",
+        "formatString": "0.0",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "ABC Classification A %",
+        "table": "FactInventory",
+        "expression": "DIVIDE(CALCULATE(SUM(FactInventory[QuantityOnHand] * FactInventory[UnitCost]), FactInventory[UnitCost] > 100), SUMX(FactInventory, FactInventory[QuantityOnHand] * FactInventory[UnitCost]))",
+        "formatString": "0.0%",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Spend by Category",
+        "table": "FactPurchaseOrders",
+        "expression": "SUMX(FactPurchaseOrders, FactPurchaseOrders[Quantity] * FactPurchaseOrders[UnitPrice])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Material Cost Variance",
+        "table": "FactGoodsReceipt",
+        "expression": "SUMX(FactGoodsReceipt, (FactGoodsReceipt[UnitPrice] - RELATED(DimMaterials[UnitCost])) * FactGoodsReceipt[ReceivedQuantity])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Warehouse Utilization %",
+        "table": "FactInventory",
+        "expression": "DIVIDE(SUM(FactInventory[QuantityOnHand]), 100000)",
+        "formatString": "0.0%",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "MTBF (Hours)",
+        "table": "FactDowntime",
+        "expression": "DIVIDE(SUM(FactProductionOutput[RunTimeHours]), COUNTROWS(FactDowntime))",
+        "formatString": "#,0.0",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "MTTR (Hours)",
+        "table": "FactDowntime",
+        "expression": "AVERAGE(FactDowntime[DurationHours])",
+        "formatString": "0.0",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "Maintenance Backlog",
+        "table": "FactMaintenanceWorkOrders",
+        "expression": "CALCULATE(COUNTROWS(FactMaintenanceWorkOrders), FactMaintenanceWorkOrders[Status] = \"Open\")",
+        "formatString": "#,0",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "Cost per Downtime Hr",
+        "table": "FactDowntime",
+        "expression": "DIVIDE(SUM(FactMaintenanceWorkOrders[Cost]), SUM(FactDowntime[DurationHours]))",
+        "formatString": "$#,0",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "Reactive Maintenance %",
+        "table": "FactMaintenanceWorkOrders",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactMaintenanceWorkOrders), FactMaintenanceWorkOrders[OrderType] = \"Breakdown\"), COUNTROWS(FactMaintenanceWorkOrders))",
+        "formatString": "0.0%",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "Equipment Uptime %",
+        "table": "FactDowntime",
+        "expression": "1 - DIVIDE(SUM(FactDowntime[DurationHours]), SUM(FactProductionOutput[RunTimeHours]) + SUM(FactDowntime[DurationHours]))",
+        "formatString": "0.0%",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "Maintenance YoY Cost",
+        "table": "FactMaintenanceWorkOrders",
+        "expression": "VAR _CY = SUM(FactMaintenanceWorkOrders[Cost]) VAR _PY = CALCULATE(SUM(FactMaintenanceWorkOrders[Cost]), DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)",
+        "formatString": "0.0%",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "TRIR",
+        "table": "FactSafetyIncidents",
+        "expression": "DIVIDE(COUNTROWS(FactSafetyIncidents) * 200000, SUM(FactProductionOutput[RunTimeHours]))",
+        "formatString": "0.00",
+        "displayFolder": "EHS"
+      },
+      {
+        "name": "Lost Time Injury Rate",
+        "table": "FactSafetyIncidents",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactSafetyIncidents), FactSafetyIncidents[LostTimeDays] > 0) * 200000, SUM(FactProductionOutput[RunTimeHours]))",
+        "formatString": "0.00",
+        "displayFolder": "EHS"
+      },
+      {
+        "name": "Days Since Last Incident",
+        "table": "FactSafetyIncidents",
+        "expression": "DATEDIFF(MAX(FactSafetyIncidents[IncidentDate]), TODAY(), DAY)",
+        "formatString": "#,0",
+        "displayFolder": "EHS"
+      },
+      {
+        "name": "Avg Environmental Score",
+        "table": "FactEnvironmentalReadings",
+        "expression": "AVERAGE(FactEnvironmentalReadings[ComplianceScore])",
+        "formatString": "0.00",
+        "displayFolder": "EHS"
+      },
+      {
+        "name": "Near Miss Count",
+        "table": "FactSafetyIncidents",
+        "expression": "CALCULATE(COUNTROWS(FactSafetyIncidents), FactSafetyIncidents[Severity] = \"Near Miss\")",
+        "formatString": "#,0",
+        "displayFolder": "EHS"
+      },
+      {
+        "name": "Total Lost Time Days",
+        "table": "FactSafetyIncidents",
+        "expression": "SUM(FactSafetyIncidents[LostTimeDays])",
+        "formatString": "#,0",
+        "displayFolder": "EHS"
+      },
+      {
+        "name": "Safety Training Compliance",
+        "table": "FactSafetyIncidents",
+        "expression": "0.92",
+        "formatString": "0.0%",
+        "displayFolder": "EHS"
+      },
+      {
+        "name": "Environmental Violations",
+        "table": "FactEnvironmentalReadings",
+        "expression": "CALCULATE(COUNTROWS(FactEnvironmentalReadings), FactEnvironmentalReadings[ComplianceScore] < 70)",
+        "formatString": "#,0",
+        "displayFolder": "EHS"
+      },
+      {
+        "name": "Total Sales Revenue",
+        "table": "FactSalesOrders",
+        "expression": "SUM(FactSalesOrders[TotalAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Sales"
+      },
+      {
+        "name": "Sales Orders Count",
+        "table": "FactSalesOrders",
+        "expression": "COUNTROWS(FactSalesOrders)",
+        "formatString": "#,0",
+        "displayFolder": "Sales"
+      },
+      {
+        "name": "Avg Order Value",
+        "table": "FactSalesOrders",
+        "expression": "AVERAGE(FactSalesOrders[TotalAmount])",
+        "formatString": "$#,0.00",
+        "displayFolder": "Sales"
+      },
+      {
+        "name": "On Time Delivery %",
+        "table": "FactShipments",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactShipments), FactShipments[OnTimeDelivery] = TRUE()), COUNTROWS(FactShipments))",
+        "formatString": "0.0%",
+        "displayFolder": "Sales"
+      },
+      {
+        "name": "Total Freight Cost",
+        "table": "FactShipments",
+        "expression": "SUM(FactShipments[FreightCost])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Sales"
+      },
+      {
+        "name": "Revenue per Unit Sold",
+        "table": "FactSalesOrders",
+        "expression": "DIVIDE(SUM(FactSalesOrders[TotalAmount]), SUM(FactSalesOrders[Quantity]))",
+        "formatString": "$#,0.00",
+        "displayFolder": "Sales"
+      },
+      {
+        "name": "Customer Count",
+        "table": "DimCustomers",
+        "expression": "COUNTROWS(DimCustomers)",
+        "formatString": "#,0",
+        "displayFolder": "Sales"
+      },
+      {
+        "name": "Sales YoY Growth",
+        "table": "FactSalesOrders",
+        "expression": "VAR _CY = SUM(FactSalesOrders[TotalAmount]) VAR _PY = CALCULATE(SUM(FactSalesOrders[TotalAmount]), DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)",
+        "formatString": "0.0%",
+        "displayFolder": "Sales"
+      },
+      {
+        "name": "Total Electricity KWh",
+        "table": "FactEnergyUsage",
+        "expression": "SUM(FactEnergyUsage[ElectricityKWh])",
+        "formatString": "#,0",
+        "displayFolder": "Energy"
+      },
+      {
+        "name": "Total Gas Therms",
+        "table": "FactEnergyUsage",
+        "expression": "SUM(FactEnergyUsage[NaturalGasTherms])",
+        "formatString": "#,0",
+        "displayFolder": "Energy"
+      },
+      {
+        "name": "Total Water Gallons",
+        "table": "FactEnergyUsage",
+        "expression": "SUM(FactEnergyUsage[WaterGallons])",
+        "formatString": "#,0",
+        "displayFolder": "Energy"
+      },
+      {
+        "name": "Total Energy Cost",
+        "table": "FactEnergyUsage",
+        "expression": "SUM(FactEnergyUsage[CostTotal])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Energy"
+      },
+      {
+        "name": "Energy per Unit Produced",
+        "table": "FactEnergyUsage",
+        "expression": "DIVIDE(SUM(FactEnergyUsage[ElectricityKWh]), SUM(FactProductionOutput[GoodQuantity]))",
+        "formatString": "0.00",
+        "displayFolder": "Energy"
+      },
+      {
+        "name": "Total Scrap Cost",
+        "table": "FactScrapWaste",
+        "expression": "SUM(FactScrapWaste[ScrapCost])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Energy"
+      },
+      {
+        "name": "OEE Benchmark Gap",
+        "table": "FactProductionOutput",
+        "expression": "0.85 - [OEE %]",
+        "formatString": "0.0%",
+        "displayFolder": "OEE"
+      },
+      {
+        "name": "Performance Rate %",
+        "table": "FactProductionOutput",
+        "expression": "DIVIDE(SUM(FactProductionOutput[GoodQuantity]) + SUM(FactProductionOutput[ScrapQuantity]), SUM(FactProductionOutput[GoodQuantity]) + SUM(FactProductionOutput[ScrapQuantity]) + 0.01)",
+        "formatString": "0.0%",
+        "displayFolder": "OEE"
+      },
+      {
+        "name": "Quality Rate (OEE)",
+        "table": "FactQualityInspections",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactQualityInspections), FactQualityInspections[PassFail] = \"Pass\"), COUNTROWS(FactQualityInspections))",
+        "formatString": "0.0%",
+        "displayFolder": "OEE"
+      },
+      {
+        "name": "Availability Rate %",
+        "table": "FactDowntime",
+        "expression": "1 - DIVIDE(SUM(FactDowntime[DurationHours]), SUM(FactProductionOutput[RunTimeHours]) + SUM(FactDowntime[DurationHours]))",
+        "formatString": "0.0%",
+        "displayFolder": "OEE"
+      },
+      {
+        "name": "OEE by Plant",
+        "table": "FactProductionOutput",
+        "expression": "[OEE %]",
+        "formatString": "0.0%",
+        "displayFolder": "OEE"
+      },
+      {
+        "name": "Production YTD",
+        "table": "FactProductionOutput",
+        "expression": "CALCULATE(SUM(FactProductionOutput[GoodQuantity]), DATESYTD(DimDate[Date]))",
+        "formatString": "#,0",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Scrap YTD",
+        "table": "FactProductionOutput",
+        "expression": "CALCULATE(SUM(FactProductionOutput[ScrapQuantity]), DATESYTD(DimDate[Date]))",
+        "formatString": "#,0",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Revenue YTD",
+        "table": "FactSalesOrders",
+        "expression": "CALCULATE(SUM(FactSalesOrders[TotalAmount]), DATESYTD(DimDate[Date]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Maintenance Cost YTD",
+        "table": "FactMaintenanceWorkOrders",
+        "expression": "CALCULATE(SUM(FactMaintenanceWorkOrders[Cost]), DATESYTD(DimDate[Date]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Energy Cost YTD",
+        "table": "FactEnergyUsage",
+        "expression": "CALCULATE(SUM(FactEnergyUsage[CostTotal]), DATESYTD(DimDate[Date]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Production Prev Month",
+        "table": "FactProductionOutput",
+        "expression": "CALCULATE(SUM(FactProductionOutput[GoodQuantity]), DATEADD(DimDate[Date], -1, MONTH))",
+        "formatString": "#,0",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Revenue Prev Year",
+        "table": "FactSalesOrders",
+        "expression": "CALCULATE(SUM(FactSalesOrders[TotalAmount]), DATEADD(DimDate[Date], -1, YEAR))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "Production MoM Change %",
+        "table": "FactProductionOutput",
+        "expression": "VAR _CM = SUM(FactProductionOutput[GoodQuantity]) VAR _PM = CALCULATE(SUM(FactProductionOutput[GoodQuantity]), DATEADD(DimDate[Date], -1, MONTH)) RETURN DIVIDE(_CM - _PM, _PM)",
+        "formatString": "0.0%",
+        "displayFolder": "Cumulative"
+      },
+      {
+        "name": "PO Count",
+        "table": "FactPurchaseOrders",
+        "expression": "COUNTROWS(FactPurchaseOrders)",
+        "formatString": "#,0",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Unique Suppliers Used",
+        "table": "FactPurchaseOrders",
+        "expression": "DISTINCTCOUNT(FactPurchaseOrders[SupplierID])",
+        "formatString": "#,0",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Total Maintenance Hours",
+        "table": "FactMaintenanceWorkOrders",
+        "expression": "SUM(FactMaintenanceWorkOrders[LaborHours])",
+        "formatString": "#,0",
+        "displayFolder": "Maintenance"
+      },
+      {
+        "name": "Avg Work Order Duration",
+        "table": "FactMaintenanceWorkOrders",
+        "expression": "AVERAGE(FactMaintenanceWorkOrders[LaborHours])",
+        "formatString": "0.0",
+        "displayFolder": "Maintenance"
+      }
     ]
   }
 }

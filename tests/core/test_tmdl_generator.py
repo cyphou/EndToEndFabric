@@ -28,14 +28,14 @@ class TestTMDLGenerator(unittest.TestCase):
         self.assertTrue(model_tmdl[0].is_file())
 
     def test_table_count(self):
-        """Should generate 18 table .tmdl files (10 dims + 8 facts)."""
+        """Should generate 23 table .tmdl files (13 dims + 10 facts)."""
         tables = self.result["tables"]
-        self.assertEqual(len(tables), 18)
+        self.assertEqual(len(tables), 23)
 
     def test_relationship_count(self):
-        """Should generate 14 relationship files."""
+        """Should generate 27 relationship files."""
         rels = self.result["relationships"]
-        self.assertEqual(len(rels), 14)
+        self.assertEqual(len(rels), 27)
 
     def test_table_files_exist(self):
         for path in self.result["tables"]:
@@ -92,7 +92,7 @@ class TestTMDLMeasures(unittest.TestCase):
 
     def test_measure_count(self):
         measures = self.sm_config["semanticModel"]["measures"]
-        self.assertEqual(len(measures), 20)
+        self.assertEqual(len(measures), 96)
 
     def test_all_measures_have_expression(self):
         for m in self.sm_config["semanticModel"]["measures"]:

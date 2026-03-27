@@ -1,0 +1,79 @@
+{
+  "writebackConfig": {
+    "enabled": true,
+    "targetLakehouse": "GoldLH",
+    "schema": "writeback",
+    "tables": [
+      {
+        "name": "BudgetAdjustments",
+        "description": "User-submitted budget adjustments from Power BI report",
+        "columns": [
+          {"name": "AdjustmentId", "dataType": "STRING", "isKey": true},
+          {"name": "FiscalYear", "dataType": "INT"},
+          {"name": "FiscalQuarter", "dataType": "INT"},
+          {"name": "Department", "dataType": "STRING"},
+          {"name": "AdjustmentAmount", "dataType": "DECIMAL(18,2)"},
+          {"name": "Justification", "dataType": "STRING"},
+          {"name": "Status", "dataType": "STRING", "default": "Pending"},
+          {"name": "SubmittedBy", "dataType": "STRING"},
+          {"name": "SubmittedDate", "dataType": "TIMESTAMP"},
+          {"name": "ApprovedBy", "dataType": "STRING"},
+          {"name": "ApprovedDate", "dataType": "TIMESTAMP"}
+        ],
+        "partitionBy": ["FiscalYear"]
+      },
+      {
+        "name": "GenerationTargets",
+        "description": "Editable generation targets by plant and fuel type",
+        "columns": [
+          {"name": "TargetId", "dataType": "STRING", "isKey": true},
+          {"name": "PlanYear", "dataType": "INT"},
+          {"name": "PlantName", "dataType": "STRING"},
+          {"name": "FuelType", "dataType": "STRING"},
+          {"name": "TargetMWh", "dataType": "DECIMAL(18,2)"},
+          {"name": "TargetEfficiency", "dataType": "DECIMAL(5,2)"},
+          {"name": "Notes", "dataType": "STRING"},
+          {"name": "ModifiedBy", "dataType": "STRING"},
+          {"name": "ModifiedDate", "dataType": "TIMESTAMP"}
+        ],
+        "partitionBy": ["PlanYear"]
+      },
+      {
+        "name": "EmissionsCommitments",
+        "description": "Stakeholder-editable emissions reduction commitments",
+        "columns": [
+          {"name": "CommitmentId", "dataType": "STRING", "isKey": true},
+          {"name": "TargetYear", "dataType": "INT"},
+          {"name": "Scope", "dataType": "STRING"},
+          {"name": "BaselineCO2eTons", "dataType": "DECIMAL(18,2)"},
+          {"name": "TargetCO2eTons", "dataType": "DECIMAL(18,2)"},
+          {"name": "ReductionPct", "dataType": "DECIMAL(5,2)"},
+          {"name": "Strategy", "dataType": "STRING"},
+          {"name": "ModifiedBy", "dataType": "STRING"},
+          {"name": "ModifiedDate", "dataType": "TIMESTAMP"}
+        ],
+        "partitionBy": ["TargetYear"]
+      }
+    ],
+    "storedProcedures": [
+      {
+        "name": "usp_UpsertBudgetAdjustment",
+        "table": "BudgetAdjustments",
+        "operation": "upsert",
+        "keyColumns": ["AdjustmentId"]
+      },
+      {
+        "name": "usp_UpsertGenerationTarget",
+        "table": "GenerationTargets",
+        "operation": "upsert",
+        "keyColumns": ["TargetId"]
+      },
+      {
+        "name": "usp_UpsertEmissionsCommitment",
+        "table": "EmissionsCommitments",
+        "operation": "upsert",
+        "keyColumns": ["CommitmentId"]
+      }
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 {
   "sampleData": {
-    "description": "Fabrikam Manufacturing sample data — 25 tables across 5 domains (Production, Quality, Supply Chain, Maintenance, EHS).",
+    "description": "Fabrikam Manufacturing sample data — 25 CSV files across Production, Quality, SupplyChain, Maintenance, EHS, and SalesAndEnergy domains.",
     "domains": [
       {
         "name": "Production",
@@ -11,13 +11,89 @@
             "fileName": "DimProducts.csv",
             "rowCount": 120,
             "columns": [
-              {"name": "ProductID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "ProductName", "type": "string", "generator": {"method": "faker", "params": {"type": "company"}}},
-              {"name": "ProductCategory", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Engine Components", "Transmission Parts", "Brake Systems", "Suspension", "Electrical", "Body Panels", "Fasteners", "Gaskets & Seals"]}}},
-              {"name": "SKU", "type": "string", "generator": {"method": "faker", "params": {"type": "ean13"}}},
-              {"name": "UnitCost", "type": "float", "generator": {"method": "random_float", "params": {"min": 2.50, "max": 850.00}}},
-              {"name": "UnitPrice", "type": "float", "generator": {"method": "random_float", "params": {"min": 5.00, "max": 1200.00}}},
-              {"name": "WeightKg", "type": "float", "generator": {"method": "random_float", "params": {"min": 0.05, "max": 45.00}}}
+              {
+                "name": "ProductID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "ProductName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "company"
+                  }
+                }
+              },
+              {
+                "name": "ProductCategory",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Engine Components",
+                      "Transmission Parts",
+                      "Brake Systems",
+                      "Suspension",
+                      "Electrical",
+                      "Body Panels",
+                      "Fasteners",
+                      "Gaskets & Seals"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "SKU",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "ean13"
+                  }
+                }
+              },
+              {
+                "name": "UnitCost",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 2.5,
+                    "max": 850.0
+                  }
+                }
+              },
+              {
+                "name": "UnitPrice",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 5.0,
+                    "max": 1200.0
+                  }
+                }
+              },
+              {
+                "name": "WeightKg",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.05,
+                    "max": 45.0
+                  }
+                }
+              }
             ]
           },
           {
@@ -25,12 +101,85 @@
             "fileName": "DimPlants.csv",
             "rowCount": 4,
             "columns": [
-              {"name": "PlantID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "PlantName", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Detroit Main", "Guadalajara South", "Stuttgart Precision", "Pune East"]}}},
-              {"name": "Country", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["USA", "Mexico", "Germany", "India"]}}},
-              {"name": "City", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Detroit", "Guadalajara", "Stuttgart", "Pune"]}}},
-              {"name": "CapacityUnitsPerDay", "type": "int", "generator": {"method": "random_int", "params": {"min": 5000, "max": 25000}}},
-              {"name": "ShiftCount", "type": "int", "generator": {"method": "random_choice", "params": {"choices": [3]}}}
+              {
+                "name": "PlantID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "PlantName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Detroit Main",
+                      "Guadalajara South",
+                      "Stuttgart Precision",
+                      "Pune East"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Country",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "USA",
+                      "Mexico",
+                      "Germany",
+                      "India"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "City",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Detroit",
+                      "Guadalajara",
+                      "Stuttgart",
+                      "Pune"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "CapacityUnitsPerDay",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 5000,
+                    "max": 25000
+                  }
+                }
+              },
+              {
+                "name": "ShiftCount",
+                "type": "int",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      3
+                    ]
+                  }
+                }
+              }
             ]
           },
           {
@@ -38,11 +187,66 @@
             "fileName": "DimProductionLines.csv",
             "rowCount": 20,
             "columns": [
-              {"name": "LineID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "LineName", "type": "string", "generator": {"method": "faker", "params": {"type": "company"}}},
-              {"name": "PlantID", "type": "int", "foreignKey": {"table": "DimPlants", "column": "PlantID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "LineType", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["CNC Machining", "Stamping", "Assembly", "Welding", "Painting", "Casting"]}}},
-              {"name": "MaxThroughputPerHour", "type": "int", "generator": {"method": "random_int", "params": {"min": 50, "max": 500}}}
+              {
+                "name": "LineID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "LineName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "company"
+                  }
+                }
+              },
+              {
+                "name": "PlantID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimPlants",
+                  "column": "PlantID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "LineType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "CNC Machining",
+                      "Stamping",
+                      "Assembly",
+                      "Welding",
+                      "Painting",
+                      "Casting"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "MaxThroughputPerHour",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 50,
+                    "max": 500
+                  }
+                }
+              }
             ]
           },
           {
@@ -50,10 +254,59 @@
             "fileName": "DimShifts.csv",
             "rowCount": 3,
             "columns": [
-              {"name": "ShiftID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "ShiftName", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Morning (06:00-14:00)", "Afternoon (14:00-22:00)", "Night (22:00-06:00)"]}}},
-              {"name": "StartHour", "type": "int", "generator": {"method": "random_choice", "params": {"choices": [6, 14, 22]}}},
-              {"name": "EndHour", "type": "int", "generator": {"method": "random_choice", "params": {"choices": [14, 22, 6]}}}
+              {
+                "name": "ShiftID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "ShiftName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Morning (06:00-14:00)",
+                      "Afternoon (14:00-22:00)",
+                      "Night (22:00-06:00)"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "StartHour",
+                "type": "int",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      6,
+                      14,
+                      22
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "EndHour",
+                "type": "int",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      14,
+                      22,
+                      6
+                    ]
+                  }
+                }
+              }
             ]
           },
           {
@@ -61,16 +314,121 @@
             "fileName": "FactProductionOrders.csv",
             "rowCount": 8000,
             "columns": [
-              {"name": "OrderID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "ProductID", "type": "int", "foreignKey": {"table": "DimProducts", "column": "ProductID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "LineID", "type": "int", "foreignKey": {"table": "DimProductionLines", "column": "LineID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "ShiftID", "type": "int", "foreignKey": {"table": "DimShifts", "column": "ShiftID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "OrderDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "QuantityOrdered", "type": "int", "generator": {"method": "random_int", "params": {"min": 50, "max": 5000}}},
-              {"name": "QuantityProduced", "type": "int", "generator": {"method": "random_int", "params": {"min": 40, "max": 5000}}},
-              {"name": "QuantityScrapped", "type": "int", "generator": {"method": "random_int", "params": {"min": 0, "max": 150}}},
-              {"name": "CycleTimeMinutes", "type": "float", "generator": {"method": "random_float", "params": {"min": 0.5, "max": 30.0}}},
-              {"name": "Status", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Completed", "In Progress", "Scheduled", "On Hold", "Cancelled"]}}}
+              {
+                "name": "OrderID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "ProductID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimProducts",
+                  "column": "ProductID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "LineID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimProductionLines",
+                  "column": "LineID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ShiftID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimShifts",
+                  "column": "ShiftID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "OrderDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "QuantityOrdered",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 50,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "QuantityProduced",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 40,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "QuantityScrapped",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 150
+                  }
+                }
+              },
+              {
+                "name": "CycleTimeMinutes",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.5,
+                    "max": 30.0
+                  }
+                }
+              },
+              {
+                "name": "Status",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Completed",
+                      "In Progress",
+                      "Scheduled",
+                      "On Hold",
+                      "Cancelled"
+                    ]
+                  }
+                }
+              }
             ]
           },
           {
@@ -78,15 +436,105 @@
             "fileName": "FactProductionOutput.csv",
             "rowCount": 12000,
             "columns": [
-              {"name": "OutputID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "LineID", "type": "int", "foreignKey": {"table": "DimProductionLines", "column": "LineID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "ShiftID", "type": "int", "foreignKey": {"table": "DimShifts", "column": "ShiftID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "ProductionDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "GoodUnits", "type": "int", "generator": {"method": "random_int", "params": {"min": 200, "max": 4000}}},
-              {"name": "DefectUnits", "type": "int", "generator": {"method": "random_int", "params": {"min": 0, "max": 100}}},
-              {"name": "PlannedRunTimeMinutes", "type": "int", "generator": {"method": "random_int", "params": {"min": 300, "max": 480}}},
-              {"name": "ActualRunTimeMinutes", "type": "int", "generator": {"method": "random_int", "params": {"min": 200, "max": 480}}},
-              {"name": "DowntimeMinutes", "type": "int", "generator": {"method": "random_int", "params": {"min": 0, "max": 120}}}
+              {
+                "name": "OutputID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "LineID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimProductionLines",
+                  "column": "LineID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ShiftID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimShifts",
+                  "column": "ShiftID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ProductionDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "GoodUnits",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 200,
+                    "max": 4000
+                  }
+                }
+              },
+              {
+                "name": "DefectUnits",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 100
+                  }
+                }
+              },
+              {
+                "name": "PlannedRunTimeMinutes",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 300,
+                    "max": 480
+                  }
+                }
+              },
+              {
+                "name": "ActualRunTimeMinutes",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 200,
+                    "max": 480
+                  }
+                }
+              },
+              {
+                "name": "DowntimeMinutes",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 120
+                  }
+                }
+              }
             ]
           }
         ]
@@ -100,11 +548,68 @@
             "fileName": "DimInspectionPoints.csv",
             "rowCount": 30,
             "columns": [
-              {"name": "InspectionPointID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "PointName", "type": "string", "generator": {"method": "faker", "params": {"type": "company"}}},
-              {"name": "LineID", "type": "int", "foreignKey": {"table": "DimProductionLines", "column": "LineID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "InspectionType", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Dimensional", "Visual", "Functional", "Material", "Destructive", "Non-Destructive"]}}},
-              {"name": "CriticalCharacteristic", "type": "boolean", "generator": {"method": "random_choice", "params": {"choices": [true, false]}}}
+              {
+                "name": "InspectionPointID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "PointName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "company"
+                  }
+                }
+              },
+              {
+                "name": "LineID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimProductionLines",
+                  "column": "LineID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "InspectionType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Dimensional",
+                      "Visual",
+                      "Functional",
+                      "Material",
+                      "Destructive",
+                      "Non-Destructive"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "CriticalCharacteristic",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              }
             ]
           },
           {
@@ -112,10 +617,79 @@
             "fileName": "DimDefectTypes.csv",
             "rowCount": 20,
             "columns": [
-              {"name": "DefectTypeID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "DefectName", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Dimensional Out-of-Spec", "Surface Scratch", "Porosity", "Crack", "Burr", "Misalignment", "Weld Defect", "Paint Defect", "Corrosion", "Missing Feature", "Thread Damage", "Hardness Failure", "Color Mismatch", "Deformation", "Contamination", "Incomplete Assembly", "Electrical Fault", "Seal Failure", "Material Defect", "Label Error"]}}},
-              {"name": "Severity", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Critical", "Major", "Minor", "Cosmetic"]}}},
-              {"name": "Category", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Process", "Material", "Design", "Handling", "Tooling"]}}}
+              {
+                "name": "DefectTypeID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "DefectName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Dimensional Out-of-Spec",
+                      "Surface Scratch",
+                      "Porosity",
+                      "Crack",
+                      "Burr",
+                      "Misalignment",
+                      "Weld Defect",
+                      "Paint Defect",
+                      "Corrosion",
+                      "Missing Feature",
+                      "Thread Damage",
+                      "Hardness Failure",
+                      "Color Mismatch",
+                      "Deformation",
+                      "Contamination",
+                      "Incomplete Assembly",
+                      "Electrical Fault",
+                      "Seal Failure",
+                      "Material Defect",
+                      "Label Error"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Severity",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Critical",
+                      "Major",
+                      "Minor",
+                      "Cosmetic"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Category",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Process",
+                      "Material",
+                      "Design",
+                      "Handling",
+                      "Tooling"
+                    ]
+                  }
+                }
+              }
             ]
           },
           {
@@ -123,16 +697,119 @@
             "fileName": "FactQualityInspections.csv",
             "rowCount": 10000,
             "columns": [
-              {"name": "InspectionID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "InspectionPointID", "type": "int", "foreignKey": {"table": "DimInspectionPoints", "column": "InspectionPointID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "ProductID", "type": "int", "foreignKey": {"table": "DimProducts", "column": "ProductID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "InspectionDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "SampleSize", "type": "int", "generator": {"method": "random_int", "params": {"min": 5, "max": 200}}},
-              {"name": "DefectsFound", "type": "int", "generator": {"method": "random_int", "params": {"min": 0, "max": 15}}},
-              {"name": "MeasuredValue", "type": "float", "generator": {"method": "random_float", "params": {"min": 0.1, "max": 500.0}}},
-              {"name": "UpperSpec", "type": "float", "generator": {"method": "random_float", "params": {"min": 100.0, "max": 510.0}}},
-              {"name": "LowerSpec", "type": "float", "generator": {"method": "random_float", "params": {"min": 0.0, "max": 99.0}}},
-              {"name": "Result", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Pass", "Fail", "Conditional Pass"]}}}
+              {
+                "name": "InspectionID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "InspectionPointID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimInspectionPoints",
+                  "column": "InspectionPointID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ProductID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimProducts",
+                  "column": "ProductID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "InspectionDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "SampleSize",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 5,
+                    "max": 200
+                  }
+                }
+              },
+              {
+                "name": "DefectsFound",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 15
+                  }
+                }
+              },
+              {
+                "name": "MeasuredValue",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.1,
+                    "max": 500.0
+                  }
+                }
+              },
+              {
+                "name": "UpperSpec",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 100.0,
+                    "max": 510.0
+                  }
+                }
+              },
+              {
+                "name": "LowerSpec",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.0,
+                    "max": 99.0
+                  }
+                }
+              },
+              {
+                "name": "Result",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Pass",
+                      "Fail",
+                      "Conditional Pass"
+                    ]
+                  }
+                }
+              }
             ]
           },
           {
@@ -140,15 +817,116 @@
             "fileName": "FactNonConformance.csv",
             "rowCount": 1500,
             "columns": [
-              {"name": "NCRID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "ProductID", "type": "int", "foreignKey": {"table": "DimProducts", "column": "ProductID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "DefectTypeID", "type": "int", "foreignKey": {"table": "DimDefectTypes", "column": "DefectTypeID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "LineID", "type": "int", "foreignKey": {"table": "DimProductionLines", "column": "LineID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "NCRDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "QuantityAffected", "type": "int", "generator": {"method": "random_int", "params": {"min": 1, "max": 500}}},
-              {"name": "Disposition", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Rework", "Scrap", "Use As-Is", "Return to Supplier", "Downgrade"]}}},
-              {"name": "CostOfQuality", "type": "float", "generator": {"method": "random_float", "params": {"min": 50, "max": 25000}}},
-              {"name": "RootCause", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Operator Error", "Tool Wear", "Material Defect", "Process Drift", "Setup Error", "Environmental"]}}}
+              {
+                "name": "NCRID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "ProductID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimProducts",
+                  "column": "ProductID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "DefectTypeID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimDefectTypes",
+                  "column": "DefectTypeID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "LineID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimProductionLines",
+                  "column": "LineID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "NCRDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "QuantityAffected",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 500
+                  }
+                }
+              },
+              {
+                "name": "Disposition",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Rework",
+                      "Scrap",
+                      "Use As-Is",
+                      "Return to Supplier",
+                      "Downgrade"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "CostOfQuality",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 50,
+                    "max": 25000
+                  }
+                }
+              },
+              {
+                "name": "RootCause",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Operator Error",
+                      "Tool Wear",
+                      "Material Defect",
+                      "Process Drift",
+                      "Setup Error",
+                      "Environmental"
+                    ]
+                  }
+                }
+              }
             ]
           }
         ]
@@ -162,12 +940,87 @@
             "fileName": "DimSuppliers.csv",
             "rowCount": 80,
             "columns": [
-              {"name": "SupplierID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "SupplierName", "type": "string", "generator": {"method": "faker", "params": {"type": "company"}}},
-              {"name": "Country", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["USA", "Mexico", "Germany", "China", "Japan", "India", "South Korea", "Brazil", "Canada", "Italy"]}}},
-              {"name": "Category", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Raw Materials", "Components", "Tooling", "Packaging", "Chemicals", "MRO"]}}},
-              {"name": "LeadTimeDays", "type": "int", "generator": {"method": "random_int", "params": {"min": 3, "max": 90}}},
-              {"name": "QualityRating", "type": "float", "generator": {"method": "random_float", "params": {"min": 60.0, "max": 100.0}}}
+              {
+                "name": "SupplierID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "SupplierName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "company"
+                  }
+                }
+              },
+              {
+                "name": "Country",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "USA",
+                      "Mexico",
+                      "Germany",
+                      "China",
+                      "Japan",
+                      "India",
+                      "South Korea",
+                      "Brazil",
+                      "Canada",
+                      "Italy"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Category",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Raw Materials",
+                      "Components",
+                      "Tooling",
+                      "Packaging",
+                      "Chemicals",
+                      "MRO"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "LeadTimeDays",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 3,
+                    "max": 90
+                  }
+                }
+              },
+              {
+                "name": "QualityRating",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 60.0,
+                    "max": 100.0
+                  }
+                }
+              }
             ]
           },
           {
@@ -175,11 +1028,83 @@
             "fileName": "DimMaterials.csv",
             "rowCount": 60,
             "columns": [
-              {"name": "MaterialID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "MaterialName", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Steel Alloy 4140", "Aluminum 6061", "Cast Iron", "Stainless 304", "Carbon Fiber", "Rubber Compound", "Copper Wire", "Zinc Coating", "ABS Plastic", "Polyurethane", "Titanium Grade 5", "Brass C360"]}}},
-              {"name": "MaterialType", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Metal", "Polymer", "Composite", "Chemical", "Coating"]}}},
-              {"name": "UnitOfMeasure", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["kg", "m", "L", "pcs", "rolls"]}}},
-              {"name": "UnitCost", "type": "float", "generator": {"method": "random_float", "params": {"min": 1.00, "max": 500.00}}}
+              {
+                "name": "MaterialID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "MaterialName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Steel Alloy 4140",
+                      "Aluminum 6061",
+                      "Cast Iron",
+                      "Stainless 304",
+                      "Carbon Fiber",
+                      "Rubber Compound",
+                      "Copper Wire",
+                      "Zinc Coating",
+                      "ABS Plastic",
+                      "Polyurethane",
+                      "Titanium Grade 5",
+                      "Brass C360"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "MaterialType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Metal",
+                      "Polymer",
+                      "Composite",
+                      "Chemical",
+                      "Coating"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "UnitOfMeasure",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "kg",
+                      "m",
+                      "L",
+                      "pcs",
+                      "rolls"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "UnitCost",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 1.0,
+                    "max": 500.0
+                  }
+                }
+              }
             ]
           },
           {
@@ -187,11 +1112,64 @@
             "fileName": "DimWarehouses.csv",
             "rowCount": 8,
             "columns": [
-              {"name": "WarehouseID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "WarehouseName", "type": "string", "generator": {"method": "faker", "params": {"type": "company"}}},
-              {"name": "PlantID", "type": "int", "foreignKey": {"table": "DimPlants", "column": "PlantID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "WarehouseType", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Raw Material", "Finished Goods", "WIP", "Shipping"]}}},
-              {"name": "CapacityPallets", "type": "int", "generator": {"method": "random_int", "params": {"min": 500, "max": 10000}}}
+              {
+                "name": "WarehouseID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "WarehouseName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "company"
+                  }
+                }
+              },
+              {
+                "name": "PlantID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimPlants",
+                  "column": "PlantID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "WarehouseType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Raw Material",
+                      "Finished Goods",
+                      "WIP",
+                      "Shipping"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "CapacityPallets",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 500,
+                    "max": 10000
+                  }
+                }
+              }
             ]
           },
           {
@@ -199,14 +1177,99 @@
             "fileName": "FactPurchaseOrders.csv",
             "rowCount": 5000,
             "columns": [
-              {"name": "POID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "SupplierID", "type": "int", "foreignKey": {"table": "DimSuppliers", "column": "SupplierID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "MaterialID", "type": "int", "foreignKey": {"table": "DimMaterials", "column": "MaterialID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "OrderDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "QuantityOrdered", "type": "float", "generator": {"method": "random_float", "params": {"min": 100, "max": 50000}}},
-              {"name": "TotalCost", "type": "float", "generator": {"method": "random_float", "params": {"min": 500, "max": 250000}}},
-              {"name": "ExpectedDelivery", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-15", "end": "2026-09-30"}}},
-              {"name": "Status", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Open", "Received", "Partial", "Late", "Cancelled"]}}}
+              {
+                "name": "POID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "SupplierID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimSuppliers",
+                  "column": "SupplierID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "MaterialID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimMaterials",
+                  "column": "MaterialID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "OrderDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "QuantityOrdered",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 100,
+                    "max": 50000
+                  }
+                }
+              },
+              {
+                "name": "TotalCost",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 500,
+                    "max": 250000
+                  }
+                }
+              },
+              {
+                "name": "ExpectedDelivery",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-15",
+                    "end": "2026-09-30"
+                  }
+                }
+              },
+              {
+                "name": "Status",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Open",
+                      "Received",
+                      "Partial",
+                      "Late",
+                      "Cancelled"
+                    ]
+                  }
+                }
+              }
             ]
           },
           {
@@ -214,13 +1277,86 @@
             "fileName": "FactGoodsReceipt.csv",
             "rowCount": 4500,
             "columns": [
-              {"name": "ReceiptID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "POID", "type": "int", "foreignKey": {"table": "FactPurchaseOrders", "column": "POID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "WarehouseID", "type": "int", "foreignKey": {"table": "DimWarehouses", "column": "WarehouseID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "ReceiptDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "QuantityReceived", "type": "float", "generator": {"method": "random_float", "params": {"min": 50, "max": 50000}}},
-              {"name": "QualityCheckResult", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Accepted", "Rejected", "Conditional Accept"]}}},
-              {"name": "DaysLateOrEarly", "type": "int", "generator": {"method": "random_int", "params": {"min": -5, "max": 30}}}
+              {
+                "name": "ReceiptID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "POID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "FactPurchaseOrders",
+                  "column": "POID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "WarehouseID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimWarehouses",
+                  "column": "WarehouseID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ReceiptDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "QuantityReceived",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 50,
+                    "max": 50000
+                  }
+                }
+              },
+              {
+                "name": "QualityCheckResult",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Accepted",
+                      "Rejected",
+                      "Conditional Accept"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "DaysLateOrEarly",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": -5,
+                    "max": 30
+                  }
+                }
+              }
             ]
           },
           {
@@ -228,13 +1364,83 @@
             "fileName": "FactInventory.csv",
             "rowCount": 3000,
             "columns": [
-              {"name": "InventoryID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "MaterialID", "type": "int", "foreignKey": {"table": "DimMaterials", "column": "MaterialID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "WarehouseID", "type": "int", "foreignKey": {"table": "DimWarehouses", "column": "WarehouseID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "SnapshotDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "QuantityOnHand", "type": "float", "generator": {"method": "random_float", "params": {"min": 0, "max": 25000}}},
-              {"name": "ReorderPoint", "type": "float", "generator": {"method": "random_float", "params": {"min": 100, "max": 5000}}},
-              {"name": "InventoryValue", "type": "float", "generator": {"method": "random_float", "params": {"min": 500, "max": 200000}}}
+              {
+                "name": "InventoryID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "MaterialID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimMaterials",
+                  "column": "MaterialID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "WarehouseID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimWarehouses",
+                  "column": "WarehouseID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "SnapshotDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "QuantityOnHand",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 25000
+                  }
+                }
+              },
+              {
+                "name": "ReorderPoint",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 100,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "InventoryValue",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 500,
+                    "max": 200000
+                  }
+                }
+              }
             ]
           }
         ]
@@ -248,13 +1454,103 @@
             "fileName": "DimEquipment.csv",
             "rowCount": 50,
             "columns": [
-              {"name": "EquipmentID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "EquipmentName", "type": "string", "generator": {"method": "faker", "params": {"type": "company"}}},
-              {"name": "LineID", "type": "int", "foreignKey": {"table": "DimProductionLines", "column": "LineID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "EquipmentType", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["CNC Machine", "Press", "Robot Arm", "Conveyor", "Oven", "Paint Booth", "Welding Station", "Lathe", "Grinder", "Testing Rig"]}}},
-              {"name": "Manufacturer", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Fanuc", "Siemens", "DMG Mori", "Mazak", "ABB", "KUKA", "Trumpf", "Haas"]}}},
-              {"name": "InstallDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2010-01-01", "end": "2024-06-30"}}},
-              {"name": "CriticalityRating", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["A - Critical", "B - Important", "C - Standard"]}}}
+              {
+                "name": "EquipmentID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "EquipmentName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "company"
+                  }
+                }
+              },
+              {
+                "name": "LineID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimProductionLines",
+                  "column": "LineID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "EquipmentType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "CNC Machine",
+                      "Press",
+                      "Robot Arm",
+                      "Conveyor",
+                      "Oven",
+                      "Paint Booth",
+                      "Welding Station",
+                      "Lathe",
+                      "Grinder",
+                      "Testing Rig"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Manufacturer",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Fanuc",
+                      "Siemens",
+                      "DMG Mori",
+                      "Mazak",
+                      "ABB",
+                      "KUKA",
+                      "Trumpf",
+                      "Haas"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "InstallDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2010-01-01",
+                    "end": "2024-06-30"
+                  }
+                }
+              },
+              {
+                "name": "CriticalityRating",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "A - Critical",
+                      "B - Important",
+                      "C - Standard"
+                    ]
+                  }
+                }
+              }
             ]
           },
           {
@@ -262,9 +1558,49 @@
             "fileName": "DimMaintenanceTypes.csv",
             "rowCount": 8,
             "columns": [
-              {"name": "MaintenanceTypeID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "TypeName", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Preventive", "Corrective", "Predictive", "Condition-Based", "Emergency", "Overhaul", "Calibration", "Lubrication"]}}},
-              {"name": "IsPlanned", "type": "boolean", "generator": {"method": "random_choice", "params": {"choices": [true, false]}}}
+              {
+                "name": "MaintenanceTypeID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "TypeName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Preventive",
+                      "Corrective",
+                      "Predictive",
+                      "Condition-Based",
+                      "Emergency",
+                      "Overhaul",
+                      "Calibration",
+                      "Lubrication"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "IsPlanned",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              }
             ]
           },
           {
@@ -272,15 +1608,110 @@
             "fileName": "FactMaintenanceWorkOrders.csv",
             "rowCount": 4000,
             "columns": [
-              {"name": "WorkOrderID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "EquipmentID", "type": "int", "foreignKey": {"table": "DimEquipment", "column": "EquipmentID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "MaintenanceTypeID", "type": "int", "foreignKey": {"table": "DimMaintenanceTypes", "column": "MaintenanceTypeID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "OrderDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "CompletionDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "LaborHours", "type": "float", "generator": {"method": "random_float", "params": {"min": 0.5, "max": 48}}},
-              {"name": "PartsCost", "type": "float", "generator": {"method": "random_float", "params": {"min": 0, "max": 15000}}},
-              {"name": "LaborCost", "type": "float", "generator": {"method": "random_float", "params": {"min": 50, "max": 5000}}},
-              {"name": "Status", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Completed", "In Progress", "Scheduled", "Overdue", "Cancelled"]}}}
+              {
+                "name": "WorkOrderID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "EquipmentID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimEquipment",
+                  "column": "EquipmentID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "MaintenanceTypeID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimMaintenanceTypes",
+                  "column": "MaintenanceTypeID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "OrderDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "CompletionDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "LaborHours",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.5,
+                    "max": 48
+                  }
+                }
+              },
+              {
+                "name": "PartsCost",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 15000
+                  }
+                }
+              },
+              {
+                "name": "LaborCost",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 50,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "Status",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Completed",
+                      "In Progress",
+                      "Scheduled",
+                      "Overdue",
+                      "Cancelled"
+                    ]
+                  }
+                }
+              }
             ]
           },
           {
@@ -288,13 +1719,93 @@
             "fileName": "FactDowntime.csv",
             "rowCount": 3500,
             "columns": [
-              {"name": "DowntimeID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "EquipmentID", "type": "int", "foreignKey": {"table": "DimEquipment", "column": "EquipmentID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "LineID", "type": "int", "foreignKey": {"table": "DimProductionLines", "column": "LineID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "DowntimeStart", "type": "datetime", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "DurationMinutes", "type": "int", "generator": {"method": "random_int", "params": {"min": 5, "max": 720}}},
-              {"name": "Cause", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Mechanical Failure", "Electrical Fault", "Tool Change", "Material Shortage", "Operator Error", "Planned Maintenance", "Quality Hold", "Changeover"]}}},
-              {"name": "IsUnplanned", "type": "boolean", "generator": {"method": "random_choice", "params": {"choices": [true, false]}}}
+              {
+                "name": "DowntimeID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "EquipmentID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimEquipment",
+                  "column": "EquipmentID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "LineID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimProductionLines",
+                  "column": "LineID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "DowntimeStart",
+                "type": "datetime",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "DurationMinutes",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 5,
+                    "max": 720
+                  }
+                }
+              },
+              {
+                "name": "Cause",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Mechanical Failure",
+                      "Electrical Fault",
+                      "Tool Change",
+                      "Material Shortage",
+                      "Operator Error",
+                      "Planned Maintenance",
+                      "Quality Hold",
+                      "Changeover"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "IsUnplanned",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              }
             ]
           }
         ]
@@ -308,10 +1819,73 @@
             "fileName": "DimHazards.csv",
             "rowCount": 15,
             "columns": [
-              {"name": "HazardID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "HazardName", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Noise Exposure", "Chemical Splash", "Moving Machinery", "Hot Surfaces", "Electrical Shock", "Forklift Traffic", "Ergonomic Strain", "Falling Objects", "Confined Space", "Slip/Trip/Fall", "Welding Fumes", "Dust Inhalation", "Vibration", "Radiation", "Fire/Explosion"]}}},
-              {"name": "Category", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Physical", "Chemical", "Ergonomic", "Biological", "Fire"]}}},
-              {"name": "RiskLevel", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["High", "Medium", "Low"]}}}
+              {
+                "name": "HazardID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "HazardName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Noise Exposure",
+                      "Chemical Splash",
+                      "Moving Machinery",
+                      "Hot Surfaces",
+                      "Electrical Shock",
+                      "Forklift Traffic",
+                      "Ergonomic Strain",
+                      "Falling Objects",
+                      "Confined Space",
+                      "Slip/Trip/Fall",
+                      "Welding Fumes",
+                      "Dust Inhalation",
+                      "Vibration",
+                      "Radiation",
+                      "Fire/Explosion"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Category",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Physical",
+                      "Chemical",
+                      "Ergonomic",
+                      "Biological",
+                      "Fire"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "RiskLevel",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "High",
+                      "Medium",
+                      "Low"
+                    ]
+                  }
+                }
+              }
             ]
           },
           {
@@ -319,14 +1893,103 @@
             "fileName": "FactSafetyIncidents.csv",
             "rowCount": 300,
             "columns": [
-              {"name": "IncidentID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "PlantID", "type": "int", "foreignKey": {"table": "DimPlants", "column": "PlantID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "HazardID", "type": "int", "foreignKey": {"table": "DimHazards", "column": "HazardID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "IncidentDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "IncidentType", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Recordable Injury", "First Aid", "Near Miss", "Property Damage", "Environmental Release"]}}},
-              {"name": "Severity", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Minor", "Moderate", "Serious", "Critical"]}}},
-              {"name": "LostTimeDays", "type": "int", "generator": {"method": "random_int", "params": {"min": 0, "max": 45}}},
-              {"name": "CostUSD", "type": "float", "generator": {"method": "random_float", "params": {"min": 0, "max": 50000}}}
+              {
+                "name": "IncidentID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "PlantID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimPlants",
+                  "column": "PlantID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "HazardID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimHazards",
+                  "column": "HazardID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "IncidentDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "IncidentType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Recordable Injury",
+                      "First Aid",
+                      "Near Miss",
+                      "Property Damage",
+                      "Environmental Release"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Severity",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Minor",
+                      "Moderate",
+                      "Serious",
+                      "Critical"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "LostTimeDays",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 45
+                  }
+                }
+              },
+              {
+                "name": "CostUSD",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 50000
+                  }
+                }
+              }
             ]
           },
           {
@@ -334,13 +1997,281 @@
             "fileName": "FactEnvironmentalReadings.csv",
             "rowCount": 5000,
             "columns": [
-              {"name": "ReadingID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "PlantID", "type": "int", "foreignKey": {"table": "DimPlants", "column": "PlantID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "ReadingDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "MeasurementType", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Air Quality (PM2.5)", "Air Quality (VOC)", "Water pH", "Water Temperature", "Noise Level (dB)", "CO2 Emissions (kg)", "Waste Generated (kg)", "Energy Consumption (kWh)"]}}},
-              {"name": "Value", "type": "float", "generator": {"method": "random_float", "params": {"min": 0.1, "max": 1000}}},
-              {"name": "RegulatoryLimit", "type": "float", "generator": {"method": "random_float", "params": {"min": 50, "max": 1500}}},
-              {"name": "IsCompliant", "type": "boolean", "generator": {"method": "random_choice", "params": {"choices": [true, true, true, true, false]}}}
+              {
+                "name": "ReadingID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "PlantID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimPlants",
+                  "column": "PlantID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ReadingDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "MeasurementType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Air Quality (PM2.5)",
+                      "Air Quality (VOC)",
+                      "Water pH",
+                      "Water Temperature",
+                      "Noise Level (dB)",
+                      "CO2 Emissions (kg)",
+                      "Waste Generated (kg)",
+                      "Energy Consumption (kWh)"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Value",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.1,
+                    "max": 1000
+                  }
+                }
+              },
+              {
+                "name": "RegulatoryLimit",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 50,
+                    "max": 1500
+                  }
+                }
+              },
+              {
+                "name": "IsCompliant",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      true,
+                      true,
+                      true,
+                      false
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "SalesAndEnergy",
+        "folder": "SalesAndEnergy",
+        "tables": [
+          {
+            "name": "FactSalesOrders",
+            "fileName": "FactSalesOrders.csv",
+            "rowCount": 3000,
+            "columns": [
+              {
+                "name": "SalesOrderID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 50000
+                  }
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 50
+                  }
+                }
+              },
+              {
+                "name": "ProductID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimProducts",
+                  "column": "ProductID"
+                }
+              },
+              {
+                "name": "OrderDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-12-31"
+                  }
+                }
+              },
+              {
+                "name": "Quantity",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 10,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "UnitPrice",
+                "type": "decimal",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 5.0,
+                    "max": 500.0,
+                    "decimals": 2
+                  }
+                }
+              },
+              {
+                "name": "TotalAmount",
+                "type": "decimal",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 100.0,
+                    "max": 250000.0,
+                    "decimals": 2
+                  }
+                }
+              },
+              {
+                "name": "ShipDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-05",
+                    "end": "2027-01-10"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactEnergyUsage",
+            "fileName": "FactEnergyUsage.csv",
+            "rowCount": 1500,
+            "columns": [
+              {
+                "name": "UsageID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "PlantID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimPlants",
+                  "column": "PlantID"
+                }
+              },
+              {
+                "name": "RecordDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-12-31"
+                  }
+                }
+              },
+              {
+                "name": "ElectricityKWh",
+                "type": "decimal",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 500.0,
+                    "max": 15000.0,
+                    "decimals": 1
+                  }
+                }
+              },
+              {
+                "name": "NaturalGasTherms",
+                "type": "decimal",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 50.0,
+                    "max": 3000.0,
+                    "decimals": 1
+                  }
+                }
+              },
+              {
+                "name": "WaterGallons",
+                "type": "decimal",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 100.0,
+                    "max": 10000.0,
+                    "decimals": 0
+                  }
+                }
+              },
+              {
+                "name": "CostTotal",
+                "type": "decimal",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 200.0,
+                    "max": 8000.0,
+                    "decimals": 2
+                  }
+                }
+              }
             ]
           }
         ]

@@ -1,0 +1,103 @@
+{
+  "webEnrichment": {
+    "enabled": true,
+    "targetLakehouse": "SilverLH",
+    "schema": "web",
+    "sources": [
+      {
+        "name": "BookMetadata",
+        "description": "ISBN lookup for book metadata enrichment",
+        "endpoint": "https://openlibrary.org/api/books",
+        "method": "GET",
+        "schedule": "weekly",
+        "tableName": "WebBookMetadata",
+        "columns": [
+          {
+            "name": "ISBN",
+            "type": "string"
+          },
+          {
+            "name": "Title",
+            "type": "string"
+          },
+          {
+            "name": "PageCount",
+            "type": "int"
+          },
+          {
+            "name": "Publisher",
+            "type": "string"
+          },
+          {
+            "name": "PublishDate",
+            "type": "string"
+          },
+          {
+            "name": "SubjectTags",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "BestSellerLists",
+        "description": "Weekly bestseller rankings",
+        "endpoint": "https://api.nytimes.com/svc/books/v3/lists",
+        "method": "GET",
+        "schedule": "weekly",
+        "tableName": "WebBestSellerLists",
+        "columns": [
+          {
+            "name": "ListName",
+            "type": "string"
+          },
+          {
+            "name": "Rank",
+            "type": "int"
+          },
+          {
+            "name": "Title",
+            "type": "string"
+          },
+          {
+            "name": "Author",
+            "type": "string"
+          },
+          {
+            "name": "WeeksOnList",
+            "type": "int"
+          },
+          {
+            "name": "RankingDate",
+            "type": "date"
+          }
+        ]
+      },
+      {
+        "name": "ExchangeRates",
+        "description": "Currency exchange rates for international sales",
+        "endpoint": "https://api.exchangerate.host/latest?base=USD",
+        "method": "GET",
+        "schedule": "daily",
+        "tableName": "WebExchangeRates",
+        "columns": [
+          {
+            "name": "BaseCurrency",
+            "type": "string"
+          },
+          {
+            "name": "TargetCurrency",
+            "type": "string"
+          },
+          {
+            "name": "Rate",
+            "type": "double"
+          },
+          {
+            "name": "AsOfDate",
+            "type": "date"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "dataAgent": {
+    "name": "NorthwindHRFinance-Agent",
+    "displayName": "Northwind HR & Finance AI Assistant",
+    "description": "AI-powered Q&A agent for Northwind Traders HR and Finance, connected to the NorthwindHRFinanceModel semantic model.",
+    "semanticModel": "NorthwindHRFinanceModel",
+    "systemPrompt": "You are an AI assistant for Northwind Traders, a multi-subsidiary holding company. You help HR business partners, finance controllers, and executives explore workforce analytics, payroll, compensation, GL reconciliation, budgets, and corporate performance data. Answer questions using the NorthwindHRFinanceModel semantic model. For salaries and financial data use USD. For headcount use FTE. Always specify the subsidiary or department when relevant.",
+    "exampleQuestions": [
+      "What is our total headcount by department?",
+      "Show me the budget variance by cost center for Q3.",
+      "What is the average salary by job level across subsidiaries?",
+      "How many open requisitions do we have by department?",
+      "What is our turnover rate this fiscal year?",
+      "Compare actual vs budget for the top 10 GL accounts.",
+      "What is the average time-to-fill for open positions?"
+    ],
+    "capabilities": {
+      "requiresF64": true,
+      "supportsFollowUp": true,
+      "supportsVisualization": true
+    }
+  }
+}

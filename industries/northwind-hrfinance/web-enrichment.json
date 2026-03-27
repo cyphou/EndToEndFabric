@@ -1,0 +1,121 @@
+{
+  "webEnrichment": {
+    "enabled": true,
+    "targetLakehouse": "SilverLH",
+    "schema": "web",
+    "sources": [
+      {
+        "name": "ExchangeRates",
+        "description": "Daily exchange rates for multi-currency payroll",
+        "endpoint": "https://api.exchangerate.host/latest?base=USD",
+        "method": "GET",
+        "schedule": "daily",
+        "tableName": "WebExchangeRates",
+        "columns": [
+          {
+            "name": "BaseCurrency",
+            "type": "string"
+          },
+          {
+            "name": "TargetCurrency",
+            "type": "string"
+          },
+          {
+            "name": "Rate",
+            "type": "double"
+          },
+          {
+            "name": "AsOfDate",
+            "type": "date"
+          }
+        ]
+      },
+      {
+        "name": "LaborMarketData",
+        "description": "BLS labor statistics for compensation benchmarking",
+        "endpoint": "https://api.bls.gov/publicAPI/v2/timeseries/data",
+        "method": "POST",
+        "schedule": "monthly",
+        "tableName": "WebLaborMarketData",
+        "columns": [
+          {
+            "name": "SeriesID",
+            "type": "string"
+          },
+          {
+            "name": "Year",
+            "type": "int"
+          },
+          {
+            "name": "Period",
+            "type": "string"
+          },
+          {
+            "name": "Value",
+            "type": "double"
+          },
+          {
+            "name": "Category",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "HolidayCalendar",
+        "description": "Public holidays by country for workforce planning",
+        "endpoint": "https://date.nager.at/api/v3/publicholidays",
+        "method": "GET",
+        "schedule": "yearly",
+        "tableName": "WebHolidayCalendar",
+        "columns": [
+          {
+            "name": "Country",
+            "type": "string"
+          },
+          {
+            "name": "HolidayDate",
+            "type": "date"
+          },
+          {
+            "name": "HolidayName",
+            "type": "string"
+          },
+          {
+            "name": "IsNational",
+            "type": "boolean"
+          }
+        ]
+      },
+      {
+        "name": "StockPrices",
+        "description": "Company stock price for compensation correlation",
+        "endpoint": "https://query1.finance.yahoo.com/v8/finance/chart",
+        "method": "GET",
+        "schedule": "daily",
+        "tableName": "WebStockPrices",
+        "columns": [
+          {
+            "name": "Symbol",
+            "type": "string"
+          },
+          {
+            "name": "TradeDate",
+            "type": "date"
+          },
+          {
+            "name": "Open",
+            "type": "double"
+          },
+          {
+            "name": "Close",
+            "type": "double"
+          },
+          {
+            "name": "Volume",
+            "type": "int"
+          }
+        ]
+      }
+    ]
+  }
+}

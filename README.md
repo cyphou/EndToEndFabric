@@ -10,7 +10,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white" alt="Python 3.12+">
   <img src="https://img.shields.io/badge/dependencies-zero-brightgreen" alt="Zero Dependencies">
-  <img src="https://img.shields.io/badge/tests-73%20passing-success" alt="73 Tests Passing">
+  <img src="https://img.shields.io/badge/tests-213%20passing-success" alt="213 Tests Passing">
   <img src="https://img.shields.io/badge/industries-4-orange" alt="4 Industries">
   <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT License">
 </p>
@@ -41,24 +41,26 @@ Or use the PowerShell wrapper:
 
 ---
 
-## 10-Step Generation Pipeline
+## 12-Step Generation Pipeline
 
 <p align="center">
-  <img src="docs/images/pipeline-architecture.png" alt="10-Step Generation Pipeline" width="100%">
+  <img src="docs/images/pipeline-architecture.png" alt="12-Step Generation Pipeline" width="100%">
 </p>
 
 | Step | Generator | Output |
 |:---:|---|---|
 | **1** | Config Loader | Validates industry JSON configs against schemas |
 | **2** | CSV Generator | Synthetic data with FK integrity per domain |
-| **3** | Notebook Generator | PySpark NB01–NB06 (Bronze→Silver→Gold + diagnostics) |
+| **3** | Notebook Generator | PySpark NB01–NB08 (Bronze→Silver→Gold + diagnostics + writeback) |
 | **4** | Dataflow Generator | Power Query M ingestion configs |
 | **5** | TMDL Generator | Direct Lake semantic model (tables, measures, relationships) |
 | **6** | Report Generator | PBIR v4.0 pages, visuals, themes |
 | **7** | Pipeline Generator | Fabric Data Pipeline JSON orchestration |
 | **8** | Forecast Generator | Holt-Winters + MLflow tracking notebooks |
 | **9** | HTAP Generator | Eventhouse, KQL database, event simulator |
-| **10** | Deploy Generator | PowerShell scripts (Deploy, Upload, Validate) |
+| **10** | Writeback Generator | NB07/NB08 writeback notebooks + stored procedures |
+| **11** | Data Agent Generator | Fabric AI Agent config + README |
+| **12** | Deploy Generator | PowerShell scripts (Deploy, Upload, Validate) |
 
 ---
 
@@ -184,7 +186,7 @@ Additional notebooks:
   <img src="docs/images/config-driven-design.png" alt="Config-Driven Design" width="100%">
 </p>
 
-Each industry is defined by **7 JSON config files** — no code changes needed to add a new industry:
+Each industry is defined by **8 JSON config files** — no code changes needed to add a new industry:
 
 | Config | Purpose |
 |---|---|
@@ -195,6 +197,7 @@ Each industry is defined by **7 JSON config files** — no code changes needed t
 | `forecast-config.json` | Holt-Winters models, horizon, MLflow settings |
 | `planning-config.json` | Planning IQ tables, scenarios, growth rates |
 | `htap-config.json` | Eventhouse, KQL database, event stream definitions |
+| `web-enrichment.json` | External API sources for Silver-layer enrichment |
 
 ### Adding a New Industry
 
@@ -314,13 +317,13 @@ output/<industry>/
 
 ```
 FabricEndtoEnd/
-├── generate.py                  # CLI entry point (10-step pipeline)
+├── generate.py                  # CLI entry point (12-step pipeline)
 ├── generate.ps1                 # PowerShell wrapper
 ├── core/                        # Core generator engine
 │   ├── config_loader.py         # JSON config loading & validation
 │   ├── template_engine.py       # {{PLACEHOLDER}} template rendering
 │   ├── csv_generator.py         # Synthetic data generation (FK integrity)
-│   ├── notebook_generator.py    # PySpark notebook generation (NB01–NB06)
+│   ├── notebook_generator.py    # PySpark notebook generation (NB01–NB08)
 │   ├── dataflow_generator.py    # Dataflow Gen2 Power Query M generation
 │   ├── tmdl_generator.py        # TMDL semantic model generation
 │   ├── report_generator.py      # PBIR v4.0 report generation
@@ -328,17 +331,21 @@ FabricEndtoEnd/
 │   ├── forecast_generator.py    # Holt-Winters + MLflow notebook generation
 │   ├── planning_generator.py    # Planning IQ tables & notebooks
 │   ├── htap_generator.py        # Eventhouse, KQL, event simulator
+│   ├── writeback_generator.py   # Writeback notebooks + stored procedures
+│   ├── agent_generator.py       # Fabric Data Agent config generation
 │   ├── deploy_generator.py      # PowerShell deployment scripts
 │   ├── pester_generator.py      # Pester 5 test suite generation
 │   └── schemas/                 # JSON validation schemas
 ├── industries/                  # Per-industry config files
-│   ├── horizon-books/           # 7 JSON configs
-│   ├── contoso-energy/          # 7 JSON configs
-│   ├── northwind-hrfinance/     # 7 JSON configs
-│   └── fabrikam-manufacturing/  # 7 JSON configs
-├── templates/                   # .tpl template files
-├── tests/                       # pytest test suite (73 tests)
-│   └── core/                    # Unit tests per module
+│   ├── horizon-books/           # 8 JSON configs
+│   ├── contoso-energy/          # 8 JSON configs
+│   ├── northwind-hrfinance/     # 8 JSON configs
+│   └── fabrikam-manufacturing/  # 8 JSON configs
+├── templates/                   # .tpl template files (deploy, kql, notebooks, reports, tmdl)
+├── tests/                       # pytest test suite (213+ tests)
+│   ├── core/                    # Unit tests per module
+│   ├── industries/              # Per-industry target validation
+│   └── integration/             # End-to-end pipeline tests
 ├── docs/                        # Documentation
 │   ├── images/                  # Generated PNG diagrams
 │   └── generate_diagrams.py     # Diagram generation script
@@ -351,13 +358,13 @@ FabricEndtoEnd/
 
 ```bash
 # Run all tests
-python -m pytest tests/core/ -v
+python -m pytest tests/ -v
 
 # Run with coverage
-python -m pytest tests/core/ -v --cov=core --cov-report=term-missing
+python -m pytest tests/ -v --cov=core --cov-report=term-missing
 ```
 
-**Current status:** 73 tests passing across 5 test modules.
+**Current status:** 213+ tests passing across 9 test modules.
 
 | Module | Tests | Coverage Area |
 |---|---|---|
@@ -366,24 +373,31 @@ python -m pytest tests/core/ -v --cov=core --cov-report=term-missing
 | `test_report_generator.py` | 14 | PBIR reports, pages, visuals, themes |
 | `test_template_engine.py` | 14 | Placeholder rendering, `{{#if}}`, `{{#each}}` |
 | `test_tmdl_generator.py` | 16 | TMDL tables, measures, relationships |
+| `test_dataflow_generator.py` | 12 | Dataflow Gen2 per-domain configs |
+| `test_agent_generator.py` | 4 | Data Agent config + README generation |
+| `test_per_industry_generation.py` | 20 | PLAN.md §10.3 target validation per industry |
+| `test_full_pipeline.py` | 7+ | End-to-end pipeline + idempotency |
 
 ---
 
 ## Generation Results
 
-All 4 industries generate successfully with the full 10-step pipeline:
+All 4 industries generate successfully with the full 12-step pipeline:
 
 | | Horizon Books | Contoso Energy | Northwind HR/Finance | Fabrikam Manufacturing |
 |---|:---:|:---:|:---:|:---:|
-| **CSV Files** | 17 | 13 | 19 | 23 |
-| **Notebooks** | 4 | 4 | 4 | 4 |
+| **CSV Files** | 17 | 25 | 22 | 25 |
+| **Notebooks** | 6 | 6 | 6 | 6 |
 | **Dataflows** | 4 | 6 | 6 | 6 |
-| **TMDL Tables** | 18 | 14 | 20 | 24 |
-| **Relationships** | 14 | 9 | 16 | 27 |
+| **TMDL Tables** | 23 | 28 | 30 | 32 |
+| **DAX Measures** | 96 | 113 | 130 | 120 |
+| **Relationships** | 27 | 32 | 41 | 38 |
 | **Report Files** | 74 | 94 | 107 | 115 |
 | **Pipeline** | 2 | 2 | 2 | 2 |
 | **Forecast** | 2 | 2 | 2 | 2 |
 | **HTAP** | 6 | 6 | 6 | 6 |
+| **Writeback** | 4 | 4 | 4 | 4 |
+| **Data Agent** | 2 | 2 | 2 | 2 |
 | **Deploy Scripts** | 4 | 4 | 4 | 4 |
 
 ---

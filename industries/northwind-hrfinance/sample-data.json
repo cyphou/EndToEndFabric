@@ -1,6 +1,6 @@
 {
   "sampleData": {
-    "description": "Northwind HR & Finance sample data \u00e2\u20ac\u201d 19 tables across 5 domains.",
+    "description": "Northwind HR & Finance sample data — 22 CSV files across HR, Payroll, FinancialAccounting, Budgeting, CorporatePerformance, and Training domains.",
     "domains": [
       {
         "name": "HR",
@@ -743,6 +743,268 @@
               {
                 "name": "Score",
                 "type": "decimal"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Training",
+        "folder": "Training",
+        "tables": [
+          {
+            "name": "FactTrainingRecords",
+            "fileName": "FactTrainingRecords.csv",
+            "rowCount": 500,
+            "columns": [
+              {
+                "name": "RecordID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "EmployeeID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimEmployees",
+                  "column": "EmployeeID"
+                }
+              },
+              {
+                "name": "CourseID",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 20
+                  }
+                }
+              },
+              {
+                "name": "CompletionDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-12-31"
+                  }
+                }
+              },
+              {
+                "name": "Score",
+                "type": "decimal",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 50.0,
+                    "max": 100.0,
+                    "decimals": 1
+                  }
+                }
+              },
+              {
+                "name": "Status",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "values": [
+                      "Completed",
+                      "In Progress",
+                      "Not Started",
+                      "Failed"
+                    ],
+                    "weights": [
+                      6,
+                      2,
+                      1,
+                      1
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactLeaveRequests",
+            "fileName": "FactLeaveRequests.csv",
+            "rowCount": 800,
+            "columns": [
+              {
+                "name": "LeaveID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "EmployeeID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimEmployees",
+                  "column": "EmployeeID"
+                }
+              },
+              {
+                "name": "LeaveTypeID",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 6
+                  }
+                }
+              },
+              {
+                "name": "StartDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-12-31"
+                  }
+                }
+              },
+              {
+                "name": "EndDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-02",
+                    "end": "2027-01-15"
+                  }
+                }
+              },
+              {
+                "name": "DaysTaken",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 20
+                  }
+                }
+              },
+              {
+                "name": "Status",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "values": [
+                      "Approved",
+                      "Pending",
+                      "Rejected",
+                      "Cancelled"
+                    ],
+                    "weights": [
+                      6,
+                      2,
+                      1,
+                      1
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactTimesheet",
+            "fileName": "FactTimesheet.csv",
+            "rowCount": 2000,
+            "columns": [
+              {
+                "name": "TimesheetID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "EmployeeID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimEmployees",
+                  "column": "EmployeeID"
+                }
+              },
+              {
+                "name": "ProjectID",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 15
+                  }
+                }
+              },
+              {
+                "name": "WeekEndDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-07",
+                    "end": "2026-12-28"
+                  }
+                }
+              },
+              {
+                "name": "RegularHours",
+                "type": "decimal",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 32.0,
+                    "max": 40.0,
+                    "decimals": 1
+                  }
+                }
+              },
+              {
+                "name": "OvertimeHours",
+                "type": "decimal",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.0,
+                    "max": 12.0,
+                    "decimals": 1
+                  }
+                }
+              },
+              {
+                "name": "BillableHours",
+                "type": "decimal",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 20.0,
+                    "max": 40.0,
+                    "decimals": 1
+                  }
+                }
               }
             ]
           }

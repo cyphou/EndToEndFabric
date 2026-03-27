@@ -1,0 +1,77 @@
+{
+  "writebackConfig": {
+    "enabled": true,
+    "targetLakehouse": "GoldLH",
+    "schema": "writeback",
+    "tables": [
+      {
+        "name": "ProductionTargets",
+        "description": "Plant-level production targets editable by operations managers",
+        "columns": [
+          {"name": "TargetId", "dataType": "STRING", "isKey": true},
+          {"name": "FiscalYear", "dataType": "INT"},
+          {"name": "FiscalMonth", "dataType": "INT"},
+          {"name": "PlantName", "dataType": "STRING"},
+          {"name": "ProductLine", "dataType": "STRING"},
+          {"name": "TargetUnits", "dataType": "INT"},
+          {"name": "TargetYieldPct", "dataType": "DECIMAL(5,2)"},
+          {"name": "Notes", "dataType": "STRING"},
+          {"name": "ModifiedBy", "dataType": "STRING"},
+          {"name": "ModifiedDate", "dataType": "TIMESTAMP"}
+        ],
+        "partitionBy": ["FiscalYear"]
+      },
+      {
+        "name": "QualityThresholds",
+        "description": "Editable quality pass/fail thresholds by product line",
+        "columns": [
+          {"name": "ThresholdId", "dataType": "STRING", "isKey": true},
+          {"name": "ProductLine", "dataType": "STRING"},
+          {"name": "MetricName", "dataType": "STRING"},
+          {"name": "MinValue", "dataType": "DECIMAL(18,4)"},
+          {"name": "MaxValue", "dataType": "DECIMAL(18,4)"},
+          {"name": "EffectiveDate", "dataType": "DATE"},
+          {"name": "ModifiedBy", "dataType": "STRING"},
+          {"name": "ModifiedDate", "dataType": "TIMESTAMP"}
+        ],
+        "partitionBy": ["ProductLine"]
+      },
+      {
+        "name": "MaintenanceBudget",
+        "description": "Maintenance budget allocations by plant and category",
+        "columns": [
+          {"name": "BudgetId", "dataType": "STRING", "isKey": true},
+          {"name": "FiscalYear", "dataType": "INT"},
+          {"name": "PlantName", "dataType": "STRING"},
+          {"name": "Category", "dataType": "STRING"},
+          {"name": "BudgetAmount", "dataType": "DECIMAL(18,2)"},
+          {"name": "Justification", "dataType": "STRING"},
+          {"name": "Status", "dataType": "STRING", "default": "Draft"},
+          {"name": "ModifiedBy", "dataType": "STRING"},
+          {"name": "ModifiedDate", "dataType": "TIMESTAMP"}
+        ],
+        "partitionBy": ["FiscalYear"]
+      }
+    ],
+    "storedProcedures": [
+      {
+        "name": "usp_UpsertProductionTarget",
+        "table": "ProductionTargets",
+        "operation": "upsert",
+        "keyColumns": ["TargetId"]
+      },
+      {
+        "name": "usp_UpsertQualityThreshold",
+        "table": "QualityThresholds",
+        "operation": "upsert",
+        "keyColumns": ["ThresholdId"]
+      },
+      {
+        "name": "usp_UpsertMaintenanceBudget",
+        "table": "MaintenanceBudget",
+        "operation": "upsert",
+        "keyColumns": ["BudgetId"]
+      }
+    ]
+  }
+}

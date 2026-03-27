@@ -1,6 +1,6 @@
 {
   "sampleData": {
-    "description": "Contoso Energy sample data — 20 tables across 5 domains.",
+    "description": "Contoso Energy sample data — 20 tables across 7 domains.",
     "domains": [
       {
         "name": "Generation",
@@ -11,13 +11,131 @@
             "fileName": "DimPowerPlants.csv",
             "rowCount": 15,
             "columns": [
-              {"name": "PlantID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "PlantName", "type": "string", "generator": {"method": "faker", "params": {"type": "company"}}},
-              {"name": "FuelType", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Solar", "Wind", "Natural Gas", "Hydro", "Nuclear", "Coal"]}}},
-              {"name": "CapacityMW", "type": "float", "generator": {"method": "random_float", "params": {"min": 50, "max": 2000}}},
-              {"name": "Region", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["North", "South", "East", "West", "Central"]}}},
-              {"name": "CommissionDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2005-01-01", "end": "2023-12-31"}}},
-              {"name": "IsRenewable", "type": "boolean", "generator": {"method": "random_choice", "params": {"choices": [true, false]}}}
+              {
+                "name": "PlantID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "PlantName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "company"
+                  }
+                }
+              },
+              {
+                "name": "FuelType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Solar",
+                      "Wind",
+                      "Natural Gas",
+                      "Hydro",
+                      "Nuclear",
+                      "Coal"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "CapacityMW",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 50,
+                    "max": 2000
+                  }
+                }
+              },
+              {
+                "name": "Region",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "North",
+                      "South",
+                      "East",
+                      "West",
+                      "Central"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "CommissionDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2005-01-01",
+                    "end": "2023-12-31"
+                  }
+                }
+              },
+              {
+                "name": "IsRenewable",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "PlantStatus",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Active",
+                      "Maintenance",
+                      "Decommissioned"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Latitude",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 30.0,
+                    "max": 48.0
+                  }
+                }
+              },
+              {
+                "name": "Longitude",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": -120.0,
+                    "max": -75.0
+                  }
+                }
+              }
             ]
           },
           {
@@ -25,12 +143,116 @@
             "fileName": "FactGeneration.csv",
             "rowCount": 5000,
             "columns": [
-              {"name": "GenerationID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "PlantID", "type": "int", "foreignKey": {"table": "DimPowerPlants", "column": "PlantID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "GenerationDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "MWhGenerated", "type": "float", "generator": {"method": "random_float", "params": {"min": 10, "max": 5000}}},
-              {"name": "Efficiency", "type": "float", "generator": {"method": "random_float", "params": {"min": 0.25, "max": 0.98}}},
-              {"name": "CO2EmissionsTons", "type": "float", "generator": {"method": "random_float", "params": {"min": 0, "max": 500}}}
+              {
+                "name": "GenerationID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "PlantID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimPowerPlants",
+                  "column": "PlantID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "GenerationDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "MWhGenerated",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 10,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "Efficiency",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.25,
+                    "max": 0.98
+                  }
+                }
+              },
+              {
+                "name": "CO2EmissionsTons",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 500
+                  }
+                }
+              },
+              {
+                "name": "AvailabilityPct",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.7,
+                    "max": 1.0
+                  }
+                }
+              },
+              {
+                "name": "ForcedOutageHours",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 24
+                  }
+                }
+              },
+              {
+                "name": "FuelCost",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 100000
+                  }
+                }
+              },
+              {
+                "name": "RevenueGenerated",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 500,
+                    "max": 250000
+                  }
+                }
+              }
             ]
           }
         ]
@@ -44,11 +266,105 @@
             "fileName": "DimSubstations.csv",
             "rowCount": 40,
             "columns": [
-              {"name": "SubstationID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "SubstationName", "type": "string", "generator": {"method": "faker", "params": {"type": "company"}}},
-              {"name": "VoltageLevel", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["115kV", "230kV", "345kV", "500kV"]}}},
-              {"name": "Region", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["North", "South", "East", "West", "Central"]}}},
-              {"name": "Capacity", "type": "float", "generator": {"method": "random_float", "params": {"min": 100, "max": 3000}}}
+              {
+                "name": "SubstationID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "SubstationName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "company"
+                  }
+                }
+              },
+              {
+                "name": "VoltageLevel",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "115kV",
+                      "230kV",
+                      "345kV",
+                      "500kV"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Region",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "North",
+                      "South",
+                      "East",
+                      "West",
+                      "Central"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Capacity",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 100,
+                    "max": 3000
+                  }
+                }
+              },
+              {
+                "name": "SubstationType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Transmission",
+                      "Distribution",
+                      "Switching"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Latitude",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 30.0,
+                    "max": 48.0
+                  }
+                }
+              },
+              {
+                "name": "Longitude",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": -120.0,
+                    "max": -75.0
+                  }
+                }
+              }
             ]
           },
           {
@@ -56,11 +372,96 @@
             "fileName": "FactGridLoad.csv",
             "rowCount": 8000,
             "columns": [
-              {"name": "LoadID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "SubstationID", "type": "int", "foreignKey": {"table": "DimSubstations", "column": "SubstationID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "ReadingDateTime", "type": "datetime", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "LoadMW", "type": "float", "generator": {"method": "random_float", "params": {"min": 20, "max": 2500}}},
-              {"name": "PeakIndicator", "type": "boolean", "generator": {"method": "random_choice", "params": {"choices": [true, false]}}}
+              {
+                "name": "LoadID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "SubstationID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimSubstations",
+                  "column": "SubstationID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ReadingDateTime",
+                "type": "datetime",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "LoadMW",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 20,
+                    "max": 2500
+                  }
+                }
+              },
+              {
+                "name": "PeakIndicator",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Frequency",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 59.95,
+                    "max": 60.05
+                  }
+                }
+              },
+              {
+                "name": "VoltageLevel",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 110,
+                    "max": 500
+                  }
+                }
+              },
+              {
+                "name": "PowerFactor",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.8,
+                    "max": 1.0
+                  }
+                }
+              }
             ]
           },
           {
@@ -68,12 +469,102 @@
             "fileName": "FactOutages.csv",
             "rowCount": 500,
             "columns": [
-              {"name": "OutageID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "SubstationID", "type": "int", "foreignKey": {"table": "DimSubstations", "column": "SubstationID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "OutageStart", "type": "datetime", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "DurationMinutes", "type": "int", "generator": {"method": "random_int", "params": {"min": 5, "max": 1440}}},
-              {"name": "AffectedCustomers", "type": "int", "generator": {"method": "random_int", "params": {"min": 50, "max": 50000}}},
-              {"name": "Cause", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Weather", "Equipment Failure", "Vegetation", "Animal Contact", "Overload", "Planned Maintenance"]}}}
+              {
+                "name": "OutageID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "SubstationID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimSubstations",
+                  "column": "SubstationID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "OutageStart",
+                "type": "datetime",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "DurationMinutes",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 5,
+                    "max": 1440
+                  }
+                }
+              },
+              {
+                "name": "AffectedCustomers",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 50,
+                    "max": 50000
+                  }
+                }
+              },
+              {
+                "name": "Cause",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Weather",
+                      "Equipment Failure",
+                      "Vegetation",
+                      "Animal Contact",
+                      "Overload",
+                      "Planned Maintenance"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "IsPlanned",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "EstimatedDamageCost",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 1000,
+                    "max": 500000
+                  }
+                }
+              }
             ]
           }
         ]
@@ -87,11 +578,91 @@
             "fileName": "DimCustomers.csv",
             "rowCount": 200,
             "columns": [
-              {"name": "CustomerID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "CustomerName", "type": "string", "generator": {"method": "faker", "params": {"type": "name"}}},
-              {"name": "AccountType", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Residential", "Commercial", "Industrial"]}}},
-              {"name": "Region", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["North", "South", "East", "West", "Central"]}}},
-              {"name": "ServiceAddress", "type": "string", "generator": {"method": "faker", "params": {"type": "address"}}}
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CustomerName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "name"
+                  }
+                }
+              },
+              {
+                "name": "AccountType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Residential",
+                      "Commercial",
+                      "Industrial"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Region",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "North",
+                      "South",
+                      "East",
+                      "West",
+                      "Central"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "ServiceAddress",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "address"
+                  }
+                }
+              },
+              {
+                "name": "EnrollmentDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2010-01-01",
+                    "end": "2025-12-31"
+                  }
+                }
+              },
+              {
+                "name": "IsSmartMeter",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              }
             ]
           },
           {
@@ -99,10 +670,75 @@
             "fileName": "DimRatePlans.csv",
             "rowCount": 10,
             "columns": [
-              {"name": "RatePlanID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "PlanName", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Basic Fixed", "Time-of-Use", "Green Premium", "Commercial Standard", "Industrial Peak", "EV Charging", "Solar Net Metering", "Low Income", "Demand Response", "Wholesale"]}}},
-              {"name": "RatePerKWh", "type": "float", "generator": {"method": "random_float", "params": {"min": 0.05, "max": 0.35}}},
-              {"name": "FixedCharge", "type": "float", "generator": {"method": "random_float", "params": {"min": 5, "max": 50}}}
+              {
+                "name": "RatePlanID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "PlanName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Basic Fixed",
+                      "Time-of-Use",
+                      "Green Premium",
+                      "Commercial Standard",
+                      "Industrial Peak",
+                      "EV Charging",
+                      "Solar Net Metering",
+                      "Low Income",
+                      "Demand Response",
+                      "Wholesale"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "RatePerKWh",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.05,
+                    "max": 0.35
+                  }
+                }
+              },
+              {
+                "name": "FixedCharge",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 5,
+                    "max": 50
+                  }
+                }
+              },
+              {
+                "name": "PlanCategory",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Residential",
+                      "Commercial",
+                      "Industrial",
+                      "Special"
+                    ]
+                  }
+                }
+              }
             ]
           },
           {
@@ -110,13 +746,289 @@
             "fileName": "FactBilling.csv",
             "rowCount": 6000,
             "columns": [
-              {"name": "BillID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "CustomerID", "type": "int", "foreignKey": {"table": "DimCustomers", "column": "CustomerID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "RatePlanID", "type": "int", "foreignKey": {"table": "DimRatePlans", "column": "RatePlanID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "BillingMonth", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "KWhConsumed", "type": "float", "generator": {"method": "random_float", "params": {"min": 100, "max": 50000}}},
-              {"name": "AmountBilled", "type": "float", "generator": {"method": "random_float", "params": {"min": 20, "max": 5000}}},
-              {"name": "PaymentStatus", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Paid", "Pending", "Overdue", "Partial"]}}}
+              {
+                "name": "BillID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCustomers",
+                  "column": "CustomerID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "RatePlanID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimRatePlans",
+                  "column": "RatePlanID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "BillingMonth",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "KWhConsumed",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 100,
+                    "max": 50000
+                  }
+                }
+              },
+              {
+                "name": "AmountBilled",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 20,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "PaymentStatus",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Paid",
+                      "Pending",
+                      "Overdue",
+                      "Partial"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "DemandCharges",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 500
+                  }
+                }
+              },
+              {
+                "name": "LateFees",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 50
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactMeterReadings",
+            "fileName": "FactMeterReadings.csv",
+            "rowCount": 4000,
+            "columns": [
+              {
+                "name": "ReadingID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCustomers",
+                  "column": "CustomerID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ReadingDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "KWhReading",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 100,
+                    "max": 80000
+                  }
+                }
+              },
+              {
+                "name": "DemandKW",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 1,
+                    "max": 500
+                  }
+                }
+              },
+              {
+                "name": "PowerFactor",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.8,
+                    "max": 1.0
+                  }
+                }
+              },
+              {
+                "name": "ReadingType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Smart",
+                      "Manual",
+                      "Estimated"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactCustomerComplaints",
+            "fileName": "FactCustomerComplaints.csv",
+            "rowCount": 800,
+            "columns": [
+              {
+                "name": "ComplaintID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCustomers",
+                  "column": "CustomerID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ComplaintDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "Category",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Billing",
+                      "Outage",
+                      "Service",
+                      "Metering",
+                      "Other"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "ResolutionDays",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 30
+                  }
+                }
+              },
+              {
+                "name": "SatisfactionScore",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 1.0,
+                    "max": 5.0
+                  }
+                }
+              },
+              {
+                "name": "Status",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Open",
+                      "In Progress",
+                      "Resolved",
+                      "Closed"
+                    ]
+                  }
+                }
+              }
             ]
           }
         ]
@@ -130,10 +1042,66 @@
             "fileName": "DimEmissionSources.csv",
             "rowCount": 20,
             "columns": [
-              {"name": "SourceID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "SourceName", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Scope 1 - Combustion", "Scope 1 - Fleet", "Scope 2 - Purchased Power", "Scope 3 - Supply Chain", "Scope 3 - Employee Commute", "Methane Fugitive", "SF6 Leakage", "Waste Disposal", "Water Treatment", "Building HVAC"]}}},
-              {"name": "Scope", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Scope 1", "Scope 2", "Scope 3"]}}},
-              {"name": "Category", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Direct", "Indirect", "Value Chain"]}}}
+              {
+                "name": "SourceID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "SourceName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Scope 1 - Combustion",
+                      "Scope 1 - Fleet",
+                      "Scope 2 - Purchased Power",
+                      "Scope 3 - Supply Chain",
+                      "Scope 3 - Employee Commute",
+                      "Methane Fugitive",
+                      "SF6 Leakage",
+                      "Waste Disposal",
+                      "Water Treatment",
+                      "Building HVAC"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Scope",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Scope 1",
+                      "Scope 2",
+                      "Scope 3"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Category",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Direct",
+                      "Indirect",
+                      "Value Chain"
+                    ]
+                  }
+                }
+              }
             ]
           },
           {
@@ -141,12 +1109,83 @@
             "fileName": "FactEmissions.csv",
             "rowCount": 2400,
             "columns": [
-              {"name": "EmissionID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "SourceID", "type": "int", "foreignKey": {"table": "DimEmissionSources", "column": "SourceID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "ReportingMonth", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "CO2eTons", "type": "float", "generator": {"method": "random_float", "params": {"min": 10, "max": 10000}}},
-              {"name": "RenewableOffsetMWh", "type": "float", "generator": {"method": "random_float", "params": {"min": 0, "max": 5000}}},
-              {"name": "CarbonCreditsPurchased", "type": "int", "generator": {"method": "random_int", "params": {"min": 0, "max": 500}}}
+              {
+                "name": "EmissionID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "SourceID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimEmissionSources",
+                  "column": "SourceID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ReportingMonth",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "CO2eTons",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 10,
+                    "max": 10000
+                  }
+                }
+              },
+              {
+                "name": "RenewableOffsetMWh",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "CarbonCreditsPurchased",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 500
+                  }
+                }
+              },
+              {
+                "name": "CarbonIntensity",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.1,
+                    "max": 2.5
+                  }
+                }
+              }
             ]
           }
         ]
@@ -160,10 +1199,71 @@
             "fileName": "DimCrews.csv",
             "rowCount": 30,
             "columns": [
-              {"name": "CrewID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "CrewName", "type": "string", "generator": {"method": "faker", "params": {"type": "name"}}},
-              {"name": "Specialty", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Line Repair", "Transformer", "Substation", "Vegetation", "Metering", "Underground"]}}},
-              {"name": "Region", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["North", "South", "East", "West", "Central"]}}}
+              {
+                "name": "CrewID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CrewName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "name"
+                  }
+                }
+              },
+              {
+                "name": "Specialty",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Line Repair",
+                      "Transformer",
+                      "Substation",
+                      "Vegetation",
+                      "Metering",
+                      "Underground"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Region",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "North",
+                      "South",
+                      "East",
+                      "West",
+                      "Central"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "CrewSize",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 2,
+                    "max": 8
+                  }
+                }
+              }
             ]
           },
           {
@@ -171,15 +1271,129 @@
             "fileName": "FactWorkOrders.csv",
             "rowCount": 3000,
             "columns": [
-              {"name": "WorkOrderID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "CrewID", "type": "int", "foreignKey": {"table": "DimCrews", "column": "CrewID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "SubstationID", "type": "int", "foreignKey": {"table": "DimSubstations", "column": "SubstationID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "OrderDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "Priority", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Critical", "High", "Medium", "Low"]}}},
-              {"name": "WorkType", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Emergency Repair", "Preventive Maintenance", "Inspection", "Installation", "Vegetation Management"]}}},
-              {"name": "DurationHours", "type": "float", "generator": {"method": "random_float", "params": {"min": 0.5, "max": 48}}},
-              {"name": "Cost", "type": "float", "generator": {"method": "random_float", "params": {"min": 100, "max": 50000}}},
-              {"name": "Status", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Completed", "In Progress", "Scheduled", "Cancelled"]}}}
+              {
+                "name": "WorkOrderID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CrewID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCrews",
+                  "column": "CrewID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "SubstationID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimSubstations",
+                  "column": "SubstationID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "OrderDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "Priority",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Critical",
+                      "High",
+                      "Medium",
+                      "Low"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "WorkType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Emergency Repair",
+                      "Preventive Maintenance",
+                      "Inspection",
+                      "Installation",
+                      "Vegetation Management"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "DurationHours",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.5,
+                    "max": 48
+                  }
+                }
+              },
+              {
+                "name": "Cost",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 100,
+                    "max": 50000
+                  }
+                }
+              },
+              {
+                "name": "Status",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Completed",
+                      "In Progress",
+                      "Scheduled",
+                      "Cancelled"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "CompletionDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              }
             ]
           },
           {
@@ -187,12 +1401,966 @@
             "fileName": "FactSafetyIncidents.csv",
             "rowCount": 150,
             "columns": [
-              {"name": "IncidentID", "type": "int", "primaryKey": true, "generator": {"method": "sequence", "params": {"start": 1}}},
-              {"name": "CrewID", "type": "int", "foreignKey": {"table": "DimCrews", "column": "CrewID"}, "generator": {"method": "foreign_key_lookup"}},
-              {"name": "IncidentDate", "type": "date", "generator": {"method": "random_date", "params": {"start": "2024-01-01", "end": "2026-06-30"}}},
-              {"name": "Severity", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Minor", "Moderate", "Serious", "Critical"]}}},
-              {"name": "Category", "type": "string", "generator": {"method": "random_choice", "params": {"choices": ["Electrical", "Fall", "Vehicle", "Chemical", "Heat Stress", "Equipment"]}}},
-              {"name": "LostTimeDays", "type": "int", "generator": {"method": "random_int", "params": {"min": 0, "max": 30}}}
+              {
+                "name": "IncidentID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CrewID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCrews",
+                  "column": "CrewID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "IncidentDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "Severity",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Minor",
+                      "Moderate",
+                      "Serious",
+                      "Critical"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Category",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Electrical",
+                      "Fall",
+                      "Vehicle",
+                      "Chemical",
+                      "Heat Stress",
+                      "Equipment"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "LostTimeDays",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 30
+                  }
+                }
+              },
+              {
+                "name": "RootCause",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Human Error",
+                      "Equipment Failure",
+                      "Weather",
+                      "Procedural",
+                      "Training Gap"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "IsRecordable",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Assets",
+        "folder": "Assets",
+        "tables": [
+          {
+            "name": "DimRegions",
+            "fileName": "DimRegions.csv",
+            "rowCount": 5,
+            "columns": [
+              {
+                "name": "RegionID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "RegionName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "North",
+                      "South",
+                      "East",
+                      "West",
+                      "Central"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "State",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Texas",
+                      "California",
+                      "New York",
+                      "Florida",
+                      "Illinois"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "TimeZone",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Central",
+                      "Pacific",
+                      "Eastern",
+                      "Mountain"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "RegulatoryBody",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "ERCOT",
+                      "CAISO",
+                      "NYISO",
+                      "PJM",
+                      "MISO"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Latitude",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 30.0,
+                    "max": 48.0
+                  }
+                }
+              },
+              {
+                "name": "Longitude",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": -120.0,
+                    "max": -75.0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "DimWeatherStations",
+            "fileName": "DimWeatherStations.csv",
+            "rowCount": 10,
+            "columns": [
+              {
+                "name": "StationID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "StationName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "city"
+                  }
+                }
+              },
+              {
+                "name": "Region",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "North",
+                      "South",
+                      "East",
+                      "West",
+                      "Central"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Latitude",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 30.0,
+                    "max": 48.0
+                  }
+                }
+              },
+              {
+                "name": "Longitude",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": -120.0,
+                    "max": -75.0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "DimAssets",
+            "fileName": "DimAssets.csv",
+            "rowCount": 100,
+            "columns": [
+              {
+                "name": "AssetID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "AssetName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "company"
+                  }
+                }
+              },
+              {
+                "name": "AssetType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Transformer",
+                      "Circuit Breaker",
+                      "Capacitor Bank",
+                      "Relay",
+                      "Switch",
+                      "Cable",
+                      "Pole",
+                      "Meter"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "InstallDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "1990-01-01",
+                    "end": "2024-12-31"
+                  }
+                }
+              },
+              {
+                "name": "ExpectedLifeYears",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 10,
+                    "max": 50
+                  }
+                }
+              },
+              {
+                "name": "SubstationID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimSubstations",
+                  "column": "SubstationID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "Manufacturer",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "ABB",
+                      "Siemens",
+                      "GE",
+                      "Schneider",
+                      "Hitachi",
+                      "Eaton"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "DimVehicles",
+            "fileName": "DimVehicles.csv",
+            "rowCount": 25,
+            "columns": [
+              {
+                "name": "VehicleID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "VehicleType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Bucket Truck",
+                      "Utility Van",
+                      "Pickup",
+                      "Digger Derrick",
+                      "Cable Puller"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Make",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Ford",
+                      "Chevrolet",
+                      "Ram",
+                      "International",
+                      "Freightliner"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Year",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 2015,
+                    "max": 2026
+                  }
+                }
+              },
+              {
+                "name": "IsElectric",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "AssignedCrewID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCrews",
+                  "column": "CrewID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              }
+            ]
+          },
+          {
+            "name": "DimPrograms",
+            "fileName": "DimPrograms.csv",
+            "rowCount": 8,
+            "columns": [
+              {
+                "name": "ProgramID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "ProgramName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Peak Saver",
+                      "Smart Thermostat",
+                      "Industrial Curtailment",
+                      "EV Managed Charging",
+                      "Battery Storage",
+                      "Solar Buyback",
+                      "Green Choice",
+                      "Low Income Assistance"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "ProgramType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Demand Response",
+                      "Energy Efficiency",
+                      "Renewable",
+                      "Assistance"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "StartDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2020-01-01",
+                    "end": "2025-12-31"
+                  }
+                }
+              },
+              {
+                "name": "Budget",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 100000,
+                    "max": 5000000
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactWeather",
+            "fileName": "FactWeather.csv",
+            "rowCount": 3000,
+            "columns": [
+              {
+                "name": "WeatherID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "StationID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimWeatherStations",
+                  "column": "StationID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "RecordDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "TemperatureF",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 10,
+                    "max": 110
+                  }
+                }
+              },
+              {
+                "name": "WindSpeedMPH",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 60
+                  }
+                }
+              },
+              {
+                "name": "SolarIrradiance",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 1000
+                  }
+                }
+              },
+              {
+                "name": "Precipitation",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 3
+                  }
+                }
+              },
+              {
+                "name": "Humidity",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 10,
+                    "max": 100
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactAssetCondition",
+            "fileName": "FactAssetCondition.csv",
+            "rowCount": 1500,
+            "columns": [
+              {
+                "name": "ConditionID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "AssetID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimAssets",
+                  "column": "AssetID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "InspectionDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "ConditionScore",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 10,
+                    "max": 100
+                  }
+                }
+              },
+              {
+                "name": "RemainingLifePct",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.05,
+                    "max": 1.0
+                  }
+                }
+              },
+              {
+                "name": "ReplacementCost",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 5000,
+                    "max": 500000
+                  }
+                }
+              },
+              {
+                "name": "InspectorNotes",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Good condition",
+                      "Minor corrosion",
+                      "Needs replacement",
+                      "Scheduled for repair",
+                      "Oil leak detected",
+                      "Normal wear"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactDemandResponse",
+            "fileName": "FactDemandResponse.csv",
+            "rowCount": 200,
+            "columns": [
+              {
+                "name": "EventID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "ProgramID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimPrograms",
+                  "column": "ProgramID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "EventDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "DurationHours",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 1,
+                    "max": 8
+                  }
+                }
+              },
+              {
+                "name": "MWReduced",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 5,
+                    "max": 500
+                  }
+                }
+              },
+              {
+                "name": "ParticipantsCount",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 10,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "IncentivePaid",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 100,
+                    "max": 50000
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactVehicleUsage",
+            "fileName": "FactVehicleUsage.csv",
+            "rowCount": 2000,
+            "columns": [
+              {
+                "name": "TripID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "VehicleID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimVehicles",
+                  "column": "VehicleID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "TripDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "MilesDriven",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 5,
+                    "max": 300
+                  }
+                }
+              },
+              {
+                "name": "FuelGallons",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 1,
+                    "max": 40
+                  }
+                }
+              },
+              {
+                "name": "IdleHours",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 4
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactRegulatoryFiling",
+            "fileName": "FactRegulatoryFiling.csv",
+            "rowCount": 50,
+            "columns": [
+              {
+                "name": "FilingID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "FilingDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "FilingType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Rate Case",
+                      "Environmental",
+                      "Safety",
+                      "Reliability",
+                      "Renewable Portfolio"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Status",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Approved",
+                      "Pending",
+                      "Rejected",
+                      "Under Review"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "PenaltyAmount",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 100000
+                  }
+                }
+              },
+              {
+                "name": "ComplianceScore",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 60,
+                    "max": 100
+                  }
+                }
+              }
             ]
           }
         ]
