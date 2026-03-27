@@ -1,0 +1,64 @@
+{
+  "htapConfig": {
+    "description": "Horizon Books HTAP configuration — real-time order events and inventory tracking.",
+    "kqlDatabase": {
+      "name": "HorizonBooksKQLDB",
+      "description": "Hot-path query layer for real-time book order and inventory events",
+      "retentionDays": 365
+    },
+    "eventStreams": [
+      {
+        "name": "OrderEvents",
+        "kqlTable": "OrderEvents",
+        "description": "Real-time book order stream (POS, online, wholesale)",
+        "eventsPerSecond": 50,
+        "retentionDays": 90,
+        "columns": [
+          {"name": "EventId", "type": "guid"},
+          {"name": "Timestamp", "type": "datetime"},
+          {"name": "OrderId", "type": "string"},
+          {"name": "BookId", "type": "string"},
+          {"name": "CustomerId", "type": "string"},
+          {"name": "Channel", "type": "string"},
+          {"name": "Quantity", "type": "int"},
+          {"name": "UnitPrice", "type": "float"},
+          {"name": "TotalAmount", "type": "float"},
+          {"name": "Status", "type": "string"}
+        ]
+      },
+      {
+        "name": "InventoryMovements",
+        "kqlTable": "InventoryMovements",
+        "description": "Real-time inventory stock movements across warehouses",
+        "eventsPerSecond": 20,
+        "retentionDays": 90,
+        "columns": [
+          {"name": "EventId", "type": "guid"},
+          {"name": "Timestamp", "type": "datetime"},
+          {"name": "BookId", "type": "string"},
+          {"name": "WarehouseId", "type": "string"},
+          {"name": "MovementType", "type": "string"},
+          {"name": "Quantity", "type": "int"},
+          {"name": "QuantityAfter", "type": "int"}
+        ]
+      },
+      {
+        "name": "ReturnEvents",
+        "kqlTable": "ReturnEvents",
+        "description": "Real-time return processing events",
+        "eventsPerSecond": 5,
+        "retentionDays": 90,
+        "columns": [
+          {"name": "EventId", "type": "guid"},
+          {"name": "Timestamp", "type": "datetime"},
+          {"name": "ReturnId", "type": "string"},
+          {"name": "OrderId", "type": "string"},
+          {"name": "BookId", "type": "string"},
+          {"name": "Reason", "type": "string"},
+          {"name": "Quantity", "type": "int"},
+          {"name": "RefundAmount", "type": "float"}
+        ]
+      }
+    ]
+  }
+}

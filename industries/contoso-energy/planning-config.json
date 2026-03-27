@@ -1,0 +1,77 @@
+{
+  "planningModels": [
+    {
+      "name": "CapacityPlan",
+      "description": "Generation capacity expansion plan",
+      "sourceTable": "FactGeneration",
+      "valueColumn": "MWhGenerated",
+      "planningSchema": "planning",
+      "columns": [
+        {"name": "PlanYear", "dataType": "INT"}, {"name": "FuelType", "dataType": "NVARCHAR(100)"},
+        {"name": "PlannedCapacityMW", "dataType": "DECIMAL(18,2)"},
+        {"name": "PlannedGenerationMWh", "dataType": "DECIMAL(18,2)"},
+        {"name": "CapexMillionUSD", "dataType": "DECIMAL(18,2)"},
+        {"name": "Scenario", "dataType": "NVARCHAR(50)"}
+      ]
+    },
+    {
+      "name": "RevenueBudget",
+      "description": "Revenue and billing budget by quarter",
+      "sourceTable": "FactBilling",
+      "valueColumn": "AmountBilled",
+      "planningSchema": "planning",
+      "columns": [
+        {"name": "FiscalYear", "dataType": "INT"}, {"name": "FiscalQuarter", "dataType": "INT"},
+        {"name": "PlannedRevenue", "dataType": "DECIMAL(18,2)"},
+        {"name": "PlannedKWh", "dataType": "DECIMAL(18,2)"},
+        {"name": "Scenario", "dataType": "NVARCHAR(50)"}
+      ]
+    },
+    {
+      "name": "EmissionsTarget",
+      "description": "CO2e reduction targets by scope",
+      "sourceTable": "FactEmissions",
+      "valueColumn": "CO2eTons",
+      "planningSchema": "planning",
+      "columns": [
+        {"name": "TargetYear", "dataType": "INT"}, {"name": "Scope", "dataType": "NVARCHAR(50)"},
+        {"name": "TargetCO2eTons", "dataType": "DECIMAL(18,2)"},
+        {"name": "RenewableOffsetTarget", "dataType": "DECIMAL(18,2)"},
+        {"name": "Scenario", "dataType": "NVARCHAR(50)"}
+      ]
+    },
+    {
+      "name": "GridInvestment",
+      "description": "Grid infrastructure investment plan",
+      "sourceTable": "FactWorkOrders",
+      "valueColumn": "Cost",
+      "planningSchema": "planning",
+      "columns": [
+        {"name": "FiscalYear", "dataType": "INT"}, {"name": "Region", "dataType": "NVARCHAR(100)"},
+        {"name": "PlannedInvestment", "dataType": "DECIMAL(18,2)"},
+        {"name": "PlannedWorkOrders", "dataType": "INT"},
+        {"name": "Scenario", "dataType": "NVARCHAR(50)"}
+      ]
+    },
+    {
+      "name": "PlanVsActual",
+      "description": "Plan vs actual comparison across domains",
+      "sourceTable": null,
+      "valueColumn": null,
+      "planningSchema": "planning",
+      "columns": [
+        {"name": "FiscalYear", "dataType": "INT"}, {"name": "Domain", "dataType": "NVARCHAR(100)"},
+        {"name": "KPI", "dataType": "NVARCHAR(200)"},
+        {"name": "PlannedValue", "dataType": "DECIMAL(18,2)"},
+        {"name": "ActualValue", "dataType": "DECIMAL(18,2)"},
+        {"name": "Scenario", "dataType": "NVARCHAR(50)"}
+      ]
+    }
+  ],
+  "scenarios": [
+    {"name": "Base", "description": "Steady-state operations, 3% organic growth", "growthRate": 0.03},
+    {"name": "GreenTransition", "description": "Aggressive renewable shift, 40% renewable target", "growthRate": 0.08},
+    {"name": "CapacityConstrained", "description": "No new capacity, optimize existing assets", "growthRate": 0.01}
+  ],
+  "fiscalYears": ["FY2024", "FY2025", "FY2026"]
+}

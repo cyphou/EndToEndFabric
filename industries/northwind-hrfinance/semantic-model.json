@@ -1,0 +1,970 @@
+{
+  "semanticModel": {
+    "name": "NorthwindHRFinanceModel",
+    "mode": "DirectLake",
+    "defaultSchema": "gold",
+    "tables": [
+      {
+        "name": "DimDate",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "DateKey",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "Date",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Year",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Month",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Quarter",
+            "dataType": "Int64"
+          },
+          {
+            "name": "MonthName",
+            "dataType": "String"
+          },
+          {
+            "name": "FiscalYear",
+            "dataType": "Int64"
+          },
+          {
+            "name": "FiscalQuarter",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "DimEmployees",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "EmployeeID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "FirstName",
+            "dataType": "String"
+          },
+          {
+            "name": "LastName",
+            "dataType": "String"
+          },
+          {
+            "name": "Email",
+            "dataType": "String"
+          },
+          {
+            "name": "Department",
+            "dataType": "String"
+          },
+          {
+            "name": "JobTitle",
+            "dataType": "String"
+          },
+          {
+            "name": "HireDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "ManagerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Location",
+            "dataType": "String"
+          },
+          {
+            "name": "EmploymentStatus",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "DimDepartments",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "DepartmentID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "DepartmentName",
+            "dataType": "String"
+          },
+          {
+            "name": "Division",
+            "dataType": "String"
+          },
+          {
+            "name": "CostCenter",
+            "dataType": "String"
+          },
+          {
+            "name": "HeadCount",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "DimJobTitles",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "JobTitleID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "JobTitle",
+            "dataType": "String"
+          },
+          {
+            "name": "PayGrade",
+            "dataType": "String"
+          },
+          {
+            "name": "MinSalary",
+            "dataType": "Double"
+          },
+          {
+            "name": "MaxSalary",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "DimPayCodes",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "PayCodeID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "PayCodeName",
+            "dataType": "String"
+          },
+          {
+            "name": "Category",
+            "dataType": "String"
+          },
+          {
+            "name": "IsDeduction",
+            "dataType": "Boolean"
+          }
+        ]
+      },
+      {
+        "name": "DimAccounts",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "AccountID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "AccountNumber",
+            "dataType": "String"
+          },
+          {
+            "name": "AccountName",
+            "dataType": "String"
+          },
+          {
+            "name": "AccountType",
+            "dataType": "String"
+          },
+          {
+            "name": "ParentAccountID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "IsActive",
+            "dataType": "Boolean"
+          }
+        ]
+      },
+      {
+        "name": "DimVendors",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "VendorID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "VendorName",
+            "dataType": "String"
+          },
+          {
+            "name": "Category",
+            "dataType": "String"
+          },
+          {
+            "name": "PaymentTerms",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "DimCustomers",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "CustomerID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerName",
+            "dataType": "String"
+          },
+          {
+            "name": "Segment",
+            "dataType": "String"
+          },
+          {
+            "name": "Region",
+            "dataType": "String"
+          },
+          {
+            "name": "CreditLimit",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "DimCostCenters",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "CostCenterID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CostCenterName",
+            "dataType": "String"
+          },
+          {
+            "name": "DepartmentID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Division",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "DimKPIs",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "KPIID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "KPIName",
+            "dataType": "String"
+          },
+          {
+            "name": "Category",
+            "dataType": "String"
+          },
+          {
+            "name": "Target",
+            "dataType": "Double"
+          },
+          {
+            "name": "Unit",
+            "dataType": "String"
+          },
+          {
+            "name": "Owner",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactRecruitment",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "RequisitionID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "DepartmentID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "JobTitleID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "OpenDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "CloseDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Applicants",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Interviewed",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Hired",
+            "dataType": "Int64"
+          },
+          {
+            "name": "TimeToFillDays",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Source",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactPerformanceReviews",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "ReviewID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "EmployeeID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ReviewDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "ReviewPeriod",
+            "dataType": "String"
+          },
+          {
+            "name": "OverallRating",
+            "dataType": "Double"
+          },
+          {
+            "name": "GoalsMetPct",
+            "dataType": "Double"
+          },
+          {
+            "name": "ManagerRating",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactAttrition",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "AttritionID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "EmployeeID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "TerminationDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Reason",
+            "dataType": "String"
+          },
+          {
+            "name": "IsVoluntary",
+            "dataType": "Boolean"
+          },
+          {
+            "name": "TenureYears",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactPayroll",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "PayrollID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "EmployeeID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "PayPeriodDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "PayCodeID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "GrossPay",
+            "dataType": "Double"
+          },
+          {
+            "name": "Deductions",
+            "dataType": "Double"
+          },
+          {
+            "name": "NetPay",
+            "dataType": "Double"
+          },
+          {
+            "name": "Hours",
+            "dataType": "Double"
+          },
+          {
+            "name": "OvertimeHours",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactBenefits",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "BenefitID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "EmployeeID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "PlanType",
+            "dataType": "String"
+          },
+          {
+            "name": "EffectiveDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "EmployeeCost",
+            "dataType": "Double"
+          },
+          {
+            "name": "EmployerCost",
+            "dataType": "Double"
+          },
+          {
+            "name": "CoverageLevel",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactJournalEntries",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "EntryID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "AccountID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "EntryDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "DebitAmount",
+            "dataType": "Double"
+          },
+          {
+            "name": "CreditAmount",
+            "dataType": "Double"
+          },
+          {
+            "name": "Description",
+            "dataType": "String"
+          },
+          {
+            "name": "PostingPeriod",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactAccountsPayable",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "InvoiceID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "VendorID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "AccountID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "InvoiceDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "DueDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Amount",
+            "dataType": "Double"
+          },
+          {
+            "name": "PaidAmount",
+            "dataType": "Double"
+          },
+          {
+            "name": "Status",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactAccountsReceivable",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "InvoiceID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "AccountID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "InvoiceDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "DueDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Amount",
+            "dataType": "Double"
+          },
+          {
+            "name": "CollectedAmount",
+            "dataType": "Double"
+          },
+          {
+            "name": "AgingBucket",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactBudget",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "BudgetID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CostCenterID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "AccountID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "FiscalYear",
+            "dataType": "Int64"
+          },
+          {
+            "name": "FiscalMonth",
+            "dataType": "Int64"
+          },
+          {
+            "name": "BudgetAmount",
+            "dataType": "Double"
+          },
+          {
+            "name": "ActualAmount",
+            "dataType": "Double"
+          },
+          {
+            "name": "Variance",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactKPIResults",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "ResultID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "KPIID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ReportingMonth",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "ActualValue",
+            "dataType": "Double"
+          },
+          {
+            "name": "TargetValue",
+            "dataType": "Double"
+          },
+          {
+            "name": "Score",
+            "dataType": "Double"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "fromTable": "FactRecruitment",
+        "fromColumn": "DepartmentID",
+        "toTable": "DimDepartments",
+        "toColumn": "DepartmentID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactRecruitment",
+        "fromColumn": "JobTitleID",
+        "toTable": "DimJobTitles",
+        "toColumn": "JobTitleID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactPerformanceReviews",
+        "fromColumn": "EmployeeID",
+        "toTable": "DimEmployees",
+        "toColumn": "EmployeeID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactAttrition",
+        "fromColumn": "EmployeeID",
+        "toTable": "DimEmployees",
+        "toColumn": "EmployeeID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactPayroll",
+        "fromColumn": "EmployeeID",
+        "toTable": "DimEmployees",
+        "toColumn": "EmployeeID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactPayroll",
+        "fromColumn": "PayCodeID",
+        "toTable": "DimPayCodes",
+        "toColumn": "PayCodeID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactBenefits",
+        "fromColumn": "EmployeeID",
+        "toTable": "DimEmployees",
+        "toColumn": "EmployeeID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactJournalEntries",
+        "fromColumn": "AccountID",
+        "toTable": "DimAccounts",
+        "toColumn": "AccountID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactAccountsPayable",
+        "fromColumn": "VendorID",
+        "toTable": "DimVendors",
+        "toColumn": "VendorID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactAccountsPayable",
+        "fromColumn": "AccountID",
+        "toTable": "DimAccounts",
+        "toColumn": "AccountID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactAccountsReceivable",
+        "fromColumn": "CustomerID",
+        "toTable": "DimCustomers",
+        "toColumn": "CustomerID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactAccountsReceivable",
+        "fromColumn": "AccountID",
+        "toTable": "DimAccounts",
+        "toColumn": "AccountID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactBudget",
+        "fromColumn": "CostCenterID",
+        "toTable": "DimCostCenters",
+        "toColumn": "CostCenterID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactBudget",
+        "fromColumn": "AccountID",
+        "toTable": "DimAccounts",
+        "toColumn": "AccountID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "DimCostCenters",
+        "fromColumn": "DepartmentID",
+        "toTable": "DimDepartments",
+        "toColumn": "DepartmentID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactKPIResults",
+        "fromColumn": "KPIID",
+        "toTable": "DimKPIs",
+        "toColumn": "KPIID",
+        "cardinality": "ManyToOne"
+      }
+    ],
+    "measures": [
+      {
+        "name": "Headcount",
+        "table": "DimEmployees",
+        "expression": "COUNTROWS(FILTER(DimEmployees, DimEmployees[EmploymentStatus] = \"Active\"))",
+        "formatString": "#,0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "New Hires",
+        "table": "FactRecruitment",
+        "expression": "SUM(FactRecruitment[Hired])",
+        "formatString": "#,0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Avg Time to Fill",
+        "table": "FactRecruitment",
+        "expression": "AVERAGE(FactRecruitment[TimeToFillDays])",
+        "formatString": "#,0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Offer Accept Rate",
+        "table": "FactRecruitment",
+        "expression": "DIVIDE(SUM(FactRecruitment[Hired]), SUM(FactRecruitment[Interviewed]))",
+        "formatString": "0.0%",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Avg Performance Rating",
+        "table": "FactPerformanceReviews",
+        "expression": "AVERAGE(FactPerformanceReviews[OverallRating])",
+        "formatString": "0.00",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Attrition Count",
+        "table": "FactAttrition",
+        "expression": "COUNTROWS(FactAttrition)",
+        "formatString": "#,0",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Voluntary Attrition %",
+        "table": "FactAttrition",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactAttrition), FactAttrition[IsVoluntary] = TRUE()), COUNTROWS(FactAttrition))",
+        "formatString": "0.0%",
+        "displayFolder": "HR"
+      },
+      {
+        "name": "Total Gross Pay",
+        "table": "FactPayroll",
+        "expression": "SUM(FactPayroll[GrossPay])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Total Net Pay",
+        "table": "FactPayroll",
+        "expression": "SUM(FactPayroll[NetPay])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Total Deductions",
+        "table": "FactPayroll",
+        "expression": "SUM(FactPayroll[Deductions])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Avg Salary Per Employee",
+        "table": "FactPayroll",
+        "expression": "DIVIDE(SUM(FactPayroll[GrossPay]), DISTINCTCOUNT(FactPayroll[EmployeeID]))",
+        "formatString": "$#,0",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Overtime Hours",
+        "table": "FactPayroll",
+        "expression": "SUM(FactPayroll[OvertimeHours])",
+        "formatString": "#,0.0",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Total Benefits Cost",
+        "table": "FactBenefits",
+        "expression": "SUM(FactBenefits[EmployerCost]) + SUM(FactBenefits[EmployeeCost])",
+        "formatString": "$#,0",
+        "displayFolder": "Payroll"
+      },
+      {
+        "name": "Total Debits",
+        "table": "FactJournalEntries",
+        "expression": "SUM(FactJournalEntries[DebitAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Total Credits",
+        "table": "FactJournalEntries",
+        "expression": "SUM(FactJournalEntries[CreditAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "AP Outstanding",
+        "table": "FactAccountsPayable",
+        "expression": "SUM(FactAccountsPayable[Amount]) - SUM(FactAccountsPayable[PaidAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "AR Outstanding",
+        "table": "FactAccountsReceivable",
+        "expression": "SUM(FactAccountsReceivable[Amount]) - SUM(FactAccountsReceivable[CollectedAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Collection Rate",
+        "table": "FactAccountsReceivable",
+        "expression": "DIVIDE(SUM(FactAccountsReceivable[CollectedAmount]), SUM(FactAccountsReceivable[Amount]))",
+        "formatString": "0.0%",
+        "displayFolder": "Finance"
+      },
+      {
+        "name": "Budget Amount",
+        "table": "FactBudget",
+        "expression": "SUM(FactBudget[BudgetAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Budgeting"
+      },
+      {
+        "name": "Actual Spend",
+        "table": "FactBudget",
+        "expression": "SUM(FactBudget[ActualAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Budgeting"
+      },
+      {
+        "name": "Budget Variance",
+        "table": "FactBudget",
+        "expression": "SUM(FactBudget[BudgetAmount]) - SUM(FactBudget[ActualAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Budgeting"
+      },
+      {
+        "name": "Budget Utilization %",
+        "table": "FactBudget",
+        "expression": "DIVIDE(SUM(FactBudget[ActualAmount]), SUM(FactBudget[BudgetAmount]))",
+        "formatString": "0.0%",
+        "displayFolder": "Budgeting"
+      },
+      {
+        "name": "Avg KPI Score",
+        "table": "FactKPIResults",
+        "expression": "AVERAGE(FactKPIResults[Score])",
+        "formatString": "0.00",
+        "displayFolder": "Performance"
+      },
+      {
+        "name": "KPIs On Target",
+        "table": "FactKPIResults",
+        "expression": "CALCULATE(COUNTROWS(FactKPIResults), FactKPIResults[ActualValue] >= FactKPIResults[TargetValue])",
+        "formatString": "#,0",
+        "displayFolder": "Performance"
+      }
+    ]
+  }
+}

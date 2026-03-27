@@ -1,0 +1,645 @@
+{
+  "semanticModel": {
+    "name": "ContosoEnergyModel",
+    "mode": "DirectLake",
+    "defaultSchema": "gold",
+    "tables": [
+      {
+        "name": "DimDate",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "DateKey",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "Date",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Year",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Month",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Quarter",
+            "dataType": "Int64"
+          },
+          {
+            "name": "MonthName",
+            "dataType": "String"
+          },
+          {
+            "name": "FiscalYear",
+            "dataType": "Int64"
+          },
+          {
+            "name": "FiscalQuarter",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "DimPowerPlants",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "PlantID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "PlantName",
+            "dataType": "String"
+          },
+          {
+            "name": "FuelType",
+            "dataType": "String"
+          },
+          {
+            "name": "CapacityMW",
+            "dataType": "Double"
+          },
+          {
+            "name": "Region",
+            "dataType": "String"
+          },
+          {
+            "name": "CommissionDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "IsRenewable",
+            "dataType": "Boolean"
+          }
+        ]
+      },
+      {
+        "name": "DimSubstations",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "SubstationID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "SubstationName",
+            "dataType": "String"
+          },
+          {
+            "name": "VoltageLevel",
+            "dataType": "String"
+          },
+          {
+            "name": "Region",
+            "dataType": "String"
+          },
+          {
+            "name": "Capacity",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "DimCustomers",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "CustomerID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerName",
+            "dataType": "String"
+          },
+          {
+            "name": "AccountType",
+            "dataType": "String"
+          },
+          {
+            "name": "Region",
+            "dataType": "String"
+          },
+          {
+            "name": "ServiceAddress",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "DimRatePlans",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "RatePlanID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "PlanName",
+            "dataType": "String"
+          },
+          {
+            "name": "RatePerKWh",
+            "dataType": "Double"
+          },
+          {
+            "name": "FixedCharge",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "DimEmissionSources",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "SourceID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "SourceName",
+            "dataType": "String"
+          },
+          {
+            "name": "Scope",
+            "dataType": "String"
+          },
+          {
+            "name": "Category",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "DimCrews",
+        "schema": "dim",
+        "columns": [
+          {
+            "name": "CrewID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CrewName",
+            "dataType": "String"
+          },
+          {
+            "name": "Specialty",
+            "dataType": "String"
+          },
+          {
+            "name": "Region",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactGeneration",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "GenerationID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "PlantID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "GenerationDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "MWhGenerated",
+            "dataType": "Double"
+          },
+          {
+            "name": "Efficiency",
+            "dataType": "Double"
+          },
+          {
+            "name": "CO2EmissionsTons",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactGridLoad",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "LoadID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "SubstationID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ReadingDateTime",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "LoadMW",
+            "dataType": "Double"
+          },
+          {
+            "name": "PeakIndicator",
+            "dataType": "Boolean"
+          }
+        ]
+      },
+      {
+        "name": "FactOutages",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "OutageID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "SubstationID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "OutageStart",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "DurationMinutes",
+            "dataType": "Int64"
+          },
+          {
+            "name": "AffectedCustomers",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Cause",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactBilling",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "BillID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "RatePlanID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "BillingMonth",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "KWhConsumed",
+            "dataType": "Double"
+          },
+          {
+            "name": "AmountBilled",
+            "dataType": "Double"
+          },
+          {
+            "name": "PaymentStatus",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactEmissions",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "EmissionID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "SourceID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ReportingMonth",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "CO2eTons",
+            "dataType": "Double"
+          },
+          {
+            "name": "RenewableOffsetMWh",
+            "dataType": "Double"
+          },
+          {
+            "name": "CarbonCreditsPurchased",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "FactWorkOrders",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "WorkOrderID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CrewID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "SubstationID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "OrderDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Priority",
+            "dataType": "String"
+          },
+          {
+            "name": "WorkType",
+            "dataType": "String"
+          },
+          {
+            "name": "DurationHours",
+            "dataType": "Double"
+          },
+          {
+            "name": "Cost",
+            "dataType": "Double"
+          },
+          {
+            "name": "Status",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactSafetyIncidents",
+        "schema": "fact",
+        "columns": [
+          {
+            "name": "IncidentID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CrewID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "IncidentDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Severity",
+            "dataType": "String"
+          },
+          {
+            "name": "Category",
+            "dataType": "String"
+          },
+          {
+            "name": "LostTimeDays",
+            "dataType": "Int64"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "fromTable": "FactGeneration",
+        "fromColumn": "PlantID",
+        "toTable": "DimPowerPlants",
+        "toColumn": "PlantID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactGridLoad",
+        "fromColumn": "SubstationID",
+        "toTable": "DimSubstations",
+        "toColumn": "SubstationID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactOutages",
+        "fromColumn": "SubstationID",
+        "toTable": "DimSubstations",
+        "toColumn": "SubstationID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactBilling",
+        "fromColumn": "CustomerID",
+        "toTable": "DimCustomers",
+        "toColumn": "CustomerID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactBilling",
+        "fromColumn": "RatePlanID",
+        "toTable": "DimRatePlans",
+        "toColumn": "RatePlanID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactEmissions",
+        "fromColumn": "SourceID",
+        "toTable": "DimEmissionSources",
+        "toColumn": "SourceID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactWorkOrders",
+        "fromColumn": "CrewID",
+        "toTable": "DimCrews",
+        "toColumn": "CrewID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactWorkOrders",
+        "fromColumn": "SubstationID",
+        "toTable": "DimSubstations",
+        "toColumn": "SubstationID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactSafetyIncidents",
+        "fromColumn": "CrewID",
+        "toTable": "DimCrews",
+        "toColumn": "CrewID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      }
+    ],
+    "measures": [
+      {
+        "name": "Total Generation MWh",
+        "table": "FactGeneration",
+        "expression": "SUM(FactGeneration[MWhGenerated])",
+        "formatString": "#,0.0",
+        "displayFolder": "Generation"
+      },
+      {
+        "name": "Avg Plant Efficiency",
+        "table": "FactGeneration",
+        "expression": "AVERAGE(FactGeneration[Efficiency])",
+        "formatString": "0.0%",
+        "displayFolder": "Generation"
+      },
+      {
+        "name": "Total CO2 Emissions",
+        "table": "FactGeneration",
+        "expression": "SUM(FactGeneration[CO2EmissionsTons])",
+        "formatString": "#,0",
+        "displayFolder": "Generation"
+      },
+      {
+        "name": "Renewable Generation %",
+        "table": "FactGeneration",
+        "expression": "DIVIDE(CALCULATE(SUM(FactGeneration[MWhGenerated]), DimPowerPlants[IsRenewable] = TRUE()), SUM(FactGeneration[MWhGenerated]))",
+        "formatString": "0.0%",
+        "displayFolder": "Generation"
+      },
+      {
+        "name": "Peak Load MW",
+        "table": "FactGridLoad",
+        "expression": "MAX(FactGridLoad[LoadMW])",
+        "formatString": "#,0.0",
+        "displayFolder": "Grid Operations"
+      },
+      {
+        "name": "Avg Load MW",
+        "table": "FactGridLoad",
+        "expression": "AVERAGE(FactGridLoad[LoadMW])",
+        "formatString": "#,0.0",
+        "displayFolder": "Grid Operations"
+      },
+      {
+        "name": "Total Outages",
+        "table": "FactOutages",
+        "expression": "COUNTROWS(FactOutages)",
+        "formatString": "#,0",
+        "displayFolder": "Grid Operations"
+      },
+      {
+        "name": "Avg Outage Duration (min)",
+        "table": "FactOutages",
+        "expression": "AVERAGE(FactOutages[DurationMinutes])",
+        "formatString": "#,0",
+        "displayFolder": "Grid Operations"
+      },
+      {
+        "name": "Total Customers Affected",
+        "table": "FactOutages",
+        "expression": "SUM(FactOutages[AffectedCustomers])",
+        "formatString": "#,0",
+        "displayFolder": "Grid Operations"
+      },
+      {
+        "name": "Total Revenue",
+        "table": "FactBilling",
+        "expression": "SUM(FactBilling[AmountBilled])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Billing"
+      },
+      {
+        "name": "Total KWh Consumed",
+        "table": "FactBilling",
+        "expression": "SUM(FactBilling[KWhConsumed])",
+        "formatString": "#,0",
+        "displayFolder": "Billing"
+      },
+      {
+        "name": "Avg Bill Amount",
+        "table": "FactBilling",
+        "expression": "AVERAGE(FactBilling[AmountBilled])",
+        "formatString": "$#,0.00",
+        "displayFolder": "Billing"
+      },
+      {
+        "name": "Payment Collection Rate",
+        "table": "FactBilling",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactBilling), FactBilling[PaymentStatus] = \"Paid\"), COUNTROWS(FactBilling))",
+        "formatString": "0.0%",
+        "displayFolder": "Billing"
+      },
+      {
+        "name": "Total CO2e Tons",
+        "table": "FactEmissions",
+        "expression": "SUM(FactEmissions[CO2eTons])",
+        "formatString": "#,0",
+        "displayFolder": "Sustainability"
+      },
+      {
+        "name": "Renewable Offset MWh",
+        "table": "FactEmissions",
+        "expression": "SUM(FactEmissions[RenewableOffsetMWh])",
+        "formatString": "#,0",
+        "displayFolder": "Sustainability"
+      },
+      {
+        "name": "Carbon Credits",
+        "table": "FactEmissions",
+        "expression": "SUM(FactEmissions[CarbonCreditsPurchased])",
+        "formatString": "#,0",
+        "displayFolder": "Sustainability"
+      },
+      {
+        "name": "Total Work Orders",
+        "table": "FactWorkOrders",
+        "expression": "COUNTROWS(FactWorkOrders)",
+        "formatString": "#,0",
+        "displayFolder": "Field Ops"
+      },
+      {
+        "name": "Avg Work Order Cost",
+        "table": "FactWorkOrders",
+        "expression": "AVERAGE(FactWorkOrders[Cost])",
+        "formatString": "$#,0",
+        "displayFolder": "Field Ops"
+      },
+      {
+        "name": "Total Safety Incidents",
+        "table": "FactSafetyIncidents",
+        "expression": "COUNTROWS(FactSafetyIncidents)",
+        "formatString": "#,0",
+        "displayFolder": "Field Ops"
+      },
+      {
+        "name": "Lost Time Days",
+        "table": "FactSafetyIncidents",
+        "expression": "SUM(FactSafetyIncidents[LostTimeDays])",
+        "formatString": "#,0",
+        "displayFolder": "Field Ops"
+      }
+    ]
+  }
+}

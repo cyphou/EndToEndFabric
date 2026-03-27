@@ -1,0 +1,79 @@
+{
+  "planningModels": [
+    {
+      "name": "HeadcountPlan",
+      "description": "Department-level headcount and hiring plan",
+      "sourceTable": "DimEmployees",
+      "valueColumn": "EmployeeID",
+      "planningSchema": "planning",
+      "columns": [
+        {"name": "FiscalYear", "dataType": "INT"}, {"name": "DepartmentID", "dataType": "INT"},
+        {"name": "PlannedHeadcount", "dataType": "INT"}, {"name": "PlannedHires", "dataType": "INT"},
+        {"name": "AttritionTarget", "dataType": "INT"},
+        {"name": "Scenario", "dataType": "NVARCHAR(50)"}
+      ]
+    },
+    {
+      "name": "CompensationBudget",
+      "description": "Annual compensation and benefits budget",
+      "sourceTable": "FactPayroll",
+      "valueColumn": "GrossPay",
+      "planningSchema": "planning",
+      "columns": [
+        {"name": "FiscalYear", "dataType": "INT"}, {"name": "FiscalQuarter", "dataType": "INT"},
+        {"name": "PlannedGrossPay", "dataType": "DECIMAL(18,2)"},
+        {"name": "PlannedBenefitsCost", "dataType": "DECIMAL(18,2)"},
+        {"name": "MeritIncreasePool", "dataType": "DECIMAL(18,2)"},
+        {"name": "Scenario", "dataType": "NVARCHAR(50)"}
+      ]
+    },
+    {
+      "name": "DepartmentBudget",
+      "description": "Departmental operating budget plan",
+      "sourceTable": "FactBudget",
+      "valueColumn": "BudgetAmount",
+      "planningSchema": "planning",
+      "columns": [
+        {"name": "FiscalYear", "dataType": "INT"}, {"name": "CostCenterID", "dataType": "INT"},
+        {"name": "PlannedBudget", "dataType": "DECIMAL(18,2)"},
+        {"name": "PlannedCapex", "dataType": "DECIMAL(18,2)"},
+        {"name": "PlannedOpex", "dataType": "DECIMAL(18,2)"},
+        {"name": "Scenario", "dataType": "NVARCHAR(50)"}
+      ]
+    },
+    {
+      "name": "CashFlowPlan",
+      "description": "Cash flow projections from AR/AP",
+      "sourceTable": null,
+      "valueColumn": null,
+      "planningSchema": "planning",
+      "columns": [
+        {"name": "FiscalYear", "dataType": "INT"}, {"name": "FiscalMonth", "dataType": "INT"},
+        {"name": "PlannedInflows", "dataType": "DECIMAL(18,2)"},
+        {"name": "PlannedOutflows", "dataType": "DECIMAL(18,2)"},
+        {"name": "NetCashFlow", "dataType": "DECIMAL(18,2)"},
+        {"name": "Scenario", "dataType": "NVARCHAR(50)"}
+      ]
+    },
+    {
+      "name": "PlanVsActual",
+      "description": "Plan vs actual comparison for HR and Finance KPIs",
+      "sourceTable": null,
+      "valueColumn": null,
+      "planningSchema": "planning",
+      "columns": [
+        {"name": "FiscalYear", "dataType": "INT"}, {"name": "Domain", "dataType": "NVARCHAR(100)"},
+        {"name": "KPI", "dataType": "NVARCHAR(200)"},
+        {"name": "PlannedValue", "dataType": "DECIMAL(18,2)"},
+        {"name": "ActualValue", "dataType": "DECIMAL(18,2)"},
+        {"name": "Scenario", "dataType": "NVARCHAR(50)"}
+      ]
+    }
+  ],
+  "scenarios": [
+    {"name": "Base", "description": "Current trajectory, 3% cost increase", "growthRate": 0.03},
+    {"name": "Expansion", "description": "Aggressive hiring, new office openings", "growthRate": 0.12},
+    {"name": "Austerity", "description": "Hiring freeze, cost reduction", "growthRate": -0.05}
+  ],
+  "fiscalYears": ["FY2024", "FY2025", "FY2026"]
+}

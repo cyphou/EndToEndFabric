@@ -1,0 +1,34 @@
+{
+  "industry": {
+    "id": "contoso-energy",
+    "name": "ContosoEnergy",
+    "displayName": "Contoso Energy",
+    "description": "Regional energy provider with renewables, grid operations, customer billing, sustainability tracking, and field operations.",
+    "domains": ["Generation", "GridOperations", "CustomerBilling", "Sustainability", "FieldOps"],
+    "dataYears": ["FY2024", "FY2025", "FY2026"],
+    "theme": {
+      "primary": "#2E7D32",
+      "secondary": "#FF6F00",
+      "background": "#0D1B0E",
+      "foreground": "#FFFFFF",
+      "accent1": "#66BB6A",
+      "accent2": "#FFA726"
+    }
+  },
+  "fabricArtifacts": {
+    "workspacePrefix": "ContosoEnergy",
+    "lakehouses": {
+      "bronze": "BronzeLH",
+      "silver": "SilverLH",
+      "gold": "GoldLH"
+    },
+    "schemas": {
+      "silver": ["generation", "grid", "billing", "sustainability", "fieldops", "web"],
+      "gold": ["dim", "fact", "analytics", "planning"]
+    },
+    "notebooks": 6,
+    "dataflows": 5,
+    "reports": 3,
+    "pipelines": 1
+  }
+}

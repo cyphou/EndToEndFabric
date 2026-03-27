@@ -1,0 +1,127 @@
+{
+  "reports": [
+    {
+      "name": "ContosoEnergy-Analytics",
+      "theme": {"primary": "#2E7D32", "secondary": "#FF6F00", "background": "#FAFAFA"},
+      "pages": [
+        {"name": "Executive Overview", "visuals": [
+          {"type": "card", "measure": "Total Revenue"},
+          {"type": "card", "measure": "Total Generation MWh"},
+          {"type": "card", "measure": "Total CO2e Tons"},
+          {"type": "card", "measure": "Total Outages"},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Revenue", "Total Generation MWh"]},
+          {"type": "donutChart", "legend": "DimPowerPlants[FuelType]", "values": ["Total Generation MWh"]}
+        ]},
+        {"name": "Generation Performance", "visuals": [
+          {"type": "clusteredBarChart", "axis": "DimPowerPlants[PlantName]", "values": ["Total Generation MWh", "Total CO2 Emissions"]},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Avg Plant Efficiency"]},
+          {"type": "card", "measure": "Renewable Generation %"},
+          {"type": "pieChart", "legend": "DimPowerPlants[FuelType]", "values": ["Total Generation MWh"]}
+        ]},
+        {"name": "Grid Operations", "visuals": [
+          {"type": "areaChart", "axis": "DimDate[Date]", "values": ["Peak Load MW", "Avg Load MW"]},
+          {"type": "card", "measure": "Total Outages"},
+          {"type": "card", "measure": "Avg Outage Duration (min)"},
+          {"type": "table", "columns": ["DimSubstations[SubstationName]", "Peak Load MW", "Total Outages"]}
+        ]},
+        {"name": "Outage Analysis", "visuals": [
+          {"type": "clusteredBarChart", "axis": "FactOutages[Cause]", "values": ["Total Outages"]},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Customers Affected"]},
+          {"type": "matrix", "rows": ["DimSubstations[Region]"], "columns": ["FactOutages[Cause]"], "values": ["Total Outages"]}
+        ]},
+        {"name": "Customer Billing", "visuals": [
+          {"type": "card", "measure": "Total Revenue"},
+          {"type": "card", "measure": "Payment Collection Rate"},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Revenue", "Total KWh Consumed"]},
+          {"type": "clusteredBarChart", "axis": "DimRatePlans[PlanName]", "values": ["Avg Bill Amount"]}
+        ]},
+        {"name": "Revenue by Region", "visuals": [
+          {"type": "map", "location": "DimCustomers[Region]", "size": "Total Revenue"},
+          {"type": "treemap", "category": "DimCustomers[AccountType]", "values": ["Total Revenue"]},
+          {"type": "card", "measure": "Avg Bill Amount"}
+        ]},
+        {"name": "Sustainability Dashboard", "visuals": [
+          {"type": "card", "measure": "Total CO2e Tons"},
+          {"type": "card", "measure": "Renewable Offset MWh"},
+          {"type": "card", "measure": "Carbon Credits"},
+          {"type": "stackedBarChart", "axis": "DimEmissionSources[Scope]", "values": ["Total CO2e Tons"]},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total CO2e Tons", "Renewable Offset MWh"]}
+        ]},
+        {"name": "Emission Sources", "visuals": [
+          {"type": "donutChart", "legend": "DimEmissionSources[Category]", "values": ["Total CO2e Tons"]},
+          {"type": "table", "columns": ["DimEmissionSources[SourceName]", "Total CO2e Tons", "Renewable Offset MWh"]}
+        ]},
+        {"name": "Field Operations", "visuals": [
+          {"type": "card", "measure": "Total Work Orders"},
+          {"type": "card", "measure": "Total Safety Incidents"},
+          {"type": "clusteredBarChart", "axis": "FactWorkOrders[WorkType]", "values": ["Total Work Orders"]},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Avg Work Order Cost"]}
+        ]},
+        {"name": "Crew Performance", "visuals": [
+          {"type": "table", "columns": ["DimCrews[CrewName]", "Total Work Orders", "Avg Work Order Cost"]},
+          {"type": "clusteredBarChart", "axis": "DimCrews[Specialty]", "values": ["Total Work Orders"]}
+        ]},
+        {"name": "Safety & Compliance", "visuals": [
+          {"type": "card", "measure": "Lost Time Days"},
+          {"type": "clusteredBarChart", "axis": "FactSafetyIncidents[Severity]", "values": ["Total Safety Incidents"]},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Safety Incidents", "Lost Time Days"]}
+        ]},
+        {"name": "KPI Summary", "visuals": [
+          {"type": "card", "measure": "Total Revenue"},
+          {"type": "card", "measure": "Renewable Generation %"},
+          {"type": "card", "measure": "Payment Collection Rate"},
+          {"type": "card", "measure": "Total Safety Incidents"},
+          {"type": "gauge", "value": "Renewable Generation %", "target": 0.50},
+          {"type": "gauge", "value": "Payment Collection Rate", "target": 0.95}
+        ]}
+      ]
+    },
+    {
+      "name": "ContosoEnergy-Forecasting",
+      "theme": {"primary": "#2E7D32", "secondary": "#FF6F00", "background": "#FAFAFA"},
+      "pages": [
+        {"name": "Generation Forecast", "visuals": [
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Generation MWh"], "forecast": true},
+          {"type": "card", "measure": "Total Generation MWh"}
+        ]},
+        {"name": "Demand Forecast", "visuals": [
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total KWh Consumed"], "forecast": true},
+          {"type": "areaChart", "axis": "DimDate[MonthName]", "values": ["Peak Load MW"]}
+        ]},
+        {"name": "Revenue Forecast", "visuals": [
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Revenue"], "forecast": true},
+          {"type": "clusteredBarChart", "axis": "DimDate[Quarter]", "values": ["Total Revenue"]}
+        ]},
+        {"name": "Sustainability Projection", "visuals": [
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total CO2e Tons"], "forecast": true},
+          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Renewable Offset MWh"], "forecast": true}
+        ]},
+        {"name": "Model Accuracy", "visuals": [
+          {"type": "table", "columns": ["ModelName", "RMSE", "MAE", "MAPE"]},
+          {"type": "lineChart", "axis": "Epoch", "values": ["TrainingLoss", "ValidationLoss"]}
+        ]}
+      ]
+    },
+    {
+      "name": "ContosoEnergy-HTAP",
+      "theme": {"primary": "#2E7D32", "secondary": "#FF6F00", "background": "#FAFAFA"},
+      "pages": [
+        {"name": "Real-Time Grid Monitor", "visuals": [
+          {"type": "card", "measure": "Peak Load MW"},
+          {"type": "card", "measure": "Total Outages"},
+          {"type": "lineChart", "axis": "Timestamp", "values": ["LoadMW"], "streaming": true},
+          {"type": "map", "location": "DimSubstations[Region]", "color": "Peak Load MW"}
+        ]},
+        {"name": "Event Stream Analytics", "visuals": [
+          {"type": "card", "measure": "Events Per Second"},
+          {"type": "clusteredBarChart", "axis": "EventType", "values": ["EventCount"]},
+          {"type": "table", "columns": ["EventType", "LatestTimestamp", "EventCount"]}
+        ]},
+        {"name": "Hot-Cold Bridge", "visuals": [
+          {"type": "lineChart", "axis": "DimDate[Date]", "values": ["Peak Load MW"], "layers": ["Hot", "Cold"]},
+          {"type": "table", "columns": ["Source", "RecordCount", "LatestSync"]}
+        ]}
+      ]
+    }
+  ]
+}

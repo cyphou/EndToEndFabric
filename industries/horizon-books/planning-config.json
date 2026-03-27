@@ -1,0 +1,83 @@
+{
+  "planningConfig": {
+    "description": "Configuration for Horizon Books Planning in Fabric IQ — budget targets, scenario modeling, plan-vs-actual variance.",
+    "parameters": {
+      "planningHorizon": 12,
+      "baseFiscalYear": "FY2026",
+      "scenarioTypes": ["Base", "Optimistic", "Conservative"],
+      "growthAssumptions": {
+        "base": 0.08,
+        "optimistic": 0.15,
+        "conservative": 0.03
+      },
+      "varianceThresholds": {
+        "favorable": 0.05,
+        "unfavorable": -0.05,
+        "critical": -0.15
+      }
+    },
+    "models": [
+      {
+        "name": "RevenueTargets",
+        "outputTable": "PlanRevenueTargets",
+        "outputSchema": "planning",
+        "description": "Channel-level revenue targets with base/optimistic/conservative scenarios.",
+        "grainColumns": ["Channel", "Scenario"],
+        "valueColumn": "TargetRevenue",
+        "dateColumn": "PlanMonth",
+        "sourceTable": "ForecastSalesRevenue",
+        "writeback": true
+      },
+      {
+        "name": "FinancialPlan",
+        "outputTable": "PlanFinancialTargets",
+        "outputSchema": "planning",
+        "description": "P&L account-level financial plan with budget allocations and scenario modeling.",
+        "grainColumns": ["AccountType", "CostCenterID", "Scenario"],
+        "valueColumn": "PlannedAmount",
+        "dateColumn": "PlanMonth",
+        "sourceTable": "ForecastFinancial",
+        "writeback": true
+      },
+      {
+        "name": "WorkforcePlan",
+        "outputTable": "PlanWorkforceTargets",
+        "outputSchema": "planning",
+        "description": "Headcount and payroll targets by department with hiring scenario modeling.",
+        "grainColumns": ["Department", "Metric", "Scenario"],
+        "valueColumn": "PlannedValue",
+        "dateColumn": "PlanMonth",
+        "sourceTable": "ForecastWorkforce",
+        "writeback": true
+      },
+      {
+        "name": "PlanVsActual",
+        "outputTable": "PlanVarianceAnalysis",
+        "outputSchema": "planning",
+        "description": "Consolidated plan-vs-actual variance analysis across domains.",
+        "grainColumns": ["Domain", "Category", "PlanMonth"],
+        "valueColumn": "Variance",
+        "dateColumn": "PlanMonth",
+        "sourceTable": null,
+        "writeback": false
+      },
+      {
+        "name": "ScenarioComparison",
+        "outputTable": "PlanScenarioSummary",
+        "outputSchema": "planning",
+        "description": "Side-by-side scenario comparison for executive dashboards.",
+        "grainColumns": ["Domain", "Scenario", "FiscalQuarter"],
+        "valueColumn": "PlannedTotal",
+        "dateColumn": "PlanMonth",
+        "sourceTable": null,
+        "writeback": false
+      }
+    ],
+    "outputSettings": {
+      "writeMode": "overwrite",
+      "format": "delta",
+      "overwriteSchema": true,
+      "writebackTarget": "Fabric SQL Endpoint"
+    }
+  }
+}

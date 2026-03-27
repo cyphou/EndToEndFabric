@@ -1,0 +1,77 @@
+{
+  "eventhouse": {
+    "name": "NorthwindHRFinanceEventhouse",
+    "kqlDatabase": "NorthwindHRFinanceRealtime",
+    "retentionDays": 365
+  },
+  "eventStreams": [
+    {
+      "name": "PayrollTransactions",
+      "description": "Real-time payroll processing events",
+      "eventsPerSecond": 15,
+      "schema": [
+        {"name": "EmployeeID", "type": "int"},
+        {"name": "Timestamp", "type": "datetime"},
+        {"name": "TransactionType", "type": "string"},
+        {"name": "Amount", "type": "real"},
+        {"name": "PayCodeID", "type": "int"}
+      ],
+      "kqlTable": "PayrollTransactionEvents",
+      "kqlAggregations": [
+        "PayrollTransactionEvents | summarize TotalAmount=sum(Amount), TxnCount=count() by TransactionType, bin(Timestamp, 1h)",
+        "PayrollTransactionEvents | summarize AvgPay=avg(Amount) by PayCodeID, bin(Timestamp, 1d)"
+      ]
+    },
+    {
+      "name": "JournalPostings",
+      "description": "Real-time GL journal entry postings",
+      "eventsPerSecond": 25,
+      "schema": [
+        {"name": "EntryID", "type": "int"},
+        {"name": "Timestamp", "type": "datetime"},
+        {"name": "AccountID", "type": "int"},
+        {"name": "DebitAmount", "type": "real"},
+        {"name": "CreditAmount", "type": "real"},
+        {"name": "PostingType", "type": "string"}
+      ],
+      "kqlTable": "JournalPostingEvents",
+      "kqlAggregations": [
+        "JournalPostingEvents | summarize TotalDebits=sum(DebitAmount), TotalCredits=sum(CreditAmount) by PostingType, bin(Timestamp, 1h)",
+        "JournalPostingEvents | summarize NetAmount=sum(DebitAmount)-sum(CreditAmount) by AccountID, bin(Timestamp, 1d)"
+      ]
+    },
+    {
+      "name": "HRSystemEvents",
+      "description": "HR system audit events (logins, record changes, approvals)",
+      "eventsPerSecond": 10,
+      "schema": [
+        {"name": "EventID", "type": "int"},
+        {"name": "Timestamp", "type": "datetime"},
+        {"name": "UserID", "type": "int"},
+        {"name": "EventType", "type": "string"},
+        {"name": "EntityType", "type": "string"},
+        {"name": "Action", "type": "string"}
+      ],
+      "kqlTable": "HRSystemAuditEvents",
+      "kqlAggregations": [
+        "HRSystemAuditEvents | summarize EventCount=count() by EventType, Action, bin(Timestamp, 1h)"
+      ]
+    }
+  ],
+  "bridgeQueries": [
+    {
+      "name": "PayrollBridge",
+      "description": "Bridge real-time payroll with Lakehouse payroll fact",
+      "hotTable": "PayrollTransactionEvents",
+      "coldTable": "FactPayroll",
+      "joinKey": "EmployeeID"
+    },
+    {
+      "name": "JournalBridge",
+      "description": "Bridge real-time journal postings with GL fact",
+      "hotTable": "JournalPostingEvents",
+      "coldTable": "FactJournalEntries",
+      "joinKey": "AccountID"
+    }
+  ]
+}

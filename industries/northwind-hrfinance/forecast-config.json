@@ -1,0 +1,64 @@
+{
+  "forecastModels": [
+    {
+      "name": "PayrollExpense",
+      "description": "Forecast total gross payroll expense",
+      "table": "FactPayroll",
+      "dateColumn": "PayPeriodDate",
+      "valueColumn": "GrossPay",
+      "groupBy": null,
+      "algorithm": "HoltWinters",
+      "params": {"seasonal": "additive", "alpha": 0.3, "beta": 0.1, "gamma": 0.1, "seasonalPeriods": 12},
+      "horizonMonths": 12
+    },
+    {
+      "name": "AttritionRate",
+      "description": "Forecast monthly attrition volume",
+      "table": "FactAttrition",
+      "dateColumn": "TerminationDate",
+      "valueColumn": "AttritionID",
+      "groupBy": null,
+      "algorithm": "HoltWinters",
+      "params": {"seasonal": "additive", "alpha": 0.25, "beta": 0.05, "gamma": 0.1, "seasonalPeriods": 12},
+      "horizonMonths": 6
+    },
+    {
+      "name": "RevenueCollections",
+      "description": "Forecast accounts receivable collections",
+      "table": "FactAccountsReceivable",
+      "dateColumn": "InvoiceDate",
+      "valueColumn": "CollectedAmount",
+      "groupBy": null,
+      "algorithm": "HoltWinters",
+      "params": {"seasonal": "additive", "alpha": 0.3, "beta": 0.1, "gamma": 0.15, "seasonalPeriods": 12},
+      "horizonMonths": 12
+    },
+    {
+      "name": "BudgetSpend",
+      "description": "Forecast actual spend against budget",
+      "table": "FactBudget",
+      "dateColumn": "FiscalMonth",
+      "valueColumn": "ActualAmount",
+      "groupBy": "CostCenterID",
+      "algorithm": "HoltWinters",
+      "params": {"seasonal": "additive", "alpha": 0.3, "beta": 0.1, "gamma": 0.1, "seasonalPeriods": 12},
+      "horizonMonths": 6
+    },
+    {
+      "name": "HeadcountProjection",
+      "description": "Forecast headcount based on hiring minus attrition",
+      "table": "FactRecruitment",
+      "dateColumn": "CloseDate",
+      "valueColumn": "Hired",
+      "groupBy": null,
+      "algorithm": "HoltWinters",
+      "params": {"seasonal": "additive", "alpha": 0.2, "beta": 0.1, "gamma": 0.1, "seasonalPeriods": 12},
+      "horizonMonths": 12
+    }
+  ],
+  "mlflow": {
+    "experimentName": "NorthwindHRFinance_Forecasting",
+    "trackMetrics": ["rmse", "mae", "mape"],
+    "logModel": true
+  }
+}

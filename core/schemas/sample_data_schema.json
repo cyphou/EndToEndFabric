@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Sample Data Configuration",
+  "description": "Defines CSV files, columns, row counts, and referential integrity for an industry demo.",
+  "type": "object",
+  "required": ["sampleData"],
+  "properties": {
+    "sampleData": {
+      "type": "object",
+      "required": ["domains"],
+      "properties": {
+        "description": { "type": "string" },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "folder", "tables"],
+            "properties": {
+              "name": { "type": "string" },
+              "folder": { "type": "string" },
+              "tables": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["name", "fileName", "rowCount", "columns"],
+                  "properties": {
+                    "name": { "type": "string" },
+                    "fileName": { "type": "string", "pattern": "\\.csv$" },
+                    "rowCount": { "type": "integer", "minimum": 1 },
+                    "columns": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": ["name", "type"],
+                        "properties": {
+                          "name": { "type": "string" },
+                          "type": { "type": "string", "enum": ["string", "int", "float", "date", "datetime", "boolean", "decimal"] },
+                          "nullable": { "type": "boolean" },
+                          "primaryKey": { "type": "boolean" },
+                          "foreignKey": {
+                            "type": "object",
+                            "properties": {
+                              "table": { "type": "string" },
+                              "column": { "type": "string" }
+                            },
+                            "required": ["table", "column"]
+                          },
+                          "generator": {
+                            "type": "object",
+                            "properties": {
+                              "method": { "type": "string", "enum": ["sequence", "random_int", "random_float", "random_choice", "random_date", "faker", "formula", "uuid", "foreign_key_lookup"] },
+                              "params": { "type": "object" }
+                            },
+                            "required": ["method"]
+                          }
+                        }
+                      },
+                      "minItems": 1
+                    }
+                  }
+                },
+                "minItems": 1
+              }
+            }
+          },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}

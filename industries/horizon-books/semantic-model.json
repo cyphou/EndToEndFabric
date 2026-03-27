@@ -1,0 +1,239 @@
+{
+  "semanticModel": {
+    "name": "HorizonBooksModel",
+    "mode": "DirectLake",
+    "defaultSchema": "gold",
+    "tables": [
+      {
+        "name": "DimDate", "schema": "dim", "tableType": "date",
+        "columns": [
+          { "name": "DateKey", "dataType": "Int64", "isKey": true },
+          { "name": "Date", "dataType": "DateTime", "formatString": "yyyy-MM-dd" },
+          { "name": "Year", "dataType": "Int64" },
+          { "name": "Quarter", "dataType": "String" },
+          { "name": "Month", "dataType": "Int64" },
+          { "name": "MonthName", "dataType": "String", "sortByColumn": "Month" },
+          { "name": "Day", "dataType": "Int64" },
+          { "name": "DayOfWeek", "dataType": "String" },
+          { "name": "FiscalYear", "dataType": "String" },
+          { "name": "FiscalQuarter", "dataType": "String" },
+          { "name": "IsWeekend", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "DimAccounts", "schema": "dim", "tableType": "dim",
+        "columns": [
+          { "name": "AccountID", "dataType": "Int64", "isKey": true },
+          { "name": "AccountName", "dataType": "String" },
+          { "name": "AccountType", "dataType": "String" },
+          { "name": "AccountCategory", "dataType": "String" },
+          { "name": "IsActive", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "DimCostCenters", "schema": "dim", "tableType": "dim",
+        "columns": [
+          { "name": "CostCenterID", "dataType": "String", "isKey": true },
+          { "name": "CostCenterName", "dataType": "String" },
+          { "name": "Department", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "DimBooks", "schema": "dim", "tableType": "dim",
+        "columns": [
+          { "name": "BookID", "dataType": "Int64", "isKey": true },
+          { "name": "Title", "dataType": "String" },
+          { "name": "AuthorID", "dataType": "Int64" },
+          { "name": "Genre", "dataType": "String" },
+          { "name": "PublishDate", "dataType": "DateTime" },
+          { "name": "ListPrice", "dataType": "Decimal", "formatString": "$#,##0.00" },
+          { "name": "PageCount", "dataType": "Int64" },
+          { "name": "Imprint", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "DimAuthors", "schema": "dim", "tableType": "dim",
+        "columns": [
+          { "name": "AuthorID", "dataType": "Int64", "isKey": true },
+          { "name": "AuthorName", "dataType": "String" },
+          { "name": "Country", "dataType": "String" },
+          { "name": "Genre", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "DimCustomers", "schema": "dim", "tableType": "dim",
+        "columns": [
+          { "name": "CustomerID", "dataType": "Int64", "isKey": true },
+          { "name": "CustomerName", "dataType": "String" },
+          { "name": "City", "dataType": "String" },
+          { "name": "Country", "dataType": "String" },
+          { "name": "Segment", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "DimEmployees", "schema": "dim", "tableType": "dim",
+        "columns": [
+          { "name": "EmployeeID", "dataType": "Int64", "isKey": true },
+          { "name": "FullName", "dataType": "String" },
+          { "name": "DepartmentID", "dataType": "Int64" },
+          { "name": "Title", "dataType": "String" },
+          { "name": "HireDate", "dataType": "DateTime" },
+          { "name": "Salary", "dataType": "Decimal", "formatString": "$#,##0" },
+          { "name": "City", "dataType": "String" },
+          { "name": "Country", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "DimDepartments", "schema": "dim", "tableType": "dim",
+        "columns": [
+          { "name": "DepartmentID", "dataType": "Int64", "isKey": true },
+          { "name": "DepartmentName", "dataType": "String" },
+          { "name": "Location", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "DimWarehouses", "schema": "dim", "tableType": "dim",
+        "columns": [
+          { "name": "WarehouseID", "dataType": "Int64", "isKey": true },
+          { "name": "WarehouseName", "dataType": "String" },
+          { "name": "City", "dataType": "String" },
+          { "name": "State", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "DimGeography", "schema": "dim", "tableType": "dim",
+        "columns": [
+          { "name": "GeoID", "dataType": "Int64", "isKey": true },
+          { "name": "Country", "dataType": "String" },
+          { "name": "City", "dataType": "String" },
+          { "name": "Region", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "FactFinancialTransactions", "schema": "fact", "tableType": "fact",
+        "columns": [
+          { "name": "TransactionID", "dataType": "Int64", "isKey": true },
+          { "name": "AccountID", "dataType": "Int64" },
+          { "name": "CostCenterID", "dataType": "String" },
+          { "name": "TransactionDate", "dataType": "DateTime" },
+          { "name": "Amount", "dataType": "Decimal", "formatString": "$#,##0.00" },
+          { "name": "Description", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "FactBudget", "schema": "fact", "tableType": "fact",
+        "columns": [
+          { "name": "BudgetID", "dataType": "Int64", "isKey": true },
+          { "name": "AccountID", "dataType": "Int64" },
+          { "name": "CostCenterID", "dataType": "String" },
+          { "name": "BudgetMonth", "dataType": "DateTime" },
+          { "name": "BudgetAmount", "dataType": "Decimal", "formatString": "$#,##0.00" },
+          { "name": "FiscalYear", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "FactOrders", "schema": "fact", "tableType": "fact",
+        "columns": [
+          { "name": "OrderID", "dataType": "Int64", "isKey": true },
+          { "name": "BookID", "dataType": "Int64" },
+          { "name": "CustomerID", "dataType": "Int64" },
+          { "name": "OrderDate", "dataType": "DateTime" },
+          { "name": "Quantity", "dataType": "Int64" },
+          { "name": "UnitPrice", "dataType": "Decimal", "formatString": "$#,##0.00" },
+          { "name": "Channel", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "FactInventory", "schema": "fact", "tableType": "fact",
+        "columns": [
+          { "name": "InventoryID", "dataType": "Int64", "isKey": true },
+          { "name": "BookID", "dataType": "Int64" },
+          { "name": "WarehouseID", "dataType": "Int64" },
+          { "name": "SnapshotDate", "dataType": "DateTime" },
+          { "name": "QuantityOnHand", "dataType": "Int64" },
+          { "name": "ReorderPoint", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "FactReturns", "schema": "fact", "tableType": "fact",
+        "columns": [
+          { "name": "ReturnID", "dataType": "Int64", "isKey": true },
+          { "name": "OrderID", "dataType": "Int64" },
+          { "name": "ReturnDate", "dataType": "DateTime" },
+          { "name": "Quantity", "dataType": "Int64" },
+          { "name": "Reason", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "FactPayroll", "schema": "fact", "tableType": "fact",
+        "columns": [
+          { "name": "PayrollID", "dataType": "Int64", "isKey": true },
+          { "name": "EmployeeID", "dataType": "Int64" },
+          { "name": "PayPeriodMonth", "dataType": "DateTime" },
+          { "name": "GrossPay", "dataType": "Decimal", "formatString": "$#,##0.00" },
+          { "name": "NetPay", "dataType": "Decimal", "formatString": "$#,##0.00" },
+          { "name": "Deductions", "dataType": "Decimal", "formatString": "$#,##0.00" }
+        ]
+      },
+      {
+        "name": "FactPerformanceReviews", "schema": "fact", "tableType": "fact",
+        "columns": [
+          { "name": "ReviewID", "dataType": "Int64", "isKey": true },
+          { "name": "EmployeeID", "dataType": "Int64" },
+          { "name": "ReviewDate", "dataType": "DateTime" },
+          { "name": "Rating", "dataType": "Int64" },
+          { "name": "ReviewerComments", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "FactRecruitment", "schema": "fact", "tableType": "fact",
+        "columns": [
+          { "name": "RecruitmentID", "dataType": "Int64", "isKey": true },
+          { "name": "DepartmentID", "dataType": "Int64" },
+          { "name": "PositionTitle", "dataType": "String" },
+          { "name": "PostingDate", "dataType": "DateTime" },
+          { "name": "Status", "dataType": "String" },
+          { "name": "CandidateName", "dataType": "String" }
+        ]
+      }
+    ],
+    "relationships": [
+      { "fromTable": "FactFinancialTransactions", "fromColumn": "AccountID", "toTable": "DimAccounts", "toColumn": "AccountID" },
+      { "fromTable": "FactFinancialTransactions", "fromColumn": "CostCenterID", "toTable": "DimCostCenters", "toColumn": "CostCenterID" },
+      { "fromTable": "FactBudget", "fromColumn": "AccountID", "toTable": "DimAccounts", "toColumn": "AccountID" },
+      { "fromTable": "FactBudget", "fromColumn": "CostCenterID", "toTable": "DimCostCenters", "toColumn": "CostCenterID" },
+      { "fromTable": "FactOrders", "fromColumn": "BookID", "toTable": "DimBooks", "toColumn": "BookID" },
+      { "fromTable": "FactOrders", "fromColumn": "CustomerID", "toTable": "DimCustomers", "toColumn": "CustomerID" },
+      { "fromTable": "FactInventory", "fromColumn": "BookID", "toTable": "DimBooks", "toColumn": "BookID" },
+      { "fromTable": "FactInventory", "fromColumn": "WarehouseID", "toTable": "DimWarehouses", "toColumn": "WarehouseID" },
+      { "fromTable": "FactReturns", "fromColumn": "OrderID", "toTable": "FactOrders", "toColumn": "OrderID" },
+      { "fromTable": "FactPayroll", "fromColumn": "EmployeeID", "toTable": "DimEmployees", "toColumn": "EmployeeID" },
+      { "fromTable": "FactPerformanceReviews", "fromColumn": "EmployeeID", "toTable": "DimEmployees", "toColumn": "EmployeeID" },
+      { "fromTable": "FactRecruitment", "fromColumn": "DepartmentID", "toTable": "DimDepartments", "toColumn": "DepartmentID" },
+      { "fromTable": "DimEmployees", "fromColumn": "DepartmentID", "toTable": "DimDepartments", "toColumn": "DepartmentID" },
+      { "fromTable": "DimBooks", "fromColumn": "AuthorID", "toTable": "DimAuthors", "toColumn": "AuthorID" }
+    ],
+    "measures": [
+      { "name": "Total Revenue", "table": "FactFinancialTransactions", "expression": "CALCULATE(SUM(FactFinancialTransactions[Amount]), DimAccounts[AccountType] = \"Revenue\")", "formatString": "$#,##0", "displayFolder": "Finance" },
+      { "name": "Total COGS", "table": "FactFinancialTransactions", "expression": "CALCULATE(SUM(FactFinancialTransactions[Amount]), DimAccounts[AccountType] = \"COGS\")", "formatString": "$#,##0", "displayFolder": "Finance" },
+      { "name": "Gross Profit", "table": "FactFinancialTransactions", "expression": "[Total Revenue] - [Total COGS]", "formatString": "$#,##0", "displayFolder": "Finance" },
+      { "name": "Operating Expenses", "table": "FactFinancialTransactions", "expression": "CALCULATE(SUM(FactFinancialTransactions[Amount]), DimAccounts[AccountType] = \"OpEx\")", "formatString": "$#,##0", "displayFolder": "Finance" },
+      { "name": "Operating Margin %", "table": "FactFinancialTransactions", "expression": "DIVIDE([Gross Profit] - [Operating Expenses], [Total Revenue], 0)", "formatString": "0.0%", "displayFolder": "Finance" },
+      { "name": "Budget Amount", "table": "FactBudget", "expression": "SUM(FactBudget[BudgetAmount])", "formatString": "$#,##0", "displayFolder": "Finance" },
+      { "name": "Budget Variance", "table": "FactBudget", "expression": "[Total Revenue] - [Budget Amount]", "formatString": "$#,##0", "displayFolder": "Finance" },
+      { "name": "Budget Variance %", "table": "FactBudget", "expression": "DIVIDE([Budget Variance], [Budget Amount], 0)", "formatString": "0.0%", "displayFolder": "Finance" },
+      { "name": "Total Orders", "table": "FactOrders", "expression": "COUNTROWS(FactOrders)", "formatString": "#,##0", "displayFolder": "Operations" },
+      { "name": "Total Quantity Sold", "table": "FactOrders", "expression": "SUM(FactOrders[Quantity])", "formatString": "#,##0", "displayFolder": "Operations" },
+      { "name": "Order Revenue", "table": "FactOrders", "expression": "SUMX(FactOrders, FactOrders[Quantity] * FactOrders[UnitPrice])", "formatString": "$#,##0", "displayFolder": "Operations" },
+      { "name": "Average Order Value", "table": "FactOrders", "expression": "DIVIDE([Order Revenue], [Total Orders], 0)", "formatString": "$#,##0.00", "displayFolder": "Operations" },
+      { "name": "Total Returns", "table": "FactReturns", "expression": "SUM(FactReturns[Quantity])", "formatString": "#,##0", "displayFolder": "Operations" },
+      { "name": "Return Rate %", "table": "FactReturns", "expression": "DIVIDE([Total Returns], [Total Quantity Sold], 0)", "formatString": "0.0%", "displayFolder": "Operations" },
+      { "name": "Inventory On Hand", "table": "FactInventory", "expression": "SUM(FactInventory[QuantityOnHand])", "formatString": "#,##0", "displayFolder": "Operations" },
+      { "name": "Headcount", "table": "DimEmployees", "expression": "COUNTROWS(DimEmployees)", "formatString": "#,##0", "displayFolder": "HR" },
+      { "name": "Total Payroll", "table": "FactPayroll", "expression": "SUM(FactPayroll[GrossPay])", "formatString": "$#,##0", "displayFolder": "HR" },
+      { "name": "Avg Salary", "table": "DimEmployees", "expression": "AVERAGE(DimEmployees[Salary])", "formatString": "$#,##0", "displayFolder": "HR" },
+      { "name": "Avg Rating", "table": "FactPerformanceReviews", "expression": "AVERAGE(FactPerformanceReviews[Rating])", "formatString": "0.0", "displayFolder": "HR" },
+      { "name": "Open Positions", "table": "FactRecruitment", "expression": "CALCULATE(COUNTROWS(FactRecruitment), FactRecruitment[Status] = \"Open\")", "formatString": "#,##0", "displayFolder": "HR" }
+    ]
+  }
+}

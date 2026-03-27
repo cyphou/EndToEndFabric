@@ -1,0 +1,753 @@
+{
+  "sampleData": {
+    "description": "Northwind HR & Finance sample data \u00e2\u20ac\u201d 19 tables across 5 domains.",
+    "domains": [
+      {
+        "name": "HR",
+        "folder": "hr",
+        "tables": [
+          {
+            "name": "DimEmployees",
+            "fileName": "DimEmployees.csv",
+            "rowCount": 500,
+            "columns": [
+              {
+                "name": "EmployeeID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "FirstName",
+                "type": "string"
+              },
+              {
+                "name": "LastName",
+                "type": "string"
+              },
+              {
+                "name": "Email",
+                "type": "string"
+              },
+              {
+                "name": "Department",
+                "type": "string"
+              },
+              {
+                "name": "JobTitle",
+                "type": "string"
+              },
+              {
+                "name": "HireDate",
+                "type": "date"
+              },
+              {
+                "name": "ManagerID",
+                "type": "int"
+              },
+              {
+                "name": "Location",
+                "type": "string"
+              },
+              {
+                "name": "EmploymentStatus",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "DimDepartments",
+            "fileName": "DimDepartments.csv",
+            "rowCount": 20,
+            "columns": [
+              {
+                "name": "DepartmentID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "DepartmentName",
+                "type": "string"
+              },
+              {
+                "name": "Division",
+                "type": "string"
+              },
+              {
+                "name": "CostCenter",
+                "type": "string"
+              },
+              {
+                "name": "HeadCount",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "DimJobTitles",
+            "fileName": "DimJobTitles.csv",
+            "rowCount": 60,
+            "columns": [
+              {
+                "name": "JobTitleID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "JobTitle",
+                "type": "string"
+              },
+              {
+                "name": "PayGrade",
+                "type": "string"
+              },
+              {
+                "name": "MinSalary",
+                "type": "decimal"
+              },
+              {
+                "name": "MaxSalary",
+                "type": "decimal"
+              }
+            ]
+          },
+          {
+            "name": "FactRecruitment",
+            "fileName": "FactRecruitment.csv",
+            "rowCount": 800,
+            "columns": [
+              {
+                "name": "RequisitionID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "DepartmentID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimDepartments",
+                  "column": "DepartmentID"
+                }
+              },
+              {
+                "name": "JobTitleID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimJobTitles",
+                  "column": "JobTitleID"
+                }
+              },
+              {
+                "name": "OpenDate",
+                "type": "date"
+              },
+              {
+                "name": "CloseDate",
+                "type": "date"
+              },
+              {
+                "name": "Applicants",
+                "type": "int"
+              },
+              {
+                "name": "Interviewed",
+                "type": "int"
+              },
+              {
+                "name": "Hired",
+                "type": "int"
+              },
+              {
+                "name": "TimeToFillDays",
+                "type": "int"
+              },
+              {
+                "name": "Source",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "FactPerformanceReviews",
+            "fileName": "FactPerformanceReviews.csv",
+            "rowCount": 1500,
+            "columns": [
+              {
+                "name": "ReviewID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "EmployeeID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimEmployees",
+                  "column": "EmployeeID"
+                }
+              },
+              {
+                "name": "ReviewDate",
+                "type": "date"
+              },
+              {
+                "name": "ReviewPeriod",
+                "type": "string"
+              },
+              {
+                "name": "OverallRating",
+                "type": "decimal"
+              },
+              {
+                "name": "GoalsMetPct",
+                "type": "decimal"
+              },
+              {
+                "name": "ManagerRating",
+                "type": "decimal"
+              }
+            ]
+          },
+          {
+            "name": "FactAttrition",
+            "fileName": "FactAttrition.csv",
+            "rowCount": 120,
+            "columns": [
+              {
+                "name": "AttritionID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "EmployeeID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimEmployees",
+                  "column": "EmployeeID"
+                }
+              },
+              {
+                "name": "TerminationDate",
+                "type": "date"
+              },
+              {
+                "name": "Reason",
+                "type": "string"
+              },
+              {
+                "name": "IsVoluntary",
+                "type": "boolean"
+              },
+              {
+                "name": "TenureYears",
+                "type": "decimal"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Payroll",
+        "folder": "payroll",
+        "tables": [
+          {
+            "name": "DimPayCodes",
+            "fileName": "DimPayCodes.csv",
+            "rowCount": 25,
+            "columns": [
+              {
+                "name": "PayCodeID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "PayCodeName",
+                "type": "string"
+              },
+              {
+                "name": "Category",
+                "type": "string"
+              },
+              {
+                "name": "IsDeduction",
+                "type": "boolean"
+              }
+            ]
+          },
+          {
+            "name": "FactPayroll",
+            "fileName": "FactPayroll.csv",
+            "rowCount": 12000,
+            "columns": [
+              {
+                "name": "PayrollID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "EmployeeID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimEmployees",
+                  "column": "EmployeeID"
+                }
+              },
+              {
+                "name": "PayPeriodDate",
+                "type": "date"
+              },
+              {
+                "name": "PayCodeID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimPayCodes",
+                  "column": "PayCodeID"
+                }
+              },
+              {
+                "name": "GrossPay",
+                "type": "decimal"
+              },
+              {
+                "name": "Deductions",
+                "type": "decimal"
+              },
+              {
+                "name": "NetPay",
+                "type": "decimal"
+              },
+              {
+                "name": "Hours",
+                "type": "decimal"
+              },
+              {
+                "name": "OvertimeHours",
+                "type": "decimal"
+              }
+            ]
+          },
+          {
+            "name": "FactBenefits",
+            "fileName": "FactBenefits.csv",
+            "rowCount": 2000,
+            "columns": [
+              {
+                "name": "BenefitID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "EmployeeID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimEmployees",
+                  "column": "EmployeeID"
+                }
+              },
+              {
+                "name": "PlanType",
+                "type": "string"
+              },
+              {
+                "name": "EffectiveDate",
+                "type": "date"
+              },
+              {
+                "name": "EmployeeCost",
+                "type": "decimal"
+              },
+              {
+                "name": "EmployerCost",
+                "type": "decimal"
+              },
+              {
+                "name": "CoverageLevel",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "FinancialAccounting",
+        "folder": "finance",
+        "tables": [
+          {
+            "name": "DimAccounts",
+            "fileName": "DimAccounts.csv",
+            "rowCount": 150,
+            "columns": [
+              {
+                "name": "AccountID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "AccountNumber",
+                "type": "string"
+              },
+              {
+                "name": "AccountName",
+                "type": "string"
+              },
+              {
+                "name": "AccountType",
+                "type": "string"
+              },
+              {
+                "name": "ParentAccountID",
+                "type": "int"
+              },
+              {
+                "name": "IsActive",
+                "type": "boolean"
+              }
+            ]
+          },
+          {
+            "name": "DimVendors",
+            "fileName": "DimVendors.csv",
+            "rowCount": 80,
+            "columns": [
+              {
+                "name": "VendorID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "VendorName",
+                "type": "string"
+              },
+              {
+                "name": "Category",
+                "type": "string"
+              },
+              {
+                "name": "PaymentTerms",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "DimCustomers",
+            "fileName": "DimCustomers.csv",
+            "rowCount": 200,
+            "columns": [
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "CustomerName",
+                "type": "string"
+              },
+              {
+                "name": "Segment",
+                "type": "string"
+              },
+              {
+                "name": "Region",
+                "type": "string"
+              },
+              {
+                "name": "CreditLimit",
+                "type": "decimal"
+              }
+            ]
+          },
+          {
+            "name": "FactJournalEntries",
+            "fileName": "FactJournalEntries.csv",
+            "rowCount": 10000,
+            "columns": [
+              {
+                "name": "EntryID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "AccountID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimAccounts",
+                  "column": "AccountID"
+                }
+              },
+              {
+                "name": "EntryDate",
+                "type": "date"
+              },
+              {
+                "name": "DebitAmount",
+                "type": "decimal"
+              },
+              {
+                "name": "CreditAmount",
+                "type": "decimal"
+              },
+              {
+                "name": "Description",
+                "type": "string"
+              },
+              {
+                "name": "PostingPeriod",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "FactAccountsPayable",
+            "fileName": "FactAccountsPayable.csv",
+            "rowCount": 3000,
+            "columns": [
+              {
+                "name": "InvoiceID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "VendorID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimVendors",
+                  "column": "VendorID"
+                }
+              },
+              {
+                "name": "AccountID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimAccounts",
+                  "column": "AccountID"
+                }
+              },
+              {
+                "name": "InvoiceDate",
+                "type": "date"
+              },
+              {
+                "name": "DueDate",
+                "type": "date"
+              },
+              {
+                "name": "Amount",
+                "type": "decimal"
+              },
+              {
+                "name": "PaidAmount",
+                "type": "decimal"
+              },
+              {
+                "name": "Status",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "FactAccountsReceivable",
+            "fileName": "FactAccountsReceivable.csv",
+            "rowCount": 4000,
+            "columns": [
+              {
+                "name": "InvoiceID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCustomers",
+                  "column": "CustomerID"
+                }
+              },
+              {
+                "name": "AccountID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimAccounts",
+                  "column": "AccountID"
+                }
+              },
+              {
+                "name": "InvoiceDate",
+                "type": "date"
+              },
+              {
+                "name": "DueDate",
+                "type": "date"
+              },
+              {
+                "name": "Amount",
+                "type": "decimal"
+              },
+              {
+                "name": "CollectedAmount",
+                "type": "decimal"
+              },
+              {
+                "name": "AgingBucket",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Budgeting",
+        "folder": "budgeting",
+        "tables": [
+          {
+            "name": "DimCostCenters",
+            "fileName": "DimCostCenters.csv",
+            "rowCount": 30,
+            "columns": [
+              {
+                "name": "CostCenterID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "CostCenterName",
+                "type": "string"
+              },
+              {
+                "name": "DepartmentID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimDepartments",
+                  "column": "DepartmentID"
+                }
+              },
+              {
+                "name": "Division",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "FactBudget",
+            "fileName": "FactBudget.csv",
+            "rowCount": 3600,
+            "columns": [
+              {
+                "name": "BudgetID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "CostCenterID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCostCenters",
+                  "column": "CostCenterID"
+                }
+              },
+              {
+                "name": "AccountID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimAccounts",
+                  "column": "AccountID"
+                }
+              },
+              {
+                "name": "FiscalYear",
+                "type": "int"
+              },
+              {
+                "name": "FiscalMonth",
+                "type": "int"
+              },
+              {
+                "name": "BudgetAmount",
+                "type": "decimal"
+              },
+              {
+                "name": "ActualAmount",
+                "type": "decimal"
+              },
+              {
+                "name": "Variance",
+                "type": "decimal"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "CorporatePerformance",
+        "folder": "performance",
+        "tables": [
+          {
+            "name": "DimKPIs",
+            "fileName": "DimKPIs.csv",
+            "rowCount": 40,
+            "columns": [
+              {
+                "name": "KPIID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "KPIName",
+                "type": "string"
+              },
+              {
+                "name": "Category",
+                "type": "string"
+              },
+              {
+                "name": "Target",
+                "type": "decimal"
+              },
+              {
+                "name": "Unit",
+                "type": "string"
+              },
+              {
+                "name": "Owner",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "FactKPIResults",
+            "fileName": "FactKPIResults.csv",
+            "rowCount": 960,
+            "columns": [
+              {
+                "name": "ResultID",
+                "type": "int",
+                "primaryKey": true
+              },
+              {
+                "name": "KPIID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimKPIs",
+                  "column": "KPIID"
+                }
+              },
+              {
+                "name": "ReportingMonth",
+                "type": "date"
+              },
+              {
+                "name": "ActualValue",
+                "type": "decimal"
+              },
+              {
+                "name": "TargetValue",
+                "type": "decimal"
+              },
+              {
+                "name": "Score",
+                "type": "decimal"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

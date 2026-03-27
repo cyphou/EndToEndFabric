@@ -1,0 +1,78 @@
+{
+  "eventhouse": {
+    "name": "ContosoEnergyEventhouse",
+    "kqlDatabase": "ContosoEnergyRealtime",
+    "retentionDays": 730
+  },
+  "eventStreams": [
+    {
+      "name": "GridTelemetry",
+      "description": "Real-time substation load and voltage readings",
+      "eventsPerSecond": 100,
+      "schema": [
+        {"name": "SubstationID", "type": "int"},
+        {"name": "Timestamp", "type": "datetime"},
+        {"name": "LoadMW", "type": "real"},
+        {"name": "VoltagekV", "type": "real"},
+        {"name": "Frequency", "type": "real"},
+        {"name": "IsAlarm", "type": "bool"}
+      ],
+      "kqlTable": "GridTelemetryEvents",
+      "kqlAggregations": [
+        "GridTelemetryEvents | summarize AvgLoad=avg(LoadMW), MaxLoad=max(LoadMW), AlarmCount=countif(IsAlarm) by SubstationID, bin(Timestamp, 1m)",
+        "GridTelemetryEvents | summarize PeakLoad=max(LoadMW), AvgVoltage=avg(VoltagekV) by SubstationID, bin(Timestamp, 1h)"
+      ]
+    },
+    {
+      "name": "SCADAEvents",
+      "description": "SCADA system events from power plants",
+      "eventsPerSecond": 30,
+      "schema": [
+        {"name": "PlantID", "type": "int"},
+        {"name": "Timestamp", "type": "datetime"},
+        {"name": "EventType", "type": "string"},
+        {"name": "SensorName", "type": "string"},
+        {"name": "Value", "type": "real"},
+        {"name": "Threshold", "type": "real"},
+        {"name": "Severity", "type": "string"}
+      ],
+      "kqlTable": "SCADAEvents",
+      "kqlAggregations": [
+        "SCADAEvents | where Severity in ('Critical', 'High') | summarize AlertCount=count() by PlantID, EventType, bin(Timestamp, 5m)",
+        "SCADAEvents | summarize AvgValue=avg(Value), MaxValue=max(Value) by PlantID, SensorName, bin(Timestamp, 15m)"
+      ]
+    },
+    {
+      "name": "BillingTransactions",
+      "description": "Real-time billing and payment stream",
+      "eventsPerSecond": 10,
+      "schema": [
+        {"name": "CustomerID", "type": "int"},
+        {"name": "Timestamp", "type": "datetime"},
+        {"name": "TransactionType", "type": "string"},
+        {"name": "Amount", "type": "real"},
+        {"name": "PaymentMethod", "type": "string"}
+      ],
+      "kqlTable": "BillingTransactionEvents",
+      "kqlAggregations": [
+        "BillingTransactionEvents | summarize TotalAmount=sum(Amount), TxnCount=count() by TransactionType, bin(Timestamp, 1h)"
+      ]
+    }
+  ],
+  "bridgeQueries": [
+    {
+      "name": "GridLoadBridge",
+      "description": "Bridge hot telemetry with cold Lakehouse grid data",
+      "hotTable": "GridTelemetryEvents",
+      "coldTable": "FactGridLoad",
+      "joinKey": "SubstationID"
+    },
+    {
+      "name": "PlantHealthBridge",
+      "description": "Bridge SCADA events with generation fact table",
+      "hotTable": "SCADAEvents",
+      "coldTable": "FactGeneration",
+      "joinKey": "PlantID"
+    }
+  ]
+}

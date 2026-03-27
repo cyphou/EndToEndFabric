@@ -1,0 +1,235 @@
+{
+  "sampleData": {
+    "description": "Horizon Books sample data — 17 CSV files across Finance, HR, and Operations domains.",
+    "domains": [
+      {
+        "name": "Finance",
+        "folder": "Finance",
+        "tables": [
+          {
+            "name": "DimAccounts",
+            "fileName": "DimAccounts.csv",
+            "rowCount": 50,
+            "columns": [
+              { "name": "AccountID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1000 } } },
+              { "name": "AccountName", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Revenue - Direct Sales", "Revenue - Online", "Revenue - Wholesale", "Revenue - International", "Revenue - Licensing", "COGS - Printing", "COGS - Distribution", "COGS - Royalties", "OpEx - Salaries", "OpEx - Marketing", "OpEx - Rent", "OpEx - Technology", "OpEx - Travel", "OpEx - Insurance", "OpEx - Depreciation", "Tax - Federal", "Tax - State", "Tax - International", "Interest Income", "Interest Expense"] } } },
+              { "name": "AccountType", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Revenue", "COGS", "OpEx", "Tax", "Other"], "weights": [5, 3, 7, 3, 2] } } },
+              { "name": "AccountCategory", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Income", "Expense", "Asset", "Liability"] } } },
+              { "name": "IsActive", "type": "boolean" }
+            ]
+          },
+          {
+            "name": "DimCostCenters",
+            "fileName": "DimCostCenters.csv",
+            "rowCount": 12,
+            "columns": [
+              { "name": "CostCenterID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 100, "prefix": "CC", "pad": 4 } } },
+              { "name": "CostCenterName", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Editorial", "Marketing", "Sales", "Distribution", "Finance", "HR", "Technology", "Legal", "Executive", "Warehouse", "Customer Service", "International"] } } },
+              { "name": "Department", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Publishing", "Operations", "Corporate", "Sales"] } } }
+            ]
+          },
+          {
+            "name": "FactBudget",
+            "fileName": "FactBudget.csv",
+            "rowCount": 600,
+            "columns": [
+              { "name": "BudgetID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "AccountID", "type": "int", "foreignKey": { "table": "DimAccounts", "column": "AccountID" } },
+              { "name": "CostCenterID", "type": "string", "foreignKey": { "table": "DimCostCenters", "column": "CostCenterID" } },
+              { "name": "BudgetMonth", "type": "date", "generator": { "method": "random_date", "params": { "start": "2024-01-01", "end": "2026-12-01" } } },
+              { "name": "BudgetAmount", "type": "decimal", "generator": { "method": "random_float", "params": { "min": 1000.0, "max": 500000.0, "decimals": 2 } } },
+              { "name": "FiscalYear", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["FY2024", "FY2025", "FY2026"] } } }
+            ]
+          },
+          {
+            "name": "FactFinancialTransactions",
+            "fileName": "FactFinancialTransactions.csv",
+            "rowCount": 5000,
+            "columns": [
+              { "name": "TransactionID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "AccountID", "type": "int", "foreignKey": { "table": "DimAccounts", "column": "AccountID" } },
+              { "name": "CostCenterID", "type": "string", "foreignKey": { "table": "DimCostCenters", "column": "CostCenterID" } },
+              { "name": "TransactionDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2024-01-01", "end": "2026-12-31" } } },
+              { "name": "Amount", "type": "decimal", "generator": { "method": "random_float", "params": { "min": -50000.0, "max": 250000.0, "decimals": 2 } } },
+              { "name": "Description", "type": "string", "generator": { "method": "faker", "params": { "type": "text", "max_length": 60 } } }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "HR",
+        "folder": "HR",
+        "tables": [
+          {
+            "name": "DimDepartments",
+            "fileName": "DimDepartments.csv",
+            "rowCount": 8,
+            "columns": [
+              { "name": "DepartmentID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "DepartmentName", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Editorial", "Marketing", "Sales", "Distribution", "Finance", "HR", "Technology", "Executive"] } } },
+              { "name": "Location", "type": "string", "generator": { "method": "faker", "params": { "type": "city" } } }
+            ]
+          },
+          {
+            "name": "DimEmployees",
+            "fileName": "DimEmployees.csv",
+            "rowCount": 50,
+            "columns": [
+              { "name": "EmployeeID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1001 } } },
+              { "name": "FullName", "type": "string", "generator": { "method": "faker", "params": { "type": "name" } } },
+              { "name": "DepartmentID", "type": "int", "foreignKey": { "table": "DimDepartments", "column": "DepartmentID" } },
+              { "name": "Title", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Editor", "Marketing Manager", "Sales Rep", "Analyst", "Developer", "Designer", "VP", "Director", "Coordinator", "Specialist"] } } },
+              { "name": "HireDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2018-01-01", "end": "2026-06-30" } } },
+              { "name": "Salary", "type": "decimal", "generator": { "method": "random_float", "params": { "min": 45000.0, "max": 185000.0, "decimals": 0 } } },
+              { "name": "City", "type": "string", "generator": { "method": "faker", "params": { "type": "city" } } },
+              { "name": "Country", "type": "string", "generator": { "method": "faker", "params": { "type": "country" } } }
+            ]
+          },
+          {
+            "name": "FactPayroll",
+            "fileName": "FactPayroll.csv",
+            "rowCount": 1800,
+            "columns": [
+              { "name": "PayrollID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "EmployeeID", "type": "int", "foreignKey": { "table": "DimEmployees", "column": "EmployeeID" } },
+              { "name": "PayPeriodMonth", "type": "date", "generator": { "method": "random_date", "params": { "start": "2024-01-01", "end": "2026-12-01" } } },
+              { "name": "GrossPay", "type": "decimal", "generator": { "method": "random_float", "params": { "min": 3000.0, "max": 16000.0, "decimals": 2 } } },
+              { "name": "NetPay", "type": "decimal", "generator": { "method": "random_float", "params": { "min": 2200.0, "max": 12000.0, "decimals": 2 } } },
+              { "name": "Deductions", "type": "decimal", "generator": { "method": "random_float", "params": { "min": 500.0, "max": 4000.0, "decimals": 2 } } }
+            ]
+          },
+          {
+            "name": "FactPerformanceReviews",
+            "fileName": "FactPerformanceReviews.csv",
+            "rowCount": 150,
+            "columns": [
+              { "name": "ReviewID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "EmployeeID", "type": "int", "foreignKey": { "table": "DimEmployees", "column": "EmployeeID" } },
+              { "name": "ReviewDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2024-01-01", "end": "2026-12-31" } } },
+              { "name": "Rating", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 5 } } },
+              { "name": "ReviewerComments", "type": "string", "generator": { "method": "faker", "params": { "type": "text", "max_length": 80 } } }
+            ]
+          },
+          {
+            "name": "FactRecruitment",
+            "fileName": "FactRecruitment.csv",
+            "rowCount": 200,
+            "columns": [
+              { "name": "RecruitmentID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "DepartmentID", "type": "int", "foreignKey": { "table": "DimDepartments", "column": "DepartmentID" } },
+              { "name": "PositionTitle", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Editor", "Marketing Manager", "Sales Rep", "Analyst", "Developer", "Designer"] } } },
+              { "name": "PostingDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2024-01-01", "end": "2026-12-31" } } },
+              { "name": "Status", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Open", "Interviewing", "Offered", "Filled", "Cancelled"], "weights": [3, 3, 2, 5, 1] } } },
+              { "name": "CandidateName", "type": "string", "generator": { "method": "faker", "params": { "type": "name" } } }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Operations",
+        "folder": "Operations",
+        "tables": [
+          {
+            "name": "DimAuthors",
+            "fileName": "DimAuthors.csv",
+            "rowCount": 30,
+            "columns": [
+              { "name": "AuthorID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "AuthorName", "type": "string", "generator": { "method": "faker", "params": { "type": "name" } } },
+              { "name": "Country", "type": "string", "generator": { "method": "faker", "params": { "type": "country" } } },
+              { "name": "Genre", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Fiction", "Non-Fiction", "Science", "History", "Biography", "Fantasy", "Mystery", "Romance", "Business", "Self-Help"] } } }
+            ]
+          },
+          {
+            "name": "DimBooks",
+            "fileName": "DimBooks.csv",
+            "rowCount": 45,
+            "columns": [
+              { "name": "BookID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 100 } } },
+              { "name": "Title", "type": "string", "generator": { "method": "faker", "params": { "type": "text", "max_length": 40 } } },
+              { "name": "AuthorID", "type": "int", "foreignKey": { "table": "DimAuthors", "column": "AuthorID" } },
+              { "name": "Genre", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Fiction", "Non-Fiction", "Science", "History", "Biography", "Fantasy", "Mystery", "Romance", "Business", "Self-Help"] } } },
+              { "name": "PublishDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2020-01-01", "end": "2026-06-30" } } },
+              { "name": "ListPrice", "type": "decimal", "generator": { "method": "random_float", "params": { "min": 9.99, "max": 49.99, "decimals": 2 } } },
+              { "name": "PageCount", "type": "int", "generator": { "method": "random_int", "params": { "min": 120, "max": 800 } } },
+              { "name": "Imprint", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Horizon Press", "Skyline Books", "Meridian Publishing", "Atlas Editions", "Zenith Library", "Polaris Print"] } } }
+            ]
+          },
+          {
+            "name": "DimCustomers",
+            "fileName": "DimCustomers.csv",
+            "rowCount": 50,
+            "columns": [
+              { "name": "CustomerID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 500 } } },
+              { "name": "CustomerName", "type": "string", "generator": { "method": "faker", "params": { "type": "company" } } },
+              { "name": "City", "type": "string", "generator": { "method": "faker", "params": { "type": "city" } } },
+              { "name": "Country", "type": "string", "generator": { "method": "faker", "params": { "type": "country" } } },
+              { "name": "Segment", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Retail", "Wholesale", "Online", "Library", "Academic"] } } }
+            ]
+          },
+          {
+            "name": "DimGeography",
+            "fileName": "DimGeography.csv",
+            "rowCount": 28,
+            "columns": [
+              { "name": "GeoID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "Country", "type": "string", "generator": { "method": "faker", "params": { "type": "country" } } },
+              { "name": "City", "type": "string", "generator": { "method": "faker", "params": { "type": "city" } } },
+              { "name": "Region", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["North America", "Europe", "Asia Pacific", "Latin America"] } } }
+            ]
+          },
+          {
+            "name": "DimWarehouses",
+            "fileName": "DimWarehouses.csv",
+            "rowCount": 5,
+            "columns": [
+              { "name": "WarehouseID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "WarehouseName", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Chicago Central", "New York Metro", "Dallas South", "Los Angeles West", "Atlanta East"] } } },
+              { "name": "City", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Chicago", "New York", "Dallas", "Los Angeles", "Atlanta"] } } },
+              { "name": "State", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["IL", "NY", "TX", "CA", "GA"] } } }
+            ]
+          },
+          {
+            "name": "FactOrders",
+            "fileName": "FactOrders.csv",
+            "rowCount": 548,
+            "columns": [
+              { "name": "OrderID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 10000 } } },
+              { "name": "BookID", "type": "int", "foreignKey": { "table": "DimBooks", "column": "BookID" } },
+              { "name": "CustomerID", "type": "int", "foreignKey": { "table": "DimCustomers", "column": "CustomerID" } },
+              { "name": "OrderDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2024-01-01", "end": "2026-12-31" } } },
+              { "name": "Quantity", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 200 } } },
+              { "name": "UnitPrice", "type": "decimal", "generator": { "method": "random_float", "params": { "min": 8.0, "max": 45.0, "decimals": 2 } } },
+              { "name": "Channel", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Direct", "Online", "Wholesale", "International"], "weights": [3, 4, 2, 1] } } }
+            ]
+          },
+          {
+            "name": "FactInventory",
+            "fileName": "FactInventory.csv",
+            "rowCount": 800,
+            "columns": [
+              { "name": "InventoryID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "BookID", "type": "int", "foreignKey": { "table": "DimBooks", "column": "BookID" } },
+              { "name": "WarehouseID", "type": "int", "foreignKey": { "table": "DimWarehouses", "column": "WarehouseID" } },
+              { "name": "SnapshotDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2024-01-01", "end": "2026-12-31" } } },
+              { "name": "QuantityOnHand", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 5000 } } },
+              { "name": "ReorderPoint", "type": "int", "generator": { "method": "random_int", "params": { "min": 50, "max": 500 } } }
+            ]
+          },
+          {
+            "name": "FactReturns",
+            "fileName": "FactReturns.csv",
+            "rowCount": 120,
+            "columns": [
+              { "name": "ReturnID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "OrderID", "type": "int", "foreignKey": { "table": "FactOrders", "column": "OrderID" } },
+              { "name": "ReturnDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2024-02-01", "end": "2026-12-31" } } },
+              { "name": "Quantity", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 50 } } },
+              { "name": "Reason", "type": "string", "generator": { "method": "random_choice", "params": { "values": ["Damaged", "Wrong Item", "Quality Issue", "Customer Changed Mind", "Overstock"] } } }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

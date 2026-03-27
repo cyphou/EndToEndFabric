@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Semantic Model Configuration",
+  "description": "Defines TMDL tables, DAX measures, and relationships for an industry demo.",
+  "type": "object",
+  "required": ["semanticModel"],
+  "properties": {
+    "semanticModel": {
+      "type": "object",
+      "required": ["name", "mode", "tables", "relationships", "measures"],
+      "properties": {
+        "name": { "type": "string" },
+        "mode": { "type": "string", "enum": ["DirectLake", "Import", "DirectQuery"] },
+        "defaultSchema": { "type": "string" },
+        "tables": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "schema", "columns"],
+            "properties": {
+              "name": { "type": "string" },
+              "schema": { "type": "string" },
+              "tableType": { "type": "string", "enum": ["dim", "fact", "analytics", "planning", "date"] },
+              "hidden": { "type": "boolean" },
+              "columns": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["name", "dataType"],
+                  "properties": {
+                    "name": { "type": "string" },
+                    "dataType": { "type": "string", "enum": ["String", "Int64", "Double", "Decimal", "DateTime", "Boolean"] },
+                    "sourceColumn": { "type": "string" },
+                    "formatString": { "type": "string" },
+                    "hidden": { "type": "boolean" },
+                    "summarizeBy": { "type": "string", "enum": ["None", "Sum", "Count", "Min", "Max", "Average"] },
+                    "sortByColumn": { "type": "string" },
+                    "isKey": { "type": "boolean" }
+                  }
+                },
+                "minItems": 1
+              }
+            }
+          },
+          "minItems": 1
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["fromTable", "fromColumn", "toTable", "toColumn"],
+            "properties": {
+              "fromTable": { "type": "string" },
+              "fromColumn": { "type": "string" },
+              "toTable": { "type": "string" },
+              "toColumn": { "type": "string" },
+              "cardinality": { "type": "string", "enum": ["ManyToOne", "OneToMany", "OneToOne", "ManyToMany"] },
+              "crossFilteringBehavior": { "type": "string", "enum": ["SingleDirection", "BothDirections"] },
+              "isActive": { "type": "boolean" }
+            }
+          }
+        },
+        "measures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "table", "expression"],
+            "properties": {
+              "name": { "type": "string" },
+              "table": { "type": "string" },
+              "expression": { "type": "string" },
+              "formatString": { "type": "string" },
+              "displayFolder": { "type": "string" },
+              "description": { "type": "string" },
+              "hidden": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

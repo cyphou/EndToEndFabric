@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Industry Configuration",
+  "description": "Master config for a Fabric industry demo.",
+  "type": "object",
+  "required": ["industry", "fabricArtifacts"],
+  "properties": {
+    "industry": {
+      "type": "object",
+      "required": ["id", "name", "displayName", "description", "domains", "dataYears", "theme"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]+$" },
+        "name": { "type": "string" },
+        "displayName": { "type": "string" },
+        "description": { "type": "string" },
+        "icon": { "type": "string" },
+        "domains": { "type": "array", "items": { "type": "string" }, "minItems": 2 },
+        "dataYears": { "type": "array", "items": { "type": "string", "pattern": "^FY\\d{4}$" }, "minItems": 1 },
+        "headquarters": { "type": "string" },
+        "operations": { "type": "array", "items": { "type": "string" } },
+        "theme": {
+          "type": "object",
+          "required": ["primary", "secondary"],
+          "properties": {
+            "primary":    { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+            "secondary":  { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+            "accent1":    { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+            "accent2":    { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+            "background": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }
+          }
+        }
+      }
+    },
+    "fabricArtifacts": {
+      "type": "object",
+      "required": ["workspacePrefix", "lakehouses", "schemas"],
+      "properties": {
+        "workspacePrefix": { "type": "string" },
+        "lakehouses": {
+          "type": "object",
+          "required": ["bronze", "silver", "gold"],
+          "properties": {
+            "bronze": { "type": "string" },
+            "silver": { "type": "string" },
+            "gold":   { "type": "string" }
+          }
+        },
+        "schemas": {
+          "type": "object",
+          "required": ["silver", "gold"],
+          "properties": {
+            "silver": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+            "gold":   { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+          }
+        },
+        "notebooks":    { "type": "integer", "minimum": 1 },
+        "dataflows":    { "type": "integer", "minimum": 1 },
+        "reports":      { "type": "integer", "minimum": 1 },
+        "dataPipeline": { "type": "string" }
+      }
+    }
+  }
+}

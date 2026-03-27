@@ -1,0 +1,36 @@
+{
+  "industry": {
+    "id": "horizon-books",
+    "name": "Horizon Books",
+    "displayName": "Horizon Books Publishing & Distribution",
+    "description": "Mid-size book publisher operating 6 imprints from New York HQ with international operations in London, Tokyo, Frankfurt, and Mexico City.",
+    "icon": "📚",
+    "domains": ["Finance", "HR", "Operations"],
+    "dataYears": ["FY2024", "FY2025", "FY2026"],
+    "headquarters": "New York, NY",
+    "operations": ["6 imprints", "Chicago warehouse", "International ops (London, Tokyo, Frankfurt, Mexico City)"],
+    "theme": {
+      "primary": "#1B3A5C",
+      "secondary": "#E8A838",
+      "accent1": "#4A90D9",
+      "accent2": "#E74C3C",
+      "background": "#0F1C2E"
+    }
+  },
+  "fabricArtifacts": {
+    "workspacePrefix": "HorizonBooks",
+    "lakehouses": {
+      "bronze": "BronzeLH",
+      "silver": "SilverLH",
+      "gold": "GoldLH"
+    },
+    "schemas": {
+      "silver": ["finance", "hr", "operations", "web"],
+      "gold": ["dim", "fact", "analytics", "planning"]
+    },
+    "notebooks": 6,
+    "dataflows": 3,
+    "reports": 2,
+    "dataPipeline": "PL_HorizonBooks_Orchestration"
+  }
+}
