@@ -11,7 +11,7 @@
   <img src="https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white" alt="Python 3.12+">
   <img src="https://img.shields.io/badge/dependencies-zero-brightgreen" alt="Zero Dependencies">
   <img src="https://img.shields.io/badge/tests-73%20passing-success" alt="73 Tests Passing">
-  <img src="https://img.shields.io/badge/industries-3-orange" alt="3 Industries">
+  <img src="https://img.shields.io/badge/industries-4-orange" alt="4 Industries">
   <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT License">
 </p>
 
@@ -152,6 +152,29 @@ Additional notebooks:
 | Report Pages | 22 |
 | Forecast Models | 5 (Payroll, Attrition, Collections, Budget, Headcount) |
 | Event Streams | 3 (Payroll, Journal, HR Audit) |
+
+---
+
+### Fabrikam Manufacturing
+
+<p align="center">
+  <img src="shared/assets/fabrikam-manufacturing-logo.svg" alt="Fabrikam Manufacturing" width="400">
+</p>
+
+> Precision automotive parts manufacturer operating 4 plants across Detroit, Guadalajara, Stuttgart, and Pune with 1,200 SKUs and 180 suppliers.
+
+**Domains:** Production · Quality · Supply Chain · Maintenance · EHS
+**Scenario:** OEE analysis, SPC quality control, supplier scorecard, predictive maintenance, safety compliance
+
+| Metric | Count |
+|---|---|
+| CSV Tables | 23 |
+| Total Sample Rows | 56,800 |
+| Semantic Model Tables | 24 |
+| DAX Measures | 41 |
+| Report Pages | 20 |
+| Forecast Models | 5 (Demand, Capacity, Materials, Quality, Maintenance) |
+| Event Streams | 4 (PLC Telemetry, SPC Inspection, IoT Sensors, Material Consumption) |
 
 ---
 
@@ -311,7 +334,8 @@ FabricEndtoEnd/
 ├── industries/                  # Per-industry config files
 │   ├── horizon-books/           # 7 JSON configs
 │   ├── contoso-energy/          # 7 JSON configs
-│   └── northwind-hrfinance/     # 7 JSON configs
+│   ├── northwind-hrfinance/     # 7 JSON configs
+│   └── fabrikam-manufacturing/  # 7 JSON configs
 ├── templates/                   # .tpl template files
 ├── tests/                       # pytest test suite (73 tests)
 │   └── core/                    # Unit tests per module
@@ -347,20 +371,20 @@ python -m pytest tests/core/ -v --cov=core --cov-report=term-missing
 
 ## Generation Results
 
-All 3 industries generate successfully with the full 10-step pipeline:
+All 4 industries generate successfully with the full 10-step pipeline:
 
-| | Horizon Books | Contoso Energy | Northwind HR/Finance |
-|---|:---:|:---:|:---:|
-| **CSV Files** | 17 | 13 | 19 |
-| **Notebooks** | 4 | 4 | 4 |
-| **Dataflows** | 4 | 6 | 6 |
-| **TMDL Tables** | 18 | 14 | 20 |
-| **Relationships** | 14 | 9 | 16 |
-| **Report Files** | 74 | 94 | 107 |
-| **Pipeline** | 2 | 2 | 2 |
-| **Forecast** | 2 | 2 | 2 |
-| **HTAP** | 6 | 6 | 6 |
-| **Deploy Scripts** | 4 | 4 | 4 |
+| | Horizon Books | Contoso Energy | Northwind HR/Finance | Fabrikam Manufacturing |
+|---|:---:|:---:|:---:|:---:|
+| **CSV Files** | 17 | 13 | 19 | 23 |
+| **Notebooks** | 4 | 4 | 4 | 4 |
+| **Dataflows** | 4 | 6 | 6 | 6 |
+| **TMDL Tables** | 18 | 14 | 20 | 24 |
+| **Relationships** | 14 | 9 | 16 | 27 |
+| **Report Files** | 74 | 94 | 107 | 115 |
+| **Pipeline** | 2 | 2 | 2 | 2 |
+| **Forecast** | 2 | 2 | 2 | 2 |
+| **HTAP** | 6 | 6 | 6 | 6 |
+| **Deploy Scripts** | 4 | 4 | 4 | 4 |
 
 ---
 
