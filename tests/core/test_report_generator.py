@@ -106,7 +106,7 @@ class TestReportConfig(unittest.TestCase):
 
     def test_two_reports_defined(self):
         config = load_config_file("horizon-books", "reports")
-        self.assertEqual(len(config["reports"]), 2)
+        self.assertEqual(len(config["reports"]), 3)
 
     def test_analytics_has_10_pages(self):
         config = load_config_file("horizon-books", "reports")

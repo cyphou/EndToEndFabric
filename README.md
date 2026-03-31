@@ -364,7 +364,7 @@ python -m pytest tests/ -v
 python -m pytest tests/ -v --cov=core --cov-report=term-missing
 ```
 
-**Current status:** 213+ tests passing across 9 test modules.
+**Current status:** 218+ tests passing across 10 test modules.
 
 | Module | Tests | Coverage Area |
 |---|---|---|
@@ -377,6 +377,7 @@ python -m pytest tests/ -v --cov=core --cov-report=term-missing
 | `test_agent_generator.py` | 4 | Data Agent config + README generation |
 | `test_per_industry_generation.py` | 20 | PLAN.md §10.3 target validation per industry |
 | `test_full_pipeline.py` | 7+ | End-to-end pipeline + idempotency |
+| `test_test_generator.py` | 5 | Pester + validation script generation |
 
 ---
 
@@ -392,7 +393,7 @@ All 4 industries generate successfully with the full 12-step pipeline:
 | **TMDL Tables** | 23 | 28 | 30 | 32 |
 | **DAX Measures** | 96 | 113 | 130 | 120 |
 | **Relationships** | 27 | 32 | 41 | 38 |
-| **Report Files** | 74 | 94 | 107 | 115 |
+| **Report Files** | 92 | 94 | 107 | 115 |
 | **Pipeline** | 2 | 2 | 2 | 2 |
 | **Forecast** | 2 | 2 | 2 | 2 |
 | **HTAP** | 6 | 6 | 6 | 6 |

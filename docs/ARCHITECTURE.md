@@ -115,6 +115,7 @@ Generated notebooks follow the **Bronze → Silver → Gold** medallion pattern:
 | `template_engine.py` | `{{PLACEHOLDER}}`, `{{#if}}`, `{{#each}}` template rendering |
 | `planning_generator.py` | Planning IQ table schemas + scenario notebooks |
 | `pester_generator.py` | Pester 5 test suite for deployment validation |
+| `test_generator.py` | Pester + cross-artifact validation script generation |
 | `pester_generator.py` | Pester 5 test suite for deployment validation |
 
 ### Templates (`templates/`)
@@ -314,6 +315,7 @@ tests/
 │   ├── test_tmdl_generator.py       # Tables, measures, relationships
 │   ├── test_dataflow_generator.py   # Dataflow Gen2 per-domain configs
 │   ├── test_agent_generator.py      # Data Agent config + README generation
+│   ├── test_test_generator.py       # Pester + validation script generation
 │   └── ...                          # Additional generator tests
 ├── industries/
 │   └── test_per_industry_generation.py  # PLAN.md §10.3 target validation
@@ -321,7 +323,7 @@ tests/
     └── test_full_pipeline.py        # End-to-end pipeline + idempotency
 ```
 
-**213+ tests** (plus 80+ subtests), all passing. Tests cover:
+**218+ tests** (plus 80+ subtests), all passing. Tests cover:
 - Config loading with invalid inputs (missing fields, bad schemas)
 - CSV generation determinism (same seed → same output)
 - FK integrity validation (child references match parent values)
