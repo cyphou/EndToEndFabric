@@ -36,6 +36,73 @@ from core.report_generator import generate_reports
 from core.pipeline_generator import generate_pipeline
 from core.deploy_generator import generate_deploy_scripts
 from core.agent_generator import generate_data_agent
+from core.comparison_generator import generate_comparison
+
+
+def _run_wizard(args, parser):
+    """Interactive wizard for industry selection and options.
+
+    Mutates and returns args with user selections, or None to abort.
+    """
+    industries = list_industries()
+    if not industries:
+        print("No industries found.")
+        return None
+
+    print("\n  Fabric Demo Generator — Interactive Wizard\n")
+    print("  Available industries:")
+    for i, ind in enumerate(industries, 1):
+        print(f"    {i}. {ind}")
+    print(f"    {len(industries) + 1}. all")
+    print()
+
+    choice = input(f"  Select industry [1-{len(industries) + 1}]: ").strip()
+    try:
+        idx = int(choice)
+    except ValueError:
+        print("  Invalid selection.")
+        return None
+
+    if idx == len(industries) + 1:
+        # Generate all industries sequentially
+        for ind in industries:
+            args.industry = ind
+            args.output = None
+            print(f"\n--- Generating {ind} ---")
+            # Re-enter main flow below
+        # For 'all', we need a special path — set a marker
+        args.industry = "__all__"
+        args.output = None
+    elif 1 <= idx <= len(industries):
+        args.industry = industries[idx - 1]
+    else:
+        print("  Invalid selection.")
+        return None
+
+    # Skip flags
+    for flag, label in [
+        ("skip_htap", "HTAP"),
+        ("skip_forecast", "Forecasting"),
+        ("skip_writeback", "Writeback"),
+        ("skip_deploy", "Deploy scripts"),
+    ]:
+        skip = input(f"  Skip {label}? [y/N]: ").strip().lower()
+        setattr(args, flag, skip in ("y", "yes"))
+
+    # Seed
+    seed_input = input(f"  Random seed [{args.seed}]: ").strip()
+    if seed_input:
+        try:
+            args.seed = int(seed_input)
+        except ValueError:
+            pass
+
+    # Output directory
+    out_input = input("  Output directory [default]: ").strip()
+    if out_input:
+        args.output = out_input
+
+    return args
 
 
 def main():
@@ -48,6 +115,7 @@ Examples:
   python generate.py -i contoso-energy            # Generate Contoso Energy demo
   python generate.py -i horizon-books -o ./out    # Custom output directory
   python generate.py -i contoso-energy --skip-htap
+  python generate.py --compare                    # Cross-industry comparison report
         """,
     )
 
@@ -83,6 +151,14 @@ Examples:
         "--seed", type=int, default=42,
         help="Random seed for reproducible data generation (default: 42)",
     )
+    parser.add_argument(
+        "--compare", action="store_true",
+        help="Generate a cross-industry comparison report and exit",
+    )
+    parser.add_argument(
+        "--wizard", action="store_true",
+        help="Interactive wizard to select industry and options",
+    )
 
     args = parser.parse_args()
 
@@ -97,12 +173,41 @@ Examples:
             print(f"  - {ind}")
         return 0
 
+    # Compare mode
+    if args.compare:
+        out = Path(args.output) if args.output else (PROJECT_ROOT / "output")
+        print("Generating cross-industry comparison report...", end=" ", flush=True)
+        report_path = generate_comparison(out)
+        print(f"OK\n  {report_path}")
+        return 0
+
+    # Wizard mode
+    if args.wizard:
+        args = _run_wizard(args, parser)
+        if args is None:
+            return 0
+
     # Require --industry for generation
     if not args.industry:
         parser.print_help()
         return 1
 
-    industry_id = args.industry
+    # Handle 'all' from wizard
+    if args.industry == "__all__":
+        for ind in list_industries():
+            args.industry = ind
+            args.output = None
+            print(f"\n{'='*60}")
+            print(f"  Generating {ind}...")
+            print(f"{'='*60}")
+            _generate_single(args, ind)
+        return 0
+
+    return _generate_single(args, args.industry)
+
+
+def _generate_single(args, industry_id: str) -> int:
+    """Generate a single industry demo. Returns exit code."""
     print(f"\n{'='*60}")
     print(f"  Fabric Demo Generator — {industry_id}")
     print(f"{'='*60}\n")

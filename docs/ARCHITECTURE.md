@@ -113,10 +113,10 @@ Generated notebooks follow the **Bronze → Silver → Gold** medallion pattern:
 | Module | Purpose |
 |---|---|
 | `template_engine.py` | `{{PLACEHOLDER}}`, `{{#if}}`, `{{#each}}` template rendering |
+| `comparison_generator.py` | Cross-industry comparison Markdown report |
 | `planning_generator.py` | Planning IQ table schemas + scenario notebooks |
 | `pester_generator.py` | Pester 5 test suite for deployment validation |
 | `test_generator.py` | Pester + cross-artifact validation script generation |
-| `pester_generator.py` | Pester 5 test suite for deployment validation |
 
 ### Templates (`templates/`)
 
@@ -323,7 +323,7 @@ tests/
     └── test_full_pipeline.py        # End-to-end pipeline + idempotency
 ```
 
-**218+ tests** (plus 80+ subtests), all passing. Tests cover:
+**224+ tests** (plus 80+ subtests), all passing. Tests cover:
 - Config loading with invalid inputs (missing fields, bad schemas)
 - CSV generation determinism (same seed → same output)
 - FK integrity validation (child references match parent values)

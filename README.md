@@ -28,6 +28,12 @@ python generate.py -i horizon-books
 
 # Custom output directory + reproducible seed
 python generate.py -i contoso-energy -o ./my-output --seed 42
+
+# Interactive wizard
+python generate.py --wizard
+
+# Cross-industry comparison report
+python generate.py --compare
 ```
 
 Or use the PowerShell wrapper:
@@ -364,7 +370,7 @@ python -m pytest tests/ -v
 python -m pytest tests/ -v --cov=core --cov-report=term-missing
 ```
 
-**Current status:** 218+ tests passing across 10 test modules.
+**Current status:** 224+ tests passing across 12 test modules.
 
 | Module | Tests | Coverage Area |
 |---|---|---|
@@ -375,8 +381,10 @@ python -m pytest tests/ -v --cov=core --cov-report=term-missing
 | `test_tmdl_generator.py` | 16 | TMDL tables, measures, relationships |
 | `test_dataflow_generator.py` | 12 | Dataflow Gen2 per-domain configs |
 | `test_agent_generator.py` | 4 | Data Agent config + README generation |
+| `test_comparison_generator.py` | 5 | Cross-industry comparison report |
 | `test_per_industry_generation.py` | 20 | PLAN.md §10.3 target validation per industry |
 | `test_full_pipeline.py` | 7+ | End-to-end pipeline + idempotency |
+| `test_performance.py` | 1 | Generation performance (<60s budget) |
 | `test_test_generator.py` | 5 | Pester + validation script generation |
 
 ---
