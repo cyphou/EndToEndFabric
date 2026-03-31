@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Deploy an industry demo to a Fabric workspace via REST API.
 .DESCRIPTION
@@ -7,12 +7,15 @@
     Target Fabric workspace GUID.
 .PARAMETER Industry
     Industry folder name under output/ (e.g. contoso-energy, horizon-books). Defaults to contoso-energy.
+.PARAMETER Clean
+    Delete all existing items in the workspace before deploying.
 #>
 [CmdletBinding()]
 param(
     [Parameter(Mandatory)]
     [string]$WorkspaceId,
-    [string]$Industry = "contoso-energy"
+    [string]$Industry = "contoso-energy",
+    [switch]$Clean
 )
 
 Set-StrictMode -Version Latest
@@ -24,7 +27,7 @@ if (-not (Test-Path $OutputRoot)) {
 }
 
 # Derive company prefix from industry.json
-$industryJsonPath = Join-Path (Join-Path $PSScriptRoot "industries") $Industry "industry.json"
+$industryJsonPath = Join-Path (Join-Path (Join-Path $PSScriptRoot "industries") $Industry) "industry.json"
 $industryConfig = Get-Content $industryJsonPath -Raw | ConvertFrom-Json
 $Company = $industryConfig.industry.name  # e.g. "ContosoEnergy"
 
@@ -88,8 +91,107 @@ function To-Base64 { param([string]$Text) return [Convert]::ToBase64String([Text
 
 function Write-Step { param([int]$N, [int]$T, [string]$Msg) Write-Host "`n[$N/$T] $Msg" -ForegroundColor Cyan; Write-Host ("-" * 60) -ForegroundColor DarkGray }
 
-$totalSteps = 8
+$totalSteps = 10
 $tokens = @{}
+
+# ======================================================================
+# Step 0 (optional): Clean workspace
+# ======================================================================
+if ($Clean) {
+    Write-Host "`n[CLEAN] Deleting all items in workspace $WorkspaceId ..." -ForegroundColor Red
+    Write-Host ("-" * 60) -ForegroundColor DarkGray
+    $allItems = (Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/items").value
+    # Delete in dependency order: Reports first, then Pipelines, Notebooks, SemanticModels, Lakehouses last
+    $deleteOrder = @("Report", "DataPipeline", "UserDataFunction", "Notebook", "SemanticModel", "Eventhouse", "KQLDatabase", "SQLDatabase", "Lakehouse")
+    foreach ($itemType in $deleteOrder) {
+        $items = $allItems | Where-Object { $_.type -eq $itemType }
+        foreach ($item in $items) {
+            try {
+                Invoke-FabricRaw -Method DELETE -Uri "$FabricBase/workspaces/$WorkspaceId/items/$($item.id)" | Out-Null
+                Write-Host "  Deleted $($item.type): $($item.displayName)" -ForegroundColor DarkYellow
+            } catch {
+                Write-Warning "  Could not delete $($item.displayName): $_"
+            }
+        }
+    }
+    # Delete remaining items not in the explicit order (SQLEndpoints are auto-deleted with lakehouses)
+    $allItems2 = (Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/items").value
+    foreach ($item in $allItems2) {
+        try {
+            Invoke-FabricRaw -Method DELETE -Uri "$FabricBase/workspaces/$WorkspaceId/items/$($item.id)" | Out-Null
+            Write-Host "  Deleted $($item.type): $($item.displayName)" -ForegroundColor DarkYellow
+        } catch {
+            # Some items can't be deleted directly (e.g. SQL Endpoints), skip them
+        }
+    }
+    Write-Host "  Workspace cleaned." -ForegroundColor Green
+    # Also delete folders
+    try {
+        $folders = (Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/folders").value
+        foreach ($f in $folders) {
+            try {
+                Invoke-FabricRaw -Method DELETE -Uri "$FabricBase/workspaces/$WorkspaceId/folders/$($f.id)" | Out-Null
+                Write-Host "  Deleted folder: $($f.displayName)" -ForegroundColor DarkYellow
+            } catch {}
+        }
+    } catch {}
+    Write-Host "  Waiting 30s for backend to release item names..." -ForegroundColor DarkGray
+    Start-Sleep -Seconds 30
+}
+
+# ======================================================================
+# Create workspace folders for organization
+# ======================================================================
+Write-Host "`n[FOLDERS] Organizing workspace into folders..." -ForegroundColor Cyan
+Write-Host ("-" * 60) -ForegroundColor DarkGray
+
+$folderIds = @{}
+$folderUri = "$FabricBase/workspaces/$WorkspaceId/folders"
+foreach ($folderName in @("01 Data", "02 Transform", "03 Analytics", "04 Writeback")) {
+    try {
+        # Check if folder exists
+        $existingFolders = (Invoke-Fabric -Uri $folderUri).value
+        $existing = $existingFolders | Where-Object { $_.displayName -eq $folderName }
+        if ($existing) {
+            $folderIds[$folderName] = $existing.id
+            Write-Host "  Folder exists: $folderName = $($existing.id)" -ForegroundColor Yellow
+        } else {
+            $resp = Invoke-Fabric -Method POST -Uri $folderUri -Body @{ displayName = $folderName }
+            if ($resp -and $resp.id) {
+                $folderIds[$folderName] = $resp.id
+                Write-Host "  Created folder: $folderName = $($resp.id)" -ForegroundColor Green
+            }
+        }
+    } catch {
+        Write-Warning "  Could not create folder $folderName - items will be at workspace root."
+    }
+}
+
+function Move-ToFolder {
+    param([string]$ItemId, [string]$FolderName)
+    if ($folderIds.ContainsKey($FolderName) -and $folderIds[$FolderName]) {
+        for ($retry = 1; $retry -le 3; $retry++) {
+            try {
+                Invoke-FabricRaw -Method POST -Uri "$FabricBase/workspaces/$WorkspaceId/items/$ItemId/move" -Body @{ targetFolderId = $folderIds[$FolderName] } | Out-Null
+                return $true
+            } catch {
+                $errDetail = $_.ToString()
+                try { $sr = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream()); $errDetail = $sr.ReadToEnd(); $sr.Close() } catch {}
+                if ($errDetail -match "429|TooManyRequests|Throttl" -or [string]::IsNullOrWhiteSpace($errDetail)) {
+                    $wait = $retry * 10
+                    Write-Host "    Throttled, waiting ${wait}s (attempt $retry/3)..." -ForegroundColor DarkGray
+                    Start-Sleep -Seconds $wait
+                } else {
+                    Write-Host "    Move failed: $errDetail" -ForegroundColor DarkYellow
+                    return $false
+                }
+            }
+        }
+        Write-Host "    Move failed after 3 retries" -ForegroundColor DarkYellow
+        return $false
+    }
+    return $false
+}
 
 # ======================================================================
 # Step 1: Create Lakehouses
@@ -97,23 +199,32 @@ $tokens = @{}
 Write-Step -N 1 -T $totalSteps -Msg "Creating Lakehouses..."
 $lhUri = "$FabricBase/workspaces/$WorkspaceId/lakehouses"
 foreach ($lh in @("BronzeLH", "SilverLH", "GoldLH")) {
-    try {
-        $resp = Invoke-Fabric -Method POST -Uri $lhUri -Body @{ displayName = $lh }
-        if ($resp -and $resp.id) {
-            $tokens[$lh] = $resp.id
-            Write-Host "  Created $lh = $($resp.id)" -ForegroundColor Green
-        }
-    } catch {
-        $errDetail = $_.ToString()
-        # Try to read error body from WebException
+    $created = $false
+    for ($attempt = 1; $attempt -le 6; $attempt++) {
         try {
-            $sr = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream())
-            $errDetail = $sr.ReadToEnd(); $sr.Close()
-        } catch {}
-        if ($errDetail -match "already exists|ItemDisplayNameAlreadyInUse|NameAlreadyExists") {
-            Write-Host "  $lh already exists, looking up..." -ForegroundColor Yellow
-        } else {
-            Write-Warning "  Failed to create $lh : $errDetail"
+            $resp = Invoke-Fabric -Method POST -Uri $lhUri -Body @{ displayName = $lh }
+            if ($resp -and $resp.id) {
+                $tokens[$lh] = $resp.id
+                Write-Host "  Created $lh = $($resp.id)" -ForegroundColor Green
+                $created = $true
+            }
+            break
+        } catch {
+            $errDetail = $_.ToString()
+            try {
+                $sr = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream())
+                $errDetail = $sr.ReadToEnd(); $sr.Close()
+            } catch {}
+            if ($errDetail -match "NotAvailableYet|isRetriable") {
+                Write-Host "  $lh name not yet available, retrying in 15s ($attempt/6)..." -ForegroundColor DarkGray
+                Start-Sleep -Seconds 15
+            } elseif ($errDetail -match "already exists|ItemDisplayNameAlreadyInUse|NameAlreadyExists") {
+                Write-Host "  $lh already exists, looking up..." -ForegroundColor Yellow
+                break
+            } else {
+                Write-Warning "  Failed to create $lh : $errDetail"
+                break
+            }
         }
     }
     # Always look up the ID if we don't have it
@@ -125,6 +236,57 @@ foreach ($lh in @("BronzeLH", "SilverLH", "GoldLH")) {
             Write-Host "  Found $lh = $($existing.id)" -ForegroundColor Green
         }
     }
+}
+
+# Create Fabric SQL Database for writeback (translytical)
+$sqlDbName = "${Company}WritebackDB"
+$sqlDbSetupSql = Join-Path (Join-Path (Join-Path $OutputRoot "Writeback") "sqldb") "setup_writeback.sql"
+$sqlDbCreated = $false
+if (Test-Path $sqlDbSetupSql) {
+    Write-Host "  Creating SQL Database: $sqlDbName..." -ForegroundColor Cyan
+    try {
+        $existingItems = (Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/items").value
+        $existingSqlDb = $existingItems | Where-Object { $_.displayName -eq $sqlDbName -and $_.type -eq "SQLDatabase" } | Select-Object -First 1
+        if ($existingSqlDb) {
+            $tokens["SQLDB_ID"] = $existingSqlDb.id
+            Write-Host "  SQL Database exists: $sqlDbName = $($existingSqlDb.id)" -ForegroundColor Yellow
+            $sqlDbCreated = $true
+        } else {
+            Invoke-Fabric -Method POST -Uri "$FabricBase/workspaces/$WorkspaceId/sqlDatabases" -Body @{ displayName = $sqlDbName; description = "Writeback SQL Database for Power BI translytical scenarios" } | Out-Null
+            # Look up by name after LRO completes
+            $lookup = (Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/items").value |
+                Where-Object { $_.displayName -eq $sqlDbName -and $_.type -eq "SQLDatabase" } |
+                Select-Object -First 1
+            if ($lookup) {
+                $tokens["SQLDB_ID"] = $lookup.id
+                Write-Host "  Created SQL Database: $sqlDbName = $($lookup.id)" -ForegroundColor Green
+                $sqlDbCreated = $true
+            } else {
+                Write-Warning "  SQL Database created but could not find it by name."
+            }
+        }
+    } catch {
+        $errDetail = $_.ToString()
+        try { $sr = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream()); $errDetail = $sr.ReadToEnd(); $sr.Close() } catch {}
+        Write-Warning "  SQL Database creation failed: $errDetail"
+    }
+
+    # Get SQL Database properties (server FQDN and database name) for TMDL tokens
+    if ($sqlDbCreated -and $tokens.ContainsKey("SQLDB_ID")) {
+        try {
+            $sqlDbProps = Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/sqlDatabases/$($tokens['SQLDB_ID'])"
+            if ($sqlDbProps -and $sqlDbProps.properties) {
+                $tokens["SQLDB_SERVER"] = $sqlDbProps.properties.serverFqdn
+                $tokens["SQLDB_NAME"] = $sqlDbProps.properties.databaseName
+                Write-Host "  SQL Server: $($tokens['SQLDB_SERVER'])" -ForegroundColor Gray
+                Write-Host "  SQL Database: $($tokens['SQLDB_NAME'])" -ForegroundColor Gray
+            }
+        } catch {
+            Write-Warning "  Could not retrieve SQL Database properties."
+        }
+    }
+} else {
+    Write-Host "  No writeback SQL setup found, skipping SQL Database." -ForegroundColor DarkGray
 }
 
 # ======================================================================
@@ -236,6 +398,33 @@ foreach ($nb in $nbFiles) {
 Write-Host "  Notebooks deployed: $($nbTokens.Count)" -ForegroundColor Green
 
 # ======================================================================
+# Step 3b: Execute SQL Database DDL for writeback
+# ======================================================================
+if ($sqlDbCreated -and (Test-Path $sqlDbSetupSql) -and $tokens.ContainsKey("SQLDB_SERVER")) {
+    Write-Host "`n  Executing writeback DDL on SQL Database..." -ForegroundColor Cyan
+    $sqlDdl = Get-Content $sqlDbSetupSql -Raw -Encoding UTF8
+    # Split on GO statements
+    $batches = $sqlDdl -split "(?m)^\s*GO\s*$" | Where-Object { $_.Trim() }
+    $sqlToken = (Get-AzAccessToken -ResourceUrl "https://database.windows.net").Token
+    $batchOk = 0; $batchFail = 0
+    foreach ($batch in $batches) {
+        $trimmed = $batch.Trim()
+        if (-not $trimmed) { continue }
+        try {
+            Invoke-Sqlcmd -ServerInstance $tokens["SQLDB_SERVER"] -Database $tokens["SQLDB_NAME"] -AccessToken $sqlToken -Query $trimmed -ErrorAction Stop
+            $batchOk++
+        } catch {
+            $batchFail++
+            Write-Host "    DDL batch failed: $($_.Exception.Message)" -ForegroundColor DarkYellow
+        }
+    }
+    Write-Host "  SQL DDL executed: $batchOk OK, $batchFail failed" -ForegroundColor $(if ($batchFail -gt 0) { "Yellow" } else { "Green" })
+} elseif ($sqlDbCreated) {
+    Write-Host "`n  SQL Database created but properties not available yet." -ForegroundColor DarkGray
+    Write-Host "  Run the 09_SQLDatabaseSetup notebook manually to create writeback schema." -ForegroundColor DarkGray
+}
+
+# ======================================================================
 # Step 4: Deploy Semantic Model (TMDL)
 # ======================================================================
 Write-Step -N 4 -T $totalSteps -Msg "Deploying Semantic Model..."
@@ -284,37 +473,187 @@ $smBody = @{
     }
 }
 
-try {
-    Invoke-Fabric -Method POST -Uri "$FabricBase/workspaces/$WorkspaceId/items" -Body $smBody | Out-Null
-    Write-Host "  Created SemanticModel: ${Company}Model" -ForegroundColor Green
-} catch {
-    $errDetail = $_.ToString()
-    try { $sr = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream()); $errDetail = $sr.ReadToEnd(); $sr.Close() } catch {}
-    if ($errDetail -match "already exists|ItemDisplayNameAlreadyInUse|NameAlreadyExists") {
-        Write-Host "  SemanticModel already exists." -ForegroundColor Yellow
-    } else {
-        Write-Warning "  SemanticModel deploy failed: $errDetail"
+# Check if SM already exists
+$preItems = (Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/items").value
+$existingSM = $preItems | Where-Object { $_.displayName -eq "${Company}Model" -and $_.type -eq "SemanticModel" } | Select-Object -First 1
+if ($existingSM) {
+    Write-Host "  SemanticModel already exists: $($existingSM.id)" -ForegroundColor Yellow
+} else {
+    try {
+        Invoke-Fabric -Method POST -Uri "$FabricBase/workspaces/$WorkspaceId/items" -Body $smBody | Out-Null
+        Write-Host "  Created SemanticModel: ${Company}Model" -ForegroundColor Green
+    } catch {
+        $errDetail = $_.ToString()
+        try { $sr = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream()); $errDetail = $sr.ReadToEnd(); $sr.Close() } catch {}
+        if ($errDetail -match "already exists|ItemDisplayNameAlreadyInUse|NameAlreadyExists") {
+            Write-Host "  SemanticModel already exists." -ForegroundColor Yellow
+        } else {
+            Write-Warning "  SemanticModel deploy failed: $errDetail"
+        }
     }
 }
 # Look up SM ID
 $allItems = (Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/items").value
-$smId = ($allItems | Where-Object { $_.displayName -eq "${Company}Model" -and $_.type -eq "SemanticModel" }).id
-if ($smId) { Write-Host "  SemanticModel ID: $smId" -ForegroundColor Green }
-$tokens["SEMANTIC_MODEL_ID"] = $smId
+$smItem = $allItems | Where-Object { $_.displayName -eq "${Company}Model" -and $_.type -eq "SemanticModel" } | Select-Object -First 1
+if ($smItem) {
+    $smId = $smItem.id
+    Write-Host "  SemanticModel ID: $smId" -ForegroundColor Green
+    $tokens["SEMANTIC_MODEL_ID"] = $smId
+} else {
+    $smId = $null
+    Write-Warning "  SemanticModel not found -- reports will skip SM binding."
+}
+
+# Deploy Writeback Semantic Model (DirectQuery to SQL Database) if it exists
+$wbSmDir = Join-Path $OutputRoot "${Company}WritebackModel.SemanticModel"
+if ((Test-Path $wbSmDir) -and $tokens.ContainsKey("SQLDB_SERVER")) {
+    Write-Host "`n  Deploying Writeback SemanticModel (DirectQuery)..." -ForegroundColor Cyan
+    $wbDefDir = Join-Path $wbSmDir "definition"
+    $wbParts = @()
+
+    # definition.pbism
+    $wbPbism = Get-Content (Join-Path $wbSmDir "definition.pbism") -Raw -Encoding UTF8
+    $wbParts += @{ path = "definition.pbism"; payload = (To-Base64 $wbPbism); payloadType = "InlineBase64" }
+
+    # model.tmdl with token replacement
+    $wbModelTmdl = Get-Content (Join-Path $wbDefDir "model.tmdl") -Raw -Encoding UTF8
+    $wbModelTmdl = $wbModelTmdl -replace "\{\{SQLDB_SERVER\}\}", $tokens["SQLDB_SERVER"]
+    $wbModelTmdl = $wbModelTmdl -replace "\{\{SQLDB_NAME\}\}", $tokens["SQLDB_NAME"]
+    $wbParts += @{ path = "definition/model.tmdl"; payload = (To-Base64 $wbModelTmdl); payloadType = "InlineBase64" }
+
+    # Writeback table TMDL files
+    $wbTableDir = Join-Path $wbDefDir "tables"
+    if (Test-Path $wbTableDir) {
+        foreach ($tf in (Get-ChildItem $wbTableDir -Filter "*.tmdl")) {
+            $content = Get-Content $tf.FullName -Raw -Encoding UTF8
+            $wbParts += @{ path = "definition/tables/$($tf.Name)"; payload = (To-Base64 $content); payloadType = "InlineBase64" }
+        }
+    }
+
+    $wbSmBody = @{
+        displayName = "${Company}WritebackModel"
+        type = "SemanticModel"
+        definition = @{
+            format = "TMDL"
+            parts = $wbParts
+        }
+    }
+
+    $existingWbSM = $allItems | Where-Object { $_.displayName -eq "${Company}WritebackModel" -and $_.type -eq "SemanticModel" } | Select-Object -First 1
+    if ($existingWbSM) {
+        Write-Host "  WritebackModel already exists: $($existingWbSM.id)" -ForegroundColor Yellow
+    } else {
+        try {
+            Invoke-Fabric -Method POST -Uri "$FabricBase/workspaces/$WorkspaceId/items" -Body $wbSmBody | Out-Null
+            Write-Host "  Created WritebackModel: ${Company}WritebackModel" -ForegroundColor Green
+        } catch {
+            $errDetail = $_.ToString()
+            try { $sr = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream()); $errDetail = $sr.ReadToEnd(); $sr.Close() } catch {}
+            Write-Warning "  WritebackModel deploy failed: $errDetail"
+        }
+    }
+}
 
 # ======================================================================
-# Step 5: Deploy Reports (PBIR)
+# Step 5: Deploy User Data Function (writeback API bridge)
 # ======================================================================
-Write-Step -N 5 -T $totalSteps -Msg "Deploying Power BI Reports..."
+$udfDir = Join-Path $OutputRoot "UserDataFunction"
+if ((Test-Path $udfDir) -and $sqlDbCreated -and $tokens.ContainsKey("SQLDB_ID")) {
+    Write-Step -N 5 -T $totalSteps -Msg "Deploying User Data Function..."
+
+    $udfName = "${Company}WritebackUDF"
+
+    # Step A: Create empty UDF item
+    $udfId = $null
+    $existingUdf = $allItems | Where-Object { $_.displayName -eq $udfName -and $_.type -eq "UserDataFunction" } | Select-Object -First 1
+    if ($existingUdf) {
+        $udfId = $existingUdf.id
+        Write-Host "  UDF already exists: $udfName = $udfId" -ForegroundColor Yellow
+    } else {
+        try {
+            $createResp = Invoke-Fabric -Method POST -Uri "$FabricBase/workspaces/$WorkspaceId/userDataFunctions" -Body @{
+                displayName = $udfName
+                description = "Writeback API bridge between Power BI and SQL Database"
+            }
+            # Look up by name
+            $lookup = (Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/items").value |
+                Where-Object { $_.displayName -eq $udfName -and $_.type -eq "UserDataFunction" } |
+                Select-Object -First 1
+            if ($lookup) {
+                $udfId = $lookup.id
+                Write-Host "  Created UDF item: $udfName = $udfId" -ForegroundColor Green
+            }
+        } catch {
+            $errDetail = $_.ToString()
+            try { $sr = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream()); $errDetail = $sr.ReadToEnd(); $sr.Close() } catch {}
+            if ($errDetail -match "already exists|ItemDisplayNameAlreadyInUse|NameAlreadyExists") {
+                Write-Host "  $udfName already exists, looking up..." -ForegroundColor Yellow
+                $lookup = (Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/items").value |
+                    Where-Object { $_.displayName -eq $udfName -and $_.type -eq "UserDataFunction" } |
+                    Select-Object -First 1
+                if ($lookup) { $udfId = $lookup.id }
+            } else {
+                Write-Warning "  UDF item creation failed: $errDetail"
+            }
+        }
+    }
+
+    # Step B: Update definition with writeback functions
+    if ($udfId) {
+        try {
+            Write-Host "  Updating UDF definition with writeback functions..." -ForegroundColor DarkGray
+
+            $connectionAlias = "WritebackDB"
+
+            # Load and resolve tokens in definition.json
+            $udfDefJson = Get-Content (Join-Path $udfDir "definition.json") -Raw -Encoding UTF8
+            $udfDefJson = $udfDefJson -replace "\{\{SQLDB_ID\}\}", $tokens["SQLDB_ID"]
+            $udfDefJson = $udfDefJson -replace "\{\{WORKSPACE_ID\}\}", $WorkspaceId
+
+            # Load and resolve tokens in functions.json
+            $udfFuncJson = Get-Content (Join-Path (Join-Path $udfDir "resources") "functions.json") -Raw -Encoding UTF8
+            $udfFuncJson = $udfFuncJson -replace "\{\{CONNECTION_ALIAS\}\}", $connectionAlias
+
+            # Load function_app.py
+            $udfAppPy = Get-Content (Join-Path $udfDir "function_app.py") -Raw -Encoding UTF8
+
+            # Build update definition parts — Fabric API uses ".resources/" prefix (dot-prefixed)
+            $updParts = @(
+                @{ path = "definition.json"; payload = (To-Base64 $udfDefJson); payloadType = "InlineBase64" }
+                @{ path = ".resources/functions.json"; payload = (To-Base64 $udfFuncJson); payloadType = "InlineBase64" }
+                @{ path = "function_app.py"; payload = (To-Base64 $udfAppPy); payloadType = "InlineBase64" }
+            )
+
+            # Push definition update (do NOT use updateMetadata=True — it requires a .platform file)
+            Invoke-Fabric -Method POST -Uri "$FabricBase/workspaces/$WorkspaceId/userDataFunctions/$udfId/updateDefinition" -Body @{
+                definition = @{ parts = $updParts }
+            } | Out-Null
+            Write-Host "  Updated UDF definition with writeback functions" -ForegroundColor Green
+        } catch {
+            $errDetail = $_.ToString()
+            try { $sr = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream()); $errDetail = $sr.ReadToEnd(); $sr.Close() } catch {}
+            Write-Warning "  UDF definition update failed: $errDetail"
+        }
+    }
+} else {
+    Write-Step -N 5 -T $totalSteps -Msg "Skipping User Data Function (no SQL Database or UDF output)"
+}
+
+# ======================================================================
+# Step 6: Deploy Reports (PBIR)
+# ======================================================================
+Write-Step -N 6 -T $totalSteps -Msg "Deploying Power BI Reports..."
 
 $reportDirs = @(
     @{ Name = "${Company}-Analytics"; Dir = "${Company}-Analytics.Report" }
     @{ Name = "${Company}-Forecasting"; Dir = "${Company}-Forecasting.Report" }
     @{ Name = "${Company}-HTAP"; Dir = "${Company}-HTAP.Report" }
+    @{ Name = "${Company}-Pipeline"; Dir = "${Company}-Pipeline.Report" }
 )
 
 foreach ($reportInfo in $reportDirs) {
-    $rptDir = Join-Path (Join-Path $OutputRoot $reportInfo.Dir) "definition"
+    $rptRoot = Join-Path $OutputRoot $reportInfo.Dir
+    $rptDir = Join-Path $rptRoot "definition"
     if (-not (Test-Path $rptDir)) {
         Write-Warning "  Report dir not found: $rptDir"
         continue
@@ -322,10 +661,18 @@ foreach ($reportInfo in $reportDirs) {
 
     $rptParts = @()
 
+    # definition.pbir at .Report/ root
+    $pbirFile = Join-Path $rptRoot "definition.pbir"
+    if (Test-Path $pbirFile) {
+        $content = Get-Content $pbirFile -Raw -Encoding UTF8
+        if ($smId) { $content = $content -replace "\{\{SEMANTIC_MODEL_ID\}\}", $smId }
+        $rptParts += @{ path = "definition.pbir"; payload = (To-Base64 $content); payloadType = "InlineBase64" }
+    }
+
     # Recursively collect all files under definition/
     $allFiles = Get-ChildItem $rptDir -Recurse -File
     foreach ($f in $allFiles) {
-        $relPath = $f.FullName.Substring((Join-Path $OutputRoot $reportInfo.Dir).Length + 1).Replace("\", "/")
+        $relPath = $f.FullName.Substring($rptRoot.Length + 1).Replace("\", "/")
         $content = Get-Content $f.FullName -Raw -Encoding UTF8
         # Replace SM reference if needed
         if ($smId) {
@@ -363,9 +710,9 @@ foreach ($reportInfo in $reportDirs) {
 }
 
 # ======================================================================
-# Step 6: Deploy Pipeline
+# Step 7: Deploy Pipeline
 # ======================================================================
-Write-Step -N 6 -T $totalSteps -Msg "Deploying Data Pipeline..."
+Write-Step -N 7 -T $totalSteps -Msg "Deploying Data Pipeline..."
 $pipelineJson = Get-Content (Join-Path (Join-Path $OutputRoot "Pipeline") "pipeline-content.json") -Raw -Encoding UTF8
 # Resolve all known tokens
 $pipelineJson = $pipelineJson -replace "\{\{WORKSPACE_ID\}\}", $WorkspaceId
@@ -405,13 +752,15 @@ try {
 }
 
 # ======================================================================
-# Step 7: Deploy Dataflow definitions (metadata only — actual Power Query runs in Fabric)
+# Step 8: Deploy Dataflow Gen2 definitions
 # ======================================================================
-Write-Step -N 7 -T $totalSteps -Msg "Uploading Dataflow definitions to GoldLH/Files/Dataflows..."
+Write-Step -N 8 -T $totalSteps -Msg "Deploying Dataflow Gen2 definitions..."
 $dfDir = Join-Path $OutputRoot "Dataflows"
+
+# Upload JSON configs + .pq mashup files to GoldLH for reference and manual import
 $goldId = $tokens["GoldLH"]
-$dfFiles = Get-ChildItem $dfDir -Filter "*.json"
-foreach ($df in $dfFiles) {
+$dfAllFiles = Get-ChildItem $dfDir -File | Where-Object { $_.Extension -in @(".json", ".pq") }
+foreach ($df in $dfAllFiles) {
     $dest = "Dataflows/$($df.Name)"
     $uri = "$OneLakeBase/$WorkspaceId/$goldId/Files/$dest"
     $sh = Get-StorageHeaders
@@ -422,11 +771,52 @@ foreach ($df in $dfFiles) {
     Invoke-RestMethod -Method PATCH -Uri "$($uri)?position=$($bytes.Length)&action=flush" -Headers (Get-StorageHeaders) | Out-Null
     Write-Host "  Uploaded $($df.Name)" -ForegroundColor Green
 }
+Write-Host "  Dataflow definitions: $($dfAllFiles.Count) files (JSON configs + Power Query M)" -ForegroundColor Green
+Write-Host "  Note: DataflowGen2 items can be imported in Fabric portal from GoldLH/Files/Dataflows/" -ForegroundColor DarkGray
 
 # ======================================================================
-# Step 8: Summary
+# Step 9: Organize items into folders
 # ======================================================================
-Write-Step -N 8 -T $totalSteps -Msg "Deployment Summary"
+Write-Step -N 9 -T $totalSteps -Msg "Organizing items into workspace folders..."
+
+$finalAll = (Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/items").value
+$movedCount = 0
+$failCount = 0
+
+# Data folder: Lakehouses (SQLEndpoints auto-move with parent)
+foreach ($item in ($finalAll | Where-Object { $_.type -eq "Lakehouse" })) {
+    Write-Host "  Moving $($item.type): $($item.displayName) -> 01 Data" -ForegroundColor DarkGray
+    if (Move-ToFolder -ItemId $item.id -FolderName "01 Data") { $movedCount++ } else { $failCount++ }
+    Start-Sleep -Seconds 1
+}
+
+# Transform folder: Notebooks + Pipelines + Dataflows
+foreach ($item in ($finalAll | Where-Object { $_.type -in @("Notebook", "DataPipeline", "DataflowGen2", "Dataflow") })) {
+    Write-Host "  Moving $($item.type): $($item.displayName) -> 02 Transform" -ForegroundColor DarkGray
+    if (Move-ToFolder -ItemId $item.id -FolderName "02 Transform") { $movedCount++ } else { $failCount++ }
+    Start-Sleep -Seconds 1
+}
+
+# Analytics folder: SemanticModel + Reports (except WritebackModel)
+foreach ($item in ($finalAll | Where-Object { $_.type -in @("SemanticModel", "Report") -and $_.displayName -notlike "*WritebackModel*" })) {
+    Write-Host "  Moving $($item.type): $($item.displayName) -> 03 Analytics" -ForegroundColor DarkGray
+    if (Move-ToFolder -ItemId $item.id -FolderName "03 Analytics") { $movedCount++ } else { $failCount++ }
+    Start-Sleep -Seconds 1
+}
+
+# Writeback folder: SQLDatabase + UserDataFunction + WritebackModel
+foreach ($item in ($finalAll | Where-Object { $_.type -in @("SQLDatabase", "UserDataFunction") -or ($_.type -eq "SemanticModel" -and $_.displayName -like "*WritebackModel*") })) {
+    Write-Host "  Moving $($item.type): $($item.displayName) -> 04 Writeback" -ForegroundColor DarkGray
+    if (Move-ToFolder -ItemId $item.id -FolderName "04 Writeback") { $movedCount++ } else { $failCount++ }
+    Start-Sleep -Seconds 1
+}
+
+Write-Host "  Moved $movedCount items into folders ($failCount failed)." -ForegroundColor $(if ($failCount -gt 0) { "Yellow" } else { "Green" })
+
+# ======================================================================
+# Step 10: Summary
+# ======================================================================
+Write-Step -N 10 -T $totalSteps -Msg "Deployment Summary"
 
 $finalItems = (Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/items").value
 Write-Host ""

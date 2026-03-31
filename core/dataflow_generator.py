@@ -65,6 +65,12 @@ def generate_dataflows(industry_config: dict, sample_data_config: dict,
             json.dump(df_config, f, indent=2, ensure_ascii=False)
         generated.append(config_path)
 
+        # Generate mashup.pq file for Fabric DataflowGen2 API deployment
+        pq_content = _generate_mashup_pq(queries)
+        pq_path = dataflows_dir / f"{df_name}.pq"
+        pq_path.write_text(pq_content, encoding="utf-8")
+        generated.append(pq_path)
+
     # Generate summary README
     _write_dataflow_readme(dataflows_dir, domains, bronze_lh)
     generated.append(dataflows_dir / "README.md")
@@ -116,6 +122,20 @@ def _python_type_to_m_type(col_type: str) -> str:
         "boolean":  "type logical",
     }
     return type_mapping.get(col_type, "type text")
+
+
+def _generate_mashup_pq(queries: list[dict]) -> str:
+    """Generate a Power Query M mashup.pq document from query definitions.
+
+    The mashup.pq format is used by Fabric DataflowGen2 updateDefinition API.
+    Each query becomes a shared member in a Power Query section document.
+    """
+    sections = ["section Section1;"]
+    for q in queries:
+        name = q["name"]
+        m_query = q["mQuery"]
+        sections.append(f"\nshared {name} =\n{m_query};")
+    return "\n".join(sections) + "\n"
 
 
 def _write_dataflow_readme(dataflows_dir: Path, domains: list, bronze_lh: str):

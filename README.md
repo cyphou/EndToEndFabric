@@ -4,13 +4,13 @@
 
 <p align="center">
   <strong>Generate complete Microsoft Fabric end-to-end demos for any industry — in one command.</strong><br>
-  Medallion Lakehouse &bull; PySpark Notebooks &bull; Dataflow Gen2 &bull; TMDL Semantic Model &bull; PBIR Reports &bull; Forecasting &bull; HTAP
+  Medallion Lakehouse &bull; PySpark Notebooks &bull; Dataflow Gen2 &bull; TMDL Semantic Model &bull; PBIR Reports &bull; Forecasting &bull; HTAP &bull; Writeback &bull; UDF
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white" alt="Python 3.12+">
   <img src="https://img.shields.io/badge/dependencies-zero-brightgreen" alt="Zero Dependencies">
-  <img src="https://img.shields.io/badge/tests-224%20passing-success" alt="224 Tests Passing">
+  <img src="https://img.shields.io/badge/tests-250%20passing-success" alt="250 Tests Passing">
   <img src="https://img.shields.io/badge/industries-4-orange" alt="4 Industries">
   <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT License">
 </p>
@@ -43,30 +43,31 @@ Or use the PowerShell wrapper:
 .\generate.ps1 -List
 ```
 
-**That's it.** One command produces CSV data, PySpark notebooks, Dataflow Gen2 configs, a full TMDL semantic model, Power BI reports, a data pipeline, forecasting notebooks, real-time analytics (HTAP), and PowerShell deployment scripts.
+**That's it.** One command produces CSV data, PySpark notebooks, Dataflow Gen2 configs, a full TMDL semantic model, Power BI reports, a data pipeline, forecasting notebooks, real-time analytics (HTAP), writeback with User Data Functions, and PowerShell deployment scripts.
 
 ---
 
-## 12-Step Generation Pipeline
+## 13-Step Generation Pipeline
 
 <p align="center">
-  <img src="docs/images/pipeline-architecture.png" alt="12-Step Generation Pipeline" width="100%">
+  <img src="docs/images/pipeline-architecture.png" alt="13-Step Generation Pipeline" width="100%">
 </p>
 
 | Step | Generator | Output |
 |:---:|---|---|
 | **1** | Config Loader | Validates industry JSON configs against schemas |
 | **2** | CSV Generator | Synthetic data with FK integrity per domain |
-| **3** | Notebook Generator | PySpark NB01–NB08 (Bronze→Silver→Gold + diagnostics + writeback) |
+| **3** | Notebook Generator | PySpark NB01–NB03 + NB06 (Bronze→Silver→Gold + diagnostics) |
 | **4** | Dataflow Generator | Power Query M ingestion configs |
 | **5** | TMDL Generator | Direct Lake semantic model (tables, measures, relationships) |
-| **6** | Report Generator | PBIR v4.0 pages, visuals, themes |
+| **6** | Report Generator | PBIR v4.0 pages, visuals, themes (4 reports) |
 | **7** | Pipeline Generator | Fabric Data Pipeline JSON orchestration |
-| **8** | Forecast Generator | Holt-Winters + MLflow tracking notebooks |
-| **9** | HTAP Generator | Eventhouse, KQL database, event simulator |
-| **10** | Writeback Generator | NB07/NB08 writeback notebooks + stored procedures |
-| **11** | Data Agent Generator | Fabric AI Agent config + README |
-| **12** | Deploy Generator | PowerShell scripts (Deploy, Upload, Validate) |
+| **8** | Forecast Generator | Holt-Winters + MLflow tracking notebooks (NB04) |
+| **9** | HTAP Generator | Eventhouse, KQL database, event simulator (NB05) |
+| **10** | Writeback Generator | NB07–NB09 writeback notebooks + stored procedures |
+| **11** | UDF Generator | User Data Function (7 functions per industry) |
+| **12** | Data Agent Generator | Fabric AI Agent config + README |
+| **13** | Deploy Generator | PowerShell scripts (Deploy, Upload, Validate) |
 
 ---
 
@@ -89,6 +90,9 @@ Additional notebooks:
 - **NB04** — Holt-Winters forecasting with MLflow
 - **NB05** — HTAP event simulator (real-time stream generation)
 - **NB06** — Diagnostic (table inventory, null audit, row counts)
+- **NB07** — Writeback Setup (creates writeback schema + Delta tables in GoldLH)
+- **NB08** — Writeback API (REST API-callable notebook for upserts)
+- **NB09** — SQL Database Setup (DDL for tables + stored procedures in Fabric SQL Database)
 
 ---
 
@@ -282,37 +286,52 @@ output/<industry>/
 │   ├── finance/          # Domain-organized CSV files
 │   ├── hr/
 │   └── operations/
-├── Notebooks/
-│   ├── NB01_Bronze_to_Silver.py
-│   ├── NB02_Web_Enrichment.py
-│   ├── NB03_Silver_to_Gold.py
-│   └── NB06_Diagnostic.py
+├── notebooks/
+│   ├── 01_BronzeToSilver.py
+│   ├── 02_WebEnrichment.py
+│   ├── 03_SilverToGold.py
+│   ├── 04_Forecasting.py
+│   ├── 05_EventSimulator.py
+│   ├── 06_DiagnosticCheck.py
+│   ├── 07_WritebackSetup.py
+│   ├── 08_WritebackAPI.py
+│   └── 09_SQLDatabaseSetup.py
 ├── Dataflows/
-│   └── DF_<domain>_ingestion.json
-├── SemanticModel/
+│   ├── DF_<domain>.json      # Dataflow Gen2 configs
+│   └── DF_<domain>.pq        # Power Query M mashup files
+├── <Company>Model.SemanticModel/
 │   ├── model.tmdl
-│   ├── tables/           # One .tmdl per table
-│   ├── relationships/    # One .tmdl per relationship
+│   ├── tables/               # One .tmdl per table
+│   ├── relationships/        # One .tmdl per relationship
 │   └── definition.pbism
-├── Reports/
-│   ├── <Report>-Analytics/
-│   │   ├── report.json
-│   │   ├── pages/        # One folder per page
-│   │   └── theme.json
-│   └── <Report>-Forecasting/
+├── <Company>WritebackModel.SemanticModel/  # DirectQuery on SQL DB
+├── <Company>-Analytics.Report/
+├── <Company>-Forecasting.Report/
+├── <Company>-HTAP.Report/
+├── <Company>-Pipeline.Report/
 ├── Pipeline/
 │   ├── pipeline-content.json
 │   └── README.md
-├── Forecast/
+├── Forecasting/
 │   ├── NB04_Forecast.py
 │   └── forecast-config.json
-├── HTAP/
+├── Transactional/
 │   ├── eventhouse-definition.json
 │   ├── kql-database-script.kql
 │   ├── NB05_EventSimulator.py
-│   ├── bridge-queries.kql
+│   └── bridge-queries.kql
+├── Writeback/
+│   ├── writeback-config.json
+│   └── stored_procedures/    # usp_Upsert*.sql files
+├── UserDataFunction/
+│   ├── definition.json       # UDF item definition (runtime, connections, functions)
+│   ├── function_app.py       # @udf.function() decorated Python functions
+│   └── resources/
+│       └── functions.json    # Function metadata (bindings, parameters)
+├── DataAgent/
+│   ├── agent-config.json
 │   └── README.md
-└── Deploy/
+└── deploy/
     ├── Deploy-Full.ps1
     ├── <Company>.psm1
     ├── Upload-SampleData.ps1
@@ -325,21 +344,23 @@ output/<industry>/
 
 ```
 FabricEndtoEnd/
-├── generate.py                  # CLI entry point (12-step pipeline)
+├── generate.py                  # CLI entry point (13-step pipeline)
 ├── generate.ps1                 # PowerShell wrapper
+├── deploy-to-fabric.ps1         # One-command Fabric deployment (Lakehouses, Notebooks, SM, Reports, UDF)
 ├── core/                        # Core generator engine
 │   ├── config_loader.py         # JSON config loading & validation
 │   ├── template_engine.py       # {{PLACEHOLDER}} template rendering
 │   ├── csv_generator.py         # Synthetic data generation (FK integrity)
-│   ├── notebook_generator.py    # PySpark notebook generation (NB01–NB08)
+│   ├── notebook_generator.py    # PySpark notebook generation (NB01–NB03, NB06)
 │   ├── dataflow_generator.py    # Dataflow Gen2 Power Query M generation
 │   ├── tmdl_generator.py        # TMDL semantic model generation
 │   ├── report_generator.py      # PBIR v4.0 report generation
 │   ├── pipeline_generator.py    # Fabric Data Pipeline JSON generation
-│   ├── forecast_generator.py    # Holt-Winters + MLflow notebook generation
+│   ├── forecast_generator.py    # Holt-Winters + MLflow notebook generation (NB04)
 │   ├── planning_generator.py    # Planning IQ tables & notebooks
-│   ├── htap_generator.py        # Eventhouse, KQL, event simulator
-│   ├── writeback_generator.py   # Writeback notebooks + stored procedures
+│   ├── htap_generator.py        # Eventhouse, KQL, event simulator (NB05)
+│   ├── writeback_generator.py   # Writeback notebooks + stored procedures (NB07–NB09)
+│   ├── udf_generator.py         # User Data Function generation (7 functions per industry)
 │   ├── agent_generator.py       # Fabric Data Agent config generation
 │   ├── deploy_generator.py      # PowerShell deployment scripts
 │   ├── test_generator.py        # Pester + validation script generation
@@ -351,8 +372,8 @@ FabricEndtoEnd/
 │   ├── northwind-hrfinance/     # 10 JSON configs
 │   └── fabrikam-manufacturing/  # 10 JSON configs
 ├── templates/                   # .tpl template files (deploy, kql, notebooks, reports, tmdl)
-├── tests/                       # pytest test suite (224+ tests)
-│   ├── core/                    # Unit tests per module
+├── tests/                       # pytest test suite (250 tests)
+│   ├── core/                    # Unit tests per module (18 files)
 │   ├── industries/              # Per-industry target validation
 │   └── integration/             # End-to-end pipeline tests
 ├── docs/                        # Documentation
@@ -373,22 +394,32 @@ python -m pytest tests/ -v
 python -m pytest tests/ -v --cov=core --cov-report=term-missing
 ```
 
-**Current status:** 224+ tests passing across 12 test modules.
+**Current status:** 250 tests passing across 22 test modules.
 
 | Module | Tests | Coverage Area |
 |---|---|---|
-| `test_config_loader.py` | 18 | Config loading, validation, schemas |
-| `test_csv_generator.py` | 11 | CSV generation, FK integrity, reproducibility |
+| `test_config_loader.py` | 20 | Config loading, validation, schemas |
+| `test_csv_generator.py` | 12 | CSV generation, FK integrity, reproducibility |
 | `test_report_generator.py` | 14 | PBIR reports, pages, visuals, themes |
 | `test_template_engine.py` | 14 | Placeholder rendering, `{{#if}}`, `{{#each}}` |
-| `test_tmdl_generator.py` | 16 | TMDL tables, measures, relationships |
-| `test_dataflow_generator.py` | 12 | Dataflow Gen2 per-domain configs |
+| `test_tmdl_generator.py` | 13 | TMDL tables, measures, relationships |
+| `test_dataflow_generator.py` | 13 | Dataflow Gen2 per-domain configs |
+| `test_notebook_generator.py` | 11 | PySpark notebook generation (NB01–NB06) |
+| `test_writeback_generator.py` | 15 | Writeback notebooks + stored procedures |
+| `test_udf_generator.py` | 23 | User Data Functions (all 4 industries) |
+| `test_deploy_generator.py` | 12 | PowerShell deployment script generation |
+| `test_forecast_generator.py` | 9 | Holt-Winters forecast notebook generation |
+| `test_htap_generator.py` | 11 | Eventhouse, KQL, event simulator |
+| `test_pipeline_generator.py` | 10 | Fabric Data Pipeline JSON generation |
+| `test_planning_generator.py` | 9 | Planning IQ tables + scenarios |
+| `test_pester_generator.py` | 11 | Pester 5 test suite generation |
 | `test_agent_generator.py` | 4 | Data Agent config + README generation |
 | `test_comparison_generator.py` | 5 | Cross-industry comparison report |
-| `test_per_industry_generation.py` | 20 | PLAN.md §10.3 target validation per industry |
-| `test_full_pipeline.py` | 7+ | End-to-end pipeline + idempotency |
-| `test_performance.py` | 1 | Generation performance (<60s budget) |
 | `test_test_generator.py` | 5 | Pester + validation script generation |
+| `test_industry_configs.py` | 11 | Industry config schema contracts |
+| `test_per_industry_generation.py` | 20 | PLAN.md §10.3 target validation per industry |
+| `test_full_pipeline.py` | 7 | End-to-end pipeline + idempotency |
+| `test_performance.py` | 1 | Generation performance (<60s budget) |
 
 ---
 
@@ -409,6 +440,7 @@ All 4 industries generate successfully with the full 12-step pipeline:
 | **Forecast** | 2 | 2 | 2 | 2 |
 | **HTAP** | 6 | 6 | 6 | 6 |
 | **Writeback** | 4 | 4 | 4 | 4 |
+| **UDF** | 3 | 3 | 3 | 3 |
 | **Data Agent** | 2 | 2 | 2 | 2 |
 | **Deploy Scripts** | 4 | 4 | 4 | 4 |
 
@@ -446,6 +478,15 @@ Generated PowerShell scripts include:
 - `<Company>.psm1` — Shared module (token management, API helpers)
 - `Upload-SampleData.ps1` — OneLake data upload
 - `Validate-Deployment.ps1` — Post-deployment validation
+
+Additionally, `deploy-to-fabric.ps1` (at the repo root) provides **one-command deployment** to a Fabric workspace:
+
+```powershell
+.\deploy-to-fabric.ps1 -WorkspaceId "<guid>" -Industry "contoso-energy"
+.\deploy-to-fabric.ps1 -WorkspaceId "<guid>" -Industry "contoso-energy" -Clean  # Delete & recreate
+```
+
+This creates Lakehouses, uploads CSV data, deploys 9 Notebooks, Semantic Models (DirectLake + DirectQuery writeback), 4 Reports, a Data Pipeline, a SQL Database (with DDL), a User Data Function (7 writeback functions), and organizes items into workspace folders.
 
 ---
 

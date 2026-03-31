@@ -63,6 +63,20 @@ class TestDataflowGenerator(unittest.TestCase):
         for df_path in self.dataflows:
             self.assertEqual(df_path.parent.name, "Dataflows")
 
+    def test_pq_files_generated(self):
+        """Each domain should get a .pq mashup file for Fabric deployment."""
+        pq_files = [p for p in self.dataflows if p.suffix == ".pq"]
+        domains = self.sample_data["sampleData"]["domains"]
+        self.assertEqual(len(pq_files), len(domains))
+
+    def test_pq_contains_section(self):
+        """Mashup .pq files should start with section declaration."""
+        pq_files = [p for p in self.dataflows if p.suffix == ".pq"]
+        for pq_path in pq_files:
+            content = pq_path.read_text(encoding="utf-8")
+            self.assertTrue(content.startswith("section Section1;"),
+                            f"Missing section header in {pq_path.name}")
+
 
 class TestDataflowMultiIndustry(unittest.TestCase):
     """Test dataflow generation across industries."""
@@ -79,6 +93,14 @@ class TestDataflowMultiIndustry(unittest.TestCase):
         cfg = load_industry_config("fabrikam-manufacturing")
         sd = load_config_file("fabrikam-manufacturing", "sample_data")
         tmpdir = Path(tempfile.mkdtemp(prefix="fabric_df_fm_"))
+        result = generate_dataflows(cfg, sd, tmpdir)
+        json_files = [p for p in result if p.suffix == ".json"]
+        self.assertGreaterEqual(len(json_files), 5)
+
+    def test_northwind_domains(self):
+        cfg = load_industry_config("northwind-hrfinance")
+        sd = load_config_file("northwind-hrfinance", "sample_data")
+        tmpdir = Path(tempfile.mkdtemp(prefix="fabric_df_nw_"))
         result = generate_dataflows(cfg, sd, tmpdir)
         json_files = [p for p in result if p.suffix == ".json"]
         self.assertGreaterEqual(len(json_files), 5)

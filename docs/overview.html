@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fabric End-to-End Demo Generator — Overview</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f5f6fa;
+    color: #1a1a2e;
+    line-height: 1.6;
+  }
+
+  /* ── Slide container ── */
+  .slide {
+    width: 1280px;
+    min-height: 720px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── Header band ── */
+  .header-band {
+    background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+    padding: 32px 48px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-band::after {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  .header-band h1 {
+    font-size: 34px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.5px;
+  }
+  .header-band .subtitle {
+    font-size: 16px;
+    color: rgba(255,255,255,0.85);
+    margin-top: 4px;
+    font-weight: 300;
+  }
+
+  /* ── Main grid ── */
+  .content {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 0;
+    padding: 0;
+  }
+  .left-col { padding: 32px 40px 32px 48px; }
+  .right-col {
+    padding: 32px 40px 32px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* ── Automation table ── */
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0078d4;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .icon { font-size: 24px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  thead th {
+    background: linear-gradient(135deg, #0078d4, #005a9e);
+    color: #fff;
+    padding: 12px 16px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  thead th:first-child { text-align: left; border-radius: 8px 0 0 0; }
+  thead th:last-child { border-radius: 0 8px 0 0; }
+
+  tbody td {
+    padding: 11px 16px;
+    text-align: center;
+    border-bottom: 1px solid #eef0f4;
+  }
+  tbody td:first-child {
+    text-align: left;
+    font-weight: 500;
+    color: #333;
+  }
+  tbody tr:hover { background: #f0f6ff; }
+
+  .time-saved {
+    font-weight: 700;
+    color: #107c10;
+  }
+  .automated-col {
+    color: #0078d4;
+    font-weight: 600;
+  }
+
+  /* Total row */
+  .total-row td {
+    background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 15px;
+    border: none;
+  }
+  .total-row td:first-child { border-radius: 0 0 0 8px; }
+  .total-row td:last-child { border-radius: 0 0 8px 0; }
+
+  /* ── Metric cards ── */
+  .metric-card {
+    border: 2.5px solid;
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-align: center;
+    background: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  }
+  .metric-card .number {
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+  .metric-card .label {
+    font-size: 13px;
+    color: #666;
+    margin-top: 2px;
+    font-weight: 400;
+  }
+  .mc-blue   { border-color: #0078d4; }
+  .mc-blue .number   { color: #0078d4; }
+  .mc-green  { border-color: #107c10; }
+  .mc-green .number  { color: #107c10; }
+  .mc-orange { border-color: #d83b01; }
+  .mc-orange .number { color: #d83b01; }
+  .mc-purple { border-color: #8764b8; }
+  .mc-purple .number { color: #8764b8; }
+  .mc-teal   { border-color: #008272; }
+  .mc-teal .number   { color: #008272; }
+
+  /* ── Architecture strip ── */
+  .arch-strip {
+    margin: 28px 0 0;
+  }
+  .arch-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0078d4;
+    margin-bottom: 12px;
+  }
+  .pipeline-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: nowrap;
+  }
+  .pipe-step {
+    flex: 1;
+    text-align: center;
+    padding: 14px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    position: relative;
+    min-width: 0;
+  }
+  .pipe-step .step-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+  .pipe-step .step-label { display: block; font-size: 11px; font-weight: 400; opacity: 0.9; margin-top: 2px; }
+
+  .ps-config  { background: linear-gradient(135deg, #8764b8, #6b4f9e); }
+  .ps-gen     { background: linear-gradient(135deg, #0078d4, #005a9e); }
+  .ps-deploy  { background: linear-gradient(135deg, #107c10, #0b5e0b); }
+  .ps-run     { background: linear-gradient(135deg, #d83b01, #b63101); }
+
+  .pipe-arrow {
+    font-size: 22px;
+    color: #999;
+    padding: 0 4px;
+    flex-shrink: 0;
+  }
+
+  /* ── Footer ── */
+  .footer-band {
+    background: #f0f6ff;
+    border-top: 1px solid #e0e8f0;
+    padding: 16px 48px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .footer-band .copilot-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #0078d4, #6264a7);
+    color: #fff;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .footer-band .copilot-badge .sparkle { font-size: 14px; }
+  .footer-band .footer-text {
+    font-size: 13px;
+    color: #555;
+    flex: 1;
+  }
+
+  /* ── Artifacts grid (slide 2) ── */
+  .slide2-content {
+    padding: 32px 48px;
+  }
+  .artifacts-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .artifact-card {
+    background: #fff;
+    border: 1px solid #e0e8f0;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .artifact-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+  .artifact-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  }
+  .artifact-card .a-icon { font-size: 32px; margin-bottom: 8px; }
+  .artifact-card .a-count {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+  .artifact-card .a-label {
+    font-size: 13px;
+    color: #666;
+    margin-top: 4px;
+  }
+  .artifact-card .a-detail {
+    font-size: 11px;
+    color: #999;
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  .ac-data::before { background: #0078d4; }
+  .ac-data .a-count { color: #0078d4; }
+  .ac-transform::before { background: #8764b8; }
+  .ac-transform .a-count { color: #8764b8; }
+  .ac-model::before { background: #d83b01; }
+  .ac-model .a-count { color: #d83b01; }
+  .ac-report::before { background: #107c10; }
+  .ac-report .a-count { color: #107c10; }
+  .ac-deploy::before { background: #008272; }
+  .ac-deploy .a-count { color: #008272; }
+  .ac-htap::before { background: #005a9e; }
+  .ac-htap .a-count { color: #005a9e; }
+  .ac-wb::before { background: #c239b3; }
+  .ac-wb .a-count { color: #c239b3; }
+  .ac-agent::before { background: #4f6bed; }
+  .ac-agent .a-count { color: #4f6bed; }
+
+  /* ── Industry cards ── */
+  .industry-strip {
+    margin-top: 24px;
+  }
+  .industry-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 12px;
+  }
+  .ind-card {
+    background: linear-gradient(135deg, #f8f9fc, #eef2f9);
+    border: 1px solid #d8dff0;
+    border-radius: 10px;
+    padding: 18px 20px;
+    text-align: center;
+  }
+  .ind-card .ind-icon { font-size: 28px; margin-bottom: 6px; }
+  .ind-card .ind-name { font-size: 15px; font-weight: 700; color: #1a1a2e; }
+  .ind-card .ind-company { font-size: 12px; color: #666; margin-top: 2px; }
+  .ind-card .ind-stat { font-size: 11px; color: #0078d4; margin-top: 8px; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- SLIDE 1: Automation & Time Savings                           -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="header-band">
+    <h1>Automation &amp; Time Savings</h1>
+    <div class="subtitle">Fabric End-to-End Industry Demo Generator &mdash; From Config to Live Workspace in Minutes</div>
+  </div>
+
+  <div class="content">
+    <div class="left-col">
+      <div class="section-title"><span class="icon">⚡</span> Generation Pipeline</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Manual (Traditional)</th>
+            <th>Automated (This Tool)</th>
+            <th>Time Saved</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Industry Config &amp; Data Schema</td>
+            <td>1–2 weeks</td>
+            <td class="automated-col">10 JSON files</td>
+            <td class="time-saved">95%+</td>
+          </tr>
+          <tr>
+            <td>Sample Data Generation</td>
+            <td>2–3 days</td>
+            <td class="automated-col">&lt; 1 second (25 CSVs)</td>
+            <td class="time-saved">99%+</td>
+          </tr>
+          <tr>
+            <td>PySpark Notebooks</td>
+            <td>1–2 weeks</td>
+            <td class="automated-col">Instant (9 notebooks)</td>
+            <td class="time-saved">95%+</td>
+          </tr>
+          <tr>
+            <td>Semantic Model (TMDL)</td>
+            <td>2–4 weeks</td>
+            <td class="automated-col">&lt; 1 second (31 tables)</td>
+            <td class="time-saved">98%+</td>
+          </tr>
+          <tr>
+            <td>Power BI Reports (PBIR)</td>
+            <td>3–6 weeks</td>
+            <td class="automated-col">Instant (3 reports, 65 visuals)</td>
+            <td class="time-saved">95%+</td>
+          </tr>
+          <tr>
+            <td>Writeback + UDF Bridge</td>
+            <td>2–3 weeks</td>
+            <td class="automated-col">Instant (DDL + 7 functions)</td>
+            <td class="time-saved">98%+</td>
+          </tr>
+          <tr>
+            <td>Fabric Deployment</td>
+            <td>1–2 days</td>
+            <td class="automated-col">~3 min (24 items, 10 steps)</td>
+            <td class="time-saved">95%+</td>
+          </tr>
+          <tr class="total-row">
+            <td>Total End-to-End</td>
+            <td>8–14 weeks</td>
+            <td>&lt; 5 minutes</td>
+            <td>~99%</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Architecture pipeline -->
+      <div class="arch-strip">
+        <div class="arch-title">🏗️ End-to-End Pipeline</div>
+        <div class="pipeline-flow">
+          <div class="pipe-step ps-config">
+            <span class="step-icon">📋</span>
+            10 JSON Configs
+            <span class="step-label">Industry Schema</span>
+          </div>
+          <span class="pipe-arrow">→</span>
+          <div class="pipe-step ps-gen">
+            <span class="step-icon">⚙️</span>
+            generate.py
+            <span class="step-label">13 Steps &middot; 230 Files</span>
+          </div>
+          <span class="pipe-arrow">→</span>
+          <div class="pipe-step ps-deploy">
+            <span class="step-icon">🚀</span>
+            deploy-to-fabric.ps1
+            <span class="step-label">10 Steps &middot; REST API</span>
+          </div>
+          <span class="pipe-arrow">→</span>
+          <div class="pipe-step ps-run">
+            <span class="step-icon">🏢</span>
+            Live Workspace
+            <span class="step-label">24 Items &middot; 3 Folders</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right column: Metric cards -->
+    <div class="right-col">
+      <div class="metric-card mc-blue">
+        <div class="number">19</div>
+        <div class="label">Core Generator Modules</div>
+      </div>
+      <div class="metric-card mc-green">
+        <div class="number">224</div>
+        <div class="label">Automated Tests</div>
+      </div>
+      <div class="metric-card mc-orange">
+        <div class="number">113</div>
+        <div class="label">DAX Measures Generated</div>
+      </div>
+      <div class="metric-card mc-purple">
+        <div class="number">10</div>
+        <div class="label">Copilot Agent Definitions</div>
+      </div>
+      <div class="metric-card mc-teal">
+        <div class="number">4</div>
+        <div class="label">Industry Verticals</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-band">
+    <span class="copilot-badge"><span class="sparkle">✨</span> Built with GitHub Copilot</span>
+    <span class="footer-text">
+      9+1 specialized AI agents (Orchestrator, Data Engineer, Semantic Model, Report Builder, Forecaster, HTAP, Deployer, Tester, Industry Designer) collaborate to generate and deploy complete Fabric demos from configuration alone.
+    </span>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2: What Gets Deployed                                  -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="header-band">
+    <h1>What Gets Deployed</h1>
+    <div class="subtitle">Complete Fabric Workspace &mdash; 24 Items across 8 Artifact Types, Organized in 3 Folders</div>
+  </div>
+
+  <div class="slide2-content">
+    <div class="section-title"><span class="icon">📦</span> Fabric Artifacts per Industry</div>
+
+    <div class="artifacts-grid">
+      <div class="artifact-card ac-data">
+        <div class="a-icon">🏠</div>
+        <div class="a-count">3</div>
+        <div class="a-label">Lakehouses</div>
+        <div class="a-detail">Bronze → Silver → Gold<br>Medallion Architecture</div>
+      </div>
+      <div class="artifact-card ac-transform">
+        <div class="a-icon">📓</div>
+        <div class="a-count">9</div>
+        <div class="a-label">PySpark Notebooks</div>
+        <div class="a-detail">ETL, Forecast, Events<br>Writeback, Diagnostics</div>
+      </div>
+      <div class="artifact-card ac-model">
+        <div class="a-icon">📊</div>
+        <div class="a-count">31</div>
+        <div class="a-label">TMDL Tables</div>
+        <div class="a-detail">28 Direct Lake + 3 DirectQuery<br>32 Relationships &middot; 113 Measures</div>
+      </div>
+      <div class="artifact-card ac-report">
+        <div class="a-icon">📈</div>
+        <div class="a-count">3</div>
+        <div class="a-label">PBIR Reports</div>
+        <div class="a-detail">Analytics, Forecasting, HTAP<br>20 Pages &middot; 65 Visuals</div>
+      </div>
+      <div class="artifact-card ac-deploy">
+        <div class="a-icon">🔄</div>
+        <div class="a-count">6</div>
+        <div class="a-label">Dataflow Gen2</div>
+        <div class="a-detail">Power Query M configs<br>per business domain</div>
+      </div>
+      <div class="artifact-card ac-htap">
+        <div class="a-icon">🗄️</div>
+        <div class="a-count">1</div>
+        <div class="a-label">SQL Database</div>
+        <div class="a-detail">Writeback store<br>3 Tables &middot; 3 Stored Procs</div>
+      </div>
+      <div class="artifact-card ac-wb">
+        <div class="a-icon">⚡</div>
+        <div class="a-count">7</div>
+        <div class="a-label">User Data Functions</div>
+        <div class="a-detail">Serverless API bridge<br>Upsert + Read + List</div>
+      </div>
+      <div class="artifact-card ac-agent">
+        <div class="a-icon">🔗</div>
+        <div class="a-count">1</div>
+        <div class="a-label">Data Pipeline</div>
+        <div class="a-detail">Orchestration pipeline<br>Notebook sequencing</div>
+      </div>
+    </div>
+
+    <!-- Industry strip -->
+    <div class="industry-strip">
+      <div class="section-title"><span class="icon">🌐</span> Supported Industries</div>
+      <div class="industry-grid">
+        <div class="ind-card">
+          <div class="ind-icon">⚡</div>
+          <div class="ind-name">Energy &amp; Utilities</div>
+          <div class="ind-company">Contoso Energy</div>
+          <div class="ind-stat">6 domains &middot; 25 tables &middot; 113 measures</div>
+        </div>
+        <div class="ind-card">
+          <div class="ind-icon">🏭</div>
+          <div class="ind-name">Manufacturing</div>
+          <div class="ind-company">Fabrikam Manufacturing</div>
+          <div class="ind-stat">Config-driven &middot; Same pipeline</div>
+        </div>
+        <div class="ind-card">
+          <div class="ind-icon">📚</div>
+          <div class="ind-name">Retail / Books</div>
+          <div class="ind-company">Horizon Books</div>
+          <div class="ind-stat">Config-driven &middot; Same pipeline</div>
+        </div>
+        <div class="ind-card">
+          <div class="ind-icon">💼</div>
+          <div class="ind-name">HR &amp; Finance</div>
+          <div class="ind-company">Northwind HR Finance</div>
+          <div class="ind-stat">Config-driven &middot; Same pipeline</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-band">
+    <span class="copilot-badge"><span class="sparkle">✨</span> Zero External Dependencies</span>
+    <span class="footer-text">
+      Python stdlib only for core generation. PowerShell + Az module for deployment. Adding a new industry requires only 10 JSON config files &mdash; no code changes needed.
+    </span>
+  </div>
+</div>
+
+</body>
+</html>

@@ -6,7 +6,7 @@
 
 > **Reference:** Architecture inspired by [TableauToPowerBI](../TableauToPowerBI) (8+1 agent model) and [FullDemoFabricBookUseCase](../FullDemoFabricBookUseCase) (Horizon Books demo pattern).
 
-> **Status: ✅ ALL 8 PHASES COMPLETE** — 17 core modules, 24 templates, 10 agent definitions, 4 industries (10 config files each), 224+ tests passing, CI/CD operational, generation under 1.2s per industry.
+> **Status: ✅ ALL 8 PHASES COMPLETE** — 18 core modules, 24 templates, 10 agent definitions, 4 industries (10 config files each), 250 tests passing, CI/CD operational, generation under 1.2s per industry.
 
 ---
 
@@ -42,13 +42,15 @@ Each demo follows the **Horizon Books blueprint** but with industry-specific dat
 | Artifact | Count | Description |
 |----------|-------|-------------|
 | Lakehouses | 3 | Bronze (raw), Silver (cleaned), Gold (star schema) — all schema-enabled |
-| Notebooks | 6 | NB01: Bronze→Silver, NB02: Web Enrichment, NB03: Silver→Gold, NB04: Forecasting, NB05: Transactional Analytics, NB06: Diagnostic |
+| Notebooks | 9 | NB01: Bronze→Silver, NB02: Web Enrichment, NB03: Silver→Gold, NB04: Forecasting, NB05: Event Simulator, NB06: Diagnostic, NB07: Writeback Setup, NB08: Writeback API, NB09: SQL Database Setup |
 | Dataflows Gen2 | 3–5 | Domain-specific CSV-to-table ingestion |
 | Data Pipeline | 1 | Linked orchestration (DF → NB01 → NB02 → NB03 → NB04 → NB05) |
 | Spark Environment | 1 | Python deps + Spark config |
-| Semantic Model | 1 | Direct Lake on Gold Lakehouse |
-| Power BI Reports | 2–3 | Analytics (10+ pages), Forecasting (5 pages), HTAP Dashboard (3 pages) |
+| Semantic Models | 2 | Direct Lake on Gold Lakehouse + DirectQuery writeback on SQL Database |
+| Power BI Reports | 4 | Analytics (10+ pages), Forecasting (5 pages), HTAP Dashboard (3 pages), Pipeline (3 pages) |
 | Data Agent | 1 | AI Q&A on semantic model (F64+) |
+| SQL Database | 1 | Fabric SQL Database for writeback stored procedures |
+| User Data Function | 1 | API bridge (7 functions: list + upsert/read per writeback table) |
 | Eventhouses | 1 | Real-time event stream for HTAP scenarios |
 | KQL Databases | 1 | Hot-path query layer for transactional analytics |
 
@@ -121,7 +123,8 @@ industries/
 │   ├── htap-config.json    # Transactional analytics config
 │   ├── reports.json        # Report pages, visuals, KPIs
 │   ├── data-agent.json     # Agent system instructions
-│   └── web-enrichment.json # API enrichment sources
+│   ├── web-enrichment.json # API enrichment sources
+│   └── writeback-config.json # Writeback tables, stored procedures
 ├── contoso-energy/
 │   ├── industry.json
 │   ├── sample-data.json
@@ -131,7 +134,8 @@ industries/
 │   ├── htap-config.json
 │   ├── reports.json
 │   ├── data-agent.json
-│   └── web-enrichment.json
+│   ├── web-enrichment.json
+│   └── writeback-config.json
 ├── northwind-hrfinance/
 │   └── ... (same structure)
 └── fabrikam-manufacturing/
@@ -191,6 +195,8 @@ industries/
 | `core/forecast_generator.py` | Generate forecast notebooks | `forecast-config.json` | NB04 + forecast tables |
 | `core/planning_generator.py` | Generate planning tables | `planning-config.json` | Planning notebooks |
 | `core/htap_generator.py` | Generate HTAP artifacts | `htap-config.json` | Eventhouse + KQL + NB05 |
+| `core/writeback_generator.py` | Generate writeback notebooks | `writeback-config.json` | NB07–NB09 + stored procedures |
+| `core/udf_generator.py` | Generate User Data Function | `writeback-config.json` | `UserDataFunction/` (definition + functions + Python) |
 | `core/deploy_generator.py` | Generate PS1 deployment | `industry.json` | `deploy/*.ps1` |
 | `core/agent_generator.py` | Generate Data Agent config | `data-agent.json` | `DataAgent/` |
 | `core/test_generator.py` | Generate Pester test suite | All configs | `tests/*.Tests.ps1` |
@@ -970,7 +976,7 @@ applies_to: all_agents
 | Forecast models | 5 | 5 | 5 | 5 |
 | Planning models | 5 | 5 | 5 | 5 |
 | HTAP event streams | 3 | 3 | 3 | 4 |
-| Notebooks | 6 | 6 | 6 | 6 |
+| Notebooks | 9 | 9 | 9 | 9 |
 | Deployment scripts | 4 | 4 | 4 | 4 |
 
 ---

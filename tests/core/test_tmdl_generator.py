@@ -63,8 +63,8 @@ class TestTMDLGenerator(unittest.TestCase):
         fin_path = [p for p in self.result["tables"]
                      if p.name == "FactFinancialTransactions.tmdl"][0]
         content = fin_path.read_text(encoding="utf-8")
-        self.assertIn("measure Total Revenue", content)
-        self.assertIn("measure Gross Profit", content)
+        self.assertIn("measure 'Total Revenue'", content)
+        self.assertIn("measure 'Gross Profit'", content)
 
     def test_pbism_file(self):
         pbism = [p for p in self.result["model"] if p.name == "definition.pbism"]

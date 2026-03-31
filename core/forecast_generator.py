@@ -47,7 +47,17 @@ def _build_forecast_notebook(company: str, gold_lh: str, config: dict) -> str:
     """Build the NB04 Forecasting PySpark notebook."""
     fc = config.get("forecastConfig", config)
     params = fc.get("parameters", {})
-    models = fc.get("models", [])
+    # Support both forecastConfig.models and forecastModels formats
+    models = fc.get("models", config.get("forecastModels", []))
+    # Normalize model fields: translate simple format to expected keys
+    for m in models:
+        if "outputTable" not in m and "table" in m:
+            m["outputTable"] = "Forecast" + m["name"]
+        if "grainColumns" not in m and "groupBy" in m:
+            m["grainColumns"] = [m["groupBy"]] if m["groupBy"] else []
+        m.setdefault("outputSchema", "analytics")
+        m.setdefault("valueColumn", "Value")
+        m.setdefault("dateColumn", "Date")
     horizon = params.get("forecastHorizon", 6)
     confidence = params.get("confidenceLevel", 0.95)
     seasonal_periods = params.get("seasonalPeriods", 12)
@@ -63,6 +73,14 @@ def _build_forecast_notebook(company: str, gold_lh: str, config: dict) -> str:
         date_col = model.get("dateColumn", "Date")
         grain_str = ", ".join(f'"{c}"' for c in grain_cols)
 
+        # Per-model overrides from simple format
+        model_horizon = model.get("horizonMonths", horizon)
+        model_params = model.get("params", {})
+        m_alpha = model_params.get("alpha", 0.3)
+        m_beta = model_params.get("beta", 0.1)
+        m_gamma = model_params.get("gamma", 0.1)
+        m_seasonal = model_params.get("seasonalPeriods", seasonal_periods)
+
         model_blocks.append(f'''
 # ── Model {i+1}: {name} ──────────────────────────────────────────
 print(f"\\nModel {i+1}/{len(models)}: {name}")
@@ -76,14 +94,14 @@ try:
 
     # Build forecast per grain combination
     forecast_rows = []
-    source_df = spark.table(f"{gold_lh}.{output_schema}.{output_table.replace('Forecast', 'Fact')}")
+    source_df = spark.table(f"{gold_lh}.{output_schema}.{model.get('table', output_table.replace('Forecast', 'Fact'))}")
 
     if source_df.count() == 0:
         print(f"  WARNING: No source data found, generating synthetic forecast")
         # Fallback: generate synthetic forecast data
         import datetime
         base_date = datetime.date.today().replace(day=1)
-        for month_offset in range({horizon}):
+        for month_offset in range({model_horizon}):
             d = base_date + datetime.timedelta(days=30 * (month_offset + 1))
             forecast_rows.append(Row(
                 ForecastDate=d,
@@ -108,9 +126,9 @@ try:
             values = monthly["value"].values.astype(float)
 
             # Simple Holt-Winters (additive)
-            alpha, beta, gamma = 0.3, 0.1, 0.1
+            alpha, beta, gamma = {m_alpha}, {m_beta}, {m_gamma}
             n = len(values)
-            s = {seasonal_periods}
+            s = {m_seasonal}
 
             # Initialize
             level = values[0]
@@ -134,7 +152,7 @@ try:
             elif isinstance(last_date, str):
                 last_date = datetime.date.fromisoformat(last_date)
 
-            for h in range(1, {horizon} + 1):
+            for h in range(1, {model_horizon} + 1):
                 fc_value = level + h * trend + seasonal[(n + h - 1) % s]
                 fc_date = last_date + datetime.timedelta(days=30 * h)
                 residual_std = float(np.std(values[-min(12, n):]))
@@ -156,7 +174,7 @@ try:
                 last_date = last_date.date()
             elif isinstance(last_date, str):
                 last_date = datetime.date.fromisoformat(last_date)
-            for h in range(1, {horizon} + 1):
+            for h in range(1, {model_horizon} + 1):
                 fc_date = last_date + datetime.timedelta(days=30 * h)
                 forecast_rows.append(Row(
                     ForecastDate=fc_date,
@@ -178,7 +196,7 @@ try:
     # MLflow tracking
     with mlflow.start_run(run_name="{name}", nested=True):
         mlflow.log_param("model", "{name}")
-        mlflow.log_param("horizon", {horizon})
+        mlflow.log_param("horizon", {model_horizon})
         mlflow.log_param("grain_columns", "{', '.join(grain_cols)}")
         mlflow.log_metric("forecast_rows", len(forecast_rows))
 

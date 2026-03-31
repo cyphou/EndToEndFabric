@@ -40,14 +40,15 @@ This document describes the architecture of the **Fabric End-to-End Industry Dem
           │                    │                     │
           ▼                    ▼                     ▼
     ┌───────────────────────────────────────────────────┐
-    │          12-Step Generation Pipeline               │
+    │          13-Step Generation Pipeline               │
     │                                                    │
-    │  1. Config Loader     7. Pipeline Generator        │
-    │  2. CSV Generator     8. Forecast Generator        │
-    │  3. Notebook Gen      9. HTAP Generator            │
-    │  4. Dataflow Gen     10. Writeback Generator      │
-    │  5. TMDL Generator   11. Data Agent Generator      │
-    │  6. Report Generator 12. Deploy Generator          │
+    │  1. Config Loader     8. Forecast Generator        │
+    │  2. CSV Generator     9. HTAP Generator            │
+    │  3. Notebook Gen     10. Writeback Generator       │
+    │  4. Dataflow Gen     11. UDF Generator             │
+    │  5. TMDL Generator   12. Data Agent Generator      │
+    │  6. Report Generator 13. Deploy Generator          │
+    │  7. Pipeline Gen                                   │
     └───────────────────────────────────────────────────┘
                                │
                     ┌──────────▼──────────┐
@@ -77,8 +78,9 @@ Generated notebooks follow the **Bronze → Silver → Gold** medallion pattern:
 - **NB04** — Holt-Winters forecasting with MLflow experiment tracking
 - **NB05** — HTAP event simulator (real-time streaming data generation)
 - **NB06** — Diagnostic (table inventory, null audit, row counts, schema validation)
-- **NB07** — Writeback Setup (creates writeback schema + Delta tables)
+- **NB07** — Writeback Setup (creates writeback schema + Delta tables in GoldLH)
 - **NB08** — Writeback API (REST API-callable notebook for upserts)
+- **NB09** — SQL Database Setup (DDL for tables + stored procedures in Fabric SQL Database)
 
 ---
 
@@ -97,16 +99,17 @@ Generated notebooks follow the **Bronze → Silver → Gold** medallion pattern:
 |---|:---:|---|---|
 | `config_loader.py` | 1 | `industries/<id>/*.json` | Validated config dict |
 | `csv_generator.py` | 2 | `sample-data.json` | CSV files in `SampleData/` |
-| `notebook_generator.py` | 3 | `industry.json` + `sample-data.json` | PySpark `.py` notebooks |
+| `notebook_generator.py` | 3 | `industry.json` + `sample-data.json` | PySpark `.py` notebooks (NB01–NB03, NB06) |
 | `dataflow_generator.py` | 4 | `industry.json` + `sample-data.json` | Dataflow Gen2 JSON configs |
 | `tmdl_generator.py` | 5 | `industry.json` + `semantic-model.json` | TMDL files (tables, measures, relationships) |
 | `report_generator.py` | 6 | `industry.json` + `reports.json` | PBIR v4.0 report structure |
 | `pipeline_generator.py` | 7 | `industry.json` + `sample-data.json` | Fabric Pipeline JSON |
 | `forecast_generator.py` | 8 | `industry.json` + `forecast-config.json` | Holt-Winters notebook + config |
 | `htap_generator.py` | 9 | `industry.json` + `htap-config.json` | Eventhouse, KQL, event simulator |
-| `writeback_generator.py` | 10 | `industry.json` + `writeback-config.json` | NB07/NB08 writeback notebooks |
-| `deploy_generator.py` | 12 | `industry.json` | PowerShell deploy scripts |
-| `agent_generator.py` | 11 | `industry.json` + `data-agent.json` | Fabric Data Agent config + README |
+| `writeback_generator.py` | 10 | `industry.json` + `writeback-config.json` | NB07–NB09 writeback notebooks + stored procedures |
+| `udf_generator.py` | 11 | `industry.json` + `writeback-config.json` | User Data Function (definition, metadata, Python source) |
+| `deploy_generator.py` | 13 | `industry.json` | PowerShell deploy scripts |
+| `agent_generator.py` | 12 | `industry.json` + `data-agent.json` | Fabric Data Agent config + README |
 
 ### Supporting Modules
 
@@ -245,10 +248,15 @@ output/<industry>/
 │   ├── NB07_WritebackSetup.py
 │   ├── NB08_WritebackAPI.py
 │   └── stored_procedures/
-├── DataAgent/            ← Step 11: Agent Generator
+├── UserDataFunction/     ← Step 11: UDF Generator
+│   ├── definition.json
+│   ├── function_app.py
+│   └── resources/
+│       └── functions.json
+├── DataAgent/            ← Step 12: Agent Generator
 │   ├── agent-config.json
 │   └── README.md
-└── Deploy/               ← Step 12: Deploy Generator
+└── Deploy/               ← Step 13: Deploy Generator
     ├── Deploy-Full.ps1
     ├── <Company>.psm1
     ├── Upload-SampleData.ps1

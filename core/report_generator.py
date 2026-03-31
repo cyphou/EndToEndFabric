@@ -1,4 +1,4 @@
-"""Power BI Report (PBIR) generator.
+﻿"""Power BI Report (PBIR) generator.
 
 Generates PBIR v4.0 report definitions from reports.json config.
 Produces page definitions, visual configs, and theme files.
@@ -52,6 +52,15 @@ def generate_reports(industry_config: dict, reports_config: dict,
         theme_path = _generate_theme(report_dir, theme, company_name)
         generated.append(theme_path)
 
+        # Generate definition.pbir (semantic model binding) â€” sits at .Report/ root
+        report_root = output_dir / f"{report_name}.Report"
+        pbir_path = _generate_definition_pbir(report_root, company_name)
+        generated.append(pbir_path)
+
+        # Generate version.json (required by Fabric report import)
+        version_path = _generate_version_json(report_dir)
+        generated.append(version_path)
+
         # Generate .pbip file
         pbip_path = output_dir / f"{report_name}.pbip"
         _generate_pbip(pbip_path, report_name)
@@ -67,31 +76,15 @@ def _generate_report_json(report_dir: Path, report_def: dict,
     pages = report_def.get("pages", [])
 
     config = {
-        "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/4.0.0/schema.json",
-        "id": _pseudo_id(report_name),
-        "name": report_name,
+        "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/1.0.0/schema.json",
         "themeCollection": {
             "baseTheme": {
-                "name": f"{company_name}Theme",
+                "name": "CY24SU06",
                 "reportVersionAtImport": "5.56",
                 "type": "SharedResources"
             }
         },
-        "pageCollection": {
-            "pages": [
-                {
-                    "name": _pseudo_id(page.get("name", f"Page{i+1}")),
-                    "displayName": page.get("name", f"Page {i+1}"),
-                    "displayOption": page.get("displayOption", "FitToPage"),
-                }
-                for i, page in enumerate(pages)
-            ]
-        },
-        "defaultDrillFilterOtherVisuals": True,
-        "linguisticMetadata": {
-            "version": "1.0.0",
-            "language": "en-US"
-        }
+        "layoutOptimization": "None"
     }
 
     path = report_dir / "report.json"
@@ -112,16 +105,12 @@ def _generate_page(pages_dir: Path, page_def: dict, page_index: int,
 
     # Page config
     page_config = {
-        "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/4.0.0/schema.json",
+        "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
         "name": page_id,
         "displayName": page_name,
         "displayOption": page_def.get("displayOption", "FitToPage"),
         "height": page_def.get("height", 720),
-        "width": page_def.get("width", 1280),
-        "background": {
-            "color": theme.get("background", "#FFFFFF"),
-            "transparency": page_def.get("backgroundTransparency", 0)
-        }
+        "width": page_def.get("width", 1280)
     }
 
     page_path = page_dir / "page.json"
@@ -152,11 +141,10 @@ def _generate_visual(visuals_dir: Path, visual_def: dict, index: int,
     visual_dir.mkdir(parents=True, exist_ok=True)
 
     config = {
-        "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visual/4.0.0/schema.json",
+        "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/1.0.0/schema.json",
         "name": visual_id,
         "visual": {
             "visualType": _map_visual_type(visual_type),
-            "objects": {},
             "visualContainerObjects": {
                 "title": [{
                     "properties": {
@@ -174,11 +162,6 @@ def _generate_visual(visuals_dir: Path, visual_def: dict, index: int,
             "z": index
         }
     }
-
-    # Add data roles mapping
-    data_roles = visual_def.get("dataRoles", {})
-    if data_roles:
-        config["visual"]["queries"] = _build_query_refs(data_roles)
 
     path = visual_dir / "visual.json"
     with open(path, "w", encoding="utf-8") as f:
@@ -222,6 +205,23 @@ def _generate_theme(report_dir: Path, theme: dict, company_name: str) -> Path:
     return path
 
 
+def _generate_definition_pbir(report_dir: Path, company_name: str) -> Path:
+    """Generate the definition.pbir file that binds the report to a semantic model."""
+    config = {
+        "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definitionProperties/2.0.0/schema.json",
+        "version": "4.0",
+        "datasetReference": {
+            "byConnection": {
+                "connectionString": "semanticmodelid={{SEMANTIC_MODEL_ID}}"
+            }
+        }
+    }
+    path = report_dir / "definition.pbir"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(config, f, indent=2, ensure_ascii=False)
+    return path
+
+
 def _generate_pbip(path: Path, report_name: str):
     """Generate a .pbip project file."""
     config = {
@@ -239,6 +239,18 @@ def _generate_pbip(path: Path, report_name: str):
     }
     with open(path, "w", encoding="utf-8") as f:
         json.dump(config, f, indent=2, ensure_ascii=False)
+
+
+def _generate_version_json(report_dir: Path) -> Path:
+    """Generate version.json required by Fabric PBIR import."""
+    config = {
+        "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/versionMetadata/1.0.0/schema.json",
+        "version": "1.0.0"
+    }
+    path = report_dir / "version.json"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(config, f, indent=2, ensure_ascii=False)
+    return path
 
 
 def _map_visual_type(simple_type: str) -> str:
@@ -277,7 +289,7 @@ def _map_visual_type(simple_type: str) -> str:
 
 def _build_query_refs(data_roles: dict) -> list[dict]:
     """Build minimal query references from data role mappings."""
-    # Simplified — actual PBIR queries are more complex
+    # Simplified â€” actual PBIR queries are more complex
     return [{"queryRef": role} for role in data_roles.values() if role]
 
 
@@ -285,3 +297,4 @@ def _pseudo_id(seed: str) -> str:
     """Generate a deterministic ID string."""
     import hashlib
     return hashlib.md5(seed.encode()).hexdigest()[:16]
+

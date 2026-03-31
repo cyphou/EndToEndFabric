@@ -143,6 +143,36 @@
           {"type": "table", "columns": ["DimEquipment[EquipmentName]", "HealthScore", "LastAlert", "Status"]}
         ]}
       ]
+    },
+    {
+      "name": "FabrikamManufacturing-Pipeline",
+      "theme": {"primary": "#0D47A1", "secondary": "#E65100", "background": "#FAFAFA"},
+      "pages": [
+        {"name": "Pipeline Overview", "visuals": [
+          {"type": "card", "measure": "Total Tables Loaded"},
+          {"type": "card", "measure": "Total Rows Ingested"},
+          {"type": "card", "measure": "Last Refresh Time"},
+          {"type": "card", "measure": "Pipeline Success Rate"},
+          {"type": "clusteredBarChart", "axis": "Domain", "values": ["Tables Loaded", "Rows Ingested"]},
+          {"type": "table", "columns": ["Pipeline Step", "Status", "Duration (s)", "Rows Processed"]}
+        ]},
+        {"name": "Data Quality", "visuals": [
+          {"type": "card", "measure": "Data Quality Score"},
+          {"type": "card", "measure": "Null Value Count"},
+          {"type": "card", "measure": "Duplicate Row Count"},
+          {"type": "clusteredBarChart", "axis": "TableName", "values": ["Null %", "Duplicate %"]},
+          {"type": "table", "columns": ["TableName", "TotalRows", "NullCount", "DuplicateCount", "QualityScore"]}
+        ]},
+        {"name": "Ingestion by Domain", "visuals": [
+          {"type": "donutChart", "legend": "Domain", "values": ["Rows Ingested"]},
+          {"type": "stackedBarChart", "axis": "Domain", "values": ["CSV Files", "Tables Created"]},
+          {"type": "table", "columns": ["Domain", "Dataflow", "CSV Files", "Tables", "Last Run"]}
+        ]},
+        {"name": "Refresh History", "visuals": [
+          {"type": "lineChart", "axis": "RefreshDate", "values": ["Duration (s)", "Rows Processed"]},
+          {"type": "table", "columns": ["RefreshDate", "Pipeline", "Status", "Duration (s)", "Error"]}
+        ]}
+      ]
     }
   ]
 }

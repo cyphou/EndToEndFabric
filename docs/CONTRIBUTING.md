@@ -44,7 +44,7 @@ cd FabricEndtoEnd
 python -m pytest tests/ -v
 ```
 
-All 224+ tests should pass before making changes.
+All 250 tests should pass before making changes.
 
 ### 2. Make changes
 

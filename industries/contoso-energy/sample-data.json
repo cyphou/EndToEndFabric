@@ -2360,6 +2360,17 @@
                     "max": 100
                   }
                 }
+              },
+              {
+                "name": "RegulatoryBodyID",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 5
+                  }
+                }
               }
             ]
           }

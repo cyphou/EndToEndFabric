@@ -38,7 +38,7 @@ Agent definitions live in `.github/agents/` and are inherited by GitHub Copilot 
 | **@report-builder** | `report-builder.agent.md` | `core/report_generator.py`, `core/comparison_generator.py`, `templates/reports/` | PBIR v4.0 pages, visuals, themes, cross-industry comparison |
 | **@forecaster** | `forecaster.agent.md` | `core/forecast_generator.py`, `core/planning_generator.py` | Holt-Winters models, MLflow tracking, Planning IQ tables |
 | **@htap-engineer** | `htap-engineer.agent.md` | `core/htap_generator.py`, `templates/kql/` | Eventhouse, KQL database, event simulator, hot-cold bridge |
-| **@deployer** | `deployer.agent.md` | `core/deploy_generator.py`, `core/writeback_generator.py`, `shared/deploy/`, `templates/deploy/` | PowerShell deployment scripts, Fabric REST API, writeback notebooks |
+| **@deployer** | `deployer.agent.md` | `core/deploy_generator.py`, `core/writeback_generator.py`, `core/udf_generator.py`, `shared/deploy/`, `templates/deploy/` | PowerShell deployment scripts, Fabric REST API, writeback notebooks, User Data Functions |
 | **@tester** | `tester.agent.md` | `core/pester_generator.py`, `core/test_generator.py`, `tests/` | pytest + Pester test suites, validation, performance benchmarks |
 | **@industry-designer** | `industry-designer.agent.md` | `industries/*/` config files (10 per industry) | Domain schemas, KPIs, company stories, data-agent configs |
 | **@shared** | `shared.instructions.md` | Cross-cutting constraints | Hard rules inherited by all agents |

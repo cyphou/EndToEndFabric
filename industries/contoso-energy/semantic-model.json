@@ -939,6 +939,10 @@
           {
             "name": "ComplianceScore",
             "dataType": "Double"
+          },
+          {
+            "name": "RegulatoryBodyID",
+            "dataType": "Int64"
           }
         ]
       },

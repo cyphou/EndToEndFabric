@@ -22,7 +22,8 @@ def generate_htap(industry_config: dict, htap_config: dict,
 
     hc = htap_config.get("htapConfig", htap_config)
     streams = hc.get("eventStreams", [])
-    kql_db = hc.get("kqlDatabase", {})
+    # Support both top-level "eventhouse" and legacy "kqlDatabase" keys
+    kql_db = hc.get("kqlDatabase", {}) or hc.get("eventhouse", {})
 
     created = []
 
@@ -97,15 +98,16 @@ def _build_eventhouse_definition(company, kql_db, streams):
 
 def _build_kql_database(company, kql_db, streams):
     """Build KQL database creation script."""
+    db_name = kql_db.get("kqlDatabase", kql_db.get("name", f"{company}KQLDB"))
     lines = [
         f"// {company} — KQL Database Creation Script",
-        f"// Database: {kql_db.get('name', company + 'KQLDB')}",
+        f"// Database: {db_name}",
         "",
     ]
 
     for stream in streams:
         table = stream["kqlTable"]
-        columns = stream.get("columns", [])
+        columns = stream.get("columns", []) or stream.get("schema", [])
         col_defs = []
         for col in columns:
             kql_type = _map_kql_type(col.get("type", "string"))
@@ -146,7 +148,7 @@ def _build_event_simulator(company, gold_lh, streams):
         name = stream["name"]
         table = stream["kqlTable"]
         rate = stream.get("eventsPerSecond", 10)
-        columns = stream.get("columns", [])
+        columns = stream.get("columns", []) or stream.get("schema", [])
 
         col_assignments = []
         for col in columns:
@@ -154,10 +156,12 @@ def _build_event_simulator(company, gold_lh, streams):
             cname = col["name"]
             if ctype == "datetime":
                 col_assignments.append(f'            "{cname}": datetime.datetime.now().isoformat()')
-            elif ctype == "float":
+            elif ctype in ("float", "real", "double"):
                 col_assignments.append(f'            "{cname}": round(random.uniform(0, 1000), 2)')
-            elif ctype == "int":
+            elif ctype in ("int", "integer", "long"):
                 col_assignments.append(f'            "{cname}": random.randint(1, 10000)')
+            elif ctype in ("bool", "boolean"):
+                col_assignments.append(f'            "{cname}": random.choice([True, False])')
             else:
                 col_assignments.append(f'            "{cname}": f"{{random.choice(sample_ids)}}"')
 
@@ -208,7 +212,7 @@ print("\\nEvent simulation complete")
 
 def _build_bridge_queries(company, gold_lh, kql_db, streams):
     """Build KQL queries that bridge hot (KQL) and cold (Lakehouse) paths."""
-    db_name = kql_db.get("name", f"{company}KQLDB")
+    db_name = kql_db.get("kqlDatabase", kql_db.get("name", f"{company}KQLDB"))
     lines = [
         f"// {company} — Hot-Cold Bridge Queries",
         f"// KQL Database: {db_name}",
@@ -273,10 +277,15 @@ def _map_kql_type(python_type: str) -> str:
     return {
         "string": "string",
         "int": "int",
+        "integer": "int",
+        "long": "long",
         "float": "real",
+        "real": "real",
+        "double": "real",
         "decimal": "decimal",
         "date": "datetime",
         "datetime": "datetime",
+        "bool": "bool",
         "boolean": "bool",
         "guid": "guid",
     }.get(python_type, "string")

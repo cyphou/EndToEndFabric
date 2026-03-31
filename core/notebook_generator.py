@@ -15,13 +15,15 @@ TEMPLATES_DIR = PROJECT_ROOT / "templates" / "notebooks"
 
 
 def generate_notebooks(industry_config: dict, sample_data_config: dict,
-                       output_dir: Path) -> list[Path]:
+                       output_dir: Path,
+                       web_enrichment_config: dict | None = None) -> list[Path]:
     """Generate all PySpark notebooks for an industry demo.
 
     Args:
         industry_config: Parsed industry.json content.
         sample_data_config: Parsed sample-data.json content.
         output_dir: Demo output root directory.
+        web_enrichment_config: Parsed web-enrichment.json content (optional).
 
     Returns:
         List of generated notebook file paths.
@@ -33,6 +35,10 @@ def generate_notebooks(industry_config: dict, sample_data_config: dict,
     artifacts = industry_config.get("fabricArtifacts", {})
     lakehouses = artifacts.get("lakehouses", {})
     schemas = artifacts.get("schemas", {})
+
+    we = {}
+    if web_enrichment_config:
+        we = web_enrichment_config.get("webEnrichment", web_enrichment_config)
 
     context = {
         "industry": industry,
@@ -47,6 +53,7 @@ def generate_notebooks(industry_config: dict, sample_data_config: dict,
         "silver_schemas": schemas.get("silver", []),
         "gold_schemas": schemas.get("gold", []),
         "domains": _extract_domain_info(sample_data_config),
+        "web_sources": we.get("sources", []),
     }
 
     generated = []
@@ -138,36 +145,109 @@ for r in results:
 
 
 def _build_nb02_web_enrichment(ctx: dict) -> str:
-    """Generate NB02: Web Enrichment notebook."""
+    """Generate NB02: Web Enrichment notebook from web-enrichment.json sources."""
     company = ctx["company_name"]
     silver = ctx["silver_lh"]
+    sources = ctx.get("web_sources", [])
+
+    # Build per-source data generation blocks
+    source_blocks = []
+    registry_entries = []
+    for src in sources:
+        name = src.get("name", "Unknown")
+        table_name = src.get("tableName", f"Web{name}")
+        description = src.get("description", "")
+        endpoint = src.get("endpoint", "")
+        columns = src.get("columns", [])
+        schedule = src.get("schedule", "daily")
+        var = table_name.lower()
+
+        # Build Row fields with realistic sample data per type
+        row_fields = []
+        for col in columns:
+            cname = col["name"]
+            ctype = col.get("type", "string")
+            if ctype == "date":
+                row_fields.append(
+                    f'            "{cname}": (datetime.date.today() - datetime.timedelta(days=i)).isoformat()')
+            elif ctype in ("double", "float", "number"):
+                row_fields.append(
+                    f'            "{cname}": round(random.uniform(10.0, 500.0), 2)')
+            elif ctype in ("int", "integer"):
+                row_fields.append(
+                    f'            "{cname}": random.randint(1, 10000)')
+            else:
+                row_fields.append(
+                    f'            "{cname}": f"{cname}_{{i:03d}}"')
+
+        fields_str = ",\n".join(row_fields)
+
+        source_blocks.append(
+            f'    # ── {name}: {description} ──\n'
+            f'    # Production endpoint: {endpoint}\n'
+            f'    print(f"  Fetching {name}...")\n'
+            f'    {var}_rows = []\n'
+            f'    for i in range(30):  # Simulate 30 days of data\n'
+            f'        {var}_rows.append({{\n'
+            f'{fields_str}\n'
+            f'        }})\n'
+            f'    df_{var} = spark.createDataFrame([Row(**r) for r in {var}_rows])\n'
+            f'    df_{var}.write.mode("overwrite").format("delta") \\\n'
+            f'        .option("overwriteSchema", "true") \\\n'
+            f'        .saveAsTable(f"{silver}.web.{table_name}")\n'
+            f'    print(f"    ✓ {table_name}: {{len({var}_rows)}} rows")\n'
+        )
+
+        registry_entries.append(
+            f'    Row(SourceName="{name}", TableName="{table_name}", '
+            f'Endpoint="{endpoint}", Schedule="{schedule}", '
+            f'LastRefresh=datetime.datetime.now().isoformat(), Status="OK"),'
+        )
+
+    if not source_blocks:
+        source_blocks.append('    print("  No web enrichment sources configured")')
+
+    all_blocks = "\n".join(source_blocks)
+    registry_lines = "\n".join(registry_entries) if registry_entries else (
+        '    Row(SourceName="None", TableName="", Endpoint="", '
+        'Schedule="", LastRefresh="", Status="N/A"),'
+    )
 
     return f'''# Fabric Notebook
 # {company} — NB02: Web Enrichment
-# Fetches external API data and writes to {silver}.web schema.
+# Fetches and simulates external API data, writes to {silver}.web schema.
+# In production, replace sample data generators with actual API calls.
 
-# CELL 1 — Configuration
+# CELL 1 — Setup
+import random
+import datetime
+from pyspark.sql import Row
+
 SILVER_LH = "{silver}"
 
 # CELL 2 — Create web schema
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {silver}.web")
 print(f"Schema ready: {silver}.web")
 
-# CELL 3 — Web enrichment (placeholder — extend per industry)
-# Example: fetch exchange rates, book metadata, weather data, etc.
-import json
-from pyspark.sql import Row
+print("=" * 60)
+print(f"  {company} Web Enrichment")
+print("=" * 60)
 
-# Placeholder: create a simple web enrichment table
-web_data = [
-    Row(SourceName="ExchangeRates", LastRefresh="2024-01-01", Status="OK"),
-    Row(SourceName="BookMetadata", LastRefresh="2024-01-01", Status="OK"),
+# CELL 3 — Generate web enrichment tables
+{all_blocks}
+
+# CELL 4 — Web sources registry
+web_registry = [
+{registry_lines}
 ]
-df_web = spark.createDataFrame(web_data)
-df_web.write.mode("overwrite").format("delta") \\
+df_registry = spark.createDataFrame(web_registry)
+df_registry.write.mode("overwrite").format("delta") \\
     .option("overwriteSchema", "true") \\
     .saveAsTable(f"{silver}.web.WebSources")
-print(f"Web enrichment: {{len(web_data)}} sources logged")
+print(f"\\nWeb sources registry: {{len(web_registry)}} sources logged")
+
+# CELL 5 — Summary
+print(f"\\n{company} web enrichment complete — {len(sources)} sources")
 '''
 
 
