@@ -10,7 +10,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white" alt="Python 3.12+">
   <img src="https://img.shields.io/badge/dependencies-zero-brightgreen" alt="Zero Dependencies">
-  <img src="https://img.shields.io/badge/tests-213%20passing-success" alt="213 Tests Passing">
+  <img src="https://img.shields.io/badge/tests-224%20passing-success" alt="224 Tests Passing">
   <img src="https://img.shields.io/badge/industries-4-orange" alt="4 Industries">
   <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT License">
 </p>
@@ -109,9 +109,9 @@ Additional notebooks:
 |---|---|
 | CSV Tables | 17 |
 | Total Sample Rows | 9,496 |
-| Semantic Model Tables | 18 |
-| DAX Measures | 20 |
-| Report Pages | 15 |
+| Semantic Model Tables | 23 |
+| DAX Measures | 96 |
+| Report Pages | 18 (10 + 5 + 3) |
 | Forecast Models | 5 (Holt-Winters) |
 | Event Streams | 3 (Orders, Inventory, Returns) |
 
@@ -130,11 +130,11 @@ Additional notebooks:
 
 | Metric | Count |
 |---|---|
-| CSV Tables | 13 |
-| Total Sample Rows | 25,365 |
-| Semantic Model Tables | 14 |
-| DAX Measures | 20 |
-| Report Pages | 20 |
+| CSV Tables | 25 |
+| Total Sample Rows | 37,063 |
+| Semantic Model Tables | 28 |
+| DAX Measures | 113 |
+| Report Pages | 20 (12 + 5 + 3) |
 | Forecast Models | 5 (Generation, Demand, Revenue, Emissions, Maintenance) |
 | Event Streams | 3 (Grid Telemetry, SCADA, Billing) |
 
@@ -153,11 +153,11 @@ Additional notebooks:
 
 | Metric | Count |
 |---|---|
-| CSV Tables | 19 |
-| Total Sample Rows | 39,085 |
-| Semantic Model Tables | 20 |
-| DAX Measures | 24 |
-| Report Pages | 22 |
+| CSV Tables | 22 |
+| Total Sample Rows | 42,385 |
+| Semantic Model Tables | 30 |
+| DAX Measures | 130 |
+| Report Pages | 22 (14 + 5 + 3) |
 | Forecast Models | 5 (Payroll, Attrition, Collections, Budget, Headcount) |
 | Event Streams | 3 (Payroll, Journal, HR Audit) |
 
@@ -176,11 +176,11 @@ Additional notebooks:
 
 | Metric | Count |
 |---|---|
-| CSV Tables | 23 |
-| Total Sample Rows | 56,800 |
-| Semantic Model Tables | 24 |
-| DAX Measures | 41 |
-| Report Pages | 20 |
+| CSV Tables | 25 |
+| Total Sample Rows | 61,718 |
+| Semantic Model Tables | 32 |
+| DAX Measures | 120 |
+| Report Pages | 20 (12 + 5 + 3) |
 | Forecast Models | 5 (Demand, Capacity, Materials, Quality, Maintenance) |
 | Event Streams | 4 (PLC Telemetry, SPC Inspection, IoT Sensors, Material Consumption) |
 
@@ -192,7 +192,7 @@ Additional notebooks:
   <img src="docs/images/config-driven-design.png" alt="Config-Driven Design" width="100%">
 </p>
 
-Each industry is defined by **8 JSON config files** — no code changes needed to add a new industry:
+Each industry is defined by **10 JSON config files** — no code changes needed to add a new industry:
 
 | Config | Purpose |
 |---|---|
@@ -204,6 +204,8 @@ Each industry is defined by **8 JSON config files** — no code changes needed t
 | `planning-config.json` | Planning IQ tables, scenarios, growth rates |
 | `htap-config.json` | Eventhouse, KQL database, event stream definitions |
 | `web-enrichment.json` | External API sources for Silver-layer enrichment |
+| `writeback-config.json` | Writeback tables, stored procedures, API setup |
+| `data-agent.json` | Fabric AI Agent configuration and instructions |
 
 ### Adding a New Industry
 
@@ -340,15 +342,16 @@ FabricEndtoEnd/
 │   ├── writeback_generator.py   # Writeback notebooks + stored procedures
 │   ├── agent_generator.py       # Fabric Data Agent config generation
 │   ├── deploy_generator.py      # PowerShell deployment scripts
-│   ├── pester_generator.py      # Pester 5 test suite generation
+│   ├── test_generator.py        # Pester + validation script generation
+│   ├── comparison_generator.py  # Cross-industry comparison report
 │   └── schemas/                 # JSON validation schemas
 ├── industries/                  # Per-industry config files
-│   ├── horizon-books/           # 8 JSON configs
-│   ├── contoso-energy/          # 8 JSON configs
-│   ├── northwind-hrfinance/     # 8 JSON configs
-│   └── fabrikam-manufacturing/  # 8 JSON configs
+│   ├── horizon-books/           # 10 JSON configs
+│   ├── contoso-energy/          # 10 JSON configs
+│   ├── northwind-hrfinance/     # 10 JSON configs
+│   └── fabrikam-manufacturing/  # 10 JSON configs
 ├── templates/                   # .tpl template files (deploy, kql, notebooks, reports, tmdl)
-├── tests/                       # pytest test suite (213+ tests)
+├── tests/                       # pytest test suite (224+ tests)
 │   ├── core/                    # Unit tests per module
 │   ├── industries/              # Per-industry target validation
 │   └── integration/             # End-to-end pipeline tests

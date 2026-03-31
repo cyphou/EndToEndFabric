@@ -11,7 +11,7 @@ This document describes the architecture of the **Fabric End-to-End Industry Dem
 ## Design Principles
 
 1. **Zero external dependencies** — The core engine runs on Python 3.12+ stdlib only.
-2. **Config-driven** — Industries are defined entirely by 7 JSON config files. No code changes to add a new vertical.
+2. **Config-driven** — Industries are defined entirely by 10 JSON config files. No code changes to add a new vertical.
 3. **Template-based** — `.tpl` files under `templates/` provide artifact skeletons rendered via `{{PLACEHOLDER}}` substitution.
 4. **Deterministic** — A `--seed` flag guarantees reproducible sample data across runs.
 5. **Modular** — Each generation step is an independent module. Steps can be skipped via CLI flags.
@@ -27,7 +27,7 @@ This document describes the architecture of the **Fabric End-to-End Industry Dem
                         └──────┬──────┘
                                │
                     ┌──────────▼──────────┐
-                    │  config_loader.py   │   Loads + validates 7 JSON configs
+                    │  config_loader.py   │   Loads + validates 10 JSON configs
                     │  (+ JSON Schemas)   │   against core/schemas/*.json
                     └──────────┬──────────┘
                                │
@@ -149,7 +149,7 @@ Validation runs at Step 1 before any generation begins.
   <img src="images/config-driven-design.png" alt="Config-Driven Design" width="100%">
 </p>
 
-Each industry lives in `industries/<id>/` with up to 8 JSON files:
+Each industry lives in `industries/<id>/` with up to 10 JSON files:
 
 | Config File | Contents |
 |---|---|
@@ -161,11 +161,13 @@ Each industry lives in `industries/<id>/` with up to 8 JSON files:
 | `planning-config.json` | Planning tables, scenarios, growth rates |
 | `htap-config.json` | Eventhouse, KQL database, event stream definitions |
 | `web-enrichment.json` | External API sources for Silver-layer enrichment |
+| `writeback-config.json` | Writeback tables, stored procedures, API setup |
+| `data-agent.json` | Fabric AI Agent configuration and instructions |
 
 ### Adding a New Industry
 
 1. Create `industries/<new-id>/`
-2. Author the 8 JSON config files (or copy/modify from an existing industry)
+2. Author the 10 JSON config files (or copy/modify from an existing industry)
 3. Run `python generate.py -i <new-id>`
 4. All 12 pipeline steps produce output tailored to the new industry
 
@@ -315,12 +317,23 @@ tests/
 │   ├── test_tmdl_generator.py       # Tables, measures, relationships
 │   ├── test_dataflow_generator.py   # Dataflow Gen2 per-domain configs
 │   ├── test_agent_generator.py      # Data Agent config + README generation
+│   ├── test_comparison_generator.py # Cross-industry comparison report
+│   ├── test_deploy_generator.py     # Deploy script generation
+│   ├── test_forecast_generator.py   # Forecast notebook + config
+│   ├── test_htap_generator.py       # HTAP artifact generation
+│   ├── test_notebook_generator.py   # PySpark notebook generation
+│   ├── test_pester_generator.py     # Pester test suite generation
+│   ├── test_pipeline_generator.py   # Pipeline JSON generation
+│   ├── test_planning_generator.py   # Planning IQ tables
 │   ├── test_test_generator.py       # Pester + validation script generation
-│   └── ...                          # Additional generator tests
+│   └── test_writeback_generator.py  # Writeback notebook generation
 ├── industries/
+│   ├── test_industry_configs.py     # Config schema validation
 │   └── test_per_industry_generation.py  # PLAN.md §10.3 target validation
 └── integration/
-    └── test_full_pipeline.py        # End-to-end pipeline + idempotency
+    ├── test_full_pipeline.py        # End-to-end pipeline + idempotency
+    ├── test_performance.py          # Generation performance (<60s budget)
+    └── Deploy-Integration.Tests.ps1 # Live Fabric workspace validation (Pester)
 ```
 
 **224+ tests** (plus 80+ subtests), all passing. Tests cover:

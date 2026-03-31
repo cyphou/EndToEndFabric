@@ -32,15 +32,15 @@ Agent definitions live in `.github/agents/` and are inherited by GitHub Copilot 
 
 | Agent | Definition File | Owns | Responsibilities |
 |-------|-----------------|------|------------------|
-| **@orchestrator** | `orchestrator.agent.md` | `generate.py`, `generate.ps1`, top-level configs | CLI pipeline coordination, config loading, step sequencing |
+| **@orchestrator** | `orchestrator.agent.md` | `generate.py`, `generate.ps1`, top-level configs | CLI pipeline coordination, config loading, step sequencing, `--wizard`, `--compare` |
 | **@data-engineer** | `data-engineer.agent.md` | `core/csv_generator.py`, `core/notebook_generator.py`, `core/dataflow_generator.py`, `templates/notebooks/` | Sample CSV data, PySpark notebooks, Dataflow Gen2 configs |
 | **@semantic-model** | `semantic-model.agent.md` | `core/tmdl_generator.py`, `templates/tmdl/` | TMDL table definitions, DAX measures, relationships |
-| **@report-builder** | `report-builder.agent.md` | `core/report_generator.py`, `templates/reports/` | PBIR v4.0 pages, visuals, themes, bookmarks |
+| **@report-builder** | `report-builder.agent.md` | `core/report_generator.py`, `core/comparison_generator.py`, `templates/reports/` | PBIR v4.0 pages, visuals, themes, cross-industry comparison |
 | **@forecaster** | `forecaster.agent.md` | `core/forecast_generator.py`, `core/planning_generator.py` | Holt-Winters models, MLflow tracking, Planning IQ tables |
 | **@htap-engineer** | `htap-engineer.agent.md` | `core/htap_generator.py`, `templates/kql/` | Eventhouse, KQL database, event simulator, hot-cold bridge |
-| **@deployer** | `deployer.agent.md` | `core/deploy_generator.py`, `shared/deploy/`, `templates/deploy/` | PowerShell deployment scripts, Fabric REST API |
-| **@tester** | `tester.agent.md` | `core/pester_generator.py`, `core/test_generator.py`, `tests/` | pytest + Pester test suites, validation |
-| **@industry-designer** | `industry-designer.agent.md` | `industries/*/` config files | Domain schemas, KPIs, company stories, data-agent configs |
+| **@deployer** | `deployer.agent.md` | `core/deploy_generator.py`, `core/writeback_generator.py`, `shared/deploy/`, `templates/deploy/` | PowerShell deployment scripts, Fabric REST API, writeback notebooks |
+| **@tester** | `tester.agent.md` | `core/pester_generator.py`, `core/test_generator.py`, `tests/` | pytest + Pester test suites, validation, performance benchmarks |
+| **@industry-designer** | `industry-designer.agent.md` | `industries/*/` config files (10 per industry) | Domain schemas, KPIs, company stories, data-agent configs |
 | **@shared** | `shared.instructions.md` | Cross-cutting constraints | Hard rules inherited by all agents |
 
 ---

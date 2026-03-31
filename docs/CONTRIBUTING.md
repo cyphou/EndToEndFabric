@@ -22,7 +22,7 @@ No external Python packages are required for core generation.
 FabricEndtoEnd/
 ├── generate.py              # CLI entry point (12-step pipeline)
 ├── core/                    # Generator modules (one per pipeline step)
-├── industries/              # Per-industry JSON configs (8 files each)
+├── industries/              # Per-industry JSON configs (10 files each)
 ├── templates/               # .tpl template files (deploy, kql, notebooks, reports, tmdl)
 ├── tests/                   # pytest tests (core, industries, integration)
 ├── docs/                    # Documentation + PNG diagrams
@@ -44,12 +44,12 @@ cd FabricEndtoEnd
 python -m pytest tests/ -v
 ```
 
-All 213+ tests should pass before making changes.
+All 224+ tests should pass before making changes.
 
 ### 2. Make changes
 
 - **New generator feature** → edit the relevant module in `core/`
-- **New industry** → add a folder under `industries/<id>/` with 8 JSON configs
+- **New industry** → add a folder under `industries/<id>/` with 10 JSON configs
 - **Template change** → edit `.tpl` files under `templates/`
 - **New test** → add to the corresponding `tests/core/test_<module>.py`
 
@@ -71,14 +71,14 @@ python generate.py -i fabrikam-manufacturing
 
 - Describe the change and which pipeline steps are affected
 - Ensure all tests pass
-- If adding a new industry, include all 7 JSON config files
+- If adding a new industry, include all 10 JSON config files
 
 ---
 
 ## Adding a New Industry
 
 1. Create `industries/<new-id>/`
-2. Author these 8 JSON config files:
+2. Author these 10 JSON config files:
 
 | File | Purpose |
 |---|---|
@@ -90,10 +90,13 @@ python generate.py -i fabrikam-manufacturing
 | `planning-config.json` | Planning tables, scenarios, growth rates |
 | `htap-config.json` | Eventhouse, KQL database, event streams |
 | `web-enrichment.json` | External API sources for Silver-layer enrichment |
+| `writeback-config.json` | Writeback tables, stored procedures, API setup |
+| `data-agent.json` | Fabric AI Agent configuration and instructions |
 
 3. Validate configs match the JSON schemas in `core/schemas/`
 4. Run `python generate.py -i <new-id>` to verify all 12 steps succeed
 5. Add tests if introducing new column types or visual types
+6. Include `writeback-config.json` and `data-agent.json` for full feature coverage
 
 ---
 
