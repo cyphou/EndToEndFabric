@@ -11,7 +11,7 @@
   <img src="https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white" alt="Python 3.12+">
   <img src="https://img.shields.io/badge/dependencies-zero-brightgreen" alt="Zero Dependencies">
   <img src="https://img.shields.io/badge/tests-303%20passing-success" alt="303 Tests Passing">
-  <img src="https://img.shields.io/badge/industries-4-orange" alt="4 Industries">
+  <img src="https://img.shields.io/badge/industries-8-orange" alt="8 Industries">
   <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT License">
 </p>
 
@@ -28,6 +28,12 @@ python generate.py -i horizon-books
 
 # Custom output directory + reproducible seed
 python generate.py -i contoso-energy -o ./my-output --seed 42
+
+# Preview without writing files
+python generate.py -i horizon-books --dry-run
+
+# Show diff against existing output
+python generate.py -i horizon-books --diff
 
 # Interactive wizard
 python generate.py --wizard
@@ -47,10 +53,10 @@ Or use the PowerShell wrapper:
 
 ---
 
-## 15-Step Generation Pipeline
+## 17-Step Generation Pipeline
 
 <p align="center">
-  <img src="docs/images/pipeline-architecture.png" alt="15-Step Generation Pipeline" width="100%">
+  <img src="docs/images/pipeline-architecture.png" alt="17-Step Generation Pipeline" width="100%">
 </p>
 
 | Step | Generator | Output |
@@ -69,7 +75,9 @@ Or use the PowerShell wrapper:
 | **12** | Data Agent Generator | Fabric AI Agent config + README |
 | **13** | Deploy Generator | PowerShell scripts (Deploy, Upload, Validate) |
 | **14** | Workspace Generator | Task Flow DAG + SVG workspace icon (branded per industry) |
-| **15** | Validator | Post-generation output verification (structure, TMDL, cross-refs, placeholders) |
+| **15** | Copilot Generator | `.copilot/instructions.md` with domain-specific semantic context |
+| **16** | Data Activator Generator | Reflex trigger definitions from HTAP alert thresholds |
+| **17** | Validator | Post-generation output verification (structure, TMDL, cross-refs, placeholders) |
 
 ---
 
@@ -181,7 +189,7 @@ Additional notebooks:
 **Scenario:** OEE analysis, SPC quality control, supplier scorecard, predictive maintenance, safety compliance
 
 | Metric | Count |
-|---|---|
+|---|---|        
 | CSV Tables | 25 |
 | Total Sample Rows | 61,718 |
 | Semantic Model Tables | 35 |
@@ -189,6 +197,86 @@ Additional notebooks:
 | Report Pages | 20 (12 + 5 + 3) |
 | Forecast Models | 5 (Demand, Capacity, Materials, Quality, Maintenance) |
 | Event Streams | 4 (PLC Telemetry, SPC Inspection, IoT Sensors, Material Consumption) |
+
+---
+
+### Woodgrove Bank
+
+<p align="center">
+  <img src="docs/images/industry-woodgrove-bank.png" alt="Woodgrove Bank" width="85%">
+</p>
+
+> Mid-size retail bank with 120 branches across 8 states, serving 850K retail customers and 12K small business clients. Products include checking, savings, mortgage, auto loan, credit card, and wealth management.
+
+**Domains:** Retail Banking · Lending · Cards · Risk & Compliance · Customer 360
+**Scenario:** Deposit analytics, loan portfolio analysis, fraud detection, credit risk scoring, digital adoption
+
+| Metric | Count |
+|---|---|
+| CSV Tables | 20 |
+| Total Sample Rows | 40,390 |
+| Semantic Model Tables | 24 |
+| DAX Measures | 86 |
+| Report Pages | 27 (12 + 5 + 3 + 4 + 3) |
+| Forecast Models | 5 (Deposits, Loans, Revenue, Credit Risk, Digital Adoption) |
+| Event Streams | 3 (Transactions, Fraud Detection, ATM Telemetry) |
+
+---
+
+### Tailwind Traders
+
+> Omni-channel retailer with 200 physical stores across North America and a fast-growing e-commerce platform, selling electronics, home goods, outdoor gear, and fashion across 3,500 SKUs from 250 suppliers.
+
+**Domains:** E-Commerce · Stores · Inventory · Marketing · Customer
+**Scenario:** Omni-channel sales analytics, inventory optimization, customer segmentation, marketing ROI, demand forecasting
+
+| Metric | Count |
+|---|---|
+| CSV Tables | 22 |
+| Total Sample Rows | 80,956 |
+| Semantic Model Tables | 26 |
+| DAX Measures | 101 |
+| Report Pages | 27 (12 + 5 + 3 + 4 + 3) |
+| Forecast Models | 5 (Demand, Revenue, Inventory, Marketing Budget, Customer Growth) |
+| Event Streams | 3 (Orders, Inventory Movements, Web Clickstream) |
+
+---
+
+### Lamna Healthcare
+
+> Regional hospital network with 5 hospitals, 40 clinics, and 12 urgent care centers across the Pacific Northwest. Serving 420K patients annually with 8,500 clinical staff.
+
+**Domains:** Clinical · Revenue Cycle · Operations · Pharmacy · Population Health
+**Scenario:** Patient outcomes, operational efficiency, revenue cycle management, pharmacy utilization, population health analytics
+
+| Metric | Count |
+|---|---|
+| CSV Tables | 23 |
+| Total Sample Rows | 84,757 |
+| Semantic Model Tables | 27 |
+| DAX Measures | 101 |
+| Report Pages | 27 (12 + 5 + 3 + 4 + 3) |
+| Forecast Models | 5 (Patient Demand, Revenue, Bed Capacity, Readmission Risk, Pharma Demand) |
+| Event Streams | 3 (ED Patient Flow, Bed Status, Vital Signs) |
+
+---
+
+### Adventure Works
+
+> Premium travel and hospitality company operating 25 boutique hotels, 15 adventure lodges, and 8 resort properties across North America, Central America, and the Caribbean. Serves 180K guests annually.
+
+**Domains:** Reservations · Revenue · Guest Experience · Property Ops · Adventures
+**Scenario:** Occupancy management, revenue optimization, guest satisfaction, property operations, adventure activity analytics
+
+| Metric | Count |
+|---|---|
+| CSV Tables | 24 |
+| Total Sample Rows | 68,730 |
+| Semantic Model Tables | 28 |
+| DAX Measures | 103 |
+| Report Pages | 27 (12 + 5 + 3 + 4 + 3) |
+| Forecast Models | 5 (Occupancy, Revenue, Guest Growth, Seasonal Demand, Activity Bookings) |
+| Event Streams | 3 (Guest Movements, Property Telemetry, Activity Events) |
 
 ---
 
@@ -336,6 +424,11 @@ output/<industry>/
 ├── DataAgent/
 │   ├── agent-config.json
 │   └── README.md
+├── .copilot/
+│   └── instructions.md               # Domain-specific Copilot context
+├── DataActivator/
+│   ├── reflex-definition.json         # Reflex trigger definitions
+│   └── README.md
 ├── TaskFlow/
 │   └── taskflow-definition.json  # Architecture DAG (nodes, edges, layout)
 ├── WorkspaceIcon/
@@ -353,7 +446,7 @@ output/<industry>/
 
 ```
 FabricEndtoEnd/
-├── generate.py                  # CLI entry point (15-step pipeline)
+├── generate.py                  # CLI entry point (17-step pipeline)
 ├── generate.ps1                 # PowerShell wrapper
 ├── deploy-to-fabric.ps1         # One-command Fabric deployment + Autoplay screenshots
 ├── _update-items.ps1            # Hot-patch notebook + pipeline definitions in a live workspace
@@ -375,6 +468,8 @@ FabricEndtoEnd/
 │   ├── udf_generator.py         # User Data Function generation (7 functions per industry)
 │   ├── agent_generator.py       # Fabric Data Agent config generation
 │   ├── workspace_generator.py   # Task Flow DAG + workspace icon SVG generation
+│   ├── copilot_generator.py     # .copilot/instructions.md generation
+│   ├── activator_generator.py   # Data Activator Reflex trigger generation
 │   ├── deploy_generator.py      # PowerShell deployment scripts
 │   ├── validator.py             # Post-generation output verification (9 categories)
 │   ├── test_generator.py        # Pester + validation script generation
@@ -384,7 +479,11 @@ FabricEndtoEnd/
 │   ├── horizon-books/           # 10 JSON configs
 │   ├── contoso-energy/          # 10 JSON configs
 │   ├── northwind-hrfinance/     # 10 JSON configs
-│   └── fabrikam-manufacturing/  # 10 JSON configs
+│   ├── fabrikam-manufacturing/  # 10 JSON configs
+│   ├── woodgrove-bank/          # 10 JSON configs
+│   ├── tailwind-traders/        # 10 JSON configs
+│   ├── lamna-healthcare/        # 10 JSON configs
+│   └── adventure-works/         # 10 JSON configs
 ├── templates/                   # .tpl template files (deploy, kql, notebooks, reports, tmdl)
 ├── tests/                       # pytest test suite (303 tests)
 │   ├── core/                    # Unit tests per module (21 files)
@@ -441,25 +540,27 @@ python -m pytest tests/ -v --cov=core --cov-report=term-missing
 
 ## Generation Results
 
-All 4 industries generate successfully with the full 15-step pipeline:
+All 8 industries generate successfully with the full 17-step pipeline:
 
-| | Horizon Books | Contoso Energy | Northwind HR/Finance | Fabrikam Manufacturing |
-|---|:---:|:---:|:---:|:---:|
-| **CSV Files** | 17 | 25 | 22 | 25 |
-| **Notebooks** | 4 | 4 | 4 | 4 |
-| **Dataflows** | 7 | 13 | 13 | 13 |
-| **TMDL Tables** | 26 | 29 | 33 | 35 |
-| **DAX Measures** | 96 | 113 | 130 | 120 |
-| **Relationships** | 27 | 31 | 41 | 38 |
-| **Report Files** | 140 | 144 | 156 | 163 |
-| **Pipeline** | 2 | 2 | 2 | 2 |
-| **Forecast** | 2 | 2 | 2 | 2 |
-| **HTAP** | 6 | 6 | 6 | 6 |
-| **Writeback** | 8 | 8 | 8 | 8 |
-| **UDF** | 3 | 3 | 3 | 3 |
-| **Data Agent** | 2 | 2 | 2 | 2 |
-| **Deploy Scripts** | 4 | 4 | 4 | 4 |
-| **Workspace** | 2 | 2 | 2 | 2 |
+| | Horizon Books | Contoso Energy | Northwind HR | Fabrikam Mfg | Woodgrove Bank | Tailwind Traders | Lamna Healthcare | Adventure Works |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **CSV Files** | 17 | 25 | 22 | 25 | 20 | 22 | 23 | 24 |
+| **Notebooks** | 4 | 4 | 4 | 4 | 4 | 4 | 4 | 4 |
+| **Dataflows** | 7 | 13 | 13 | 13 | 11 | 11 | 11 | 11 |
+| **TMDL Tables** | 26 | 29 | 33 | 35 | 24 | 26 | 27 | 28 |
+| **DAX Measures** | 96 | 113 | 130 | 120 | 86 | 101 | 101 | 103 |
+| **Relationships** | 27 | 31 | 41 | 38 | 31 | 35 | 50 | 48 |
+| **Report Files** | 140 | 144 | 156 | 163 | 168 | 171 | 184 | 167 |
+| **Pipeline** | 2 | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
+| **Forecast** | 2 | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
+| **HTAP** | 6 | 6 | 6 | 6 | 6 | 6 | 6 | 6 |
+| **Writeback** | 8 | 8 | 8 | 8 | 8 | 8 | 8 | 8 |
+| **UDF** | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 3 |
+| **Data Agent** | 2 | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
+| **Copilot** | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| **Activator** | 2 | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
+| **Deploy Scripts** | 4 | 4 | 4 | 4 | 4 | 4 | 4 | 4 |
+| **Workspace** | 2 | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
 
 ---
 
@@ -560,35 +661,39 @@ All 8 implementation phases are **complete**. The roadmap below tracks planned i
 |---|---|:---:|
 | Screenshot rendering on paid capacity | ExportTo API blank-page issue resolved on F64+ (Trial limitation documented) | High |
 | Coverage expansion | Increase test coverage beyond 303 tests; add mutation testing | Medium |
-| Config schema versioning | Add `schemaVersion` field to all 10 config files for forward compatibility | Medium |
-| Validation strictness | Reduce warnings (currently 23–40 per industry); promote actionable warnings to errors | Medium |
+| Validation strictness | Reduce warnings (currently 23–46 per industry); promote actionable warnings to errors | Medium |
+
+### Recently Completed
+
+| Item | Description |
+|---|---|
+| Config schema versioning | `schemaVersion` field added to all 80 config files for forward compatibility |
+| `generate.py --dry-run` | Preview what would be generated without writing files |
+| `generate.py --diff` | Show delta between current output and what would be generated |
+| Lakehouse schemas | Schema-on-write enforcement in Gold notebooks via Delta table validation |
+| Incremental refresh | Watermark-based incremental load pattern in NB01 (Bronze→Silver) |
+| Copilot instructions | `.copilot/instructions.md` generated per workspace with domain-specific semantic context |
+| Data Activator | Reflex trigger definitions generated from HTAP alert thresholds |
+| Woodgrove Bank | Retail Banking (20 tables, 86 measures, 5 forecast models) |
+| Tailwind Traders | E-Commerce & Retail (22 tables, 101 measures, 5 forecast models) |
+| Lamna Healthcare | Healthcare (23 tables, 101 measures, 5 forecast models) |
+| Adventure Works | Travel & Hospitality (24 tables, 103 measures, 5 forecast models) |
 
 ### Planned — New Capabilities
 
 | Item | Description | Priority |
 |---|---|:---:|
-| Lakehouse schemas | Schema-on-write enforcement in Bronze/Silver/Gold notebooks via Delta table schemas | High |
-| Incremental refresh | Add incremental load patterns in NB01 (watermark-based, partition-based) | High |
-| Data Activator | Generate Reflex triggers from HTAP alert definitions (threshold-based real-time alerts) | Medium |
-| Copilot instructions | Generate `.copilot/instructions.md` per workspace with domain-specific semantic context | Medium |
 | Shortcut support | Generate Lakehouse shortcuts (OneLake, ADLS Gen2, S3) as an alternative to CSV upload | Medium |
 | Mirroring configs | Generate Fabric Mirroring definitions for external database connectivity | Low |
 
 ### Planned — New Industries
 
-| Industry | Domain | Status |
-|---|---|:---:|
-| Woodgrove Bank | Retail Banking (Transactions, Risk, Compliance, Customer 360) | Planned |
-| Tailwind Traders | E-Commerce & Retail (Orders, Inventory, Customer, Marketing) | Planned |
-| Lamna Healthcare | Healthcare (Patient, Clinical, Claims, Pharmacy, Population Health) | Planned |
-| Adventure Works | Travel & Hospitality (Reservations, Revenue, Guest Experience, Fleet) | Planned |
+_All 8 industries are now implemented. See **Available Industries** above for details._
 
 ### Planned — Developer Experience
 
 | Item | Description | Priority |
 |---|---|:---:|
-| `generate.py --dry-run` | Preview what would be generated without writing files | Medium |
-| `generate.py --diff` | Show delta between current output and what would be generated | Medium |
 | Workspace-as-code sync | Two-way sync between local output and live Fabric workspace via Git integration | Low |
 | VS Code extension | Tree view of industries, one-click generate, deploy, and screenshot commands | Low |
 

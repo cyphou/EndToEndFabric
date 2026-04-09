@@ -1,0 +1,192 @@
+{
+  "schemaVersion": "1.0",
+  "planningModels": [
+    {
+      "name": "RevenueTargets",
+      "description": "Net interest income and fee revenue targets by quarter",
+      "sourceTable": "FactLoanPayments",
+      "valueColumn": "InterestAmount",
+      "planningSchema": "planning",
+      "columns": [
+        {
+          "name": "FiscalYear",
+          "dataType": "INT"
+        },
+        {
+          "name": "FiscalQuarter",
+          "dataType": "INT"
+        },
+        {
+          "name": "RevenueCategory",
+          "dataType": "NVARCHAR(100)"
+        },
+        {
+          "name": "PlannedRevenue",
+          "dataType": "DECIMAL(18,2)"
+        },
+        {
+          "name": "PlannedAccounts",
+          "dataType": "INT"
+        },
+        {
+          "name": "Scenario",
+          "dataType": "NVARCHAR(50)"
+        }
+      ]
+    },
+    {
+      "name": "LoanOrigination",
+      "description": "Loan origination targets by product category",
+      "sourceTable": "FactLoans",
+      "valueColumn": "OriginalAmount",
+      "planningSchema": "planning",
+      "columns": [
+        {
+          "name": "PlanYear",
+          "dataType": "INT"
+        },
+        {
+          "name": "LoanCategory",
+          "dataType": "NVARCHAR(100)"
+        },
+        {
+          "name": "PlannedOriginationVolume",
+          "dataType": "DECIMAL(18,2)"
+        },
+        {
+          "name": "PlannedLoanCount",
+          "dataType": "INT"
+        },
+        {
+          "name": "TargetDelinquencyRate",
+          "dataType": "DECIMAL(5,4)"
+        },
+        {
+          "name": "Scenario",
+          "dataType": "NVARCHAR(50)"
+        }
+      ]
+    },
+    {
+      "name": "BranchBudget",
+      "description": "Branch operating budget and headcount plan",
+      "sourceTable": "DimBranches",
+      "valueColumn": "EmployeeCount",
+      "planningSchema": "planning",
+      "columns": [
+        {
+          "name": "FiscalYear",
+          "dataType": "INT"
+        },
+        {
+          "name": "Region",
+          "dataType": "NVARCHAR(100)"
+        },
+        {
+          "name": "PlannedBranches",
+          "dataType": "INT"
+        },
+        {
+          "name": "PlannedHeadcount",
+          "dataType": "INT"
+        },
+        {
+          "name": "PlannedOpex",
+          "dataType": "DECIMAL(18,2)"
+        },
+        {
+          "name": "Scenario",
+          "dataType": "NVARCHAR(50)"
+        }
+      ]
+    },
+    {
+      "name": "PlanVsActual",
+      "description": "Plan vs actual comparison across banking domains",
+      "sourceTable": null,
+      "valueColumn": null,
+      "planningSchema": "planning",
+      "columns": [
+        {
+          "name": "FiscalYear",
+          "dataType": "INT"
+        },
+        {
+          "name": "Domain",
+          "dataType": "NVARCHAR(100)"
+        },
+        {
+          "name": "KPI",
+          "dataType": "NVARCHAR(200)"
+        },
+        {
+          "name": "PlannedValue",
+          "dataType": "DECIMAL(18,2)"
+        },
+        {
+          "name": "ActualValue",
+          "dataType": "DECIMAL(18,2)"
+        },
+        {
+          "name": "Scenario",
+          "dataType": "NVARCHAR(50)"
+        }
+      ]
+    },
+    {
+      "name": "ScenarioComparison",
+      "description": "Multi-scenario comparison for strategic planning",
+      "sourceTable": null,
+      "valueColumn": null,
+      "planningSchema": "planning",
+      "columns": [
+        {
+          "name": "FiscalYear",
+          "dataType": "INT"
+        },
+        {
+          "name": "Metric",
+          "dataType": "NVARCHAR(200)"
+        },
+        {
+          "name": "BaseCase",
+          "dataType": "DECIMAL(18,2)"
+        },
+        {
+          "name": "BullCase",
+          "dataType": "DECIMAL(18,2)"
+        },
+        {
+          "name": "BearCase",
+          "dataType": "DECIMAL(18,2)"
+        },
+        {
+          "name": "StressTest",
+          "dataType": "DECIMAL(18,2)"
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "Base",
+      "description": "Steady-state operations, 4% deposit growth, stable rates",
+      "growthRate": 0.04
+    },
+    {
+      "name": "RateRise",
+      "description": "Rising rate environment, NIM expansion, mortgage slowdown",
+      "growthRate": 0.06
+    },
+    {
+      "name": "Recession",
+      "description": "Economic downturn, increased defaults, deposit flight",
+      "growthRate": -0.02
+    }
+  ],
+  "fiscalYears": [
+    "FY2024",
+    "FY2025",
+    "FY2026"
+  ]
+}

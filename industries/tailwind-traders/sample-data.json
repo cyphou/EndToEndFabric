@@ -1,0 +1,2302 @@
+{
+  "schemaVersion": "1.0",
+  "sampleData": {
+    "description": "Tailwind Traders sample data — 22 tables across 5 domains.",
+    "domains": [
+      {
+        "name": "ECommerce",
+        "folder": "ECommerce",
+        "tables": [
+          {
+            "name": "DimProducts",
+            "fileName": "DimProducts.csv",
+            "rowCount": 500,
+            "columns": [
+              {
+                "name": "ProductID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "ProductName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "catch_phrase"
+                  }
+                }
+              },
+              {
+                "name": "CategoryID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCategories",
+                  "column": "CategoryID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "SupplierID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimSuppliers",
+                  "column": "SupplierID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "SKU",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "bothify",
+                    "pattern": "TW-???-####"
+                  }
+                }
+              },
+              {
+                "name": "UnitPrice",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 5.99,
+                    "max": 1499.99
+                  }
+                }
+              },
+              {
+                "name": "CostPrice",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 2.50,
+                    "max": 899.99
+                  }
+                }
+              },
+              {
+                "name": "Weight",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.1,
+                    "max": 50.0
+                  }
+                }
+              },
+              {
+                "name": "Brand",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Alpine Pro",
+                      "TechVibe",
+                      "HomeEssence",
+                      "UrbanStyle",
+                      "TrailMaster",
+                      "Zenith Audio",
+                      "GreenLeaf",
+                      "SummitGear",
+                      "BrightHome",
+                      "ComfortPlus"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "LaunchDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2020-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "IsActive",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      true,
+                      true,
+                      false
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "DimCategories",
+            "fileName": "DimCategories.csv",
+            "rowCount": 30,
+            "columns": [
+              {
+                "name": "CategoryID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CategoryName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Laptops",
+                      "Smartphones",
+                      "Headphones",
+                      "Cameras",
+                      "Tablets",
+                      "Smart Home",
+                      "Kitchen Appliances",
+                      "Bedding",
+                      "Lighting",
+                      "Furniture",
+                      "Storage",
+                      "Home Decor",
+                      "Camping Tents",
+                      "Hiking Boots",
+                      "Backpacks",
+                      "Cycling",
+                      "Fishing",
+                      "Winter Sports",
+                      "Men's Apparel",
+                      "Women's Apparel",
+                      "Kids' Apparel",
+                      "Accessories",
+                      "Footwear",
+                      "Watches",
+                      "Audio Equipment",
+                      "Gaming",
+                      "Outdoor Cooking",
+                      "Garden Tools",
+                      "Pet Supplies",
+                      "Office Supplies"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Department",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Electronics",
+                      "Home Goods",
+                      "Outdoor Gear",
+                      "Fashion"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "IsOnline",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      true,
+                      true,
+                      false
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "IsInStore",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      true,
+                      false
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "DimSuppliers",
+            "fileName": "DimSuppliers.csv",
+            "rowCount": 250,
+            "columns": [
+              {
+                "name": "SupplierID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "SupplierName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "company"
+                  }
+                }
+              },
+              {
+                "name": "Country",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "USA",
+                      "China",
+                      "Vietnam",
+                      "Mexico",
+                      "India",
+                      "Germany",
+                      "Japan",
+                      "South Korea",
+                      "Taiwan",
+                      "Canada"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "LeadTimeDays",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 3,
+                    "max": 90
+                  }
+                }
+              },
+              {
+                "name": "Rating",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 2.0,
+                    "max": 5.0
+                  }
+                }
+              },
+              {
+                "name": "ContractStart",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2018-01-01",
+                    "end": "2025-12-31"
+                  }
+                }
+              },
+              {
+                "name": "IsPreferred",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false,
+                      false
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactOnlineOrders",
+            "fileName": "FactOnlineOrders.csv",
+            "rowCount": 10000,
+            "columns": [
+              {
+                "name": "OrderID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 100001
+                  }
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 50000
+                  }
+                }
+              },
+              {
+                "name": "OrderDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "OrderTotal",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 9.99,
+                    "max": 2500.00
+                  }
+                }
+              },
+              {
+                "name": "ShippingCost",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.0,
+                    "max": 49.99
+                  }
+                }
+              },
+              {
+                "name": "DiscountAmount",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.0,
+                    "max": 200.0
+                  }
+                }
+              },
+              {
+                "name": "PaymentMethod",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Credit Card",
+                      "Debit Card",
+                      "PayPal",
+                      "Apple Pay",
+                      "Google Pay",
+                      "Gift Card"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "OrderStatus",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Delivered",
+                      "Delivered",
+                      "Delivered",
+                      "Shipped",
+                      "Processing",
+                      "Cancelled",
+                      "Returned"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Channel",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Website",
+                      "Mobile App",
+                      "Marketplace"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "ShipState",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "state_abbr"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactOrderItems",
+            "fileName": "FactOrderItems.csv",
+            "rowCount": 25000,
+            "columns": [
+              {
+                "name": "OrderItemID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "OrderID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "FactOnlineOrders",
+                  "column": "OrderID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ProductID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimProducts",
+                  "column": "ProductID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "Quantity",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 10
+                  }
+                }
+              },
+              {
+                "name": "UnitPrice",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 5.99,
+                    "max": 1499.99
+                  }
+                }
+              },
+              {
+                "name": "LineTotal",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 5.99,
+                    "max": 4999.99
+                  }
+                }
+              },
+              {
+                "name": "DiscountPct",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.0,
+                    "max": 0.40
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactWebTraffic",
+            "fileName": "FactWebTraffic.csv",
+            "rowCount": 5000,
+            "columns": [
+              {
+                "name": "TrafficID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "SessionDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "PageViews",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 10000,
+                    "max": 500000
+                  }
+                }
+              },
+              {
+                "name": "UniqueSessions",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 5000,
+                    "max": 200000
+                  }
+                }
+              },
+              {
+                "name": "BounceRate",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.15,
+                    "max": 0.65
+                  }
+                }
+              },
+              {
+                "name": "AvgSessionDuration",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 60,
+                    "max": 600
+                  }
+                }
+              },
+              {
+                "name": "ConversionRate",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.01,
+                    "max": 0.08
+                  }
+                }
+              },
+              {
+                "name": "CartAbandonment",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.55,
+                    "max": 0.85
+                  }
+                }
+              },
+              {
+                "name": "TrafficSource",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Organic Search",
+                      "Paid Search",
+                      "Social Media",
+                      "Email",
+                      "Direct",
+                      "Referral"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "DeviceType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Desktop",
+                      "Mobile",
+                      "Mobile",
+                      "Tablet"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactReturns",
+            "fileName": "FactReturns.csv",
+            "rowCount": 1500,
+            "columns": [
+              {
+                "name": "ReturnID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "OrderID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "FactOnlineOrders",
+                  "column": "OrderID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ProductID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimProducts",
+                  "column": "ProductID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ReturnDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "ReturnReason",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Defective",
+                      "Wrong Item",
+                      "Not As Described",
+                      "Changed Mind",
+                      "Arrived Late",
+                      "Damaged in Shipping",
+                      "Better Price Found"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "RefundAmount",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 5.99,
+                    "max": 1499.99
+                  }
+                }
+              },
+              {
+                "name": "ReturnChannel",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Mail",
+                      "In-Store",
+                      "Pickup"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "ReturnStatus",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Completed",
+                      "Completed",
+                      "Processing",
+                      "Rejected"
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Stores",
+        "folder": "Stores",
+        "tables": [
+          {
+            "name": "DimStores",
+            "fileName": "DimStores.csv",
+            "rowCount": 200,
+            "columns": [
+              {
+                "name": "StoreID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "StoreName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "city"
+                  }
+                }
+              },
+              {
+                "name": "StoreType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Flagship",
+                      "Standard",
+                      "Express",
+                      "Outlet"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Region",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Pacific Northwest",
+                      "California",
+                      "Southwest",
+                      "Midwest",
+                      "Southeast",
+                      "Northeast",
+                      "Mountain West",
+                      "Great Plains"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "State",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "state_abbr"
+                  }
+                }
+              },
+              {
+                "name": "SquareFootage",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 2000,
+                    "max": 60000
+                  }
+                }
+              },
+              {
+                "name": "OpenDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2005-01-01",
+                    "end": "2025-12-31"
+                  }
+                }
+              },
+              {
+                "name": "ManagerName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "name"
+                  }
+                }
+              },
+              {
+                "name": "Latitude",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 25.0,
+                    "max": 49.0
+                  }
+                }
+              },
+              {
+                "name": "Longitude",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": -125.0,
+                    "max": -67.0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "DimEmployees",
+            "fileName": "DimEmployees.csv",
+            "rowCount": 2000,
+            "columns": [
+              {
+                "name": "EmployeeID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "StoreID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimStores",
+                  "column": "StoreID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "EmployeeName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "name"
+                  }
+                }
+              },
+              {
+                "name": "Role",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Sales Associate",
+                      "Cashier",
+                      "Stock Clerk",
+                      "Department Manager",
+                      "Assistant Manager",
+                      "Store Manager"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Department",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Electronics",
+                      "Home Goods",
+                      "Outdoor Gear",
+                      "Fashion",
+                      "Customer Service",
+                      "Operations"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "HireDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2015-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "HourlyRate",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 15.00,
+                    "max": 45.00
+                  }
+                }
+              },
+              {
+                "name": "IsFullTime",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      true,
+                      false
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactPOSTransactions",
+            "fileName": "FactPOSTransactions.csv",
+            "rowCount": 15000,
+            "columns": [
+              {
+                "name": "TransactionID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 200001
+                  }
+                }
+              },
+              {
+                "name": "StoreID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimStores",
+                  "column": "StoreID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "EmployeeID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimEmployees",
+                  "column": "EmployeeID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "TransactionDate",
+                "type": "datetime",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "ProductID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimProducts",
+                  "column": "ProductID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "Quantity",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 8
+                  }
+                }
+              },
+              {
+                "name": "SaleAmount",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 5.99,
+                    "max": 2500.00
+                  }
+                }
+              },
+              {
+                "name": "PaymentType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Cash",
+                      "Credit Card",
+                      "Debit Card",
+                      "Mobile Pay",
+                      "Gift Card"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "DiscountApplied",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.0,
+                    "max": 150.0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactStoreTraffic",
+            "fileName": "FactStoreTraffic.csv",
+            "rowCount": 3000,
+            "columns": [
+              {
+                "name": "TrafficID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "StoreID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimStores",
+                  "column": "StoreID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "TrafficDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "FootfallCount",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 200,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "ConversionCount",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 50,
+                    "max": 1500
+                  }
+                }
+              },
+              {
+                "name": "AvgDwellMinutes",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 8,
+                    "max": 45
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Inventory",
+        "folder": "Inventory",
+        "tables": [
+          {
+            "name": "DimWarehouses",
+            "fileName": "DimWarehouses.csv",
+            "rowCount": 8,
+            "columns": [
+              {
+                "name": "WarehouseID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "WarehouseName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Seattle DC",
+                      "Portland DC",
+                      "Phoenix DC",
+                      "Dallas DC",
+                      "Chicago DC",
+                      "Atlanta DC",
+                      "Newark DC",
+                      "Denver DC"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "City",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Seattle",
+                      "Portland",
+                      "Phoenix",
+                      "Dallas",
+                      "Chicago",
+                      "Atlanta",
+                      "Newark",
+                      "Denver"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "State",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "WA",
+                      "OR",
+                      "AZ",
+                      "TX",
+                      "IL",
+                      "GA",
+                      "NJ",
+                      "CO"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "CapacitySqFt",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 100000,
+                    "max": 500000
+                  }
+                }
+              },
+              {
+                "name": "Latitude",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 30.0,
+                    "max": 48.0
+                  }
+                }
+              },
+              {
+                "name": "Longitude",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": -122.0,
+                    "max": -74.0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactInventorySnapshots",
+            "fileName": "FactInventorySnapshots.csv",
+            "rowCount": 4000,
+            "columns": [
+              {
+                "name": "SnapshotID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "ProductID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimProducts",
+                  "column": "ProductID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "WarehouseID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimWarehouses",
+                  "column": "WarehouseID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "SnapshotDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "QuantityOnHand",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "ReorderPoint",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 10,
+                    "max": 500
+                  }
+                }
+              },
+              {
+                "name": "SafetyStock",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 5,
+                    "max": 200
+                  }
+                }
+              },
+              {
+                "name": "UnitCost",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 2.50,
+                    "max": 899.99
+                  }
+                }
+              },
+              {
+                "name": "DaysOfSupply",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 120
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactPurchaseOrders",
+            "fileName": "FactPurchaseOrders.csv",
+            "rowCount": 2000,
+            "columns": [
+              {
+                "name": "POID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 300001
+                  }
+                }
+              },
+              {
+                "name": "SupplierID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimSuppliers",
+                  "column": "SupplierID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "WarehouseID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimWarehouses",
+                  "column": "WarehouseID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "OrderDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "ExpectedDelivery",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-02-01",
+                    "end": "2026-09-30"
+                  }
+                }
+              },
+              {
+                "name": "TotalAmount",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 500,
+                    "max": 500000
+                  }
+                }
+              },
+              {
+                "name": "ItemCount",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 10,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "POStatus",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Received",
+                      "Received",
+                      "In Transit",
+                      "Ordered",
+                      "Cancelled"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactGoodsReceipts",
+            "fileName": "FactGoodsReceipts.csv",
+            "rowCount": 1800,
+            "columns": [
+              {
+                "name": "ReceiptID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "POID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "FactPurchaseOrders",
+                  "column": "POID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "WarehouseID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimWarehouses",
+                  "column": "WarehouseID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ReceiptDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-15",
+                    "end": "2026-09-30"
+                  }
+                }
+              },
+              {
+                "name": "QuantityReceived",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 10,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "QuantityDamaged",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 50
+                  }
+                }
+              },
+              {
+                "name": "DaysLate",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": -5,
+                    "max": 30
+                  }
+                }
+              },
+              {
+                "name": "QualityScore",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.70,
+                    "max": 1.00
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Marketing",
+        "folder": "Marketing",
+        "tables": [
+          {
+            "name": "DimCampaigns",
+            "fileName": "DimCampaigns.csv",
+            "rowCount": 50,
+            "columns": [
+              {
+                "name": "CampaignID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CampaignName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "catch_phrase"
+                  }
+                }
+              },
+              {
+                "name": "CampaignType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Seasonal Sale",
+                      "Product Launch",
+                      "Brand Awareness",
+                      "Clearance",
+                      "Loyalty Rewards",
+                      "Flash Sale",
+                      "Holiday Special",
+                      "Back to School"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "StartDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "EndDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-02-01",
+                    "end": "2026-12-31"
+                  }
+                }
+              },
+              {
+                "name": "Budget",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 5000,
+                    "max": 500000
+                  }
+                }
+              },
+              {
+                "name": "TargetAudience",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "All Customers",
+                      "New Customers",
+                      "Loyal Members",
+                      "Lapsed Customers",
+                      "High-Value",
+                      "Young Adults"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Status",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Active",
+                      "Completed",
+                      "Planned",
+                      "Paused"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "DimChannels",
+            "fileName": "DimChannels.csv",
+            "rowCount": 10,
+            "columns": [
+              {
+                "name": "ChannelID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "ChannelName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Google Ads",
+                      "Facebook Ads",
+                      "Instagram",
+                      "TikTok",
+                      "Email Marketing",
+                      "SMS",
+                      "YouTube",
+                      "Influencer",
+                      "Print",
+                      "Radio"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "ChannelType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Digital",
+                      "Digital",
+                      "Digital",
+                      "Traditional"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "CostModel",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "CPC",
+                      "CPM",
+                      "CPA",
+                      "Fixed"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactMarketingSpend",
+            "fileName": "FactMarketingSpend.csv",
+            "rowCount": 600,
+            "columns": [
+              {
+                "name": "SpendID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CampaignID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCampaigns",
+                  "column": "CampaignID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ChannelID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimChannels",
+                  "column": "ChannelID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "SpendDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "AmountSpent",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 100,
+                    "max": 50000
+                  }
+                }
+              },
+              {
+                "name": "Impressions",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1000,
+                    "max": 5000000
+                  }
+                }
+              },
+              {
+                "name": "Clicks",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 50,
+                    "max": 100000
+                  }
+                }
+              },
+              {
+                "name": "Conversions",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "RevenueAttributed",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 250000
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactCampaignResponses",
+            "fileName": "FactCampaignResponses.csv",
+            "rowCount": 5000,
+            "columns": [
+              {
+                "name": "ResponseID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CampaignID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCampaigns",
+                  "column": "CampaignID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 50000
+                  }
+                }
+              },
+              {
+                "name": "ResponseDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "ResponseType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Click",
+                      "Open",
+                      "Purchase",
+                      "Sign-Up",
+                      "Unsubscribe"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "ChannelID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimChannels",
+                  "column": "ChannelID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ConversionValue",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 500
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Customer",
+        "folder": "Customer",
+        "tables": [
+          {
+            "name": "DimCustomerSegments",
+            "fileName": "DimCustomerSegments.csv",
+            "rowCount": 8,
+            "columns": [
+              {
+                "name": "SegmentID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "SegmentName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "VIP Gold",
+                      "VIP Silver",
+                      "Loyal Regulars",
+                      "Occasional Shoppers",
+                      "New Customers",
+                      "At-Risk",
+                      "Lapsed",
+                      "Bargain Hunters"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "MinSpend",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "AvgOrderFrequency",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 1,
+                    "max": 30
+                  }
+                }
+              },
+              {
+                "name": "RetentionRate",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.10,
+                    "max": 0.95
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactCustomerReviews",
+            "fileName": "FactCustomerReviews.csv",
+            "rowCount": 3000,
+            "columns": [
+              {
+                "name": "ReviewID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "ProductID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimProducts",
+                  "column": "ProductID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 50000
+                  }
+                }
+              },
+              {
+                "name": "ReviewDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "Rating",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 5
+                  }
+                }
+              },
+              {
+                "name": "SentimentScore",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": -1.0,
+                    "max": 1.0
+                  }
+                }
+              },
+              {
+                "name": "IsVerifiedPurchase",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      true,
+                      true,
+                      false
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "HelpfulVotes",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 100
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactLoyaltyPoints",
+            "fileName": "FactLoyaltyPoints.csv",
+            "rowCount": 2000,
+            "columns": [
+              {
+                "name": "LoyaltyID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 50000
+                  }
+                }
+              },
+              {
+                "name": "SegmentID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCustomerSegments",
+                  "column": "SegmentID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "TransactionDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "PointsEarned",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 10,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "PointsRedeemed",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 3000
+                  }
+                }
+              },
+              {
+                "name": "PointsBalance",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 25000
+                  }
+                }
+              },
+              {
+                "name": "TierStatus",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Bronze",
+                      "Silver",
+                      "Gold",
+                      "Platinum"
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

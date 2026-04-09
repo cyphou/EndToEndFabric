@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "1.0",
+  "writebackConfig": {
+    "enabled": true,
+    "targetLakehouse": "GoldLH",
+    "schema": "writeback",
+    "tables": [
+      {
+        "name": "PriceAdjustments",
+        "description": "User-submitted product price adjustments from Power BI report",
+        "columns": [
+          { "name": "AdjustmentId", "dataType": "STRING", "isKey": true },
+          { "name": "ProductID", "dataType": "INT" },
+          { "name": "ProductName", "dataType": "STRING" },
+          { "name": "CategoryName", "dataType": "STRING" },
+          { "name": "OldPrice", "dataType": "DECIMAL(18,2)" },
+          { "name": "NewPrice", "dataType": "DECIMAL(18,2)" },
+          { "name": "Reason", "dataType": "STRING" },
+          { "name": "EffectiveDate", "dataType": "DATE" },
+          { "name": "Status", "dataType": "STRING", "default": "Pending" },
+          { "name": "SubmittedBy", "dataType": "STRING" },
+          { "name": "SubmittedDate", "dataType": "TIMESTAMP" },
+          { "name": "ApprovedBy", "dataType": "STRING" },
+          { "name": "ApprovedDate", "dataType": "TIMESTAMP" }
+        ],
+        "partitionBy": ["EffectiveDate"]
+      },
+      {
+        "name": "PromotionSchedules",
+        "description": "Editable promotion schedules for campaigns and discounts",
+        "columns": [
+          { "name": "PromotionId", "dataType": "STRING", "isKey": true },
+          { "name": "PromotionName", "dataType": "STRING" },
+          { "name": "TargetCategory", "dataType": "STRING" },
+          { "name": "DiscountPct", "dataType": "DECIMAL(5,2)" },
+          { "name": "StartDate", "dataType": "DATE" },
+          { "name": "EndDate", "dataType": "DATE" },
+          { "name": "Channel", "dataType": "STRING" },
+          { "name": "MinOrderValue", "dataType": "DECIMAL(18,2)" },
+          { "name": "Status", "dataType": "STRING", "default": "Draft" },
+          { "name": "ModifiedBy", "dataType": "STRING" },
+          { "name": "ModifiedDate", "dataType": "TIMESTAMP" }
+        ],
+        "partitionBy": ["StartDate"]
+      },
+      {
+        "name": "DemandOverrides",
+        "description": "Manual demand forecast overrides for inventory planning",
+        "columns": [
+          { "name": "OverrideId", "dataType": "STRING", "isKey": true },
+          { "name": "ProductID", "dataType": "INT" },
+          { "name": "ProductName", "dataType": "STRING" },
+          { "name": "CategoryName", "dataType": "STRING" },
+          { "name": "PlanMonth", "dataType": "DATE" },
+          { "name": "OriginalForecast", "dataType": "INT" },
+          { "name": "AdjustedForecast", "dataType": "INT" },
+          { "name": "Justification", "dataType": "STRING" },
+          { "name": "ModifiedBy", "dataType": "STRING" },
+          { "name": "ModifiedDate", "dataType": "TIMESTAMP" }
+        ],
+        "partitionBy": ["PlanMonth"]
+      }
+    ],
+    "storedProcedures": [
+      {
+        "name": "usp_UpsertPriceAdjustment",
+        "table": "PriceAdjustments",
+        "operation": "upsert",
+        "keyColumns": ["AdjustmentId"]
+      },
+      {
+        "name": "usp_UpsertPromotionSchedule",
+        "table": "PromotionSchedules",
+        "operation": "upsert",
+        "keyColumns": ["PromotionId"]
+      },
+      {
+        "name": "usp_UpsertDemandOverride",
+        "table": "DemandOverrides",
+        "operation": "upsert",
+        "keyColumns": ["OverrideId"]
+      }
+    ]
+  }
+}

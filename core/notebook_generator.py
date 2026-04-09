@@ -131,6 +131,7 @@ def _build_nb01_bronze_to_silver(ctx: dict) -> str:
 # {company} -- NB01: Bronze to Silver
 # Step 1: Ingests CSV files from BronzeLH/Files/ into BronzeLH Delta tables.
 # Step 2: Reads Bronze tables, applies quality transforms, writes to {silver} with domain schemas.
+# Supports both full and incremental (watermark-based) load modes.
 
 # CELL 1 -- Configuration
 BRONZE_LH = "{bronze}"
@@ -138,6 +139,9 @@ SILVER_LH = "{silver}"
 WORKSPACE_ID = "{{{{WORKSPACE_ID}}}}"
 BRONZE_LH_ID = "{{{{BRONZE_LH_ID}}}}"
 SILVER_LH_ID = "{{{{SILVER_LH_ID}}}}"
+
+# Set to True for incremental load (only processes rows newer than last watermark)
+INCREMENTAL_MODE = False
 
 SCHEMA_MAP = {{
 {schema_map}
@@ -148,7 +152,28 @@ CSV_SOURCES = {{
 {csv_source_map}
 }}
 
-# CELL 2 -- Ingest CSV files into BronzeLH Delta tables
+# CELL 2 -- Watermark utilities for incremental load
+from pyspark.sql.functions import col, max as spark_max, lit, current_timestamp
+import json
+
+WATERMARK_PATH = f"abfss://{{WORKSPACE_ID}}@onelake.dfs.fabric.microsoft.com/{{BRONZE_LH_ID}}/Files/_watermarks.json"
+
+def load_watermarks():
+    """Load last-processed watermarks per table."""
+    try:
+        df = spark.read.text(WATERMARK_PATH)
+        return json.loads(df.first()[0])
+    except Exception:
+        return {{}}
+
+def save_watermarks(watermarks):
+    """Persist watermarks for next incremental run."""
+    rdd = spark.sparkContext.parallelize([json.dumps(watermarks)])
+    spark.createDataFrame(rdd, "string").coalesce(1).write.mode("overwrite").text(
+        f"abfss://{{WORKSPACE_ID}}@onelake.dfs.fabric.microsoft.com/{{BRONZE_LH_ID}}/Files/_watermarks"
+    )
+
+# CELL 3 -- Ingest CSV files into BronzeLH Delta tables
 print("Ingesting CSV files from BronzeLH/Files/ into Bronze Delta tables...")
 ingest_results = []
 for folder, tables in CSV_SOURCES.items():
@@ -166,12 +191,18 @@ for folder, tables in CSV_SOURCES.items():
             print(f"    WARNING: Could not ingest {{table}}: {{e}}")
 print(f"\\nIngested {{len(ingest_results)}} tables into BronzeLH.")
 
-# CELL 3 -- Bronze to Silver Transform (schemas created automatically by saveAsTable 3-level naming)
+# CELL 4 -- Bronze to Silver Transform
+watermarks = load_watermarks() if INCREMENTAL_MODE else {{}}
+new_watermarks = {{}}
 results = []
 
 {all_blocks}
 
-# CELL 4 -- Summary
+if INCREMENTAL_MODE:
+    save_watermarks(new_watermarks)
+    print(f"\\nWatermarks updated for {{len(new_watermarks)}} tables")
+
+# CELL 5 -- Summary
 print(f"\\nBronze \u2192 Silver complete: {{len(results)}} tables processed")
 for r in results:
     print(f"  {{r[\x27schema\x27]}}.{{r[\x27table\x27]}}: {{r[\x27rows\x27]}} rows")
@@ -388,7 +419,28 @@ print("\\nBuilding dimensions...")
 print("\\nBuilding facts...")
 {fact_block}
 
-# CELL 5 -- Summary
+# CELL 5 -- Schema Enforcement (validate Gold table structures)
+print("\\nValidating Gold table schemas...")
+gold_tables = spark.catalog.listTables()
+schema_issues = []
+for t in gold_tables:
+    if t.isTemporary:
+        continue
+    try:
+        cols = spark.catalog.listColumns(t.name)
+        null_cols = [c.name for c in cols if c.nullable and c.name.endswith("ID")]
+        if null_cols:
+            schema_issues.append(f"  WARN: {{t.name}} has nullable key columns: {{null_cols}}")
+    except Exception:
+        pass
+if schema_issues:
+    for issue in schema_issues:
+        print(issue)
+    print(f"  {{len(schema_issues)}} schema warnings")
+else:
+    print("  All Gold tables pass schema validation")
+
+# CELL 6 -- Summary
 dim_count = {len(dim_tables)}
 fact_count = {len(fact_tables)}
 print(f"\\nSilver → Gold complete: {{dim_count}} dims, {{fact_count}} facts + DimDate")

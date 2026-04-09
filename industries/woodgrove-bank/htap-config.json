@@ -1,0 +1,154 @@
+{
+  "schemaVersion": "1.0",
+  "eventhouse": {
+    "name": "WoodgroveBankEventhouse",
+    "kqlDatabase": "WoodgroveBankKQLDB",
+    "retentionDays": 730
+  },
+  "eventStreams": [
+    {
+      "name": "TransactionStream",
+      "description": "Real-time card and ACH transaction events",
+      "eventsPerSecond": 200,
+      "schema": [
+        {
+          "name": "TransactionID",
+          "type": "string"
+        },
+        {
+          "name": "Timestamp",
+          "type": "datetime"
+        },
+        {
+          "name": "AccountID",
+          "type": "int"
+        },
+        {
+          "name": "TransactionType",
+          "type": "string"
+        },
+        {
+          "name": "Amount",
+          "type": "real"
+        },
+        {
+          "name": "Channel",
+          "type": "string"
+        },
+        {
+          "name": "MerchantCategory",
+          "type": "string"
+        },
+        {
+          "name": "IsInternational",
+          "type": "bool"
+        }
+      ],
+      "kqlTable": "TransactionEvents",
+      "kqlAggregations": [
+        "TransactionEvents | summarize TotalAmount=sum(Amount), TxnCount=count(), AvgAmount=avg(Amount) by TransactionType, bin(Timestamp, 1m)",
+        "TransactionEvents | summarize TotalAmount=sum(Amount), TxnCount=count() by Channel, bin(Timestamp, 1h)"
+      ]
+    },
+    {
+      "name": "FraudDetection",
+      "description": "ML-scored fraud detection events with risk scores",
+      "eventsPerSecond": 50,
+      "schema": [
+        {
+          "name": "AlertID",
+          "type": "string"
+        },
+        {
+          "name": "Timestamp",
+          "type": "datetime"
+        },
+        {
+          "name": "AccountID",
+          "type": "int"
+        },
+        {
+          "name": "RiskScore",
+          "type": "real"
+        },
+        {
+          "name": "AlertType",
+          "type": "string"
+        },
+        {
+          "name": "Amount",
+          "type": "real"
+        },
+        {
+          "name": "Location",
+          "type": "string"
+        },
+        {
+          "name": "IsBlocked",
+          "type": "bool"
+        }
+      ],
+      "kqlTable": "FraudDetectionEvents",
+      "kqlAggregations": [
+        "FraudDetectionEvents | where RiskScore > 0.8 | summarize AlertCount=count(), AvgRiskScore=avg(RiskScore), TotalAmount=sum(Amount) by AlertType, bin(Timestamp, 5m)",
+        "FraudDetectionEvents | summarize BlockedCount=countif(IsBlocked), TotalAlerts=count() by bin(Timestamp, 1h)"
+      ]
+    },
+    {
+      "name": "ATMTelemetry",
+      "description": "ATM device status, cash levels, and error events",
+      "eventsPerSecond": 20,
+      "schema": [
+        {
+          "name": "ATMID",
+          "type": "string"
+        },
+        {
+          "name": "Timestamp",
+          "type": "datetime"
+        },
+        {
+          "name": "CashLevel",
+          "type": "real"
+        },
+        {
+          "name": "Status",
+          "type": "string"
+        },
+        {
+          "name": "ErrorCode",
+          "type": "string"
+        },
+        {
+          "name": "TransactionsSinceRefill",
+          "type": "int"
+        },
+        {
+          "name": "Location",
+          "type": "string"
+        }
+      ],
+      "kqlTable": "ATMTelemetryEvents",
+      "kqlAggregations": [
+        "ATMTelemetryEvents | summarize AvgCash=avg(CashLevel), MinCash=min(CashLevel), ErrorCount=countif(ErrorCode != \"\") by ATMID, bin(Timestamp, 15m)",
+        "ATMTelemetryEvents | where CashLevel < 20 | summarize LowCashATMs=dcount(ATMID), AvgCash=avg(CashLevel) by bin(Timestamp, 1h)"
+      ]
+    }
+  ],
+  "bridgeQueries": [
+    {
+      "name": "TransactionBridge",
+      "description": "Bridge hot real-time transactions with cold Lakehouse data",
+      "hotTable": "TransactionEvents",
+      "coldTable": "FactTransactions",
+      "joinKey": "AccountID"
+    },
+    {
+      "name": "FraudBridge",
+      "description": "Bridge fraud detection events with historical fraud alerts",
+      "hotTable": "FraudDetectionEvents",
+      "coldTable": "FactFraudAlerts",
+      "joinKey": "CustomerID"
+    }
+  ]
+}

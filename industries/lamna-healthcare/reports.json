@@ -1,0 +1,323 @@
+{
+  "schemaVersion": "1.0",
+  "reports": [
+    {
+      "name": "LamnaHealthcare-Analytics",
+      "theme": {
+        "primary": "#00695C",
+        "secondary": "#E65100",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Executive Dashboard",
+          "visuals": [
+            { "type": "card", "measure": "Total Encounters" },
+            { "type": "card", "measure": "Total Paid" },
+            { "type": "card", "measure": "Avg Length of Stay" },
+            { "type": "card", "measure": "30-Day Readmission Rate" },
+            { "type": "card", "measure": "Bed Occupancy Rate" },
+            { "type": "card", "measure": "Avg Patient Satisfaction" },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Encounters", "Total Paid"] },
+            { "type": "donutChart", "legend": "FactEncounters[EncounterType]", "values": ["Total Encounters"] }
+          ]
+        },
+        {
+          "name": "Patient Volume",
+          "visuals": [
+            { "type": "card", "measure": "Total Encounters" },
+            { "type": "card", "measure": "Unique Patients Seen" },
+            { "type": "card", "measure": "Patient Volume YoY" },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Encounters"] },
+            { "type": "clusteredBarChart", "axis": "DimDepartments[DepartmentName]", "values": ["Total Encounters"] },
+            { "type": "donutChart", "legend": "FactEncounters[EncounterType]", "values": ["Total Encounters"] },
+            { "type": "table", "columns": ["DimFacilities[FacilityName]", "Total Encounters", "Unique Patients Seen", "Avg Length of Stay"] }
+          ]
+        },
+        {
+          "name": "Clinical Outcomes",
+          "visuals": [
+            { "type": "card", "measure": "Mortality Rate" },
+            { "type": "card", "measure": "30-Day Readmission Rate" },
+            { "type": "card", "measure": "Avg Patient Satisfaction" },
+            { "type": "card", "measure": "AMA Rate" },
+            { "type": "clusteredBarChart", "axis": "DimDiagnoses[DiagnosisCategory]", "values": ["Total Encounters"] },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Mortality Rate", "30-Day Readmission Rate"] },
+            { "type": "table", "columns": ["DimPhysicians[Specialty]", "Total Encounters", "Avg Length of Stay", "Mortality Rate", "Avg Patient Satisfaction"] }
+          ]
+        },
+        {
+          "name": "Length of Stay",
+          "visuals": [
+            { "type": "card", "measure": "Avg Length of Stay" },
+            { "type": "card", "measure": "Inpatient LOS" },
+            { "type": "card", "measure": "Case Mix Index" },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Avg Length of Stay", "Case Mix Index"] },
+            { "type": "clusteredBarChart", "axis": "DimDepartments[DepartmentName]", "values": ["Avg Length of Stay"] },
+            { "type": "scatterChart", "xAxis": "Case Mix Index", "yAxis": "Avg Length of Stay", "legend": "DimFacilities[FacilityName]" }
+          ]
+        },
+        {
+          "name": "Revenue Cycle",
+          "visuals": [
+            { "type": "card", "measure": "Total Charges" },
+            { "type": "card", "measure": "Total Paid" },
+            { "type": "card", "measure": "Collection Rate" },
+            { "type": "card", "measure": "Denial Rate" },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Charges", "Total Paid"] },
+            { "type": "waterfallChart", "category": "DimDate[Quarter]", "values": ["Total Paid"] },
+            { "type": "gauge", "value": "Net Collection Rate", "target": 0.95 }
+          ]
+        },
+        {
+          "name": "Payor Mix",
+          "visuals": [
+            { "type": "card", "measure": "Payor Mix Commercial %" },
+            { "type": "card", "measure": "Payor Mix Medicare %" },
+            { "type": "card", "measure": "Payor Mix Medicaid %" },
+            { "type": "pieChart", "legend": "DimPayors[PayorType]", "values": ["Total Paid"] },
+            { "type": "clusteredBarChart", "axis": "DimPayors[PayorName]", "values": ["Total Paid"] },
+            { "type": "table", "columns": ["DimPayors[PayorName]", "Total Claims", "Total Paid", "Avg Days to Payment", "Denial Rate"] }
+          ]
+        },
+        {
+          "name": "Denial Management",
+          "visuals": [
+            { "type": "card", "measure": "Total Denials" },
+            { "type": "card", "measure": "Total Denied Amount" },
+            { "type": "card", "measure": "Denial Recovery Rate" },
+            { "type": "card", "measure": "Appeal Success Rate" },
+            { "type": "clusteredBarChart", "axis": "FactDenials[DenialReason]", "values": ["Total Denials"] },
+            { "type": "donutChart", "legend": "FactDenials[AppealStatus]", "values": ["Total Denials"] },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Denied Amount", "Denial Recovery Rate"] }
+          ]
+        },
+        {
+          "name": "Bed Management",
+          "visuals": [
+            { "type": "card", "measure": "Bed Occupancy Rate" },
+            { "type": "card", "measure": "Available Beds" },
+            { "type": "card", "measure": "ICU Occupancy Rate" },
+            { "type": "card", "measure": "Pending Discharges" },
+            { "type": "lineChart", "axis": "DimDate[Date]", "values": ["Bed Occupancy Rate"] },
+            { "type": "clusteredBarChart", "axis": "FactBedCensus[Unit]", "values": ["Occupied Beds", "Available Beds"] },
+            { "type": "table", "columns": ["DimFacilities[FacilityName]", "Total Licensed Beds", "Occupied Beds", "Available Beds", "Bed Occupancy Rate"] }
+          ]
+        },
+        {
+          "name": "Staffing",
+          "visuals": [
+            { "type": "card", "measure": "Nurse-to-Patient Ratio" },
+            { "type": "card", "measure": "Overtime Hours" },
+            { "type": "card", "measure": "Agency Staff %" },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Nurse-to-Patient Ratio"] },
+            { "type": "clusteredBarChart", "axis": "FactStaffing[Shift]", "values": ["Total RN Hours"] },
+            { "type": "table", "columns": ["DimFacilities[FacilityName]", "Nurse-to-Patient Ratio", "Overtime Hours", "Agency Staff %"] }
+          ]
+        },
+        {
+          "name": "Pharmacy",
+          "visuals": [
+            { "type": "card", "measure": "Total Prescriptions" },
+            { "type": "card", "measure": "Total Rx Cost" },
+            { "type": "card", "measure": "Generic Dispensing Rate" },
+            { "type": "card", "measure": "Med Admin Timeliness" },
+            { "type": "clusteredBarChart", "axis": "DimMedications[DrugClass]", "values": ["Total Rx Cost"] },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Rx Cost", "Generic Dispensing Rate"] },
+            { "type": "donutChart", "legend": "DimMedications[Route]", "values": ["Total Med Administrations"] }
+          ]
+        },
+        {
+          "name": "Population Health Scorecard",
+          "visuals": [
+            { "type": "card", "measure": "HEDIS Compliance Rate" },
+            { "type": "card", "measure": "30-Day Readmission Rate" },
+            { "type": "card", "measure": "Avg HCC Score" },
+            { "type": "card", "measure": "High Risk Patients" },
+            { "type": "clusteredBarChart", "axis": "FactPreventiveCare[HEDISMeasure]", "values": ["HEDIS Compliance Rate"] },
+            { "type": "donutChart", "legend": "FactRiskScores[RiskTier]", "values": ["High Risk Patients"] },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["30-Day Readmission Rate", "HEDIS Compliance Rate"] }
+          ]
+        },
+        {
+          "name": "Geographic Map",
+          "visuals": [
+            { "type": "map", "location": "DimFacilities[City]", "size": "Total Encounters" },
+            { "type": "treemap", "category": "DimFacilities[FacilityType]", "values": ["Total Encounters"] },
+            { "type": "table", "columns": ["DimFacilities[FacilityName]", "DimFacilities[City]", "DimFacilities[FacilityType]", "Total Encounters", "Avg CMS Rating"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LamnaHealthcare-Forecasting",
+      "theme": {
+        "primary": "#00695C",
+        "secondary": "#E65100",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Patient Demand",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Encounters"], "forecast": true },
+            { "type": "card", "measure": "Total Encounters" },
+            { "type": "clusteredBarChart", "axis": "FactEncounters[EncounterType]", "values": ["Total Encounters"] }
+          ]
+        },
+        {
+          "name": "Revenue Forecast",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Paid"], "forecast": true },
+            { "type": "card", "measure": "Total Paid" },
+            { "type": "clusteredBarChart", "axis": "DimDate[Quarter]", "values": ["Total Paid"] }
+          ]
+        },
+        {
+          "name": "Capacity Planning",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Bed Occupancy Rate"], "forecast": true },
+            { "type": "areaChart", "axis": "DimDate[MonthName]", "values": ["Occupied Beds", "Available Beds"] },
+            { "type": "card", "measure": "Bed Occupancy Rate" }
+          ]
+        },
+        {
+          "name": "Readmission Risk",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["30-Day Readmission Rate"], "forecast": true },
+            { "type": "card", "measure": "Total Readmissions" },
+            { "type": "clusteredBarChart", "axis": "FactReadmissions[ReadmitReason]", "values": ["Total Readmissions"] }
+          ]
+        },
+        {
+          "name": "Pharmaceutical Demand",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Rx Cost"], "forecast": true },
+            { "type": "card", "measure": "Total Prescriptions" },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Generic Dispensing Rate"], "forecast": true }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LamnaHealthcare-HTAP",
+      "theme": {
+        "primary": "#00695C",
+        "secondary": "#E65100",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Real-Time ED Monitor",
+          "visuals": [
+            { "type": "card", "measure": "ED Encounters" },
+            { "type": "card", "measure": "Avg SpO2" },
+            { "type": "lineChart", "axis": "Timestamp", "values": ["HeartRate", "SpO2"], "streaming": true },
+            { "type": "table", "columns": ["PatientID", "Acuity", "HeartRate", "SpO2", "WaitMinutes"] }
+          ]
+        },
+        {
+          "name": "Bed Availability",
+          "visuals": [
+            { "type": "card", "measure": "Available Beds" },
+            { "type": "card", "measure": "Pending Discharges" },
+            { "type": "clusteredBarChart", "axis": "Unit", "values": ["OccupiedBeds", "AvailableBeds"], "streaming": true },
+            { "type": "map", "location": "DimFacilities[City]", "color": "Bed Occupancy Rate" }
+          ]
+        },
+        {
+          "name": "Patient Flow",
+          "visuals": [
+            { "type": "card", "measure": "Total Admissions" },
+            { "type": "card", "measure": "Pending Admissions" },
+            { "type": "lineChart", "axis": "DimDate[Date]", "values": ["Total Admissions"], "layers": ["Hot", "Cold"] },
+            { "type": "table", "columns": ["Source", "RecordCount", "LatestSync"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LamnaHealthcare-Pipeline",
+      "theme": {
+        "primary": "#00695C",
+        "secondary": "#E65100",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Pipeline Overview",
+          "visuals": [
+            { "type": "card", "measure": "Total Tables Loaded" },
+            { "type": "card", "measure": "Total Rows Ingested" },
+            { "type": "card", "measure": "Last Refresh Time" },
+            { "type": "card", "measure": "Pipeline Success Rate" },
+            { "type": "clusteredBarChart", "axis": "Domain", "values": ["Tables Loaded", "Rows Ingested"] },
+            { "type": "table", "columns": ["Pipeline Step", "Status", "Duration (s)", "Rows Processed"] }
+          ]
+        },
+        {
+          "name": "Data Quality",
+          "visuals": [
+            { "type": "card", "measure": "Data Quality Score" },
+            { "type": "card", "measure": "Null Value Count" },
+            { "type": "card", "measure": "Duplicate Row Count" },
+            { "type": "clusteredBarChart", "axis": "TableName", "values": ["Null %", "Duplicate %"] },
+            { "type": "table", "columns": ["TableName", "TotalRows", "NullCount", "DuplicateCount", "QualityScore"] }
+          ]
+        },
+        {
+          "name": "Refresh History",
+          "visuals": [
+            { "type": "lineChart", "axis": "RefreshDate", "values": ["Duration (s)", "Rows Processed"] },
+            { "type": "table", "columns": ["RefreshDate", "Pipeline", "Status", "Duration (s)", "Error"] }
+          ]
+        },
+        {
+          "name": "Ingestion by Domain",
+          "visuals": [
+            { "type": "donutChart", "legend": "Domain", "values": ["Rows Ingested"] },
+            { "type": "stackedBarChart", "axis": "Domain", "values": ["CSV Files", "Tables Created"] },
+            { "type": "table", "columns": ["Domain", "Dataflow", "CSV Files", "Tables", "Last Run"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LamnaHealthcare-Writeback",
+      "semanticModel": "writeback",
+      "theme": {
+        "primary": "#00695C",
+        "secondary": "#E65100",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Budget Adjustments",
+          "visuals": [
+            { "type": "card", "measure": "Total Adjustments" },
+            { "type": "card", "measure": "Pending Count" },
+            { "type": "table", "columns": ["AdjustmentId", "FiscalYear", "Department", "AdjustmentAmount", "Status", "SubmittedBy"] },
+            { "type": "clusteredBarChart", "axis": "Department", "values": ["AdjustmentAmount"] }
+          ]
+        },
+        {
+          "name": "Quality Targets",
+          "visuals": [
+            { "type": "card", "measure": "Total Quality Targets" },
+            { "type": "table", "columns": ["TargetId", "MeasureName", "TargetValue", "CurrentValue", "Status", "ModifiedBy"] },
+            { "type": "gauge", "value": "HEDIS Compliance Rate", "target": 0.90 },
+            { "type": "gauge", "value": "30-Day Readmission Rate", "target": 0.10 }
+          ]
+        },
+        {
+          "name": "Staffing Overrides",
+          "visuals": [
+            { "type": "card", "measure": "Total Overrides" },
+            { "type": "table", "columns": ["OverrideId", "FacilityName", "Unit", "Shift", "RequiredRNs", "RequiredCNAs", "EffectiveDate", "ModifiedBy"] },
+            { "type": "clusteredBarChart", "axis": "Unit", "values": ["RequiredRNs", "RequiredCNAs"] }
+          ]
+        }
+      ]
+    }
+  ]
+}

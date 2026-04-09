@@ -1,0 +1,414 @@
+{
+  "schemaVersion": "1.0",
+  "sampleData": {
+    "description": "Lamna Healthcare sample data — 23 tables across 5 domains.",
+    "domains": [
+      {
+        "name": "Clinical",
+        "folder": "Clinical",
+        "tables": [
+          {
+            "name": "DimPatients",
+            "fileName": "DimPatients.csv",
+            "rowCount": 2000,
+            "columns": [
+              { "name": "PatientID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 100001 } } },
+              { "name": "MRN", "type": "string", "generator": { "method": "faker", "params": { "type": "bothify", "pattern": "MRN-######" } } },
+              { "name": "FirstName", "type": "string", "generator": { "method": "faker", "params": { "type": "first_name" } } },
+              { "name": "LastName", "type": "string", "generator": { "method": "faker", "params": { "type": "last_name" } } },
+              { "name": "DateOfBirth", "type": "date", "generator": { "method": "random_date", "params": { "start": "1940-01-01", "end": "2015-12-31" } } },
+              { "name": "Gender", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Male", "Female", "Non-Binary", "Other"] } } },
+              { "name": "Race", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["White", "Black", "Asian", "Hispanic", "Native American", "Pacific Islander", "Other", "Two or More"] } } },
+              { "name": "ZipCode", "type": "string", "generator": { "method": "faker", "params": { "type": "zipcode" } } },
+              { "name": "InsuranceType", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Commercial", "Medicare", "Medicaid", "Self-Pay", "Tricare", "Workers Comp"] } } },
+              { "name": "PrimaryPayorID", "type": "int", "foreignKey": { "table": "DimPayors", "column": "PayorID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PrimaryCarePhysicianID", "type": "int", "foreignKey": { "table": "DimPhysicians", "column": "PhysicianID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "RiskScore", "type": "float", "generator": { "method": "random_float", "params": { "min": 0.5, "max": 5.0 } } },
+              { "name": "IsActive", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, true, true, true, false] } } }
+            ]
+          },
+          {
+            "name": "DimPhysicians",
+            "fileName": "DimPhysicians.csv",
+            "rowCount": 500,
+            "columns": [
+              { "name": "PhysicianID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "NPI", "type": "string", "generator": { "method": "faker", "params": { "type": "bothify", "pattern": "##########" } } },
+              { "name": "FirstName", "type": "string", "generator": { "method": "faker", "params": { "type": "first_name" } } },
+              { "name": "LastName", "type": "string", "generator": { "method": "faker", "params": { "type": "last_name" } } },
+              { "name": "Specialty", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Family Medicine", "Internal Medicine", "Cardiology", "Orthopedics", "Neurology", "Oncology", "Pediatrics", "Emergency Medicine", "General Surgery", "Pulmonology", "Endocrinology", "Gastroenterology", "Nephrology", "Psychiatry", "OB/GYN"] } } },
+              { "name": "DepartmentID", "type": "int", "foreignKey": { "table": "DimDepartments", "column": "DepartmentID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "FacilityID", "type": "int", "foreignKey": { "table": "DimFacilities", "column": "FacilityID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "CredentialStatus", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Active", "Active", "Active", "Provisional", "Inactive"] } } },
+              { "name": "HireDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2005-01-01", "end": "2025-12-31" } } },
+              { "name": "FTEPercent", "type": "float", "generator": { "method": "random_float", "params": { "min": 0.5, "max": 1.0 } } }
+            ]
+          },
+          {
+            "name": "DimDepartments",
+            "fileName": "DimDepartments.csv",
+            "rowCount": 30,
+            "columns": [
+              { "name": "DepartmentID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "DepartmentName", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Emergency", "Cardiology", "Orthopedics", "Neurology", "Oncology", "Pediatrics", "Internal Medicine", "General Surgery", "ICU", "NICU", "Labor & Delivery", "Radiology", "Pathology", "Pharmacy", "Rehabilitation", "Behavioral Health", "Pulmonology", "Endocrinology", "Gastroenterology", "Nephrology", "Urology", "Dermatology", "ENT", "Ophthalmology", "Primary Care", "Urgent Care", "Anesthesiology", "Pain Management", "Wound Care", "Palliative Care"] } } },
+              { "name": "DepartmentType", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Clinical", "Surgical", "Diagnostic", "Support", "Ancillary"] } } },
+              { "name": "CostCenterCode", "type": "string", "generator": { "method": "faker", "params": { "type": "bothify", "pattern": "CC-####" } } },
+              { "name": "BudgetAmount", "type": "float", "generator": { "method": "random_float", "params": { "min": 500000, "max": 15000000 } } }
+            ]
+          },
+          {
+            "name": "DimDiagnoses",
+            "fileName": "DimDiagnoses.csv",
+            "rowCount": 200,
+            "columns": [
+              { "name": "DiagnosisID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "ICD10Code", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["I10", "E11.9", "J18.9", "I25.10", "M54.5", "J44.1", "N18.9", "I50.9", "E78.5", "K21.0", "G47.33", "F32.9", "M17.11", "J06.9", "R07.9", "I48.91", "E03.9", "D64.9", "K59.00", "N39.0", "Z87.891", "R10.9", "M79.3", "J45.909", "E66.01"] } } },
+              { "name": "DiagnosisDescription", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Essential Hypertension", "Type 2 Diabetes", "Pneumonia", "Coronary Artery Disease", "Low Back Pain", "COPD", "Chronic Kidney Disease", "Heart Failure", "Hyperlipidemia", "GERD", "Sleep Apnea", "Major Depression", "Osteoarthritis Knee", "Upper Respiratory Infection", "Chest Pain", "Atrial Fibrillation", "Hypothyroidism", "Anemia", "Constipation", "UTI", "Nicotine Dependence", "Abdominal Pain", "Fibromyalgia", "Asthma", "Morbid Obesity"] } } },
+              { "name": "DiagnosisCategory", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Cardiovascular", "Endocrine", "Respiratory", "Musculoskeletal", "Gastrointestinal", "Neurological", "Behavioral Health", "Renal", "Infectious", "Hematologic"] } } },
+              { "name": "IsChronic", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, true, false] } } },
+              { "name": "DRGWeight", "type": "float", "generator": { "method": "random_float", "params": { "min": 0.5, "max": 8.0 } } }
+            ]
+          },
+          {
+            "name": "FactEncounters",
+            "fileName": "FactEncounters.csv",
+            "rowCount": 8000,
+            "columns": [
+              { "name": "EncounterID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PatientID", "type": "int", "foreignKey": { "table": "DimPatients", "column": "PatientID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PhysicianID", "type": "int", "foreignKey": { "table": "DimPhysicians", "column": "PhysicianID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "DepartmentID", "type": "int", "foreignKey": { "table": "DimDepartments", "column": "DepartmentID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "FacilityID", "type": "int", "foreignKey": { "table": "DimFacilities", "column": "FacilityID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PrimaryDiagnosisID", "type": "int", "foreignKey": { "table": "DimDiagnoses", "column": "DiagnosisID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "AdmitDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-01", "end": "2026-09-30" } } },
+              { "name": "DischargeDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-02", "end": "2026-10-15" } } },
+              { "name": "EncounterType", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Inpatient", "Outpatient", "Emergency", "Observation", "Telehealth"] } } },
+              { "name": "LengthOfStayDays", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 21 } } },
+              { "name": "DischargeDisposition", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Home", "Home Health", "SNF", "Rehab", "AMA", "Expired", "Transfer", "Hospice"] } } },
+              { "name": "Acuity", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Level 1 - Critical", "Level 2 - Emergent", "Level 3 - Urgent", "Level 4 - Less Urgent", "Level 5 - Non-Urgent"] } } },
+              { "name": "TotalCharges", "type": "float", "generator": { "method": "random_float", "params": { "min": 250, "max": 150000 } } },
+              { "name": "PatientSatisfactionScore", "type": "float", "generator": { "method": "random_float", "params": { "min": 1.0, "max": 5.0 } } }
+            ]
+          },
+          {
+            "name": "FactLabResults",
+            "fileName": "FactLabResults.csv",
+            "rowCount": 15000,
+            "columns": [
+              { "name": "LabResultID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "EncounterID", "type": "int", "foreignKey": { "table": "FactEncounters", "column": "EncounterID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PatientID", "type": "int", "foreignKey": { "table": "DimPatients", "column": "PatientID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "OrderDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-01", "end": "2026-09-30" } } },
+              { "name": "ResultDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-01", "end": "2026-09-30" } } },
+              { "name": "TestName", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["CBC", "BMP", "CMP", "Lipid Panel", "HbA1c", "TSH", "Troponin", "BNP", "Urinalysis", "Blood Culture", "PT/INR", "D-Dimer", "Lactate", "ABG", "Procalcitonin"] } } },
+              { "name": "ResultValue", "type": "float", "generator": { "method": "random_float", "params": { "min": 0.1, "max": 500.0 } } },
+              { "name": "Unit", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["mg/dL", "mmol/L", "g/dL", "U/L", "%", "mEq/L", "ng/mL", "pg/mL", "cells/mcL"] } } },
+              { "name": "IsAbnormal", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, false, false, false] } } },
+              { "name": "IsCritical", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, false, false, false, false, false, false, false, false, false] } } },
+              { "name": "TurnaroundMinutes", "type": "int", "generator": { "method": "random_int", "params": { "min": 15, "max": 4320 } } }
+            ]
+          },
+          {
+            "name": "FactVitalSigns",
+            "fileName": "FactVitalSigns.csv",
+            "rowCount": 10000,
+            "columns": [
+              { "name": "VitalSignID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "EncounterID", "type": "int", "foreignKey": { "table": "FactEncounters", "column": "EncounterID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PatientID", "type": "int", "foreignKey": { "table": "DimPatients", "column": "PatientID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "RecordedDateTime", "type": "datetime", "generator": { "method": "random_date", "params": { "start": "2023-10-01", "end": "2026-09-30" } } },
+              { "name": "HeartRate", "type": "int", "generator": { "method": "random_int", "params": { "min": 45, "max": 160 } } },
+              { "name": "SystolicBP", "type": "int", "generator": { "method": "random_int", "params": { "min": 80, "max": 220 } } },
+              { "name": "DiastolicBP", "type": "int", "generator": { "method": "random_int", "params": { "min": 40, "max": 130 } } },
+              { "name": "Temperature", "type": "float", "generator": { "method": "random_float", "params": { "min": 95.0, "max": 104.5 } } },
+              { "name": "RespiratoryRate", "type": "int", "generator": { "method": "random_int", "params": { "min": 8, "max": 40 } } },
+              { "name": "SpO2", "type": "float", "generator": { "method": "random_float", "params": { "min": 85.0, "max": 100.0 } } },
+              { "name": "PainScore", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 10 } } }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "RevenueCycle",
+        "folder": "RevenueCycle",
+        "tables": [
+          {
+            "name": "DimPayors",
+            "fileName": "DimPayors.csv",
+            "rowCount": 20,
+            "columns": [
+              { "name": "PayorID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PayorName", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Blue Cross Blue Shield", "Aetna", "UnitedHealthcare", "Cigna", "Humana", "Kaiser Permanente", "Anthem", "Centene", "Molina Healthcare", "Medicare Part A", "Medicare Part B", "Medicare Advantage", "Oregon Health Plan", "Washington Medicaid", "Tricare West", "Workers Comp Fund", "Self-Pay", "Providence Health Plan", "Regence", "PacificSource"] } } },
+              { "name": "PayorType", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Commercial", "Medicare", "Medicaid", "Government", "Self-Pay"] } } },
+              { "name": "ContractType", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Fee-for-Service", "Capitated", "Value-Based", "Bundled Payment", "Shared Savings"] } } },
+              { "name": "ReimbursementRate", "type": "float", "generator": { "method": "random_float", "params": { "min": 0.45, "max": 0.95 } } },
+              { "name": "IsInNetwork", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, true, true, true, false] } } }
+            ]
+          },
+          {
+            "name": "DimCPTCodes",
+            "fileName": "DimCPTCodes.csv",
+            "rowCount": 150,
+            "columns": [
+              { "name": "CPTID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "CPTCode", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["99213", "99214", "99215", "99223", "99232", "99233", "99281", "99283", "99285", "99291", "36415", "71046", "93000", "80053", "85025", "87070", "90471", "96374", "43239", "27447", "33533", "47562", "49505", "59400", "70553"] } } },
+              { "name": "Description", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Office Visit Level 3", "Office Visit Level 4", "Office Visit Level 5", "Initial Hospital Care High", "Subsequent Hospital Care Mid", "Subsequent Hospital Care High", "ED Visit Level 1", "ED Visit Level 3", "ED Visit Level 5", "Critical Care First Hour", "Venipuncture", "Chest X-Ray 2 Views", "EKG Interpretation", "Comprehensive Metabolic Panel", "CBC with Differential", "Culture Aerobic", "Immunization Admin", "IV Infusion", "Upper GI Endoscopy", "Total Knee Replacement", "CABG", "Laparoscopic Cholecystectomy", "Inguinal Hernia Repair", "Vaginal Delivery", "Brain MRI w/o Contrast"] } } },
+              { "name": "Category", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["E&M", "Surgery", "Radiology", "Pathology", "Medicine", "Anesthesia"] } } },
+              { "name": "BaseRVU", "type": "float", "generator": { "method": "random_float", "params": { "min": 0.5, "max": 65.0 } } },
+              { "name": "FacilityFee", "type": "float", "generator": { "method": "random_float", "params": { "min": 25, "max": 45000 } } }
+            ]
+          },
+          {
+            "name": "FactClaims",
+            "fileName": "FactClaims.csv",
+            "rowCount": 6000,
+            "columns": [
+              { "name": "ClaimID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "EncounterID", "type": "int", "foreignKey": { "table": "FactEncounters", "column": "EncounterID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PatientID", "type": "int", "foreignKey": { "table": "DimPatients", "column": "PatientID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PayorID", "type": "int", "foreignKey": { "table": "DimPayors", "column": "PayorID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "CPTID", "type": "int", "foreignKey": { "table": "DimCPTCodes", "column": "CPTID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "DiagnosisID", "type": "int", "foreignKey": { "table": "DimDiagnoses", "column": "DiagnosisID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "ServiceDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-01", "end": "2026-09-30" } } },
+              { "name": "SubmissionDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-05", "end": "2026-10-15" } } },
+              { "name": "ChargedAmount", "type": "float", "generator": { "method": "random_float", "params": { "min": 100, "max": 120000 } } },
+              { "name": "AllowedAmount", "type": "float", "generator": { "method": "random_float", "params": { "min": 50, "max": 90000 } } },
+              { "name": "PaidAmount", "type": "float", "generator": { "method": "random_float", "params": { "min": 25, "max": 85000 } } },
+              { "name": "PatientResponsibility", "type": "float", "generator": { "method": "random_float", "params": { "min": 0, "max": 15000 } } },
+              { "name": "ClaimStatus", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Paid", "Paid", "Paid", "Pending", "Denied", "Appealed", "Partial"] } } },
+              { "name": "DaysToPayment", "type": "int", "generator": { "method": "random_int", "params": { "min": 7, "max": 120 } } }
+            ]
+          },
+          {
+            "name": "FactPayments",
+            "fileName": "FactPayments.csv",
+            "rowCount": 5000,
+            "columns": [
+              { "name": "PaymentID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "ClaimID", "type": "int", "foreignKey": { "table": "FactClaims", "column": "ClaimID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PayorID", "type": "int", "foreignKey": { "table": "DimPayors", "column": "PayorID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PaymentDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-15", "end": "2026-12-31" } } },
+              { "name": "PaymentAmount", "type": "float", "generator": { "method": "random_float", "params": { "min": 25, "max": 85000 } } },
+              { "name": "AdjustmentAmount", "type": "float", "generator": { "method": "random_float", "params": { "min": 0, "max": 15000 } } },
+              { "name": "PaymentMethod", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["EFT", "Check", "Credit Card", "Patient Portal", "Cash"] } } },
+              { "name": "RemittanceCode", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["CO-45", "CO-50", "PR-1", "PR-2", "PR-3", "OA-23", "CO-4", "PI-16", "CO-97", "N/A"] } } }
+            ]
+          },
+          {
+            "name": "FactDenials",
+            "fileName": "FactDenials.csv",
+            "rowCount": 800,
+            "columns": [
+              { "name": "DenialID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "ClaimID", "type": "int", "foreignKey": { "table": "FactClaims", "column": "ClaimID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PayorID", "type": "int", "foreignKey": { "table": "DimPayors", "column": "PayorID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "DenialDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-15", "end": "2026-10-15" } } },
+              { "name": "DenialReasonCode", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["CO-4", "CO-16", "CO-18", "CO-29", "CO-45", "CO-50", "CO-97", "PR-1", "PR-2", "OA-23"] } } },
+              { "name": "DenialReason", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Missing Authorization", "Duplicate Claim", "Timely Filing", "Non-Covered Service", "Coding Error", "Eligibility Issue", "Medical Necessity", "Bundling Issue", "Coordination of Benefits", "Incomplete Documentation"] } } },
+              { "name": "DeniedAmount", "type": "float", "generator": { "method": "random_float", "params": { "min": 100, "max": 50000 } } },
+              { "name": "AppealStatus", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Not Appealed", "Appeal Pending", "Appeal Won", "Appeal Denied", "Resubmitted"] } } },
+              { "name": "RecoveredAmount", "type": "float", "generator": { "method": "random_float", "params": { "min": 0, "max": 40000 } } }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Operations",
+        "folder": "Operations",
+        "tables": [
+          {
+            "name": "DimFacilities",
+            "fileName": "DimFacilities.csv",
+            "rowCount": 57,
+            "columns": [
+              { "name": "FacilityID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "FacilityName", "type": "string", "generator": { "method": "faker", "params": { "type": "company" } } },
+              { "name": "FacilityType", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Hospital", "Hospital", "Hospital", "Hospital", "Hospital", "Clinic", "Clinic", "Clinic", "Clinic", "Clinic", "Clinic", "Clinic", "Clinic", "Urgent Care", "Urgent Care", "Urgent Care"] } } },
+              { "name": "City", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Portland", "Seattle", "Eugene", "Salem", "Tacoma", "Bellevue", "Beaverton", "Hillsboro", "Vancouver", "Olympia", "Bend", "Medford", "Corvallis", "Spokane", "Redmond"] } } },
+              { "name": "State", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["OR", "WA", "OR", "OR", "WA", "WA", "OR", "OR", "WA", "WA", "OR", "OR", "OR", "WA", "WA"] } } },
+              { "name": "LicensedBeds", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 450 } } },
+              { "name": "OperatingRooms", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 24 } } },
+              { "name": "AnnualBudget", "type": "float", "generator": { "method": "random_float", "params": { "min": 2000000, "max": 500000000 } } },
+              { "name": "Latitude", "type": "float", "generator": { "method": "random_float", "params": { "min": 42.0, "max": 48.5 } } },
+              { "name": "Longitude", "type": "float", "generator": { "method": "random_float", "params": { "min": -124.5, "max": -116.5 } } },
+              { "name": "CMSRating", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 5 } } }
+            ]
+          },
+          {
+            "name": "DimBeds",
+            "fileName": "DimBeds.csv",
+            "rowCount": 1200,
+            "columns": [
+              { "name": "BedID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "FacilityID", "type": "int", "foreignKey": { "table": "DimFacilities", "column": "FacilityID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "Unit", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Med/Surg", "ICU", "CCU", "NICU", "PICU", "L&D", "Telemetry", "Step-Down", "Rehab", "Psych", "ED Holding", "Observation"] } } },
+              { "name": "BedType", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Standard", "Bariatric", "Pediatric", "Isolation", "Critical Care"] } } },
+              { "name": "Floor", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 8 } } },
+              { "name": "IsActive", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, true, true, true, false] } } }
+            ]
+          },
+          {
+            "name": "FactAdmissions",
+            "fileName": "FactAdmissions.csv",
+            "rowCount": 3000,
+            "columns": [
+              { "name": "AdmissionID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PatientID", "type": "int", "foreignKey": { "table": "DimPatients", "column": "PatientID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "FacilityID", "type": "int", "foreignKey": { "table": "DimFacilities", "column": "FacilityID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "BedID", "type": "int", "foreignKey": { "table": "DimBeds", "column": "BedID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "AdmitDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-01", "end": "2026-09-30" } } },
+              { "name": "DischargeDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-02", "end": "2026-10-15" } } },
+              { "name": "AdmissionSource", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Emergency", "Physician Referral", "Transfer", "Direct Admit", "Walk-In"] } } },
+              { "name": "AdmissionPriority", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Emergency", "Urgent", "Elective", "Newborn", "Trauma"] } } },
+              { "name": "LengthOfStayDays", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 30 } } },
+              { "name": "CaseMixIndex", "type": "float", "generator": { "method": "random_float", "params": { "min": 0.5, "max": 6.0 } } }
+            ]
+          },
+          {
+            "name": "FactBedCensus",
+            "fileName": "FactBedCensus.csv",
+            "rowCount": 5000,
+            "columns": [
+              { "name": "CensusID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "FacilityID", "type": "int", "foreignKey": { "table": "DimFacilities", "column": "FacilityID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "CensusDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-01", "end": "2026-09-30" } } },
+              { "name": "Unit", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Med/Surg", "ICU", "CCU", "NICU", "PICU", "L&D", "Telemetry", "Step-Down", "Rehab", "Psych", "ED Holding", "Observation"] } } },
+              { "name": "OccupiedBeds", "type": "int", "generator": { "method": "random_int", "params": { "min": 5, "max": 80 } } },
+              { "name": "AvailableBeds", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 25 } } },
+              { "name": "PendingDischarges", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 12 } } },
+              { "name": "PendingAdmissions", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 8 } } }
+            ]
+          },
+          {
+            "name": "FactStaffing",
+            "fileName": "FactStaffing.csv",
+            "rowCount": 2000,
+            "columns": [
+              { "name": "StaffingID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "FacilityID", "type": "int", "foreignKey": { "table": "DimFacilities", "column": "FacilityID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "DepartmentID", "type": "int", "foreignKey": { "table": "DimDepartments", "column": "DepartmentID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "ShiftDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-01", "end": "2026-09-30" } } },
+              { "name": "Shift", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Day", "Evening", "Night"] } } },
+              { "name": "RNCount", "type": "int", "generator": { "method": "random_int", "params": { "min": 2, "max": 30 } } },
+              { "name": "CNACount", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 15 } } },
+              { "name": "PhysicianCount", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 10 } } },
+              { "name": "PatientCount", "type": "int", "generator": { "method": "random_int", "params": { "min": 5, "max": 80 } } },
+              { "name": "OvertimeHours", "type": "float", "generator": { "method": "random_float", "params": { "min": 0, "max": 48 } } },
+              { "name": "AgencyStaffCount", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 8 } } }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Pharmacy",
+        "folder": "Pharmacy",
+        "tables": [
+          {
+            "name": "DimMedications",
+            "fileName": "DimMedications.csv",
+            "rowCount": 300,
+            "columns": [
+              { "name": "MedicationID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "NDCCode", "type": "string", "generator": { "method": "faker", "params": { "type": "bothify", "pattern": "#####-####-##" } } },
+              { "name": "GenericName", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Metformin", "Lisinopril", "Atorvastatin", "Amlodipine", "Metoprolol", "Omeprazole", "Losartan", "Gabapentin", "Hydrochlorothiazide", "Sertraline", "Acetaminophen", "Ibuprofen", "Amoxicillin", "Azithromycin", "Prednisone", "Furosemide", "Warfarin", "Insulin Glargine", "Albuterol", "Levothyroxine", "Clopidogrel", "Pantoprazole", "Enoxaparin", "Vancomycin", "Piperacillin-Tazobactam"] } } },
+              { "name": "BrandName", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Glucophage", "Zestril", "Lipitor", "Norvasc", "Lopressor", "Prilosec", "Cozaar", "Neurontin", "Microzide", "Zoloft", "Tylenol", "Advil", "Amoxil", "Zithromax", "Deltasone", "Lasix", "Coumadin", "Lantus", "ProAir", "Synthroid", "Plavix", "Protonix", "Lovenox", "Vancocin", "Zosyn"] } } },
+              { "name": "DrugClass", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Antidiabetic", "ACE Inhibitor", "Statin", "Calcium Channel Blocker", "Beta Blocker", "PPI", "ARB", "Anticonvulsant", "Diuretic", "SSRI", "Analgesic", "NSAID", "Antibiotic", "Corticosteroid", "Anticoagulant", "Bronchodilator", "Thyroid Agent"] } } },
+              { "name": "IsControlled", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [false, false, false, false, true] } } },
+              { "name": "UnitCost", "type": "float", "generator": { "method": "random_float", "params": { "min": 0.05, "max": 1500.0 } } },
+              { "name": "Route", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Oral", "IV", "IM", "SubQ", "Inhaled", "Topical", "Rectal"] } } }
+            ]
+          },
+          {
+            "name": "FactPrescriptions",
+            "fileName": "FactPrescriptions.csv",
+            "rowCount": 8000,
+            "columns": [
+              { "name": "PrescriptionID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PatientID", "type": "int", "foreignKey": { "table": "DimPatients", "column": "PatientID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PhysicianID", "type": "int", "foreignKey": { "table": "DimPhysicians", "column": "PhysicianID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "MedicationID", "type": "int", "foreignKey": { "table": "DimMedications", "column": "MedicationID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "EncounterID", "type": "int", "foreignKey": { "table": "FactEncounters", "column": "EncounterID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PrescriptionDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-01", "end": "2026-09-30" } } },
+              { "name": "Quantity", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 180 } } },
+              { "name": "DaysSupply", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 90 } } },
+              { "name": "Refills", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 11 } } },
+              { "name": "TotalCost", "type": "float", "generator": { "method": "random_float", "params": { "min": 1.0, "max": 12000.0 } } },
+              { "name": "IsGeneric", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, true, true, false] } } }
+            ]
+          },
+          {
+            "name": "FactMedicationAdministration",
+            "fileName": "FactMedicationAdministration.csv",
+            "rowCount": 12000,
+            "columns": [
+              { "name": "AdminID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "EncounterID", "type": "int", "foreignKey": { "table": "FactEncounters", "column": "EncounterID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PatientID", "type": "int", "foreignKey": { "table": "DimPatients", "column": "PatientID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "MedicationID", "type": "int", "foreignKey": { "table": "DimMedications", "column": "MedicationID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "AdminDateTime", "type": "datetime", "generator": { "method": "random_date", "params": { "start": "2023-10-01", "end": "2026-09-30" } } },
+              { "name": "Dose", "type": "float", "generator": { "method": "random_float", "params": { "min": 0.1, "max": 2000 } } },
+              { "name": "DoseUnit", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["mg", "mcg", "mL", "units", "mg/kg", "g", "mEq"] } } },
+              { "name": "Route", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Oral", "IV", "IM", "SubQ", "Inhaled", "Topical"] } } },
+              { "name": "AdminStatus", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Given", "Given", "Given", "Given", "Held", "Refused", "Not Given"] } } },
+              { "name": "IsTimely", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, true, true, true, false] } } }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "PopulationHealth",
+        "folder": "PopulationHealth",
+        "tables": [
+          {
+            "name": "FactRiskScores",
+            "fileName": "FactRiskScores.csv",
+            "rowCount": 2000,
+            "columns": [
+              { "name": "RiskScoreID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PatientID", "type": "int", "foreignKey": { "table": "DimPatients", "column": "PatientID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "AssessmentDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-01", "end": "2026-09-30" } } },
+              { "name": "HCCScore", "type": "float", "generator": { "method": "random_float", "params": { "min": 0.3, "max": 6.0 } } },
+              { "name": "ReadmissionRisk", "type": "float", "generator": { "method": "random_float", "params": { "min": 0.01, "max": 0.65 } } },
+              { "name": "FallRisk", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Low", "Low", "Moderate", "Moderate", "High"] } } },
+              { "name": "ChronicConditionCount", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 8 } } },
+              { "name": "SocialDeterminantFlag", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, false, false, false] } } },
+              { "name": "RiskTier", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Rising Risk", "Low", "Moderate", "High", "Complex"] } } }
+            ]
+          },
+          {
+            "name": "FactReadmissions",
+            "fileName": "FactReadmissions.csv",
+            "rowCount": 500,
+            "columns": [
+              { "name": "ReadmissionID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PatientID", "type": "int", "foreignKey": { "table": "DimPatients", "column": "PatientID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "OriginalEncounterID", "type": "int", "foreignKey": { "table": "FactEncounters", "column": "EncounterID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "ReadmitEncounterID", "type": "int", "foreignKey": { "table": "FactEncounters", "column": "EncounterID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "OriginalDischargeDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-01", "end": "2026-08-31" } } },
+              { "name": "ReadmitDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-05", "end": "2026-09-30" } } },
+              { "name": "DaysBetween", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 30 } } },
+              { "name": "ReadmitReason", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Same Diagnosis", "Complication", "Medication Issue", "Follow-Up Failure", "Social Determinant", "Premature Discharge", "Infection"] } } },
+              { "name": "WasPreventable", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, true, false, false, false] } } },
+              { "name": "PenaltyApplied", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, false, false] } } }
+            ]
+          },
+          {
+            "name": "FactPreventiveCare",
+            "fileName": "FactPreventiveCare.csv",
+            "rowCount": 3000,
+            "columns": [
+              { "name": "PreventiveCareID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PatientID", "type": "int", "foreignKey": { "table": "DimPatients", "column": "PatientID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "MeasureName", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Breast Cancer Screening", "Colorectal Cancer Screening", "Diabetes HbA1c Control", "Blood Pressure Control", "BMI Screening", "Depression Screening", "Annual Wellness Visit", "Flu Vaccination", "Pneumonia Vaccination", "Fall Risk Assessment", "Tobacco Cessation", "Cervical Cancer Screening", "Statin Therapy", "Diabetes Eye Exam"] } } },
+              { "name": "MeasureDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-10-01", "end": "2026-09-30" } } },
+              { "name": "IsCompliant", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, true, true, false] } } },
+              { "name": "GapDays", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 365 } } },
+              { "name": "OutreachAttempts", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 5 } } },
+              { "name": "HEDISMeasure", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["BCS", "COL", "CDC-HbA1c", "CBP", "BMI", "DSF", "AWC", "FVA", "PNU", "FRA", "TSC", "CCS", "SPC", "EED"] } } }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

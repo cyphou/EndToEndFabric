@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1.0",
+  "planningModels": [
+    {
+      "name": "RevenueTargets",
+      "description": "Revenue targets by property, stream, and quarter",
+      "sourceTable": "FactRoomRevenue",
+      "valueColumn": "TotalRevenue",
+      "planningSchema": "planning",
+      "columns": [
+        { "name": "FiscalYear", "dataType": "INT" },
+        { "name": "FiscalQuarter", "dataType": "INT" },
+        { "name": "PropertyID", "dataType": "INT" },
+        { "name": "RevenueStream", "dataType": "NVARCHAR(100)" },
+        { "name": "TargetRevenue", "dataType": "DECIMAL(18,2)" },
+        { "name": "TargetADR", "dataType": "DECIMAL(18,2)" },
+        { "name": "Scenario", "dataType": "NVARCHAR(50)" }
+      ]
+    },
+    {
+      "name": "OccupancyPlan",
+      "description": "Occupancy targets by property and season",
+      "sourceTable": "FactReservations",
+      "valueColumn": "RoomNights",
+      "planningSchema": "planning",
+      "columns": [
+        { "name": "FiscalYear", "dataType": "INT" },
+        { "name": "PropertyID", "dataType": "INT" },
+        { "name": "SeasonName", "dataType": "NVARCHAR(100)" },
+        { "name": "TargetOccupancyPct", "dataType": "DECIMAL(5,2)" },
+        { "name": "TargetRoomNights", "dataType": "INT" },
+        { "name": "Scenario", "dataType": "NVARCHAR(50)" }
+      ]
+    },
+    {
+      "name": "StaffingPlan",
+      "description": "Staffing headcount and cost plan by department and property",
+      "sourceTable": "DimStaff",
+      "valueColumn": null,
+      "planningSchema": "planning",
+      "columns": [
+        { "name": "FiscalYear", "dataType": "INT" },
+        { "name": "FiscalQuarter", "dataType": "INT" },
+        { "name": "PropertyID", "dataType": "INT" },
+        { "name": "Department", "dataType": "NVARCHAR(100)" },
+        { "name": "PlannedHeadcount", "dataType": "INT" },
+        { "name": "PlannedLaborCost", "dataType": "DECIMAL(18,2)" },
+        { "name": "Scenario", "dataType": "NVARCHAR(50)" }
+      ]
+    },
+    {
+      "name": "PlanVsActual",
+      "description": "Plan vs actual comparison across all domains",
+      "sourceTable": null,
+      "valueColumn": null,
+      "planningSchema": "planning",
+      "columns": [
+        { "name": "FiscalYear", "dataType": "INT" },
+        { "name": "Domain", "dataType": "NVARCHAR(100)" },
+        { "name": "KPI", "dataType": "NVARCHAR(200)" },
+        { "name": "PlannedValue", "dataType": "DECIMAL(18,2)" },
+        { "name": "ActualValue", "dataType": "DECIMAL(18,2)" },
+        { "name": "Scenario", "dataType": "NVARCHAR(50)" }
+      ]
+    },
+    {
+      "name": "ScenarioComparison",
+      "description": "Side-by-side scenario comparison for executive review",
+      "sourceTable": null,
+      "valueColumn": null,
+      "planningSchema": "planning",
+      "columns": [
+        { "name": "FiscalYear", "dataType": "INT" },
+        { "name": "KPI", "dataType": "NVARCHAR(200)" },
+        { "name": "BaseValue", "dataType": "DECIMAL(18,2)" },
+        { "name": "HighSeasonValue", "dataType": "DECIMAL(18,2)" },
+        { "name": "LowSeasonValue", "dataType": "DECIMAL(18,2)" },
+        { "name": "VariancePct", "dataType": "DECIMAL(5,2)" }
+      ]
+    }
+  ],
+  "scenarios": [
+    { "name": "Base", "description": "Steady-state operations, 5% organic growth", "growthRate": 0.05 },
+    { "name": "HighSeason", "description": "Extended peak season, 12% growth in leisure travel", "growthRate": 0.12 },
+    { "name": "LowSeason", "description": "Economic slowdown, flat occupancy, rate compression", "growthRate": 0.0 }
+  ],
+  "fiscalYears": ["FY2024", "FY2025", "FY2026"]
+}

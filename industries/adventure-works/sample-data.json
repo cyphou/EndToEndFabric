@@ -1,0 +1,418 @@
+{
+  "schemaVersion": "1.0",
+  "sampleData": {
+    "description": "Adventure Works sample data — 24 tables across 5 domains.",
+    "domains": [
+      {
+        "name": "Reservations",
+        "folder": "Reservations",
+        "tables": [
+          {
+            "name": "DimGuests",
+            "fileName": "DimGuests.csv",
+            "rowCount": 3000,
+            "columns": [
+              { "name": "GuestID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "FirstName", "type": "string", "generator": { "method": "faker", "params": { "type": "first_name" } } },
+              { "name": "LastName", "type": "string", "generator": { "method": "faker", "params": { "type": "last_name" } } },
+              { "name": "Email", "type": "string", "generator": { "method": "faker", "params": { "type": "email" } } },
+              { "name": "Country", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["USA", "Canada", "Mexico", "UK", "Germany", "France", "Brazil", "Japan", "Australia"] } } },
+              { "name": "LoyaltyTier", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["None", "Silver", "Gold", "Platinum", "Diamond"] } } },
+              { "name": "LoyaltyPoints", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 500000 } } },
+              { "name": "FirstStayDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2018-01-01", "end": "2026-06-30" } } },
+              { "name": "TotalStays", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 50 } } },
+              { "name": "IsActive", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, false] } } }
+            ]
+          },
+          {
+            "name": "DimProperties",
+            "fileName": "DimProperties.csv",
+            "rowCount": 48,
+            "columns": [
+              { "name": "PropertyID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PropertyName", "type": "string", "generator": { "method": "faker", "params": { "type": "company" } } },
+              { "name": "PropertyType", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Boutique Hotel", "Adventure Lodge", "Resort"] } } },
+              { "name": "Region", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Rocky Mountain", "Pacific Coast", "Southeast", "Caribbean", "Central America", "Southwest", "Northeast", "Midwest"] } } },
+              { "name": "Country", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["USA", "Mexico", "Belize", "Costa Rica", "Jamaica", "Bahamas", "Cayman Islands", "Canada"] } } },
+              { "name": "City", "type": "string", "generator": { "method": "faker", "params": { "type": "city" } } },
+              { "name": "TotalRooms", "type": "int", "generator": { "method": "random_int", "params": { "min": 20, "max": 250 } } },
+              { "name": "StarRating", "type": "float", "generator": { "method": "random_float", "params": { "min": 3.5, "max": 5.0 } } },
+              { "name": "OpenDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2005-01-01", "end": "2023-12-31" } } },
+              { "name": "HasSpa", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, false] } } },
+              { "name": "HasRestaurant", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, false] } } },
+              { "name": "HasAdventures", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, false] } } },
+              { "name": "Latitude", "type": "float", "generator": { "method": "random_float", "params": { "min": 10.0, "max": 50.0 } } },
+              { "name": "Longitude", "type": "float", "generator": { "method": "random_float", "params": { "min": -130.0, "max": -60.0 } } }
+            ]
+          },
+          {
+            "name": "DimRoomTypes",
+            "fileName": "DimRoomTypes.csv",
+            "rowCount": 60,
+            "columns": [
+              { "name": "RoomTypeID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "RoomTypeName", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Standard King", "Standard Queen", "Deluxe Suite", "Junior Suite", "Presidential Suite", "Oceanview Room", "Mountain View Room", "Garden Villa", "Overwater Bungalow", "Adventure Cabin"] } } },
+              { "name": "MaxOccupancy", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 6 } } },
+              { "name": "RackRate", "type": "float", "generator": { "method": "random_float", "params": { "min": 150, "max": 2500 } } },
+              { "name": "SquareFeet", "type": "int", "generator": { "method": "random_int", "params": { "min": 250, "max": 2000 } } },
+              { "name": "BedType", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["King", "Queen", "Double Queen", "Twin", "California King"] } } }
+            ]
+          },
+          {
+            "name": "DimSeasons",
+            "fileName": "DimSeasons.csv",
+            "rowCount": 12,
+            "columns": [
+              { "name": "SeasonID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "SeasonName", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Peak Summer", "Shoulder Spring", "Shoulder Fall", "Winter Holidays", "Low Winter", "Spring Break", "Festival Season", "Hurricane Season", "Ski Season", "Whale Season", "Dry Season", "Rainy Season"] } } },
+              { "name": "StartMonth", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 12 } } },
+              { "name": "EndMonth", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 12 } } },
+              { "name": "PricingMultiplier", "type": "float", "generator": { "method": "random_float", "params": { "min": 0.7, "max": 1.8 } } },
+              { "name": "DemandLevel", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Low", "Medium", "High", "Peak"] } } }
+            ]
+          },
+          {
+            "name": "FactReservations",
+            "fileName": "FactReservations.csv",
+            "rowCount": 8000,
+            "columns": [
+              { "name": "ReservationID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "GuestID", "type": "int", "foreignKey": { "table": "DimGuests", "column": "GuestID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "RoomTypeID", "type": "int", "foreignKey": { "table": "DimRoomTypes", "column": "RoomTypeID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "SeasonID", "type": "int", "foreignKey": { "table": "DimSeasons", "column": "SeasonID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "BookingDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2026-12-31" } } },
+              { "name": "CheckInDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2027-06-30" } } },
+              { "name": "CheckOutDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-02", "end": "2027-07-15" } } },
+              { "name": "RoomNights", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 14 } } },
+              { "name": "Adults", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 4 } } },
+              { "name": "Children", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 3 } } },
+              { "name": "DailyRate", "type": "float", "generator": { "method": "random_float", "params": { "min": 120, "max": 2500 } } },
+              { "name": "TotalAmount", "type": "float", "generator": { "method": "random_float", "params": { "min": 200, "max": 25000 } } },
+              { "name": "BookingChannel", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Direct", "OTA", "Travel Agent", "Corporate", "Loyalty Redemption", "Group"] } } },
+              { "name": "Status", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Confirmed", "Checked-In", "Checked-Out", "Cancelled", "No-Show"] } } },
+              { "name": "LeadTimeDays", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 365 } } }
+            ]
+          },
+          {
+            "name": "FactCheckIns",
+            "fileName": "FactCheckIns.csv",
+            "rowCount": 6000,
+            "columns": [
+              { "name": "CheckInID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "ReservationID", "type": "int", "foreignKey": { "table": "FactReservations", "column": "ReservationID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "GuestID", "type": "int", "foreignKey": { "table": "DimGuests", "column": "GuestID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "CheckInDate", "type": "datetime", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2027-06-30" } } },
+              { "name": "CheckOutDate", "type": "datetime", "generator": { "method": "random_date", "params": { "start": "2023-01-02", "end": "2027-07-15" } } },
+              { "name": "RoomNumber", "type": "string", "generator": { "method": "faker", "params": { "type": "numerify", "pattern": "###" } } },
+              { "name": "GuestCount", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 6 } } },
+              { "name": "IsEarlyCheckIn", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, false] } } },
+              { "name": "IsLateCheckOut", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, false] } } }
+            ]
+          },
+          {
+            "name": "FactCancellations",
+            "fileName": "FactCancellations.csv",
+            "rowCount": 1200,
+            "columns": [
+              { "name": "CancellationID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "ReservationID", "type": "int", "foreignKey": { "table": "FactReservations", "column": "ReservationID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "CancellationDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2026-12-31" } } },
+              { "name": "Reason", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Change of Plans", "Weather", "Flight Cancelled", "Illness", "Found Better Rate", "Work Conflict", "Family Emergency", "Other"] } } },
+              { "name": "DaysBeforeArrival", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 120 } } },
+              { "name": "PenaltyAmount", "type": "float", "generator": { "method": "random_float", "params": { "min": 0, "max": 500 } } },
+              { "name": "WasRebooked", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, false] } } }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Revenue",
+        "folder": "Revenue",
+        "tables": [
+          {
+            "name": "DimRevenueStreams",
+            "fileName": "DimRevenueStreams.csv",
+            "rowCount": 15,
+            "columns": [
+              { "name": "RevenueStreamID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "StreamName", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Room Revenue", "F&B - Restaurant", "F&B - Bar", "F&B - Room Service", "F&B - Minibar", "Spa Services", "Adventure Activities", "Meeting & Events", "Parking", "Laundry", "Gift Shop", "Pool & Cabana", "Airport Transfer", "Resort Fee", "Late Checkout Fee"] } } },
+              { "name": "Category", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Rooms", "Food & Beverage", "Spa", "Activities", "Ancillary"] } } },
+              { "name": "IsRecurring", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, false] } } }
+            ]
+          },
+          {
+            "name": "FactRoomRevenue",
+            "fileName": "FactRoomRevenue.csv",
+            "rowCount": 10000,
+            "columns": [
+              { "name": "RoomRevenueID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "RoomTypeID", "type": "int", "foreignKey": { "table": "DimRoomTypes", "column": "RoomTypeID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "RevenueDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2027-06-30" } } },
+              { "name": "RoomsOccupied", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 200 } } },
+              { "name": "RoomsAvailable", "type": "int", "generator": { "method": "random_int", "params": { "min": 20, "max": 250 } } },
+              { "name": "ADR", "type": "float", "generator": { "method": "random_float", "params": { "min": 120, "max": 2500 } } },
+              { "name": "TotalRevenue", "type": "float", "generator": { "method": "random_float", "params": { "min": 1000, "max": 200000 } } },
+              { "name": "Discounts", "type": "float", "generator": { "method": "random_float", "params": { "min": 0, "max": 5000 } } },
+              { "name": "Taxes", "type": "float", "generator": { "method": "random_float", "params": { "min": 50, "max": 15000 } } }
+            ]
+          },
+          {
+            "name": "FactFBRevenue",
+            "fileName": "FactFBRevenue.csv",
+            "rowCount": 5000,
+            "columns": [
+              { "name": "FBRevenueID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "RevenueDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2027-06-30" } } },
+              { "name": "Outlet", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Restaurant", "Bar", "Room Service", "Pool Bar", "Minibar", "Cafe", "Banquet"] } } },
+              { "name": "Covers", "type": "int", "generator": { "method": "random_int", "params": { "min": 10, "max": 500 } } },
+              { "name": "FoodRevenue", "type": "float", "generator": { "method": "random_float", "params": { "min": 200, "max": 25000 } } },
+              { "name": "BeverageRevenue", "type": "float", "generator": { "method": "random_float", "params": { "min": 100, "max": 15000 } } },
+              { "name": "TotalFBRevenue", "type": "float", "generator": { "method": "random_float", "params": { "min": 300, "max": 40000 } } },
+              { "name": "CostOfGoods", "type": "float", "generator": { "method": "random_float", "params": { "min": 100, "max": 12000 } } }
+            ]
+          },
+          {
+            "name": "FactSpaRevenue",
+            "fileName": "FactSpaRevenue.csv",
+            "rowCount": 2000,
+            "columns": [
+              { "name": "SpaRevenueID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "ServiceDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2027-06-30" } } },
+              { "name": "ServiceType", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Massage", "Facial", "Body Wrap", "Manicure", "Pedicure", "Hydrotherapy", "Aromatherapy", "Couples Package", "Detox Treatment"] } } },
+              { "name": "GuestID", "type": "int", "foreignKey": { "table": "DimGuests", "column": "GuestID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "Revenue", "type": "float", "generator": { "method": "random_float", "params": { "min": 50, "max": 800 } } },
+              { "name": "DurationMinutes", "type": "int", "generator": { "method": "random_int", "params": { "min": 30, "max": 180 } } },
+              { "name": "TherapistID", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 100 } } }
+            ]
+          },
+          {
+            "name": "FactAdventureRevenue",
+            "fileName": "FactAdventureRevenue.csv",
+            "rowCount": 3000,
+            "columns": [
+              { "name": "AdvRevenueID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "ActivityTypeID", "type": "int", "foreignKey": { "table": "DimActivityTypes", "column": "ActivityTypeID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "RevenueDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2027-06-30" } } },
+              { "name": "Participants", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 20 } } },
+              { "name": "Revenue", "type": "float", "generator": { "method": "random_float", "params": { "min": 50, "max": 5000 } } },
+              { "name": "EquipmentCost", "type": "float", "generator": { "method": "random_float", "params": { "min": 0, "max": 500 } } },
+              { "name": "GuideCost", "type": "float", "generator": { "method": "random_float", "params": { "min": 50, "max": 800 } } }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "GuestExperience",
+        "folder": "GuestExperience",
+        "tables": [
+          {
+            "name": "DimSurveyQuestions",
+            "fileName": "DimSurveyQuestions.csv",
+            "rowCount": 25,
+            "columns": [
+              { "name": "QuestionID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "QuestionText", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Overall satisfaction", "Room cleanliness", "Staff friendliness", "Check-in experience", "Restaurant quality", "Spa experience", "Pool & facilities", "Adventure activities", "Value for money", "Would recommend", "Bed comfort", "Bathroom quality", "Noise level", "Wi-Fi quality", "Concierge service", "Property ambiance", "Breakfast quality", "Beach/outdoor quality", "Parking ease", "Safety & security", "Accessibility", "Dining variety", "Evening entertainment", "Fitness center", "Business center"] } } },
+              { "name": "Category", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Room", "Service", "Dining", "Facilities", "Activities", "Overall"] } } },
+              { "name": "ScaleMax", "type": "int", "generator": { "method": "random_choice", "params": { "choices": [5, 10] } } },
+              { "name": "IsNPS", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, false] } } }
+            ]
+          },
+          {
+            "name": "FactGuestSurveys",
+            "fileName": "FactGuestSurveys.csv",
+            "rowCount": 4000,
+            "columns": [
+              { "name": "SurveyResponseID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "GuestID", "type": "int", "foreignKey": { "table": "DimGuests", "column": "GuestID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "QuestionID", "type": "int", "foreignKey": { "table": "DimSurveyQuestions", "column": "QuestionID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "SurveyDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2027-06-30" } } },
+              { "name": "Score", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 10 } } },
+              { "name": "Comment", "type": "string", "generator": { "method": "faker", "params": { "type": "sentence" } } }
+            ]
+          },
+          {
+            "name": "FactGuestComplaints",
+            "fileName": "FactGuestComplaints.csv",
+            "rowCount": 600,
+            "columns": [
+              { "name": "ComplaintID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "GuestID", "type": "int", "foreignKey": { "table": "DimGuests", "column": "GuestID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "ComplaintDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2027-06-30" } } },
+              { "name": "Category", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Room Cleanliness", "Noise", "Staff Attitude", "Billing Error", "Maintenance Issue", "Food Quality", "Pool/Facility", "Safety Concern", "Overbooking", "Wi-Fi", "Other"] } } },
+              { "name": "Severity", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Low", "Medium", "High", "Critical"] } } },
+              { "name": "ResolutionDays", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 14 } } },
+              { "name": "CompensationAmount", "type": "float", "generator": { "method": "random_float", "params": { "min": 0, "max": 500 } } },
+              { "name": "Status", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Open", "In Progress", "Resolved", "Escalated"] } } }
+            ]
+          },
+          {
+            "name": "FactLoyaltyMembers",
+            "fileName": "FactLoyaltyMembers.csv",
+            "rowCount": 2000,
+            "columns": [
+              { "name": "MembershipID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "GuestID", "type": "int", "foreignKey": { "table": "DimGuests", "column": "GuestID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "EnrollmentDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2018-01-01", "end": "2026-12-31" } } },
+              { "name": "CurrentTier", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Silver", "Gold", "Platinum", "Diamond"] } } },
+              { "name": "PointsEarned", "type": "int", "generator": { "method": "random_int", "params": { "min": 1000, "max": 500000 } } },
+              { "name": "PointsRedeemed", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 300000 } } },
+              { "name": "NightsThisYear", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 60 } } },
+              { "name": "LifetimeValue", "type": "float", "generator": { "method": "random_float", "params": { "min": 500, "max": 250000 } } }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "PropertyOps",
+        "folder": "PropertyOps",
+        "tables": [
+          {
+            "name": "DimStaff",
+            "fileName": "DimStaff.csv",
+            "rowCount": 4200,
+            "columns": [
+              { "name": "StaffID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "FirstName", "type": "string", "generator": { "method": "faker", "params": { "type": "first_name" } } },
+              { "name": "LastName", "type": "string", "generator": { "method": "faker", "params": { "type": "last_name" } } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "Department", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Front Desk", "Housekeeping", "F&B", "Spa", "Maintenance", "Activities", "Management", "Security", "Concierge", "Kitchen"] } } },
+              { "name": "Position", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Associate", "Senior Associate", "Supervisor", "Manager", "Director", "VP"] } } },
+              { "name": "HireDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2010-01-01", "end": "2026-06-30" } } },
+              { "name": "HourlyRate", "type": "float", "generator": { "method": "random_float", "params": { "min": 15, "max": 75 } } },
+              { "name": "IsFullTime", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, false] } } },
+              { "name": "CertificationLevel", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["None", "Basic", "Advanced", "Expert", "Master"] } } }
+            ]
+          },
+          {
+            "name": "DimMaintenanceTypes",
+            "fileName": "DimMaintenanceTypes.csv",
+            "rowCount": 30,
+            "columns": [
+              { "name": "MaintenanceTypeID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "TypeName", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["HVAC Repair", "Plumbing", "Electrical", "Painting", "Carpet Replacement", "Furniture Repair", "Pool Maintenance", "Roof Repair", "Elevator Service", "Fire System", "Security System", "Landscaping", "Window Repair", "Door Lock", "TV/AV System", "Internet/Network", "Kitchen Equipment", "Laundry Equipment", "Generator Service", "Water Heater", "Pest Control", "Deep Cleaning", "Bathroom Renovation", "Deck/Patio Repair", "Signage", "Lighting", "Flooring", "Appliance Repair", "Structural", "Safety Inspection"] } } },
+              { "name": "Category", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Preventive", "Corrective", "Emergency", "Renovation"] } } },
+              { "name": "AvgCost", "type": "float", "generator": { "method": "random_float", "params": { "min": 50, "max": 10000 } } },
+              { "name": "Priority", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Low", "Medium", "High", "Critical"] } } }
+            ]
+          },
+          {
+            "name": "FactHousekeeping",
+            "fileName": "FactHousekeeping.csv",
+            "rowCount": 8000,
+            "columns": [
+              { "name": "HousekeepingID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "StaffID", "type": "int", "foreignKey": { "table": "DimStaff", "column": "StaffID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "ServiceDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2027-06-30" } } },
+              { "name": "RoomNumber", "type": "string", "generator": { "method": "faker", "params": { "type": "numerify", "pattern": "###" } } },
+              { "name": "ServiceType", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Turnover Clean", "Stay-Over Clean", "Deep Clean", "Inspection", "Touch-Up"] } } },
+              { "name": "DurationMinutes", "type": "int", "generator": { "method": "random_int", "params": { "min": 15, "max": 120 } } },
+              { "name": "QualityScore", "type": "float", "generator": { "method": "random_float", "params": { "min": 1, "max": 5 } } },
+              { "name": "IssuesFound", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 5 } } }
+            ]
+          },
+          {
+            "name": "FactMaintenance",
+            "fileName": "FactMaintenance.csv",
+            "rowCount": 1500,
+            "columns": [
+              { "name": "MaintenanceID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "MaintenanceTypeID", "type": "int", "foreignKey": { "table": "DimMaintenanceTypes", "column": "MaintenanceTypeID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "ReportedDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2027-06-30" } } },
+              { "name": "CompletedDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2027-07-15" } } },
+              { "name": "Cost", "type": "float", "generator": { "method": "random_float", "params": { "min": 50, "max": 25000 } } },
+              { "name": "DurationHours", "type": "float", "generator": { "method": "random_float", "params": { "min": 0.5, "max": 72 } } },
+              { "name": "Priority", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Low", "Medium", "High", "Critical"] } } },
+              { "name": "Status", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Open", "In Progress", "Completed", "Deferred"] } } },
+              { "name": "AffectedRooms", "type": "int", "generator": { "method": "random_int", "params": { "min": 0, "max": 10 } } }
+            ]
+          },
+          {
+            "name": "FactEnergyUsage",
+            "fileName": "FactEnergyUsage.csv",
+            "rowCount": 3000,
+            "columns": [
+              { "name": "EnergyID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "ReadingDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2027-06-30" } } },
+              { "name": "ElectricityKWh", "type": "float", "generator": { "method": "random_float", "params": { "min": 500, "max": 15000 } } },
+              { "name": "GasTherm", "type": "float", "generator": { "method": "random_float", "params": { "min": 50, "max": 3000 } } },
+              { "name": "WaterGallons", "type": "float", "generator": { "method": "random_float", "params": { "min": 1000, "max": 50000 } } },
+              { "name": "ElectricityCost", "type": "float", "generator": { "method": "random_float", "params": { "min": 50, "max": 2000 } } },
+              { "name": "GasCost", "type": "float", "generator": { "method": "random_float", "params": { "min": 20, "max": 800 } } },
+              { "name": "WaterCost", "type": "float", "generator": { "method": "random_float", "params": { "min": 10, "max": 500 } } },
+              { "name": "OccupiedRooms", "type": "int", "generator": { "method": "random_int", "params": { "min": 5, "max": 200 } } }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Adventures",
+        "folder": "Adventures",
+        "tables": [
+          {
+            "name": "DimActivityTypes",
+            "fileName": "DimActivityTypes.csv",
+            "rowCount": 40,
+            "columns": [
+              { "name": "ActivityTypeID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "ActivityName", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Mountain Hiking", "Ocean Diving", "Snorkeling", "Kayaking", "Rock Climbing", "Zip Lining", "Horseback Riding", "Surfing", "White Water Rafting", "Mountain Biking", "Paragliding", "ATV Tour", "Jungle Trek", "Bird Watching", "Fishing Charter", "Sailing", "Stand-Up Paddleboard", "Yoga Retreat", "Cooking Class", "Wine Tasting", "Cultural Tour", "Sunset Cruise", "Whale Watching", "Cave Exploration", "Waterfall Hike", "Photography Tour", "Meditation Retreat", "Dance Class", "Stargazing", "Hot Air Balloon", "Bungee Jumping", "Canopy Walk", "Volcano Hike", "River Tubing", "Jet Skiing", "Parasailing", "Golf", "Tennis Clinic", "Archery", "Nature Walk"] } } },
+              { "name": "Category", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Water Sport", "Land Adventure", "Wellness", "Cultural", "Aerial", "Sports"] } } },
+              { "name": "DifficultyLevel", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Easy", "Moderate", "Challenging", "Expert"] } } },
+              { "name": "DurationHours", "type": "float", "generator": { "method": "random_float", "params": { "min": 1, "max": 8 } } },
+              { "name": "PricePerPerson", "type": "float", "generator": { "method": "random_float", "params": { "min": 25, "max": 500 } } },
+              { "name": "MaxParticipants", "type": "int", "generator": { "method": "random_int", "params": { "min": 2, "max": 20 } } },
+              { "name": "RequiresGuide", "type": "boolean", "generator": { "method": "random_choice", "params": { "choices": [true, false] } } },
+              { "name": "MinAge", "type": "int", "generator": { "method": "random_int", "params": { "min": 5, "max": 18 } } }
+            ]
+          },
+          {
+            "name": "FactActivityBookings",
+            "fileName": "FactActivityBookings.csv",
+            "rowCount": 5000,
+            "columns": [
+              { "name": "BookingID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "GuestID", "type": "int", "foreignKey": { "table": "DimGuests", "column": "GuestID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "ActivityTypeID", "type": "int", "foreignKey": { "table": "DimActivityTypes", "column": "ActivityTypeID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "BookingDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2027-06-30" } } },
+              { "name": "ActivityDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2027-06-30" } } },
+              { "name": "Participants", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 10 } } },
+              { "name": "Revenue", "type": "float", "generator": { "method": "random_float", "params": { "min": 25, "max": 5000 } } },
+              { "name": "Status", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Confirmed", "Completed", "Cancelled", "No-Show"] } } },
+              { "name": "WeatherCondition", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Sunny", "Partly Cloudy", "Overcast", "Rain", "Windy"] } } },
+              { "name": "SatisfactionScore", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 5 } } }
+            ]
+          },
+          {
+            "name": "FactGuideSchedules",
+            "fileName": "FactGuideSchedules.csv",
+            "rowCount": 2000,
+            "columns": [
+              { "name": "ScheduleID", "type": "int", "primaryKey": true, "generator": { "method": "sequence", "params": { "start": 1 } } },
+              { "name": "StaffID", "type": "int", "foreignKey": { "table": "DimStaff", "column": "StaffID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "PropertyID", "type": "int", "foreignKey": { "table": "DimProperties", "column": "PropertyID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "ActivityTypeID", "type": "int", "foreignKey": { "table": "DimActivityTypes", "column": "ActivityTypeID" }, "generator": { "method": "foreign_key_lookup" } },
+              { "name": "ScheduleDate", "type": "date", "generator": { "method": "random_date", "params": { "start": "2023-01-01", "end": "2027-06-30" } } },
+              { "name": "StartTime", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["06:00", "07:00", "08:00", "09:00", "10:00", "13:00", "14:00", "15:00", "16:00"] } } },
+              { "name": "DurationHours", "type": "float", "generator": { "method": "random_float", "params": { "min": 1, "max": 8 } } },
+              { "name": "ParticipantCount", "type": "int", "generator": { "method": "random_int", "params": { "min": 1, "max": 15 } } },
+              { "name": "Status", "type": "string", "generator": { "method": "random_choice", "params": { "choices": ["Scheduled", "Completed", "Cancelled"] } } }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

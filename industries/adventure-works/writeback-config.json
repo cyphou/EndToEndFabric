@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0",
+  "writebackConfig": {
+    "enabled": true,
+    "targetLakehouse": "GoldLH",
+    "schema": "writeback",
+    "tables": [
+      {
+        "name": "RateAdjustments",
+        "description": "User-submitted room rate adjustments by property, room type, and season",
+        "columns": [
+          { "name": "AdjustmentId", "dataType": "STRING", "isKey": true },
+          { "name": "PropertyID", "dataType": "INT" },
+          { "name": "RoomTypeID", "dataType": "INT" },
+          { "name": "SeasonID", "dataType": "INT" },
+          { "name": "EffectiveDate", "dataType": "DATE" },
+          { "name": "EndDate", "dataType": "DATE" },
+          { "name": "CurrentRate", "dataType": "DECIMAL(18,2)" },
+          { "name": "ProposedRate", "dataType": "DECIMAL(18,2)" },
+          { "name": "AdjustmentPct", "dataType": "DECIMAL(5,2)" },
+          { "name": "Justification", "dataType": "STRING" },
+          { "name": "Status", "dataType": "STRING", "default": "Pending" },
+          { "name": "SubmittedBy", "dataType": "STRING" },
+          { "name": "SubmittedDate", "dataType": "TIMESTAMP" },
+          { "name": "ApprovedBy", "dataType": "STRING" },
+          { "name": "ApprovedDate", "dataType": "TIMESTAMP" }
+        ],
+        "partitionBy": ["PropertyID"]
+      },
+      {
+        "name": "RevenueTargets",
+        "description": "Editable revenue targets by property, stream, and fiscal period",
+        "columns": [
+          { "name": "TargetId", "dataType": "STRING", "isKey": true },
+          { "name": "FiscalYear", "dataType": "INT" },
+          { "name": "FiscalQuarter", "dataType": "INT" },
+          { "name": "PropertyID", "dataType": "INT" },
+          { "name": "RevenueStream", "dataType": "STRING" },
+          { "name": "TargetRevenue", "dataType": "DECIMAL(18,2)" },
+          { "name": "TargetOccupancyPct", "dataType": "DECIMAL(5,2)" },
+          { "name": "TargetADR", "dataType": "DECIMAL(18,2)" },
+          { "name": "Notes", "dataType": "STRING" },
+          { "name": "ModifiedBy", "dataType": "STRING" },
+          { "name": "ModifiedDate", "dataType": "TIMESTAMP" }
+        ],
+        "partitionBy": ["FiscalYear"]
+      },
+      {
+        "name": "CapacityOverrides",
+        "description": "Manual capacity overrides for rooms, activities, and spa during special events or maintenance",
+        "columns": [
+          { "name": "OverrideId", "dataType": "STRING", "isKey": true },
+          { "name": "PropertyID", "dataType": "INT" },
+          { "name": "OverrideType", "dataType": "STRING" },
+          { "name": "EffectiveDate", "dataType": "DATE" },
+          { "name": "EndDate", "dataType": "DATE" },
+          { "name": "OriginalCapacity", "dataType": "INT" },
+          { "name": "OverrideCapacity", "dataType": "INT" },
+          { "name": "Reason", "dataType": "STRING" },
+          { "name": "ModifiedBy", "dataType": "STRING" },
+          { "name": "ModifiedDate", "dataType": "TIMESTAMP" }
+        ],
+        "partitionBy": ["PropertyID"]
+      }
+    ],
+    "storedProcedures": [
+      {
+        "name": "usp_UpsertRateAdjustment",
+        "table": "RateAdjustments",
+        "operation": "upsert",
+        "keyColumns": ["AdjustmentId"]
+      },
+      {
+        "name": "usp_UpsertRevenueTarget",
+        "table": "RevenueTargets",
+        "operation": "upsert",
+        "keyColumns": ["TargetId"]
+      },
+      {
+        "name": "usp_UpsertCapacityOverride",
+        "table": "CapacityOverrides",
+        "operation": "upsert",
+        "keyColumns": ["OverrideId"]
+      }
+    ]
+  }
+}

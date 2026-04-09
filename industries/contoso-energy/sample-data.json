@@ -1,4 +1,5 @@
 {
+  "schemaVersion": "1.0",
   "sampleData": {
     "description": "Contoso Energy sample data — 20 tables across 7 domains.",
     "domains": [

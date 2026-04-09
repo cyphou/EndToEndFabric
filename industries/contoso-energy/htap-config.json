@@ -1,4 +1,5 @@
 {
+  "schemaVersion": "1.0",
   "eventhouse": {
     "name": "ContosoEnergyEventhouse",
     "kqlDatabase": "ContosoEnergyRealtime",
@@ -10,12 +11,30 @@
       "description": "Real-time substation load and voltage readings",
       "eventsPerSecond": 100,
       "schema": [
-        {"name": "SubstationID", "type": "int"},
-        {"name": "Timestamp", "type": "datetime"},
-        {"name": "LoadMW", "type": "real"},
-        {"name": "VoltagekV", "type": "real"},
-        {"name": "Frequency", "type": "real"},
-        {"name": "IsAlarm", "type": "bool"}
+        {
+          "name": "SubstationID",
+          "type": "int"
+        },
+        {
+          "name": "Timestamp",
+          "type": "datetime"
+        },
+        {
+          "name": "LoadMW",
+          "type": "real"
+        },
+        {
+          "name": "VoltagekV",
+          "type": "real"
+        },
+        {
+          "name": "Frequency",
+          "type": "real"
+        },
+        {
+          "name": "IsAlarm",
+          "type": "bool"
+        }
       ],
       "kqlTable": "GridTelemetryEvents",
       "kqlAggregations": [
@@ -28,13 +47,34 @@
       "description": "SCADA system events from power plants",
       "eventsPerSecond": 30,
       "schema": [
-        {"name": "PlantID", "type": "int"},
-        {"name": "Timestamp", "type": "datetime"},
-        {"name": "EventType", "type": "string"},
-        {"name": "SensorName", "type": "string"},
-        {"name": "Value", "type": "real"},
-        {"name": "Threshold", "type": "real"},
-        {"name": "Severity", "type": "string"}
+        {
+          "name": "PlantID",
+          "type": "int"
+        },
+        {
+          "name": "Timestamp",
+          "type": "datetime"
+        },
+        {
+          "name": "EventType",
+          "type": "string"
+        },
+        {
+          "name": "SensorName",
+          "type": "string"
+        },
+        {
+          "name": "Value",
+          "type": "real"
+        },
+        {
+          "name": "Threshold",
+          "type": "real"
+        },
+        {
+          "name": "Severity",
+          "type": "string"
+        }
       ],
       "kqlTable": "SCADAEvents",
       "kqlAggregations": [
@@ -47,11 +87,26 @@
       "description": "Real-time billing and payment stream",
       "eventsPerSecond": 10,
       "schema": [
-        {"name": "CustomerID", "type": "int"},
-        {"name": "Timestamp", "type": "datetime"},
-        {"name": "TransactionType", "type": "string"},
-        {"name": "Amount", "type": "real"},
-        {"name": "PaymentMethod", "type": "string"}
+        {
+          "name": "CustomerID",
+          "type": "int"
+        },
+        {
+          "name": "Timestamp",
+          "type": "datetime"
+        },
+        {
+          "name": "TransactionType",
+          "type": "string"
+        },
+        {
+          "name": "Amount",
+          "type": "real"
+        },
+        {
+          "name": "PaymentMethod",
+          "type": "string"
+        }
       ],
       "kqlTable": "BillingTransactionEvents",
       "kqlAggregations": [

@@ -1,4 +1,5 @@
 {
+  "schemaVersion": "1.0",
   "eventhouse": {
     "name": "NorthwindHRFinanceEventhouse",
     "kqlDatabase": "NorthwindHRFinanceRealtime",
@@ -10,11 +11,26 @@
       "description": "Real-time payroll processing events",
       "eventsPerSecond": 15,
       "schema": [
-        {"name": "EmployeeID", "type": "int"},
-        {"name": "Timestamp", "type": "datetime"},
-        {"name": "TransactionType", "type": "string"},
-        {"name": "Amount", "type": "real"},
-        {"name": "PayCodeID", "type": "int"}
+        {
+          "name": "EmployeeID",
+          "type": "int"
+        },
+        {
+          "name": "Timestamp",
+          "type": "datetime"
+        },
+        {
+          "name": "TransactionType",
+          "type": "string"
+        },
+        {
+          "name": "Amount",
+          "type": "real"
+        },
+        {
+          "name": "PayCodeID",
+          "type": "int"
+        }
       ],
       "kqlTable": "PayrollTransactionEvents",
       "kqlAggregations": [
@@ -27,12 +43,30 @@
       "description": "Real-time GL journal entry postings",
       "eventsPerSecond": 25,
       "schema": [
-        {"name": "EntryID", "type": "int"},
-        {"name": "Timestamp", "type": "datetime"},
-        {"name": "AccountID", "type": "int"},
-        {"name": "DebitAmount", "type": "real"},
-        {"name": "CreditAmount", "type": "real"},
-        {"name": "PostingType", "type": "string"}
+        {
+          "name": "EntryID",
+          "type": "int"
+        },
+        {
+          "name": "Timestamp",
+          "type": "datetime"
+        },
+        {
+          "name": "AccountID",
+          "type": "int"
+        },
+        {
+          "name": "DebitAmount",
+          "type": "real"
+        },
+        {
+          "name": "CreditAmount",
+          "type": "real"
+        },
+        {
+          "name": "PostingType",
+          "type": "string"
+        }
       ],
       "kqlTable": "JournalPostingEvents",
       "kqlAggregations": [
@@ -45,12 +79,30 @@
       "description": "HR system audit events (logins, record changes, approvals)",
       "eventsPerSecond": 10,
       "schema": [
-        {"name": "EventID", "type": "int"},
-        {"name": "Timestamp", "type": "datetime"},
-        {"name": "UserID", "type": "int"},
-        {"name": "EventType", "type": "string"},
-        {"name": "EntityType", "type": "string"},
-        {"name": "Action", "type": "string"}
+        {
+          "name": "EventID",
+          "type": "int"
+        },
+        {
+          "name": "Timestamp",
+          "type": "datetime"
+        },
+        {
+          "name": "UserID",
+          "type": "int"
+        },
+        {
+          "name": "EventType",
+          "type": "string"
+        },
+        {
+          "name": "EntityType",
+          "type": "string"
+        },
+        {
+          "name": "Action",
+          "type": "string"
+        }
       ],
       "kqlTable": "HRSystemAuditEvents",
       "kqlAggregations": [

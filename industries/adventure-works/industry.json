@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0",
+  "industry": {
+    "id": "adventure-works",
+    "name": "AdventureWorks",
+    "displayName": "Adventure Works Travel & Hospitality",
+    "description": "Premium travel and hospitality company operating 25 boutique hotels, 15 adventure lodges, and 8 resort properties across North America, Central America, and the Caribbean. Serves 180K guests annually with 4,200 staff, offering luxury stays, guided adventures (hiking, diving, kayaking), spa services, and curated dining experiences. HQ in Denver, CO.",
+    "domains": [
+      "Reservations",
+      "Revenue",
+      "GuestExperience",
+      "PropertyOps",
+      "Adventures"
+    ],
+    "dataYears": [
+      "FY2024",
+      "FY2025",
+      "FY2026"
+    ],
+    "dateRange": {
+      "start": "2023-01-01",
+      "end": "2027-12-31"
+    },
+    "fiscalYearStartMonth": 4,
+    "theme": {
+      "primary": "#1B5E20",
+      "secondary": "#E65100",
+      "background": "#0D1A0F",
+      "foreground": "#FFFFFF",
+      "accent1": "#0277BD",
+      "accent2": "#6A1B9A"
+    }
+  },
+  "fabricArtifacts": {
+    "workspacePrefix": "AdventureWorks",
+    "cloud": {
+      "fabricApiBase": "https://api.fabric.microsoft.com/v1",
+      "oneLakeDfsBase": "https://onelake.dfs.fabric.microsoft.com"
+    },
+    "lakehouses": {
+      "bronze": "BronzeLH",
+      "silver": "SilverLH",
+      "gold": "GoldLH"
+    },
+    "schemas": {
+      "silver": [
+        "reservations",
+        "revenue",
+        "guest_experience",
+        "property_ops",
+        "adventures",
+        "web"
+      ],
+      "gold": [
+        "dim",
+        "fact",
+        "analytics",
+        "planning"
+      ]
+    },
+    "notebooks": 6,
+    "dataflows": 5,
+    "reports": 5,
+    "pipelines": 1
+  }
+}

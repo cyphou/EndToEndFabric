@@ -1,181 +1,841 @@
 {
+  "schemaVersion": "1.0",
   "reports": [
     {
       "name": "NorthwindHRFinance-Analytics",
-      "theme": {"primary": "#1565C0", "secondary": "#E65100", "background": "#F5F5F5"},
+      "theme": {
+        "primary": "#1565C0",
+        "secondary": "#E65100",
+        "background": "#F5F5F5"
+      },
       "pages": [
-        {"name": "Executive Dashboard", "visuals": [
-          {"type": "card", "measure": "Headcount"}, {"type": "card", "measure": "Total Gross Pay"},
-          {"type": "card", "measure": "Budget Variance"}, {"type": "card", "measure": "Avg KPI Score"},
-          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Gross Pay", "Budget Amount"]},
-          {"type": "donutChart", "legend": "DimDepartments[Division]", "values": ["Headcount"]}
-        ]},
-        {"name": "Workforce Overview", "visuals": [
-          {"type": "card", "measure": "Headcount"}, {"type": "card", "measure": "New Hires"},
-          {"type": "card", "measure": "Attrition Count"},
-          {"type": "clusteredBarChart", "axis": "DimDepartments[DepartmentName]", "values": ["Headcount"]},
-          {"type": "treemap", "category": "DimEmployees[Location]", "values": ["Headcount"]}
-        ]},
-        {"name": "Recruitment Pipeline", "visuals": [
-          {"type": "card", "measure": "New Hires"}, {"type": "card", "measure": "Avg Time to Fill"},
-          {"type": "card", "measure": "Offer Accept Rate"},
-          {"type": "funnel", "category": "Stage", "values": ["Applicants", "Interviewed", "Hired"]},
-          {"type": "clusteredBarChart", "axis": "FactRecruitment[Source]", "values": ["New Hires"]}
-        ]},
-        {"name": "Performance Reviews", "visuals": [
-          {"type": "card", "measure": "Avg Performance Rating"},
-          {"type": "histogram", "values": ["FactPerformanceReviews[OverallRating]"]},
-          {"type": "clusteredBarChart", "axis": "DimDepartments[DepartmentName]", "values": ["Avg Performance Rating"]},
-          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Avg Performance Rating"]}
-        ]},
-        {"name": "Attrition Analysis", "visuals": [
-          {"type": "card", "measure": "Attrition Count"}, {"type": "card", "measure": "Voluntary Attrition %"},
-          {"type": "clusteredBarChart", "axis": "FactAttrition[Reason]", "values": ["Attrition Count"]},
-          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Attrition Count"]}
-        ]},
-        {"name": "Payroll Summary", "visuals": [
-          {"type": "card", "measure": "Total Gross Pay"}, {"type": "card", "measure": "Total Net Pay"},
-          {"type": "card", "measure": "Total Deductions"},
-          {"type": "stackedBarChart", "axis": "DimDepartments[DepartmentName]", "values": ["Total Gross Pay", "Total Deductions"]},
-          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Gross Pay"]}
-        ]},
-        {"name": "Compensation Analysis", "visuals": [
-          {"type": "card", "measure": "Avg Salary Per Employee"}, {"type": "card", "measure": "Overtime Hours"},
-          {"type": "scatter", "x": "DimJobTitles[PayGrade]", "y": "Avg Salary Per Employee"},
-          {"type": "clusteredBarChart", "axis": "DimDepartments[DepartmentName]", "values": ["Avg Salary Per Employee"]}
-        ]},
-        {"name": "Benefits Overview", "visuals": [
-          {"type": "card", "measure": "Total Benefits Cost"},
-          {"type": "donutChart", "legend": "FactBenefits[PlanType]", "values": ["Total Benefits Cost"]},
-          {"type": "table", "columns": ["FactBenefits[PlanType]", "Total Benefits Cost", "FactBenefits[CoverageLevel]"]}
-        ]},
-        {"name": "General Ledger", "visuals": [
-          {"type": "card", "measure": "Total Debits"}, {"type": "card", "measure": "Total Credits"},
-          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Debits", "Total Credits"]},
-          {"type": "table", "columns": ["DimAccounts[AccountType]", "Total Debits", "Total Credits"]}
-        ]},
-        {"name": "AP / AR Dashboard", "visuals": [
-          {"type": "card", "measure": "AP Outstanding"}, {"type": "card", "measure": "AR Outstanding"},
-          {"type": "card", "measure": "Collection Rate"},
-          {"type": "clusteredBarChart", "axis": "FactAccountsReceivable[AgingBucket]", "values": ["AR Outstanding"]},
-          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["AP Outstanding", "AR Outstanding"]}
-        ]},
-        {"name": "Budget vs Actual", "visuals": [
-          {"type": "card", "measure": "Budget Amount"}, {"type": "card", "measure": "Actual Spend"},
-          {"type": "card", "measure": "Budget Variance"}, {"type": "card", "measure": "Budget Utilization %"},
-          {"type": "clusteredBarChart", "axis": "DimCostCenters[CostCenterName]", "values": ["Budget Amount", "Actual Spend"]},
-          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Budget Amount", "Actual Spend"]}
-        ]},
-        {"name": "Cost Center Drill-down", "visuals": [
-          {"type": "matrix", "rows": ["DimCostCenters[Division]", "DimCostCenters[CostCenterName]"], "columns": ["DimDate[FiscalQuarter]"], "values": ["Actual Spend"]},
-          {"type": "treemap", "category": "DimCostCenters[Division]", "values": ["Actual Spend"]}
-        ]},
-        {"name": "KPI Scorecard", "visuals": [
-          {"type": "card", "measure": "Avg KPI Score"}, {"type": "card", "measure": "KPIs On Target"},
-          {"type": "table", "columns": ["DimKPIs[KPIName]", "DimKPIs[Category]", "FactKPIResults[ActualValue]", "FactKPIResults[TargetValue]", "FactKPIResults[Score]"]},
-          {"type": "gauge", "value": "Avg KPI Score", "target": 4.0}
-        ]},
-        {"name": "Trend Analysis", "visuals": [
-          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Headcount", "Total Gross Pay", "Actual Spend"]},
-          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Avg KPI Score"]}
-        ]}
+        {
+          "name": "Executive Dashboard",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Headcount"
+            },
+            {
+              "type": "card",
+              "measure": "Total Gross Pay"
+            },
+            {
+              "type": "card",
+              "measure": "Budget Variance"
+            },
+            {
+              "type": "card",
+              "measure": "Avg KPI Score"
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Total Gross Pay",
+                "Budget Amount"
+              ]
+            },
+            {
+              "type": "donutChart",
+              "legend": "DimDepartments[Division]",
+              "values": [
+                "Headcount"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Workforce Overview",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Headcount"
+            },
+            {
+              "type": "card",
+              "measure": "New Hires"
+            },
+            {
+              "type": "card",
+              "measure": "Attrition Count"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "DimDepartments[DepartmentName]",
+              "values": [
+                "Headcount"
+              ]
+            },
+            {
+              "type": "treemap",
+              "category": "DimEmployees[Location]",
+              "values": [
+                "Headcount"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Recruitment Pipeline",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "New Hires"
+            },
+            {
+              "type": "card",
+              "measure": "Avg Time to Fill"
+            },
+            {
+              "type": "card",
+              "measure": "Offer Accept Rate"
+            },
+            {
+              "type": "funnel",
+              "category": "Stage",
+              "values": [
+                "Applicants",
+                "Interviewed",
+                "Hired"
+              ]
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "FactRecruitment[Source]",
+              "values": [
+                "New Hires"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Performance Reviews",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Avg Performance Rating"
+            },
+            {
+              "type": "histogram",
+              "values": [
+                "FactPerformanceReviews[OverallRating]"
+              ]
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "DimDepartments[DepartmentName]",
+              "values": [
+                "Avg Performance Rating"
+              ]
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Avg Performance Rating"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Attrition Analysis",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Attrition Count"
+            },
+            {
+              "type": "card",
+              "measure": "Voluntary Attrition %"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "FactAttrition[Reason]",
+              "values": [
+                "Attrition Count"
+              ]
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Attrition Count"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Payroll Summary",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Gross Pay"
+            },
+            {
+              "type": "card",
+              "measure": "Total Net Pay"
+            },
+            {
+              "type": "card",
+              "measure": "Total Deductions"
+            },
+            {
+              "type": "stackedBarChart",
+              "axis": "DimDepartments[DepartmentName]",
+              "values": [
+                "Total Gross Pay",
+                "Total Deductions"
+              ]
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Total Gross Pay"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Compensation Analysis",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Avg Salary Per Employee"
+            },
+            {
+              "type": "card",
+              "measure": "Overtime Hours"
+            },
+            {
+              "type": "scatter",
+              "x": "DimJobTitles[PayGrade]",
+              "y": "Avg Salary Per Employee"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "DimDepartments[DepartmentName]",
+              "values": [
+                "Avg Salary Per Employee"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Benefits Overview",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Benefits Cost"
+            },
+            {
+              "type": "donutChart",
+              "legend": "FactBenefits[PlanType]",
+              "values": [
+                "Total Benefits Cost"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "FactBenefits[PlanType]",
+                "Total Benefits Cost",
+                "FactBenefits[CoverageLevel]"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "General Ledger",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Debits"
+            },
+            {
+              "type": "card",
+              "measure": "Total Credits"
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Total Debits",
+                "Total Credits"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "DimAccounts[AccountType]",
+                "Total Debits",
+                "Total Credits"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "AP / AR Dashboard",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "AP Outstanding"
+            },
+            {
+              "type": "card",
+              "measure": "AR Outstanding"
+            },
+            {
+              "type": "card",
+              "measure": "Collection Rate"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "FactAccountsReceivable[AgingBucket]",
+              "values": [
+                "AR Outstanding"
+              ]
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "AP Outstanding",
+                "AR Outstanding"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Budget vs Actual",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Budget Amount"
+            },
+            {
+              "type": "card",
+              "measure": "Actual Spend"
+            },
+            {
+              "type": "card",
+              "measure": "Budget Variance"
+            },
+            {
+              "type": "card",
+              "measure": "Budget Utilization %"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "DimCostCenters[CostCenterName]",
+              "values": [
+                "Budget Amount",
+                "Actual Spend"
+              ]
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Budget Amount",
+                "Actual Spend"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Cost Center Drill-down",
+          "visuals": [
+            {
+              "type": "matrix",
+              "rows": [
+                "DimCostCenters[Division]",
+                "DimCostCenters[CostCenterName]"
+              ],
+              "columns": [
+                "DimDate[FiscalQuarter]"
+              ],
+              "values": [
+                "Actual Spend"
+              ]
+            },
+            {
+              "type": "treemap",
+              "category": "DimCostCenters[Division]",
+              "values": [
+                "Actual Spend"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "KPI Scorecard",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Avg KPI Score"
+            },
+            {
+              "type": "card",
+              "measure": "KPIs On Target"
+            },
+            {
+              "type": "table",
+              "columns": [
+                "DimKPIs[KPIName]",
+                "DimKPIs[Category]",
+                "FactKPIResults[ActualValue]",
+                "FactKPIResults[TargetValue]",
+                "FactKPIResults[Score]"
+              ]
+            },
+            {
+              "type": "gauge",
+              "value": "Avg KPI Score",
+              "target": 4.0
+            }
+          ]
+        },
+        {
+          "name": "Trend Analysis",
+          "visuals": [
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Headcount",
+                "Total Gross Pay",
+                "Actual Spend"
+              ]
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Avg KPI Score"
+              ]
+            }
+          ]
+        }
       ]
     },
     {
       "name": "NorthwindHRFinance-Forecasting",
-      "theme": {"primary": "#1565C0", "secondary": "#E65100", "background": "#F5F5F5"},
+      "theme": {
+        "primary": "#1565C0",
+        "secondary": "#E65100",
+        "background": "#F5F5F5"
+      },
       "pages": [
-        {"name": "Payroll Forecast", "visuals": [
-          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Gross Pay"], "forecast": true},
-          {"type": "card", "measure": "Total Gross Pay"}
-        ]},
-        {"name": "Attrition Forecast", "visuals": [
-          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Attrition Count"], "forecast": true},
-          {"type": "card", "measure": "Attrition Count"}
-        ]},
-        {"name": "Revenue Forecast", "visuals": [
-          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["AR Outstanding"], "forecast": true},
-          {"type": "clusteredBarChart", "axis": "DimDate[FiscalQuarter]", "values": ["AR Outstanding"]}
-        ]},
-        {"name": "Budget Projection", "visuals": [
-          {"type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Actual Spend", "Budget Amount"], "forecast": true}
-        ]},
-        {"name": "Model Accuracy", "visuals": [
-          {"type": "table", "columns": ["ModelName", "RMSE", "MAE", "MAPE"]},
-          {"type": "lineChart", "axis": "Epoch", "values": ["TrainingLoss", "ValidationLoss"]}
-        ]}
+        {
+          "name": "Payroll Forecast",
+          "visuals": [
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Total Gross Pay"
+              ],
+              "forecast": true
+            },
+            {
+              "type": "card",
+              "measure": "Total Gross Pay"
+            }
+          ]
+        },
+        {
+          "name": "Attrition Forecast",
+          "visuals": [
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Attrition Count"
+              ],
+              "forecast": true
+            },
+            {
+              "type": "card",
+              "measure": "Attrition Count"
+            }
+          ]
+        },
+        {
+          "name": "Revenue Forecast",
+          "visuals": [
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "AR Outstanding"
+              ],
+              "forecast": true
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "DimDate[FiscalQuarter]",
+              "values": [
+                "AR Outstanding"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Budget Projection",
+          "visuals": [
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Actual Spend",
+                "Budget Amount"
+              ],
+              "forecast": true
+            }
+          ]
+        },
+        {
+          "name": "Model Accuracy",
+          "visuals": [
+            {
+              "type": "table",
+              "columns": [
+                "ModelName",
+                "RMSE",
+                "MAE",
+                "MAPE"
+              ]
+            },
+            {
+              "type": "lineChart",
+              "axis": "Epoch",
+              "values": [
+                "TrainingLoss",
+                "ValidationLoss"
+              ]
+            }
+          ]
+        }
       ]
     },
     {
       "name": "NorthwindHRFinance-HTAP",
-      "theme": {"primary": "#1565C0", "secondary": "#E65100", "background": "#F5F5F5"},
+      "theme": {
+        "primary": "#1565C0",
+        "secondary": "#E65100",
+        "background": "#F5F5F5"
+      },
       "pages": [
-        {"name": "Real-Time Transactions", "visuals": [
-          {"type": "card", "measure": "Total Debits"}, {"type": "card", "measure": "Total Credits"},
-          {"type": "lineChart", "axis": "Timestamp", "values": ["TransactionAmount"], "streaming": true},
-          {"type": "table", "columns": ["TransactionType", "LatestTimestamp", "Count"]}
-        ]},
-        {"name": "Event Stream Analytics", "visuals": [
-          {"type": "card", "measure": "Events Per Second"},
-          {"type": "clusteredBarChart", "axis": "EventType", "values": ["EventCount"]}
-        ]},
-        {"name": "Hot-Cold Bridge", "visuals": [
-          {"type": "lineChart", "axis": "DimDate[Date]", "values": ["Total Debits"], "layers": ["Hot", "Cold"]},
-          {"type": "table", "columns": ["Source", "RecordCount", "LatestSync"]}
-        ]}
+        {
+          "name": "Real-Time Transactions",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Debits"
+            },
+            {
+              "type": "card",
+              "measure": "Total Credits"
+            },
+            {
+              "type": "lineChart",
+              "axis": "Timestamp",
+              "values": [
+                "TransactionAmount"
+              ],
+              "streaming": true
+            },
+            {
+              "type": "table",
+              "columns": [
+                "TransactionType",
+                "LatestTimestamp",
+                "Count"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Event Stream Analytics",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Events Per Second"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "EventType",
+              "values": [
+                "EventCount"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Hot-Cold Bridge",
+          "visuals": [
+            {
+              "type": "lineChart",
+              "axis": "DimDate[Date]",
+              "values": [
+                "Total Debits"
+              ],
+              "layers": [
+                "Hot",
+                "Cold"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "Source",
+                "RecordCount",
+                "LatestSync"
+              ]
+            }
+          ]
+        }
       ]
     },
     {
       "name": "NorthwindHRFinance-Pipeline",
-      "theme": {"primary": "#1565C0", "secondary": "#E65100", "background": "#FAFAFA"},
+      "theme": {
+        "primary": "#1565C0",
+        "secondary": "#E65100",
+        "background": "#FAFAFA"
+      },
       "pages": [
-        {"name": "Pipeline Overview", "visuals": [
-          {"type": "card", "measure": "Total Tables Loaded"},
-          {"type": "card", "measure": "Total Rows Ingested"},
-          {"type": "card", "measure": "Last Refresh Time"},
-          {"type": "card", "measure": "Pipeline Success Rate"},
-          {"type": "clusteredBarChart", "axis": "Domain", "values": ["Tables Loaded", "Rows Ingested"]},
-          {"type": "table", "columns": ["Pipeline Step", "Status", "Duration (s)", "Rows Processed"]}
-        ]},
-        {"name": "Data Quality", "visuals": [
-          {"type": "card", "measure": "Data Quality Score"},
-          {"type": "card", "measure": "Null Value Count"},
-          {"type": "card", "measure": "Duplicate Row Count"},
-          {"type": "clusteredBarChart", "axis": "TableName", "values": ["Null %", "Duplicate %"]},
-          {"type": "table", "columns": ["TableName", "TotalRows", "NullCount", "DuplicateCount", "QualityScore"]}
-        ]},
-        {"name": "Ingestion by Domain", "visuals": [
-          {"type": "donutChart", "legend": "Domain", "values": ["Rows Ingested"]},
-          {"type": "stackedBarChart", "axis": "Domain", "values": ["CSV Files", "Tables Created"]},
-          {"type": "table", "columns": ["Domain", "Dataflow", "CSV Files", "Tables", "Last Run"]}
-        ]},
-        {"name": "Refresh History", "visuals": [
-          {"type": "lineChart", "axis": "RefreshDate", "values": ["Duration (s)", "Rows Processed"]},
-          {"type": "table", "columns": ["RefreshDate", "Pipeline", "Status", "Duration (s)", "Error"]}
-        ]}
+        {
+          "name": "Pipeline Overview",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Tables Loaded"
+            },
+            {
+              "type": "card",
+              "measure": "Total Rows Ingested"
+            },
+            {
+              "type": "card",
+              "measure": "Last Refresh Time"
+            },
+            {
+              "type": "card",
+              "measure": "Pipeline Success Rate"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "Domain",
+              "values": [
+                "Tables Loaded",
+                "Rows Ingested"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "Pipeline Step",
+                "Status",
+                "Duration (s)",
+                "Rows Processed"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Data Quality",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Data Quality Score"
+            },
+            {
+              "type": "card",
+              "measure": "Null Value Count"
+            },
+            {
+              "type": "card",
+              "measure": "Duplicate Row Count"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "TableName",
+              "values": [
+                "Null %",
+                "Duplicate %"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "TableName",
+                "TotalRows",
+                "NullCount",
+                "DuplicateCount",
+                "QualityScore"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Ingestion by Domain",
+          "visuals": [
+            {
+              "type": "donutChart",
+              "legend": "Domain",
+              "values": [
+                "Rows Ingested"
+              ]
+            },
+            {
+              "type": "stackedBarChart",
+              "axis": "Domain",
+              "values": [
+                "CSV Files",
+                "Tables Created"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "Domain",
+                "Dataflow",
+                "CSV Files",
+                "Tables",
+                "Last Run"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Refresh History",
+          "visuals": [
+            {
+              "type": "lineChart",
+              "axis": "RefreshDate",
+              "values": [
+                "Duration (s)",
+                "Rows Processed"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "RefreshDate",
+                "Pipeline",
+                "Status",
+                "Duration (s)",
+                "Error"
+              ]
+            }
+          ]
+        }
       ]
     },
     {
       "name": "NorthwindHRFinance-Writeback",
       "semanticModel": "writeback",
-      "theme": {"primary": "#00695C", "secondary": "#FF6F00", "background": "#FAFAFA"},
+      "theme": {
+        "primary": "#00695C",
+        "secondary": "#FF6F00",
+        "background": "#FAFAFA"
+      },
       "pages": [
-        {"name": "Headcount Plan", "visuals": [
-          {"type": "card", "measure": "Total Planned Headcount"},
-          {"type": "table", "columns": ["PlanId", "FiscalYear", "FiscalQuarter", "Department", "RoleCategory", "PlannedHeadcount", "PlannedCostPerFTE", "ModifiedBy"]},
-          {"type": "clusteredBarChart", "axis": "Department", "values": ["PlannedHeadcount"]}
-        ]},
-        {"name": "Budget Line Items", "visuals": [
-          {"type": "card", "measure": "Total Budget Amount"},
-          {"type": "card", "measure": "Draft Count"},
-          {"type": "table", "columns": ["LineItemId", "FiscalYear", "CostCenter", "GLAccount", "BudgetAmount", "RevisedAmount", "Variance", "Status"]},
-          {"type": "clusteredBarChart", "axis": "CostCenter", "values": ["BudgetAmount", "RevisedAmount"]}
-        ]},
-        {"name": "Compensation Review", "visuals": [
-          {"type": "card", "measure": "Pending Count"},
-          {"type": "table", "columns": ["ReviewId", "EmployeeId", "ReviewCycle", "CurrentSalary", "ProposedSalary", "AdjustmentPct", "PerformanceRating", "Status"]},
-          {"type": "clusteredBarChart", "axis": "PerformanceRating", "values": ["ProposedSalary"]}
-        ]}
+        {
+          "name": "Headcount Plan",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Planned Headcount"
+            },
+            {
+              "type": "table",
+              "columns": [
+                "PlanId",
+                "FiscalYear",
+                "FiscalQuarter",
+                "Department",
+                "RoleCategory",
+                "PlannedHeadcount",
+                "PlannedCostPerFTE",
+                "ModifiedBy"
+              ]
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "Department",
+              "values": [
+                "PlannedHeadcount"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Budget Line Items",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Budget Amount"
+            },
+            {
+              "type": "card",
+              "measure": "Draft Count"
+            },
+            {
+              "type": "table",
+              "columns": [
+                "LineItemId",
+                "FiscalYear",
+                "CostCenter",
+                "GLAccount",
+                "BudgetAmount",
+                "RevisedAmount",
+                "Variance",
+                "Status"
+              ]
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "CostCenter",
+              "values": [
+                "BudgetAmount",
+                "RevisedAmount"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Compensation Review",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Pending Count"
+            },
+            {
+              "type": "table",
+              "columns": [
+                "ReviewId",
+                "EmployeeId",
+                "ReviewCycle",
+                "CurrentSalary",
+                "ProposedSalary",
+                "AdjustmentPct",
+                "PerformanceRating",
+                "Status"
+              ]
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "PerformanceRating",
+              "values": [
+                "ProposedSalary"
+              ]
+            }
+          ]
+        }
       ]
     }
   ]

@@ -1,4 +1,5 @@
 {
+  "schemaVersion": "1.0",
   "sampleData": {
     "description": "Fabrikam Manufacturing sample data — 25 CSV files across Production, Quality, SupplyChain, Maintenance, EHS, and SalesAndEnergy domains.",
     "domains": [

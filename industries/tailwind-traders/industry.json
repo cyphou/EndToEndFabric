@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0",
+  "industry": {
+    "id": "tailwind-traders",
+    "name": "TailwindTraders",
+    "displayName": "Tailwind Traders",
+    "description": "Omni-channel retailer with 200 physical stores across North America and a fast-growing e-commerce platform, selling electronics, home goods, outdoor gear, and fashion across 3,500 SKUs from 250 suppliers. HQ in Seattle, WA.",
+    "domains": [
+      "ECommerce",
+      "Stores",
+      "Inventory",
+      "Marketing",
+      "Customer"
+    ],
+    "dataYears": [
+      "FY2024",
+      "FY2025",
+      "FY2026"
+    ],
+    "dateRange": {
+      "start": "2023-01-01",
+      "end": "2027-12-31"
+    },
+    "fiscalYearStartMonth": 2,
+    "theme": {
+      "primary": "#E91E63",
+      "secondary": "#1565C0",
+      "background": "#1A0A14",
+      "foreground": "#FFFFFF",
+      "accent1": "#FF9800",
+      "accent2": "#4CAF50"
+    }
+  },
+  "fabricArtifacts": {
+    "workspacePrefix": "TailwindTraders",
+    "cloud": {
+      "fabricApiBase": "https://api.fabric.microsoft.com/v1",
+      "oneLakeDfsBase": "https://onelake.dfs.fabric.microsoft.com"
+    },
+    "lakehouses": {
+      "bronze": "BronzeLH",
+      "silver": "SilverLH",
+      "gold": "GoldLH"
+    },
+    "schemas": {
+      "silver": [
+        "ecommerce",
+        "stores",
+        "inventory",
+        "marketing",
+        "customer",
+        "web"
+      ],
+      "gold": [
+        "dim",
+        "fact",
+        "analytics",
+        "planning"
+      ]
+    },
+    "notebooks": 6,
+    "dataflows": 5,
+    "reports": 5,
+    "pipelines": 1
+  }
+}

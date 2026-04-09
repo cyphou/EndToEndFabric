@@ -1,0 +1,306 @@
+{
+  "schemaVersion": "1.0",
+  "reports": [
+    {
+      "name": "AdventureWorks-Analytics",
+      "theme": {
+        "primary": "#1B5E20",
+        "secondary": "#E65100",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Executive Dashboard",
+          "visuals": [
+            { "type": "card", "measure": "Total Revenue" },
+            { "type": "card", "measure": "Occupancy Rate" },
+            { "type": "card", "measure": "ADR" },
+            { "type": "card", "measure": "RevPAR" },
+            { "type": "card", "measure": "Guest Satisfaction Score" },
+            { "type": "card", "measure": "NPS" },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Revenue", "Total Room Revenue"] },
+            { "type": "donutChart", "legend": "DimProperties[PropertyType]", "values": ["Total Revenue"] }
+          ]
+        },
+        {
+          "name": "Occupancy & Revenue",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Occupancy Rate", "ADR"] },
+            { "type": "clusteredBarChart", "axis": "DimProperties[PropertyName]", "values": ["RevPAR", "TRevPAR"] },
+            { "type": "card", "measure": "Rooms Occupied" },
+            { "type": "card", "measure": "Rooms Available" },
+            { "type": "table", "columns": ["DimProperties[PropertyName]", "Occupancy Rate", "ADR", "RevPAR", "Total Room Revenue"] }
+          ]
+        },
+        {
+          "name": "ADR/RevPAR Analysis",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["ADR", "RevPAR"] },
+            { "type": "clusteredBarChart", "axis": "DimRoomTypes[RoomTypeName]", "values": ["ADR"] },
+            { "type": "scatterChart", "xAxis": "Occupancy Rate", "yAxis": "ADR", "category": "DimProperties[PropertyName]" },
+            { "type": "card", "measure": "ADR YoY Growth" },
+            { "type": "card", "measure": "GOPPAR" }
+          ]
+        },
+        {
+          "name": "F&B Performance",
+          "visuals": [
+            { "type": "card", "measure": "Total F&B Revenue" },
+            { "type": "card", "measure": "F&B Revenue per Cover" },
+            { "type": "card", "measure": "F&B Gross Margin %" },
+            { "type": "clusteredBarChart", "axis": "FactFBRevenue[Outlet]", "values": ["Total F&B Revenue"] },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Food Revenue", "Beverage Revenue"] },
+            { "type": "pieChart", "legend": "FactFBRevenue[Outlet]", "values": ["Total F&B Revenue"] }
+          ]
+        },
+        {
+          "name": "Spa & Wellness",
+          "visuals": [
+            { "type": "card", "measure": "Total Spa Revenue" },
+            { "type": "card", "measure": "Spa Treatments" },
+            { "type": "card", "measure": "Spa Utilization %" },
+            { "type": "clusteredBarChart", "axis": "FactSpaRevenue[ServiceType]", "values": ["Total Spa Revenue"] },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Spa Revenue", "Spa Treatments"] },
+            { "type": "card", "measure": "Avg Spa Revenue per Treatment" }
+          ]
+        },
+        {
+          "name": "Guest Satisfaction",
+          "visuals": [
+            { "type": "card", "measure": "Guest Satisfaction Score" },
+            { "type": "card", "measure": "NPS" },
+            { "type": "card", "measure": "Total Complaints" },
+            { "type": "clusteredBarChart", "axis": "DimSurveyQuestions[Category]", "values": ["Guest Satisfaction Score"] },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Guest Satisfaction Score", "NPS"] },
+            { "type": "table", "columns": ["DimProperties[PropertyName]", "Guest Satisfaction Score", "NPS", "Total Complaints"] }
+          ]
+        },
+        {
+          "name": "Loyalty Program",
+          "visuals": [
+            { "type": "card", "measure": "Loyalty Members Count" },
+            { "type": "card", "measure": "Avg Lifetime Value" },
+            { "type": "card", "measure": "Points Redemption Rate" },
+            { "type": "donutChart", "legend": "FactLoyaltyMembers[CurrentTier]", "values": ["Loyalty Members Count"] },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Points Earned", "Total Points Redeemed"] },
+            { "type": "card", "measure": "Diamond Member %" }
+          ]
+        },
+        {
+          "name": "Cancellations",
+          "visuals": [
+            { "type": "card", "measure": "Total Cancellations" },
+            { "type": "card", "measure": "Cancellation Rate" },
+            { "type": "card", "measure": "Rebook Rate" },
+            { "type": "clusteredBarChart", "axis": "FactCancellations[Reason]", "values": ["Total Cancellations"] },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Cancellation Rate"] },
+            { "type": "table", "columns": ["DimProperties[PropertyName]", "Total Cancellations", "Cancellation Rate", "Cancellation Penalty Revenue"] }
+          ]
+        },
+        {
+          "name": "Property Comparison",
+          "visuals": [
+            { "type": "matrix", "rows": ["DimProperties[PropertyName]"], "columns": ["DimDate[Quarter]"], "values": ["Total Revenue"] },
+            { "type": "clusteredBarChart", "axis": "DimProperties[PropertyName]", "values": ["Occupancy Rate", "ADR"] },
+            { "type": "table", "columns": ["DimProperties[PropertyName]", "DimProperties[PropertyType]", "Total Revenue", "Occupancy Rate", "Guest Satisfaction Score"] }
+          ]
+        },
+        {
+          "name": "Adventure Activities",
+          "visuals": [
+            { "type": "card", "measure": "Total Activity Bookings" },
+            { "type": "card", "measure": "Activity Revenue" },
+            { "type": "card", "measure": "Activity Attach Rate" },
+            { "type": "clusteredBarChart", "axis": "DimActivityTypes[ActivityName]", "values": ["Activity Revenue"] },
+            { "type": "donutChart", "legend": "DimActivityTypes[Category]", "values": ["Total Activity Bookings"] },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Activity Bookings", "Avg Activity Satisfaction"] },
+            { "type": "card", "measure": "Adventure Gross Margin" }
+          ]
+        },
+        {
+          "name": "Energy & Sustainability",
+          "visuals": [
+            { "type": "card", "measure": "Total Energy Cost" },
+            { "type": "card", "measure": "Total Electricity KWh" },
+            { "type": "card", "measure": "Total Water Gallons" },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Energy Cost", "Energy Cost per Occupied Room"] },
+            { "type": "clusteredBarChart", "axis": "DimProperties[PropertyName]", "values": ["Energy Cost per Occupied Room"] },
+            { "type": "table", "columns": ["DimProperties[PropertyName]", "Total Electricity KWh", "Total Water Gallons", "Total Energy Cost"] }
+          ]
+        },
+        {
+          "name": "Geographic Map",
+          "visuals": [
+            { "type": "map", "location": "DimProperties[City]", "size": "Total Revenue", "color": "Occupancy Rate" },
+            { "type": "clusteredBarChart", "axis": "DimProperties[Region]", "values": ["Total Revenue", "Total Activity Bookings"] },
+            { "type": "table", "columns": ["DimProperties[Region]", "DimProperties[Country]", "Total Properties", "Total Revenue", "Occupancy Rate"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "AdventureWorks-Forecasting",
+      "theme": {
+        "primary": "#1B5E20",
+        "secondary": "#E65100",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Demand Forecast",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Room Nights"], "forecast": true },
+            { "type": "card", "measure": "Total Room Nights" },
+            { "type": "areaChart", "axis": "DimDate[MonthName]", "values": ["Total Reservations"] }
+          ]
+        },
+        {
+          "name": "Revenue Forecast",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Revenue"], "forecast": true },
+            { "type": "clusteredBarChart", "axis": "DimDate[Quarter]", "values": ["Total Revenue"] }
+          ]
+        },
+        {
+          "name": "Occupancy Forecast",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Occupancy Rate"], "forecast": true },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["ADR"], "forecast": true }
+          ]
+        },
+        {
+          "name": "Guest Growth",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Check-Ins"], "forecast": true },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Loyalty Members Count"], "forecast": true }
+          ]
+        },
+        {
+          "name": "Seasonal Planning",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Activity Bookings"], "forecast": true },
+            { "type": "table", "columns": ["ModelName", "RMSE", "MAE", "MAPE"] },
+            { "type": "lineChart", "axis": "Epoch", "values": ["TrainingLoss", "ValidationLoss"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "AdventureWorks-HTAP",
+      "theme": {
+        "primary": "#1B5E20",
+        "secondary": "#E65100",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Real-Time Check-in/out",
+          "visuals": [
+            { "type": "card", "measure": "Total Check-Ins" },
+            { "type": "card", "measure": "Occupancy Rate" },
+            { "type": "lineChart", "axis": "Timestamp", "values": ["CheckIns", "CheckOuts"], "streaming": true },
+            { "type": "map", "location": "DimProperties[Region]", "color": "Occupancy Rate" }
+          ]
+        },
+        {
+          "name": "Property Monitoring",
+          "visuals": [
+            { "type": "card", "measure": "Total Energy Cost" },
+            { "type": "lineChart", "axis": "Timestamp", "values": ["ElectricityKWh", "WaterGallons"], "streaming": true },
+            { "type": "table", "columns": ["PropertyID", "SensorType", "AvgValue", "MaxValue", "AlarmCount"] }
+          ]
+        },
+        {
+          "name": "Activity Dashboard",
+          "visuals": [
+            { "type": "card", "measure": "Events Per Second" },
+            { "type": "clusteredBarChart", "axis": "EventType", "values": ["EventCount"] },
+            { "type": "table", "columns": ["EventType", "LatestTimestamp", "EventCount"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "AdventureWorks-Pipeline",
+      "theme": {
+        "primary": "#1B5E20",
+        "secondary": "#E65100",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Pipeline Overview",
+          "visuals": [
+            { "type": "card", "measure": "Total Tables Loaded" },
+            { "type": "card", "measure": "Total Rows Ingested" },
+            { "type": "card", "measure": "Last Refresh Time" },
+            { "type": "card", "measure": "Pipeline Success Rate" },
+            { "type": "clusteredBarChart", "axis": "Domain", "values": ["Tables Loaded", "Rows Ingested"] },
+            { "type": "table", "columns": ["Pipeline Step", "Status", "Duration (s)", "Rows Processed"] }
+          ]
+        },
+        {
+          "name": "Data Quality",
+          "visuals": [
+            { "type": "card", "measure": "Data Quality Score" },
+            { "type": "card", "measure": "Null Value Count" },
+            { "type": "card", "measure": "Duplicate Row Count" },
+            { "type": "clusteredBarChart", "axis": "TableName", "values": ["Null %", "Duplicate %"] },
+            { "type": "table", "columns": ["TableName", "TotalRows", "NullCount", "DuplicateCount", "QualityScore"] }
+          ]
+        },
+        {
+          "name": "Refresh History",
+          "visuals": [
+            { "type": "lineChart", "axis": "RefreshDate", "values": ["Duration (s)", "Rows Processed"] },
+            { "type": "table", "columns": ["RefreshDate", "Pipeline", "Status", "Duration (s)", "Error"] }
+          ]
+        },
+        {
+          "name": "Ingestion by Domain",
+          "visuals": [
+            { "type": "donutChart", "legend": "Domain", "values": ["Rows Ingested"] },
+            { "type": "clusteredBarChart", "axis": "Domain", "values": ["CSV Files", "Tables Created"] },
+            { "type": "table", "columns": ["Domain", "Dataflow", "CSV Files", "Tables", "Last Run"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "AdventureWorks-Writeback",
+      "semanticModel": "writeback",
+      "theme": {
+        "primary": "#1B5E20",
+        "secondary": "#E65100",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Rate Adjustments",
+          "visuals": [
+            { "type": "card", "measure": "Total Adjustments" },
+            { "type": "card", "measure": "Pending Count" },
+            { "type": "table", "columns": ["AdjustmentId", "PropertyID", "RoomTypeID", "CurrentRate", "ProposedRate", "AdjustmentPct", "Status", "SubmittedBy"] },
+            { "type": "clusteredBarChart", "axis": "DimProperties[PropertyName]", "values": ["AdjustmentPct"] }
+          ]
+        },
+        {
+          "name": "Revenue Targets",
+          "visuals": [
+            { "type": "card", "measure": "Total Target Revenue" },
+            { "type": "table", "columns": ["TargetId", "FiscalYear", "FiscalQuarter", "PropertyID", "RevenueStream", "TargetRevenue", "TargetADR", "ModifiedBy"] },
+            { "type": "clusteredBarChart", "axis": "DimProperties[PropertyName]", "values": ["TargetRevenue"] }
+          ]
+        },
+        {
+          "name": "Capacity Overrides",
+          "visuals": [
+            { "type": "card", "measure": "Total Overrides" },
+            { "type": "table", "columns": ["OverrideId", "PropertyID", "OverrideType", "EffectiveDate", "OriginalCapacity", "OverrideCapacity", "Reason"] },
+            { "type": "clusteredBarChart", "axis": "OverrideType", "values": ["OverrideCapacity"] }
+          ]
+        }
+      ]
+    }
+  ]
+}

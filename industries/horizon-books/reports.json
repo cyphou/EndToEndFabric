@@ -1,4 +1,5 @@
 {
+  "schemaVersion": "1.0",
   "reports": [
     {
       "name": "HorizonBooksAnalytics",
@@ -7,95 +8,403 @@
         {
           "name": "Executive Dashboard",
           "visuals": [
-            { "name": "Total Revenue", "type": "card", "x": 20, "y": 20, "width": 200, "height": 100 },
-            { "name": "Gross Profit", "type": "card", "x": 240, "y": 20, "width": 200, "height": 100 },
-            { "name": "Total Orders", "type": "card", "x": 460, "y": 20, "width": 200, "height": 100 },
-            { "name": "Headcount", "type": "card", "x": 680, "y": 20, "width": 200, "height": 100 },
-            { "name": "Revenue Trend", "type": "line", "x": 20, "y": 140, "width": 600, "height": 280 },
-            { "name": "Revenue by Channel", "type": "donut", "x": 640, "y": 140, "width": 300, "height": 280 },
-            { "name": "Top Books", "type": "table", "x": 20, "y": 440, "width": 920, "height": 260 }
+            {
+              "name": "Total Revenue",
+              "type": "card",
+              "x": 20,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Gross Profit",
+              "type": "card",
+              "x": 240,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Total Orders",
+              "type": "card",
+              "x": 460,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Headcount",
+              "type": "card",
+              "x": 680,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Revenue Trend",
+              "type": "line",
+              "x": 20,
+              "y": 140,
+              "width": 600,
+              "height": 280
+            },
+            {
+              "name": "Revenue by Channel",
+              "type": "donut",
+              "x": 640,
+              "y": 140,
+              "width": 300,
+              "height": 280
+            },
+            {
+              "name": "Top Books",
+              "type": "table",
+              "x": 20,
+              "y": 440,
+              "width": 920,
+              "height": 260
+            }
           ]
         },
         {
           "name": "Finance P&L",
           "visuals": [
-            { "name": "Revenue", "type": "card", "x": 20, "y": 20, "width": 180, "height": 90 },
-            { "name": "COGS", "type": "card", "x": 210, "y": 20, "width": 180, "height": 90 },
-            { "name": "OpEx", "type": "card", "x": 400, "y": 20, "width": 180, "height": 90 },
-            { "name": "Margin", "type": "card", "x": 590, "y": 20, "width": 180, "height": 90 },
-            { "name": "P&L Waterfall", "type": "waterfall", "x": 20, "y": 130, "width": 620, "height": 300 },
-            { "name": "Monthly Trend", "type": "line", "x": 660, "y": 130, "width": 600, "height": 300 },
-            { "name": "P&L Matrix", "type": "matrix", "x": 20, "y": 450, "width": 1240, "height": 250 }
+            {
+              "name": "Revenue",
+              "type": "card",
+              "x": 20,
+              "y": 20,
+              "width": 180,
+              "height": 90
+            },
+            {
+              "name": "COGS",
+              "type": "card",
+              "x": 210,
+              "y": 20,
+              "width": 180,
+              "height": 90
+            },
+            {
+              "name": "OpEx",
+              "type": "card",
+              "x": 400,
+              "y": 20,
+              "width": 180,
+              "height": 90
+            },
+            {
+              "name": "Margin",
+              "type": "card",
+              "x": 590,
+              "y": 20,
+              "width": 180,
+              "height": 90
+            },
+            {
+              "name": "P&L Waterfall",
+              "type": "waterfall",
+              "x": 20,
+              "y": 130,
+              "width": 620,
+              "height": 300
+            },
+            {
+              "name": "Monthly Trend",
+              "type": "line",
+              "x": 660,
+              "y": 130,
+              "width": 600,
+              "height": 300
+            },
+            {
+              "name": "P&L Matrix",
+              "type": "matrix",
+              "x": 20,
+              "y": 450,
+              "width": 1240,
+              "height": 250
+            }
           ]
         },
         {
           "name": "Budget vs Actual",
           "visuals": [
-            { "name": "Budget Attainment", "type": "gauge", "x": 20, "y": 20, "width": 300, "height": 200 },
-            { "name": "Variance Cards", "type": "card", "x": 340, "y": 20, "width": 200, "height": 200 },
-            { "name": "Variance by Account", "type": "bar", "x": 20, "y": 240, "width": 600, "height": 300 },
-            { "name": "Variance Detail", "type": "table", "x": 640, "y": 240, "width": 600, "height": 300 }
+            {
+              "name": "Budget Attainment",
+              "type": "gauge",
+              "x": 20,
+              "y": 20,
+              "width": 300,
+              "height": 200
+            },
+            {
+              "name": "Variance Cards",
+              "type": "card",
+              "x": 340,
+              "y": 20,
+              "width": 200,
+              "height": 200
+            },
+            {
+              "name": "Variance by Account",
+              "type": "bar",
+              "x": 20,
+              "y": 240,
+              "width": 600,
+              "height": 300
+            },
+            {
+              "name": "Variance Detail",
+              "type": "table",
+              "x": 640,
+              "y": 240,
+              "width": 600,
+              "height": 300
+            }
           ]
         },
         {
           "name": "Book Performance",
           "visuals": [
-            { "name": "Best Sellers", "type": "bar", "x": 20, "y": 20, "width": 600, "height": 300 },
-            { "name": "Genre Treemap", "type": "treemap", "x": 640, "y": 20, "width": 400, "height": 300 },
-            { "name": "Sales Trend by Genre", "type": "area", "x": 20, "y": 340, "width": 1020, "height": 280 }
+            {
+              "name": "Best Sellers",
+              "type": "bar",
+              "x": 20,
+              "y": 20,
+              "width": 600,
+              "height": 300
+            },
+            {
+              "name": "Genre Treemap",
+              "type": "treemap",
+              "x": 640,
+              "y": 20,
+              "width": 400,
+              "height": 300
+            },
+            {
+              "name": "Sales Trend by Genre",
+              "type": "area",
+              "x": 20,
+              "y": 340,
+              "width": 1020,
+              "height": 280
+            }
           ]
         },
         {
           "name": "Customer & Distribution",
           "visuals": [
-            { "name": "Customer Count", "type": "card", "x": 20, "y": 20, "width": 200, "height": 100 },
-            { "name": "AOV", "type": "card", "x": 240, "y": 20, "width": 200, "height": 100 },
-            { "name": "Customer Segment", "type": "pie", "x": 20, "y": 140, "width": 400, "height": 300 },
-            { "name": "Top Customers", "type": "table", "x": 440, "y": 140, "width": 600, "height": 300 }
+            {
+              "name": "Customer Count",
+              "type": "card",
+              "x": 20,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "AOV",
+              "type": "card",
+              "x": 240,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Customer Segment",
+              "type": "pie",
+              "x": 20,
+              "y": 140,
+              "width": 400,
+              "height": 300
+            },
+            {
+              "name": "Top Customers",
+              "type": "table",
+              "x": 440,
+              "y": 140,
+              "width": 600,
+              "height": 300
+            }
           ]
         },
         {
           "name": "Geographic",
           "visuals": [
-            { "name": "Revenue Map", "type": "map", "x": 20, "y": 20, "width": 700, "height": 400 },
-            { "name": "Revenue by Region", "type": "bar", "x": 740, "y": 20, "width": 400, "height": 400 },
-            { "name": "Country Detail", "type": "table", "x": 20, "y": 440, "width": 1120, "height": 260 }
+            {
+              "name": "Revenue Map",
+              "type": "map",
+              "x": 20,
+              "y": 20,
+              "width": 700,
+              "height": 400
+            },
+            {
+              "name": "Revenue by Region",
+              "type": "bar",
+              "x": 740,
+              "y": 20,
+              "width": 400,
+              "height": 400
+            },
+            {
+              "name": "Country Detail",
+              "type": "table",
+              "x": 20,
+              "y": 440,
+              "width": 1120,
+              "height": 260
+            }
           ]
         },
         {
           "name": "Inventory & Supply",
           "visuals": [
-            { "name": "Total Inventory", "type": "card", "x": 20, "y": 20, "width": 200, "height": 100 },
-            { "name": "Return Rate", "type": "card", "x": 240, "y": 20, "width": 200, "height": 100 },
-            { "name": "Inventory by Warehouse", "type": "stacked_bar", "x": 20, "y": 140, "width": 600, "height": 300 },
-            { "name": "Inventory Trend", "type": "line", "x": 640, "y": 140, "width": 500, "height": 300 }
+            {
+              "name": "Total Inventory",
+              "type": "card",
+              "x": 20,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Return Rate",
+              "type": "card",
+              "x": 240,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Inventory by Warehouse",
+              "type": "stacked_bar",
+              "x": 20,
+              "y": 140,
+              "width": 600,
+              "height": 300
+            },
+            {
+              "name": "Inventory Trend",
+              "type": "line",
+              "x": 640,
+              "y": 140,
+              "width": 500,
+              "height": 300
+            }
           ]
         },
         {
           "name": "HR & Workforce",
           "visuals": [
-            { "name": "Headcount", "type": "card", "x": 20, "y": 20, "width": 200, "height": 100 },
-            { "name": "Total Payroll", "type": "card", "x": 240, "y": 20, "width": 200, "height": 100 },
-            { "name": "Avg Rating", "type": "card", "x": 460, "y": 20, "width": 200, "height": 100 },
-            { "name": "Open Positions", "type": "card", "x": 680, "y": 20, "width": 200, "height": 100 },
-            { "name": "Payroll by Department", "type": "bar", "x": 20, "y": 140, "width": 600, "height": 300 },
-            { "name": "Rating Distribution", "type": "column", "x": 640, "y": 140, "width": 400, "height": 300 }
+            {
+              "name": "Headcount",
+              "type": "card",
+              "x": 20,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Total Payroll",
+              "type": "card",
+              "x": 240,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Avg Rating",
+              "type": "card",
+              "x": 460,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Open Positions",
+              "type": "card",
+              "x": 680,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Payroll by Department",
+              "type": "bar",
+              "x": 20,
+              "y": 140,
+              "width": 600,
+              "height": 300
+            },
+            {
+              "name": "Rating Distribution",
+              "type": "column",
+              "x": 640,
+              "y": 140,
+              "width": 400,
+              "height": 300
+            }
           ]
         },
         {
           "name": "Author & Imprint",
           "visuals": [
-            { "name": "Author Performance", "type": "scatter", "x": 20, "y": 20, "width": 600, "height": 340 },
-            { "name": "Imprint Mix", "type": "donut", "x": 640, "y": 20, "width": 400, "height": 340 },
-            { "name": "Author Detail", "type": "table", "x": 20, "y": 380, "width": 1020, "height": 300 }
+            {
+              "name": "Author Performance",
+              "type": "scatter",
+              "x": 20,
+              "y": 20,
+              "width": 600,
+              "height": 340
+            },
+            {
+              "name": "Imprint Mix",
+              "type": "donut",
+              "x": 640,
+              "y": 20,
+              "width": 400,
+              "height": 340
+            },
+            {
+              "name": "Author Detail",
+              "type": "table",
+              "x": 20,
+              "y": 380,
+              "width": 1020,
+              "height": 300
+            }
           ]
         },
         {
           "name": "Sales Funnel",
           "visuals": [
-            { "name": "Sales Funnel", "type": "funnel", "x": 20, "y": 20, "width": 500, "height": 400 },
-            { "name": "Funnel KPIs", "type": "card", "x": 540, "y": 20, "width": 300, "height": 200 },
-            { "name": "Conversion Detail", "type": "table", "x": 540, "y": 240, "width": 500, "height": 180 }
+            {
+              "name": "Sales Funnel",
+              "type": "funnel",
+              "x": 20,
+              "y": 20,
+              "width": 500,
+              "height": 400
+            },
+            {
+              "name": "Funnel KPIs",
+              "type": "card",
+              "x": 540,
+              "y": 20,
+              "width": 300,
+              "height": 200
+            },
+            {
+              "name": "Conversion Detail",
+              "type": "table",
+              "x": 540,
+              "y": 240,
+              "width": 500,
+              "height": 180
+            }
           ]
         }
       ]
@@ -104,25 +413,103 @@
       "name": "HorizonBooksForecasting",
       "description": "Forecasting report — 5 pages for revenue, genre, inventory, and workforce forecasts.",
       "pages": [
-        { "name": "Forecast Overview", "visuals": [
-          { "name": "Forecast Summary", "type": "card", "x": 20, "y": 20, "width": 1000, "height": 100 },
-          { "name": "Confidence Intervals", "type": "area", "x": 20, "y": 140, "width": 1000, "height": 400 }
-        ]},
-        { "name": "Revenue Forecast", "visuals": [
-          { "name": "Revenue Forecast Line", "type": "line", "x": 20, "y": 20, "width": 800, "height": 400 },
-          { "name": "Channel Breakdown", "type": "stacked_column", "x": 840, "y": 20, "width": 400, "height": 400 }
-        ]},
-        { "name": "Genre Demand", "visuals": [
-          { "name": "Genre Forecast", "type": "line", "x": 20, "y": 20, "width": 800, "height": 400 },
-          { "name": "Genre Mix", "type": "treemap", "x": 840, "y": 20, "width": 400, "height": 400 }
-        ]},
-        { "name": "Inventory Forecast", "visuals": [
-          { "name": "Stock Projection", "type": "area", "x": 20, "y": 20, "width": 1000, "height": 400 }
-        ]},
-        { "name": "Workforce Forecast", "visuals": [
-          { "name": "Headcount Forecast", "type": "line", "x": 20, "y": 20, "width": 800, "height": 400 },
-          { "name": "Department Plan", "type": "table", "x": 20, "y": 440, "width": 800, "height": 250 }
-        ]}
+        {
+          "name": "Forecast Overview",
+          "visuals": [
+            {
+              "name": "Forecast Summary",
+              "type": "card",
+              "x": 20,
+              "y": 20,
+              "width": 1000,
+              "height": 100
+            },
+            {
+              "name": "Confidence Intervals",
+              "type": "area",
+              "x": 20,
+              "y": 140,
+              "width": 1000,
+              "height": 400
+            }
+          ]
+        },
+        {
+          "name": "Revenue Forecast",
+          "visuals": [
+            {
+              "name": "Revenue Forecast Line",
+              "type": "line",
+              "x": 20,
+              "y": 20,
+              "width": 800,
+              "height": 400
+            },
+            {
+              "name": "Channel Breakdown",
+              "type": "stacked_column",
+              "x": 840,
+              "y": 20,
+              "width": 400,
+              "height": 400
+            }
+          ]
+        },
+        {
+          "name": "Genre Demand",
+          "visuals": [
+            {
+              "name": "Genre Forecast",
+              "type": "line",
+              "x": 20,
+              "y": 20,
+              "width": 800,
+              "height": 400
+            },
+            {
+              "name": "Genre Mix",
+              "type": "treemap",
+              "x": 840,
+              "y": 20,
+              "width": 400,
+              "height": 400
+            }
+          ]
+        },
+        {
+          "name": "Inventory Forecast",
+          "visuals": [
+            {
+              "name": "Stock Projection",
+              "type": "area",
+              "x": 20,
+              "y": 20,
+              "width": 1000,
+              "height": 400
+            }
+          ]
+        },
+        {
+          "name": "Workforce Forecast",
+          "visuals": [
+            {
+              "name": "Headcount Forecast",
+              "type": "line",
+              "x": 20,
+              "y": 20,
+              "width": 800,
+              "height": 400
+            },
+            {
+              "name": "Department Plan",
+              "type": "table",
+              "x": 20,
+              "y": 440,
+              "width": 800,
+              "height": 250
+            }
+          ]
+        }
       ]
     },
     {
@@ -134,76 +521,354 @@
         "background": "#FAFAFA"
       },
       "pages": [
-        { "name": "Real-Time Orders", "visuals": [
-          { "name": "Orders Per Minute", "type": "card", "x": 20, "y": 20, "width": 200, "height": 100 },
-          { "name": "Revenue Stream", "type": "card", "x": 240, "y": 20, "width": 200, "height": 100 },
-          { "name": "Active Channels", "type": "card", "x": 460, "y": 20, "width": 200, "height": 100 },
-          { "name": "Order Trend", "type": "line", "x": 20, "y": 140, "width": 600, "height": 280, "streaming": true },
-          { "name": "Channel Mix", "type": "donut", "x": 640, "y": 140, "width": 300, "height": 280 }
-        ]},
-        { "name": "Inventory Events", "visuals": [
-          { "name": "Stock Movements", "type": "card", "x": 20, "y": 20, "width": 200, "height": 100 },
-          { "name": "Low Stock Alerts", "type": "card", "x": 240, "y": 20, "width": 200, "height": 100 },
-          { "name": "Movement Stream", "type": "table", "x": 20, "y": 140, "width": 920, "height": 300 },
-          { "name": "Stock by Warehouse", "type": "clusteredBar", "x": 20, "y": 460, "width": 920, "height": 240 }
-        ]},
-        { "name": "Hot-Cold Bridge", "visuals": [
-          { "name": "Revenue Trend (Hot+Cold)", "type": "line", "x": 20, "y": 20, "width": 600, "height": 300, "layers": ["Hot", "Cold"] },
-          { "name": "Data Sources", "type": "table", "x": 640, "y": 20, "width": 300, "height": 300 },
-          { "name": "Latency Monitor", "type": "gauge", "x": 20, "y": 340, "width": 300, "height": 200 }
-        ]}
+        {
+          "name": "Real-Time Orders",
+          "visuals": [
+            {
+              "name": "Orders Per Minute",
+              "type": "card",
+              "x": 20,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Revenue Stream",
+              "type": "card",
+              "x": 240,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Active Channels",
+              "type": "card",
+              "x": 460,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Order Trend",
+              "type": "line",
+              "x": 20,
+              "y": 140,
+              "width": 600,
+              "height": 280,
+              "streaming": true
+            },
+            {
+              "name": "Channel Mix",
+              "type": "donut",
+              "x": 640,
+              "y": 140,
+              "width": 300,
+              "height": 280
+            }
+          ]
+        },
+        {
+          "name": "Inventory Events",
+          "visuals": [
+            {
+              "name": "Stock Movements",
+              "type": "card",
+              "x": 20,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Low Stock Alerts",
+              "type": "card",
+              "x": 240,
+              "y": 20,
+              "width": 200,
+              "height": 100
+            },
+            {
+              "name": "Movement Stream",
+              "type": "table",
+              "x": 20,
+              "y": 140,
+              "width": 920,
+              "height": 300
+            },
+            {
+              "name": "Stock by Warehouse",
+              "type": "clusteredBar",
+              "x": 20,
+              "y": 460,
+              "width": 920,
+              "height": 240
+            }
+          ]
+        },
+        {
+          "name": "Hot-Cold Bridge",
+          "visuals": [
+            {
+              "name": "Revenue Trend (Hot+Cold)",
+              "type": "line",
+              "x": 20,
+              "y": 20,
+              "width": 600,
+              "height": 300,
+              "layers": [
+                "Hot",
+                "Cold"
+              ]
+            },
+            {
+              "name": "Data Sources",
+              "type": "table",
+              "x": 640,
+              "y": 20,
+              "width": 300,
+              "height": 300
+            },
+            {
+              "name": "Latency Monitor",
+              "type": "gauge",
+              "x": 20,
+              "y": 340,
+              "width": 300,
+              "height": 200
+            }
+          ]
+        }
       ]
     },
     {
       "name": "HorizonBooks-Pipeline",
-      "theme": {"primary": "#1B3A5C", "secondary": "#E8A838", "background": "#FAFAFA"},
+      "theme": {
+        "primary": "#1B3A5C",
+        "secondary": "#E8A838",
+        "background": "#FAFAFA"
+      },
       "pages": [
-        {"name": "Pipeline Overview", "visuals": [
-          {"type": "card", "measure": "Total Tables Loaded"},
-          {"type": "card", "measure": "Total Rows Ingested"},
-          {"type": "card", "measure": "Last Refresh Time"},
-          {"type": "card", "measure": "Pipeline Success Rate"},
-          {"type": "clusteredBarChart", "axis": "Domain", "values": ["Tables Loaded", "Rows Ingested"]},
-          {"type": "table", "columns": ["Pipeline Step", "Status", "Duration (s)", "Rows Processed"]}
-        ]},
-        {"name": "Data Quality", "visuals": [
-          {"type": "card", "measure": "Data Quality Score"},
-          {"type": "card", "measure": "Null Value Count"},
-          {"type": "card", "measure": "Duplicate Row Count"},
-          {"type": "clusteredBarChart", "axis": "TableName", "values": ["Null %", "Duplicate %"]},
-          {"type": "table", "columns": ["TableName", "TotalRows", "NullCount", "DuplicateCount", "QualityScore"]}
-        ]},
-        {"name": "Ingestion by Domain", "visuals": [
-          {"type": "donutChart", "legend": "Domain", "values": ["Rows Ingested"]},
-          {"type": "stackedBarChart", "axis": "Domain", "values": ["CSV Files", "Tables Created"]},
-          {"type": "table", "columns": ["Domain", "Dataflow", "CSV Files", "Tables", "Last Run"]}
-        ]},
-        {"name": "Refresh History", "visuals": [
-          {"type": "lineChart", "axis": "RefreshDate", "values": ["Duration (s)", "Rows Processed"]},
-          {"type": "table", "columns": ["RefreshDate", "Pipeline", "Status", "Duration (s)", "Error"]}
-        ]}
+        {
+          "name": "Pipeline Overview",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Tables Loaded"
+            },
+            {
+              "type": "card",
+              "measure": "Total Rows Ingested"
+            },
+            {
+              "type": "card",
+              "measure": "Last Refresh Time"
+            },
+            {
+              "type": "card",
+              "measure": "Pipeline Success Rate"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "Domain",
+              "values": [
+                "Tables Loaded",
+                "Rows Ingested"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "Pipeline Step",
+                "Status",
+                "Duration (s)",
+                "Rows Processed"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Data Quality",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Data Quality Score"
+            },
+            {
+              "type": "card",
+              "measure": "Null Value Count"
+            },
+            {
+              "type": "card",
+              "measure": "Duplicate Row Count"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "TableName",
+              "values": [
+                "Null %",
+                "Duplicate %"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "TableName",
+                "TotalRows",
+                "NullCount",
+                "DuplicateCount",
+                "QualityScore"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Ingestion by Domain",
+          "visuals": [
+            {
+              "type": "donutChart",
+              "legend": "Domain",
+              "values": [
+                "Rows Ingested"
+              ]
+            },
+            {
+              "type": "stackedBarChart",
+              "axis": "Domain",
+              "values": [
+                "CSV Files",
+                "Tables Created"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "Domain",
+                "Dataflow",
+                "CSV Files",
+                "Tables",
+                "Last Run"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Refresh History",
+          "visuals": [
+            {
+              "type": "lineChart",
+              "axis": "RefreshDate",
+              "values": [
+                "Duration (s)",
+                "Rows Processed"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "RefreshDate",
+                "Pipeline",
+                "Status",
+                "Duration (s)",
+                "Error"
+              ]
+            }
+          ]
+        }
       ]
     },
     {
       "name": "HorizonBooks-Writeback",
       "semanticModel": "writeback",
-      "theme": {"primary": "#6A1B9A", "secondary": "#FF6F00", "background": "#FAFAFA"},
+      "theme": {
+        "primary": "#6A1B9A",
+        "secondary": "#FF6F00",
+        "background": "#FAFAFA"
+      },
       "pages": [
-        {"name": "Sales Targets", "visuals": [
-          {"type": "card", "measure": "Total Target Revenue"},
-          {"type": "card", "measure": "Total Target Units Sold"},
-          {"type": "table", "columns": ["TargetId", "FiscalYear", "FiscalQuarter", "Imprint", "Genre", "TargetRevenue", "TargetUnitsSold", "ModifiedBy"]},
-          {"type": "clusteredBarChart", "axis": "Imprint", "values": ["TargetRevenue"]}
-        ]},
-        {"name": "Inventory Overrides", "visuals": [
-          {"type": "table", "columns": ["OverrideId", "WarehouseId", "ISBN", "OverrideQty", "ReasonCode", "EffectiveDate", "ModifiedBy"]},
-          {"type": "clusteredBarChart", "axis": "ReasonCode", "values": ["OverrideQty"]}
-        ]},
-        {"name": "Royalty Adjustments", "visuals": [
-          {"type": "card", "measure": "Pending Count"},
-          {"type": "table", "columns": ["AdjustmentId", "AuthorId", "ContractYear", "CurrentRate", "ProposedRate", "Status", "SubmittedBy"]},
-          {"type": "clusteredBarChart", "axis": "Status", "values": ["ProposedRate"]}
-        ]}
+        {
+          "name": "Sales Targets",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Target Revenue"
+            },
+            {
+              "type": "card",
+              "measure": "Total Target Units Sold"
+            },
+            {
+              "type": "table",
+              "columns": [
+                "TargetId",
+                "FiscalYear",
+                "FiscalQuarter",
+                "Imprint",
+                "Genre",
+                "TargetRevenue",
+                "TargetUnitsSold",
+                "ModifiedBy"
+              ]
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "Imprint",
+              "values": [
+                "TargetRevenue"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Inventory Overrides",
+          "visuals": [
+            {
+              "type": "table",
+              "columns": [
+                "OverrideId",
+                "WarehouseId",
+                "ISBN",
+                "OverrideQty",
+                "ReasonCode",
+                "EffectiveDate",
+                "ModifiedBy"
+              ]
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "ReasonCode",
+              "values": [
+                "OverrideQty"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Royalty Adjustments",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Pending Count"
+            },
+            {
+              "type": "table",
+              "columns": [
+                "AdjustmentId",
+                "AuthorId",
+                "ContractYear",
+                "CurrentRate",
+                "ProposedRate",
+                "Status",
+                "SubmittedBy"
+              ]
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "Status",
+              "values": [
+                "ProposedRate"
+              ]
+            }
+          ]
+        }
       ]
     }
   ]

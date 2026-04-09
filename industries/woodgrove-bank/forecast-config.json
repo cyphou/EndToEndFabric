@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "1.0",
+  "forecastModels": [
+    {
+      "name": "DepositGrowth",
+      "description": "Forecast deposit balance growth across account types",
+      "table": "FactAccountBalances",
+      "dateColumn": "SnapshotDate",
+      "valueColumn": "Balance",
+      "groupBy": "AccountID",
+      "algorithm": "HoltWinters",
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.3,
+        "beta": 0.1,
+        "gamma": 0.15,
+        "seasonalPeriods": 12
+      },
+      "horizonMonths": 12
+    },
+    {
+      "name": "LoanDemand",
+      "description": "Forecast loan origination volume by product category",
+      "table": "FactLoans",
+      "dateColumn": "OriginationDate",
+      "valueColumn": "OriginalAmount",
+      "groupBy": "LoanProductID",
+      "algorithm": "HoltWinters",
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.25,
+        "beta": 0.1,
+        "gamma": 0.2,
+        "seasonalPeriods": 12
+      },
+      "horizonMonths": 12
+    },
+    {
+      "name": "Revenue",
+      "description": "Forecast net interest income and fee revenue",
+      "table": "FactLoanPayments",
+      "dateColumn": "PaymentDate",
+      "valueColumn": "InterestAmount",
+      "groupBy": null,
+      "algorithm": "HoltWinters",
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.3,
+        "beta": 0.1,
+        "gamma": 0.1,
+        "seasonalPeriods": 12
+      },
+      "horizonMonths": 12
+    },
+    {
+      "name": "CreditRisk",
+      "description": "Forecast credit risk metrics and delinquency trends",
+      "table": "FactCreditScores",
+      "dateColumn": "ScoreDate",
+      "valueColumn": "ProbabilityOfDefault",
+      "groupBy": null,
+      "algorithm": "HoltWinters",
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.2,
+        "beta": 0.05,
+        "gamma": 0.1,
+        "seasonalPeriods": 12
+      },
+      "horizonMonths": 12
+    },
+    {
+      "name": "DigitalAdoption",
+      "description": "Forecast digital banking session growth",
+      "table": "FactDigitalBanking",
+      "dateColumn": "SessionDate",
+      "valueColumn": "SessionDurationSec",
+      "groupBy": "Platform",
+      "algorithm": "HoltWinters",
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.3,
+        "beta": 0.1,
+        "gamma": 0.15,
+        "seasonalPeriods": 12
+      },
+      "horizonMonths": 6
+    }
+  ],
+  "mlflow": {
+    "experimentName": "WoodgroveBank_Forecasting",
+    "trackMetrics": [
+      "rmse",
+      "mae",
+      "mape"
+    ],
+    "logModel": true
+  }
+}

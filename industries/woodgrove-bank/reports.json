@@ -1,0 +1,897 @@
+{
+  "schemaVersion": "1.0",
+  "reports": [
+    {
+      "name": "WoodgroveBank-Analytics",
+      "theme": {
+        "primary": "#003087",
+        "secondary": "#FFB819",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Executive Dashboard",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Deposits"
+            },
+            {
+              "type": "card",
+              "measure": "Total Loans Outstanding"
+            },
+            {
+              "type": "card",
+              "measure": "Net Interest Income"
+            },
+            {
+              "type": "card",
+              "measure": "NPS Score"
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Total Deposits",
+                "Total Loans Outstanding"
+              ]
+            },
+            {
+              "type": "donutChart",
+              "legend": "DimAccounts[AccountType]",
+              "values": [
+                "Total Deposits"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Deposit Portfolio",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Deposits"
+            },
+            {
+              "type": "card",
+              "measure": "Avg Account Balance"
+            },
+            {
+              "type": "card",
+              "measure": "Deposit Growth YoY"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "DimAccounts[AccountType]",
+              "values": [
+                "Total Deposits"
+              ]
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Total Deposits"
+              ]
+            },
+            {
+              "type": "pieChart",
+              "legend": "DimCustomers[Segment]",
+              "values": [
+                "Total Deposits"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Loan Portfolio",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Loans Outstanding"
+            },
+            {
+              "type": "card",
+              "measure": "NPL Ratio"
+            },
+            {
+              "type": "card",
+              "measure": "Weighted Avg Interest Rate"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "DimLoanProducts[LoanCategory]",
+              "values": [
+                "Total Loans Outstanding",
+                "Loan Count"
+              ]
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Total Loan Originations"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "DimLoanProducts[ProductName]",
+                "Loan Count",
+                "Total Loans Outstanding",
+                "NPL Ratio"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Credit Card Analytics",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Card Spend"
+            },
+            {
+              "type": "card",
+              "measure": "Card Transaction Count"
+            },
+            {
+              "type": "card",
+              "measure": "Fraud Rate"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "FactCardTransactions[MerchantCategory]",
+              "values": [
+                "Total Card Spend"
+              ]
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Total Card Spend"
+              ]
+            },
+            {
+              "type": "donutChart",
+              "legend": "DimCardProducts[CardName]",
+              "values": [
+                "Card Transaction Count"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Branch Performance",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Branch Count"
+            },
+            {
+              "type": "card",
+              "measure": "Avg Branch Employees"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "DimBranches[Region]",
+              "values": [
+                "Transaction Count",
+                "Total Deposits"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "DimBranches[BranchName]",
+                "Transaction Count",
+                "Total Deposits",
+                "Loan Count"
+              ]
+            },
+            {
+              "type": "map",
+              "location": "DimBranches[State]",
+              "size": "Transaction Count"
+            }
+          ]
+        },
+        {
+          "name": "Customer Segmentation",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Customer Count"
+            },
+            {
+              "type": "card",
+              "measure": "Affluent Customer Count"
+            },
+            {
+              "type": "card",
+              "measure": "Products per Customer"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "DimCustomers[Segment]",
+              "values": [
+                "Customer Count"
+              ]
+            },
+            {
+              "type": "treemap",
+              "category": "DimCustomers[CustomerType]",
+              "values": [
+                "Total Deposits"
+              ]
+            },
+            {
+              "type": "scatterChart",
+              "xAxis": "Avg Account Balance",
+              "yAxis": "Products per Customer",
+              "legend": "DimCustomers[Segment]"
+            }
+          ]
+        },
+        {
+          "name": "Digital Banking",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Digital Adoption Rate"
+            },
+            {
+              "type": "card",
+              "measure": "Digital Sessions"
+            },
+            {
+              "type": "card",
+              "measure": "Mobile Adoption %"
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Digital Sessions"
+              ]
+            },
+            {
+              "type": "donutChart",
+              "legend": "FactDigitalBanking[Platform]",
+              "values": [
+                "Digital Sessions"
+              ]
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "FactDigitalBanking[Feature]",
+              "values": [
+                "Digital Sessions"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Revenue Analysis",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Net Interest Income"
+            },
+            {
+              "type": "card",
+              "measure": "Total Card Spend"
+            },
+            {
+              "type": "card",
+              "measure": "Cost to Income Ratio"
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Net Interest Income"
+              ]
+            },
+            {
+              "type": "waterfallChart",
+              "category": "DimDate[Quarter]",
+              "values": [
+                "Net Interest Income"
+              ]
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "DimBranches[Region]",
+              "values": [
+                "Revenue per Customer"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Cost Analysis",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Cost to Income Ratio"
+            },
+            {
+              "type": "card",
+              "measure": "Provision for Loan Losses"
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Provision for Loan Losses"
+              ]
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "DimBranches[Region]",
+              "values": [
+                "Avg Branch Employees"
+              ]
+            },
+            {
+              "type": "gauge",
+              "value": "Cost to Income Ratio",
+              "target": 0.6
+            }
+          ]
+        },
+        {
+          "name": "Risk Overview",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "NPL Ratio"
+            },
+            {
+              "type": "card",
+              "measure": "Avg Credit Score"
+            },
+            {
+              "type": "card",
+              "measure": "Capital Adequacy Ratio"
+            },
+            {
+              "type": "card",
+              "measure": "Risk Weighted Assets"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "FactCreditScores[RiskBand]",
+              "values": [
+                "High Risk Customers"
+              ]
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Avg Credit Score",
+                "Avg Probability of Default"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Compliance Dashboard",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Compliance Pass Rate"
+            },
+            {
+              "type": "card",
+              "measure": "AML Alert Count"
+            },
+            {
+              "type": "card",
+              "measure": "SAR Filing Rate"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "FactComplianceChecks[CheckType]",
+              "values": [
+                "Total Compliance Checks"
+              ]
+            },
+            {
+              "type": "donutChart",
+              "legend": "FactComplianceChecks[Result]",
+              "values": [
+                "Total Compliance Checks"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "DimRiskCategories[CategoryName]",
+                "Total Compliance Checks",
+                "Total Findings",
+                "Avg Remediation Days"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Geographic Map",
+          "visuals": [
+            {
+              "type": "map",
+              "location": "DimBranches[State]",
+              "size": "Total Deposits"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "DimBranches[State]",
+              "values": [
+                "Branch Count",
+                "Customer Count"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "DimBranches[State]",
+                "Branch Count",
+                "Total Deposits",
+                "Loan Count",
+                "Customer Count"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "WoodgroveBank-Forecasting",
+      "theme": {
+        "primary": "#003087",
+        "secondary": "#FFB819",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Deposit Forecast",
+          "visuals": [
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Total Deposits"
+              ],
+              "forecast": true
+            },
+            {
+              "type": "card",
+              "measure": "Total Deposits"
+            },
+            {
+              "type": "card",
+              "measure": "Deposit Growth YoY"
+            }
+          ]
+        },
+        {
+          "name": "Loan Demand Forecast",
+          "visuals": [
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Total Loan Originations"
+              ],
+              "forecast": true
+            },
+            {
+              "type": "areaChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Loan Count"
+              ]
+            },
+            {
+              "type": "card",
+              "measure": "Loan Origination YoY"
+            }
+          ]
+        },
+        {
+          "name": "Revenue Forecast",
+          "visuals": [
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Net Interest Income"
+              ],
+              "forecast": true
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "DimDate[Quarter]",
+              "values": [
+                "Net Interest Income"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Risk Forecast",
+          "visuals": [
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "NPL Ratio"
+              ],
+              "forecast": true
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Provision for Loan Losses"
+              ],
+              "forecast": true
+            }
+          ]
+        },
+        {
+          "name": "Digital Growth",
+          "visuals": [
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Digital Sessions"
+              ],
+              "forecast": true
+            },
+            {
+              "type": "lineChart",
+              "axis": "DimDate[MonthName]",
+              "values": [
+                "Digital Adoption Rate"
+              ],
+              "forecast": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "WoodgroveBank-HTAP",
+      "theme": {
+        "primary": "#003087",
+        "secondary": "#FFB819",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Real-Time Transactions",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Transaction Count"
+            },
+            {
+              "type": "card",
+              "measure": "Total Transaction Volume"
+            },
+            {
+              "type": "lineChart",
+              "axis": "Timestamp",
+              "values": [
+                "Amount"
+              ],
+              "streaming": true
+            },
+            {
+              "type": "map",
+              "location": "DimBranches[State]",
+              "color": "Transaction Count"
+            }
+          ]
+        },
+        {
+          "name": "Fraud Detection",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Fraud Alert Count"
+            },
+            {
+              "type": "card",
+              "measure": "Avg Fraud Risk Score"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "AlertType",
+              "values": [
+                "AlertCount"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "AlertType",
+                "LatestTimestamp",
+                "AlertCount",
+                "AvgRiskScore"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "ATM Monitoring",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "ATM Branches %"
+            },
+            {
+              "type": "lineChart",
+              "axis": "Timestamp",
+              "values": [
+                "CashLevel"
+              ],
+              "streaming": true
+            },
+            {
+              "type": "table",
+              "columns": [
+                "ATMID",
+                "Location",
+                "CashLevel",
+                "Status",
+                "LastTransaction"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "WoodgroveBank-Pipeline",
+      "theme": {
+        "primary": "#003087",
+        "secondary": "#FFB819",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Pipeline Overview",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Tables Loaded"
+            },
+            {
+              "type": "card",
+              "measure": "Total Rows Ingested"
+            },
+            {
+              "type": "card",
+              "measure": "Last Refresh Time"
+            },
+            {
+              "type": "card",
+              "measure": "Pipeline Success Rate"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "Domain",
+              "values": [
+                "Tables Loaded",
+                "Rows Ingested"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "Pipeline Step",
+                "Status",
+                "Duration (s)",
+                "Rows Processed"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Data Quality",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Data Quality Score"
+            },
+            {
+              "type": "card",
+              "measure": "Null Value Count"
+            },
+            {
+              "type": "card",
+              "measure": "Duplicate Row Count"
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "TableName",
+              "values": [
+                "Null %",
+                "Duplicate %"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "TableName",
+                "TotalRows",
+                "NullCount",
+                "DuplicateCount",
+                "QualityScore"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Refresh History",
+          "visuals": [
+            {
+              "type": "lineChart",
+              "axis": "RefreshDate",
+              "values": [
+                "Duration (s)",
+                "Rows Processed"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "RefreshDate",
+                "Pipeline",
+                "Status",
+                "Duration (s)",
+                "Error"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Ingestion by Domain",
+          "visuals": [
+            {
+              "type": "donutChart",
+              "legend": "Domain",
+              "values": [
+                "Rows Ingested"
+              ]
+            },
+            {
+              "type": "stackedBarChart",
+              "axis": "Domain",
+              "values": [
+                "CSV Files",
+                "Tables Created"
+              ]
+            },
+            {
+              "type": "table",
+              "columns": [
+                "Domain",
+                "Dataflow",
+                "CSV Files",
+                "Tables",
+                "Last Run"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "WoodgroveBank-Writeback",
+      "semanticModel": "writeback",
+      "theme": {
+        "primary": "#003087",
+        "secondary": "#FFB819",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Budget Adjustments",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Adjustments"
+            },
+            {
+              "type": "card",
+              "measure": "Pending Count"
+            },
+            {
+              "type": "table",
+              "columns": [
+                "AdjustmentId",
+                "FiscalYear",
+                "Department",
+                "AdjustmentAmount",
+                "Status",
+                "SubmittedBy",
+                "SubmittedDate"
+              ]
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "Department",
+              "values": [
+                "AdjustmentAmount"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Rate Overrides",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Overrides"
+            },
+            {
+              "type": "table",
+              "columns": [
+                "OverrideId",
+                "ProductName",
+                "OriginalRate",
+                "OverrideRate",
+                "EffectiveDate",
+                "ApprovedBy"
+              ]
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "ProductName",
+              "values": [
+                "OriginalRate",
+                "OverrideRate"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Campaign Targets",
+          "visuals": [
+            {
+              "type": "card",
+              "measure": "Total Campaign Budget"
+            },
+            {
+              "type": "table",
+              "columns": [
+                "CampaignId",
+                "CampaignName",
+                "TargetSegment",
+                "Budget",
+                "TargetAccounts",
+                "StartDate",
+                "EndDate"
+              ]
+            },
+            {
+              "type": "clusteredBarChart",
+              "axis": "CampaignName",
+              "values": [
+                "Budget",
+                "TargetAccounts"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

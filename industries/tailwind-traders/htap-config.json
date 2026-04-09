@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0",
+  "eventhouse": {
+    "name": "TailwindTradersEventhouse",
+    "kqlDatabase": "TailwindTradersKQLDB",
+    "retentionDays": 730
+  },
+  "eventStreams": [
+    {
+      "name": "OrderStream",
+      "description": "Real-time POS and online order transactions",
+      "eventsPerSecond": 50,
+      "schema": [
+        { "name": "OrderID", "type": "int" },
+        { "name": "Timestamp", "type": "datetime" },
+        { "name": "Channel", "type": "string" },
+        { "name": "StoreID", "type": "int" },
+        { "name": "ProductID", "type": "int" },
+        { "name": "Quantity", "type": "int" },
+        { "name": "Amount", "type": "real" },
+        { "name": "PaymentMethod", "type": "string" },
+        { "name": "CustomerID", "type": "int" }
+      ],
+      "kqlTable": "OrderStreamEvents",
+      "kqlAggregations": [
+        "OrderStreamEvents | summarize TotalRevenue=sum(Amount), OrderCount=count(), AvgOrderValue=avg(Amount) by Channel, bin(Timestamp, 1m)",
+        "OrderStreamEvents | summarize Revenue=sum(Amount), Items=sum(Quantity) by StoreID, bin(Timestamp, 1h)"
+      ]
+    },
+    {
+      "name": "InventoryMovements",
+      "description": "Real-time stock level changes across warehouses and stores",
+      "eventsPerSecond": 30,
+      "schema": [
+        { "name": "MovementID", "type": "int" },
+        { "name": "Timestamp", "type": "datetime" },
+        { "name": "ProductID", "type": "int" },
+        { "name": "WarehouseID", "type": "int" },
+        { "name": "MovementType", "type": "string" },
+        { "name": "QuantityChange", "type": "int" },
+        { "name": "NewQuantity", "type": "int" },
+        { "name": "IsAlertTriggered", "type": "bool" }
+      ],
+      "kqlTable": "InventoryMovementEvents",
+      "kqlAggregations": [
+        "InventoryMovementEvents | summarize TotalIn=sumif(QuantityChange, MovementType == 'Receipt'), TotalOut=sumif(QuantityChange, MovementType == 'Sale'), Alerts=countif(IsAlertTriggered) by WarehouseID, bin(Timestamp, 15m)",
+        "InventoryMovementEvents | where IsAlertTriggered == true | summarize AlertCount=count() by ProductID, WarehouseID, bin(Timestamp, 1h)"
+      ]
+    },
+    {
+      "name": "WebClickstream",
+      "description": "Real-time page views, clicks, and cart events from the e-commerce platform",
+      "eventsPerSecond": 200,
+      "schema": [
+        { "name": "SessionID", "type": "string" },
+        { "name": "Timestamp", "type": "datetime" },
+        { "name": "EventType", "type": "string" },
+        { "name": "PageURL", "type": "string" },
+        { "name": "ProductID", "type": "int" },
+        { "name": "DeviceType", "type": "string" },
+        { "name": "TrafficSource", "type": "string" },
+        { "name": "CartValue", "type": "real" }
+      ],
+      "kqlTable": "WebClickstreamEvents",
+      "kqlAggregations": [
+        "WebClickstreamEvents | summarize PageViews=countif(EventType == 'PageView'), AddToCart=countif(EventType == 'AddToCart'), Purchases=countif(EventType == 'Purchase') by bin(Timestamp, 1m)",
+        "WebClickstreamEvents | summarize Sessions=dcount(SessionID), AvgCartValue=avg(CartValue) by DeviceType, TrafficSource, bin(Timestamp, 5m)"
+      ]
+    }
+  ],
+  "bridgeQueries": [
+    {
+      "name": "OrderBridge",
+      "description": "Bridge hot order stream with cold Lakehouse sales data",
+      "hotTable": "OrderStreamEvents",
+      "coldTable": "FactOnlineOrders",
+      "joinKey": "OrderID"
+    },
+    {
+      "name": "InventoryBridge",
+      "description": "Bridge real-time inventory movements with inventory snapshots",
+      "hotTable": "InventoryMovementEvents",
+      "coldTable": "FactInventorySnapshots",
+      "joinKey": "ProductID"
+    }
+  ]
+}

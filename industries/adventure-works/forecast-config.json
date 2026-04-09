@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "1.0",
+  "forecastModels": [
+    {
+      "name": "OccupancyDemand",
+      "description": "Forecast room night demand by property and season",
+      "table": "FactReservations",
+      "dateColumn": "CheckInDate",
+      "valueColumn": "RoomNights",
+      "groupBy": "PropertyID",
+      "algorithm": "HoltWinters",
+      "params": {
+        "seasonal": "multiplicative",
+        "alpha": 0.3,
+        "beta": 0.1,
+        "gamma": 0.25,
+        "seasonalPeriods": 12
+      },
+      "horizonMonths": 12
+    },
+    {
+      "name": "Revenue",
+      "description": "Forecast total revenue across all streams",
+      "table": "FactRoomRevenue",
+      "dateColumn": "RevenueDate",
+      "valueColumn": "TotalRevenue",
+      "groupBy": null,
+      "algorithm": "HoltWinters",
+      "params": {
+        "seasonal": "multiplicative",
+        "alpha": 0.3,
+        "beta": 0.1,
+        "gamma": 0.2,
+        "seasonalPeriods": 12
+      },
+      "horizonMonths": 12
+    },
+    {
+      "name": "GuestGrowth",
+      "description": "Forecast unique guest arrivals",
+      "table": "FactCheckIns",
+      "dateColumn": "CheckInDate",
+      "valueColumn": "GuestCount",
+      "groupBy": null,
+      "algorithm": "HoltWinters",
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.25,
+        "beta": 0.1,
+        "gamma": 0.15,
+        "seasonalPeriods": 12
+      },
+      "horizonMonths": 12
+    },
+    {
+      "name": "SeasonalDemand",
+      "description": "Forecast seasonal booking patterns by region",
+      "table": "FactReservations",
+      "dateColumn": "BookingDate",
+      "valueColumn": "RoomNights",
+      "groupBy": "SeasonID",
+      "algorithm": "HoltWinters",
+      "params": {
+        "seasonal": "multiplicative",
+        "alpha": 0.35,
+        "beta": 0.1,
+        "gamma": 0.3,
+        "seasonalPeriods": 12
+      },
+      "horizonMonths": 6
+    },
+    {
+      "name": "ActivityBookings",
+      "description": "Forecast adventure activity bookings by type",
+      "table": "FactActivityBookings",
+      "dateColumn": "BookingDate",
+      "valueColumn": "Revenue",
+      "groupBy": "ActivityTypeID",
+      "algorithm": "HoltWinters",
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.3,
+        "beta": 0.1,
+        "gamma": 0.2,
+        "seasonalPeriods": 12
+      },
+      "horizonMonths": 6
+    }
+  ],
+  "mlflow": {
+    "experimentName": "AdventureWorks_Forecasting",
+    "trackMetrics": ["rmse", "mae", "mape"],
+    "logModel": true
+  }
+}

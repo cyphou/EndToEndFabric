@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "1.0",
+  "writebackConfig": {
+    "enabled": true,
+    "targetLakehouse": "GoldLH",
+    "schema": "writeback",
+    "tables": [
+      {
+        "name": "BudgetAdjustments",
+        "description": "User-submitted department budget adjustments from Power BI report",
+        "columns": [
+          { "name": "AdjustmentId", "dataType": "STRING", "isKey": true },
+          { "name": "FiscalYear", "dataType": "INT" },
+          { "name": "FiscalQuarter", "dataType": "INT" },
+          { "name": "Department", "dataType": "STRING" },
+          { "name": "AdjustmentAmount", "dataType": "DECIMAL(18,2)" },
+          { "name": "Justification", "dataType": "STRING" },
+          { "name": "Status", "dataType": "STRING", "default": "Pending" },
+          { "name": "SubmittedBy", "dataType": "STRING" },
+          { "name": "SubmittedDate", "dataType": "TIMESTAMP" },
+          { "name": "ApprovedBy", "dataType": "STRING" },
+          { "name": "ApprovedDate", "dataType": "TIMESTAMP" }
+        ],
+        "partitionBy": ["FiscalYear"]
+      },
+      {
+        "name": "QualityTargets",
+        "description": "Editable clinical quality measure targets for HEDIS and readmission metrics",
+        "columns": [
+          { "name": "TargetId", "dataType": "STRING", "isKey": true },
+          { "name": "FiscalYear", "dataType": "INT" },
+          { "name": "MeasureName", "dataType": "STRING" },
+          { "name": "HEDISMeasureCode", "dataType": "STRING" },
+          { "name": "TargetValue", "dataType": "DECIMAL(5,2)" },
+          { "name": "CurrentValue", "dataType": "DECIMAL(5,2)" },
+          { "name": "FacilityID", "dataType": "INT" },
+          { "name": "Notes", "dataType": "STRING" },
+          { "name": "Status", "dataType": "STRING", "default": "Draft" },
+          { "name": "ModifiedBy", "dataType": "STRING" },
+          { "name": "ModifiedDate", "dataType": "TIMESTAMP" }
+        ],
+        "partitionBy": ["FiscalYear"]
+      },
+      {
+        "name": "StaffingOverrides",
+        "description": "Manager-submitted staffing level overrides for specific units and shifts",
+        "columns": [
+          { "name": "OverrideId", "dataType": "STRING", "isKey": true },
+          { "name": "FacilityID", "dataType": "INT" },
+          { "name": "FacilityName", "dataType": "STRING" },
+          { "name": "Unit", "dataType": "STRING" },
+          { "name": "Shift", "dataType": "STRING" },
+          { "name": "RequiredRNs", "dataType": "INT" },
+          { "name": "RequiredCNAs", "dataType": "INT" },
+          { "name": "EffectiveDate", "dataType": "DATE" },
+          { "name": "ExpirationDate", "dataType": "DATE" },
+          { "name": "Reason", "dataType": "STRING" },
+          { "name": "ModifiedBy", "dataType": "STRING" },
+          { "name": "ModifiedDate", "dataType": "TIMESTAMP" }
+        ],
+        "partitionBy": ["FacilityID"]
+      }
+    ],
+    "storedProcedures": [
+      {
+        "name": "usp_UpsertBudgetAdjustment",
+        "table": "BudgetAdjustments",
+        "operation": "upsert",
+        "keyColumns": ["AdjustmentId"]
+      },
+      {
+        "name": "usp_UpsertQualityTarget",
+        "table": "QualityTargets",
+        "operation": "upsert",
+        "keyColumns": ["TargetId"]
+      },
+      {
+        "name": "usp_UpsertStaffingOverride",
+        "table": "StaffingOverrides",
+        "operation": "upsert",
+        "keyColumns": ["OverrideId"]
+      }
+    ]
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0",
+  "eventhouse": {
+    "name": "LamnaHealthcareEventhouse",
+    "kqlDatabase": "LamnaHealthcareKQLDB",
+    "retentionDays": 730
+  },
+  "eventStreams": [
+    {
+      "name": "EDPatientFlow",
+      "description": "Real-time ED triage events — patient arrivals, triage scores, wait times, and dispositions",
+      "eventsPerSecond": 15,
+      "schema": [
+        { "name": "PatientID", "type": "int" },
+        { "name": "Timestamp", "type": "datetime" },
+        { "name": "EventType", "type": "string" },
+        { "name": "FacilityID", "type": "int" },
+        { "name": "AcuityLevel", "type": "int" },
+        { "name": "ChiefComplaint", "type": "string" },
+        { "name": "WaitMinutes", "type": "int" },
+        { "name": "Disposition", "type": "string" },
+        { "name": "IsTrauma", "type": "bool" }
+      ],
+      "kqlTable": "EDPatientFlowEvents",
+      "kqlAggregations": [
+        "EDPatientFlowEvents | summarize PatientCount=count(), AvgWait=avg(WaitMinutes), TraumaCount=countif(IsTrauma) by FacilityID, AcuityLevel, bin(Timestamp, 15m)",
+        "EDPatientFlowEvents | summarize Arrivals=countif(EventType == 'Arrival'), Discharges=countif(EventType == 'Discharge') by FacilityID, bin(Timestamp, 1h)"
+      ]
+    },
+    {
+      "name": "BedStatusUpdates",
+      "description": "Real-time bed admission, discharge, and transfer events across all facilities",
+      "eventsPerSecond": 8,
+      "schema": [
+        { "name": "BedID", "type": "int" },
+        { "name": "Timestamp", "type": "datetime" },
+        { "name": "EventType", "type": "string" },
+        { "name": "FacilityID", "type": "int" },
+        { "name": "Unit", "type": "string" },
+        { "name": "PatientID", "type": "int" },
+        { "name": "PreviousStatus", "type": "string" },
+        { "name": "NewStatus", "type": "string" }
+      ],
+      "kqlTable": "BedStatusEvents",
+      "kqlAggregations": [
+        "BedStatusEvents | summarize Admissions=countif(EventType == 'Admission'), Discharges=countif(EventType == 'Discharge'), Transfers=countif(EventType == 'Transfer') by FacilityID, Unit, bin(Timestamp, 1h)",
+        "BedStatusEvents | where NewStatus == 'Occupied' | summarize OccupiedCount=dcount(BedID) by FacilityID, Unit, bin(Timestamp, 15m)"
+      ]
+    },
+    {
+      "name": "VitalSignsStream",
+      "description": "Continuous patient vital signs monitoring from bedside devices",
+      "eventsPerSecond": 50,
+      "schema": [
+        { "name": "PatientID", "type": "int" },
+        { "name": "Timestamp", "type": "datetime" },
+        { "name": "FacilityID", "type": "int" },
+        { "name": "HeartRate", "type": "int" },
+        { "name": "SystolicBP", "type": "int" },
+        { "name": "DiastolicBP", "type": "int" },
+        { "name": "SpO2", "type": "real" },
+        { "name": "Temperature", "type": "real" },
+        { "name": "RespiratoryRate", "type": "int" },
+        { "name": "IsAlert", "type": "bool" }
+      ],
+      "kqlTable": "VitalSignsStreamEvents",
+      "kqlAggregations": [
+        "VitalSignsStreamEvents | summarize AvgHR=avg(HeartRate), AvgSpO2=avg(SpO2), AlertCount=countif(IsAlert) by PatientID, bin(Timestamp, 5m)",
+        "VitalSignsStreamEvents | where IsAlert == true | summarize AlertCount=count() by FacilityID, bin(Timestamp, 15m)"
+      ]
+    }
+  ],
+  "bridgeQueries": [
+    {
+      "name": "PatientFlowBridge",
+      "description": "Bridge hot ED flow events with cold Lakehouse encounter data",
+      "hotTable": "EDPatientFlowEvents",
+      "coldTable": "FactEncounters",
+      "joinKey": "PatientID"
+    },
+    {
+      "name": "BedCensusBridge",
+      "description": "Bridge hot bed status with cold census data",
+      "hotTable": "BedStatusEvents",
+      "coldTable": "FactBedCensus",
+      "joinKey": "FacilityID"
+    }
+  ]
+}

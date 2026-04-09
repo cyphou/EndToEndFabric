@@ -1,0 +1,538 @@
+{
+  "schemaVersion": "1.0",
+  "semanticModel": {
+    "name": "AdventureWorksModel",
+    "mode": "DirectLake",
+    "defaultSchema": "gold",
+    "tables": [
+      {
+        "name": "DimDate",
+        "schema": "dbo",
+        "columns": [
+          { "name": "DateKey", "dataType": "Int64", "isKey": true },
+          { "name": "Date", "dataType": "DateTime" },
+          { "name": "Year", "dataType": "Int64" },
+          { "name": "Month", "dataType": "Int64" },
+          { "name": "Quarter", "dataType": "Int64" },
+          { "name": "MonthName", "dataType": "String" },
+          { "name": "FiscalYear", "dataType": "Int64" },
+          { "name": "FiscalQuarter", "dataType": "Int64" },
+          { "name": "DayOfWeek", "dataType": "String" },
+          { "name": "IsWeekend", "dataType": "Boolean" },
+          { "name": "IsHoliday", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "DimGuests",
+        "schema": "dbo",
+        "columns": [
+          { "name": "GuestID", "dataType": "Int64", "isKey": true },
+          { "name": "FirstName", "dataType": "String" },
+          { "name": "LastName", "dataType": "String" },
+          { "name": "Email", "dataType": "String" },
+          { "name": "Country", "dataType": "String" },
+          { "name": "LoyaltyTier", "dataType": "String" },
+          { "name": "LoyaltyPoints", "dataType": "Int64" },
+          { "name": "FirstStayDate", "dataType": "DateTime" },
+          { "name": "TotalStays", "dataType": "Int64" },
+          { "name": "IsActive", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "DimProperties",
+        "schema": "dbo",
+        "columns": [
+          { "name": "PropertyID", "dataType": "Int64", "isKey": true },
+          { "name": "PropertyName", "dataType": "String" },
+          { "name": "PropertyType", "dataType": "String" },
+          { "name": "Region", "dataType": "String" },
+          { "name": "Country", "dataType": "String" },
+          { "name": "City", "dataType": "String" },
+          { "name": "TotalRooms", "dataType": "Int64" },
+          { "name": "StarRating", "dataType": "Double" },
+          { "name": "OpenDate", "dataType": "DateTime" },
+          { "name": "HasSpa", "dataType": "Boolean" },
+          { "name": "HasRestaurant", "dataType": "Boolean" },
+          { "name": "HasAdventures", "dataType": "Boolean" },
+          { "name": "Latitude", "dataType": "Double" },
+          { "name": "Longitude", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "DimRoomTypes",
+        "schema": "dbo",
+        "columns": [
+          { "name": "RoomTypeID", "dataType": "Int64", "isKey": true },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "RoomTypeName", "dataType": "String" },
+          { "name": "MaxOccupancy", "dataType": "Int64" },
+          { "name": "RackRate", "dataType": "Double" },
+          { "name": "SquareFeet", "dataType": "Int64" },
+          { "name": "BedType", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "DimSeasons",
+        "schema": "dbo",
+        "columns": [
+          { "name": "SeasonID", "dataType": "Int64", "isKey": true },
+          { "name": "SeasonName", "dataType": "String" },
+          { "name": "StartMonth", "dataType": "Int64" },
+          { "name": "EndMonth", "dataType": "Int64" },
+          { "name": "PricingMultiplier", "dataType": "Double" },
+          { "name": "DemandLevel", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "DimRevenueStreams",
+        "schema": "dbo",
+        "columns": [
+          { "name": "RevenueStreamID", "dataType": "Int64", "isKey": true },
+          { "name": "StreamName", "dataType": "String" },
+          { "name": "Category", "dataType": "String" },
+          { "name": "IsRecurring", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "DimSurveyQuestions",
+        "schema": "dbo",
+        "columns": [
+          { "name": "QuestionID", "dataType": "Int64", "isKey": true },
+          { "name": "QuestionText", "dataType": "String" },
+          { "name": "Category", "dataType": "String" },
+          { "name": "ScaleMax", "dataType": "Int64" },
+          { "name": "IsNPS", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "DimStaff",
+        "schema": "dbo",
+        "columns": [
+          { "name": "StaffID", "dataType": "Int64", "isKey": true },
+          { "name": "FirstName", "dataType": "String" },
+          { "name": "LastName", "dataType": "String" },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "Department", "dataType": "String" },
+          { "name": "Position", "dataType": "String" },
+          { "name": "HireDate", "dataType": "DateTime" },
+          { "name": "HourlyRate", "dataType": "Double" },
+          { "name": "IsFullTime", "dataType": "Boolean" },
+          { "name": "CertificationLevel", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "DimMaintenanceTypes",
+        "schema": "dbo",
+        "columns": [
+          { "name": "MaintenanceTypeID", "dataType": "Int64", "isKey": true },
+          { "name": "TypeName", "dataType": "String" },
+          { "name": "Category", "dataType": "String" },
+          { "name": "AvgCost", "dataType": "Double" },
+          { "name": "Priority", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "DimActivityTypes",
+        "schema": "dbo",
+        "columns": [
+          { "name": "ActivityTypeID", "dataType": "Int64", "isKey": true },
+          { "name": "ActivityName", "dataType": "String" },
+          { "name": "Category", "dataType": "String" },
+          { "name": "DifficultyLevel", "dataType": "String" },
+          { "name": "DurationHours", "dataType": "Double" },
+          { "name": "PricePerPerson", "dataType": "Double" },
+          { "name": "MaxParticipants", "dataType": "Int64" },
+          { "name": "RequiresGuide", "dataType": "Boolean" },
+          { "name": "MinAge", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "FactReservations",
+        "schema": "dbo",
+        "columns": [
+          { "name": "ReservationID", "dataType": "Int64", "isKey": true },
+          { "name": "GuestID", "dataType": "Int64" },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "RoomTypeID", "dataType": "Int64" },
+          { "name": "SeasonID", "dataType": "Int64" },
+          { "name": "BookingDate", "dataType": "DateTime" },
+          { "name": "CheckInDate", "dataType": "DateTime" },
+          { "name": "CheckOutDate", "dataType": "DateTime" },
+          { "name": "RoomNights", "dataType": "Int64" },
+          { "name": "Adults", "dataType": "Int64" },
+          { "name": "Children", "dataType": "Int64" },
+          { "name": "DailyRate", "dataType": "Double" },
+          { "name": "TotalAmount", "dataType": "Double" },
+          { "name": "BookingChannel", "dataType": "String" },
+          { "name": "Status", "dataType": "String" },
+          { "name": "LeadTimeDays", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "FactCheckIns",
+        "schema": "dbo",
+        "columns": [
+          { "name": "CheckInID", "dataType": "Int64", "isKey": true },
+          { "name": "ReservationID", "dataType": "Int64" },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "GuestID", "dataType": "Int64" },
+          { "name": "CheckInDate", "dataType": "DateTime" },
+          { "name": "CheckOutDate", "dataType": "DateTime" },
+          { "name": "RoomNumber", "dataType": "String" },
+          { "name": "GuestCount", "dataType": "Int64" },
+          { "name": "IsEarlyCheckIn", "dataType": "Boolean" },
+          { "name": "IsLateCheckOut", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "FactCancellations",
+        "schema": "dbo",
+        "columns": [
+          { "name": "CancellationID", "dataType": "Int64", "isKey": true },
+          { "name": "ReservationID", "dataType": "Int64" },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "CancellationDate", "dataType": "DateTime" },
+          { "name": "Reason", "dataType": "String" },
+          { "name": "DaysBeforeArrival", "dataType": "Int64" },
+          { "name": "PenaltyAmount", "dataType": "Double" },
+          { "name": "WasRebooked", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "FactRoomRevenue",
+        "schema": "dbo",
+        "columns": [
+          { "name": "RoomRevenueID", "dataType": "Int64", "isKey": true },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "RoomTypeID", "dataType": "Int64" },
+          { "name": "RevenueDate", "dataType": "DateTime" },
+          { "name": "RoomsOccupied", "dataType": "Int64" },
+          { "name": "RoomsAvailable", "dataType": "Int64" },
+          { "name": "ADR", "dataType": "Double" },
+          { "name": "TotalRevenue", "dataType": "Double" },
+          { "name": "Discounts", "dataType": "Double" },
+          { "name": "Taxes", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "FactFBRevenue",
+        "schema": "dbo",
+        "columns": [
+          { "name": "FBRevenueID", "dataType": "Int64", "isKey": true },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "RevenueDate", "dataType": "DateTime" },
+          { "name": "Outlet", "dataType": "String" },
+          { "name": "Covers", "dataType": "Int64" },
+          { "name": "FoodRevenue", "dataType": "Double" },
+          { "name": "BeverageRevenue", "dataType": "Double" },
+          { "name": "TotalFBRevenue", "dataType": "Double" },
+          { "name": "CostOfGoods", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "FactSpaRevenue",
+        "schema": "dbo",
+        "columns": [
+          { "name": "SpaRevenueID", "dataType": "Int64", "isKey": true },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "ServiceDate", "dataType": "DateTime" },
+          { "name": "ServiceType", "dataType": "String" },
+          { "name": "GuestID", "dataType": "Int64" },
+          { "name": "Revenue", "dataType": "Double" },
+          { "name": "DurationMinutes", "dataType": "Int64" },
+          { "name": "TherapistID", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "FactAdventureRevenue",
+        "schema": "dbo",
+        "columns": [
+          { "name": "AdvRevenueID", "dataType": "Int64", "isKey": true },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "ActivityTypeID", "dataType": "Int64" },
+          { "name": "RevenueDate", "dataType": "DateTime" },
+          { "name": "Participants", "dataType": "Int64" },
+          { "name": "Revenue", "dataType": "Double" },
+          { "name": "EquipmentCost", "dataType": "Double" },
+          { "name": "GuideCost", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "FactGuestSurveys",
+        "schema": "dbo",
+        "columns": [
+          { "name": "SurveyResponseID", "dataType": "Int64", "isKey": true },
+          { "name": "GuestID", "dataType": "Int64" },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "QuestionID", "dataType": "Int64" },
+          { "name": "SurveyDate", "dataType": "DateTime" },
+          { "name": "Score", "dataType": "Int64" },
+          { "name": "Comment", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "FactGuestComplaints",
+        "schema": "dbo",
+        "columns": [
+          { "name": "ComplaintID", "dataType": "Int64", "isKey": true },
+          { "name": "GuestID", "dataType": "Int64" },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "ComplaintDate", "dataType": "DateTime" },
+          { "name": "Category", "dataType": "String" },
+          { "name": "Severity", "dataType": "String" },
+          { "name": "ResolutionDays", "dataType": "Int64" },
+          { "name": "CompensationAmount", "dataType": "Double" },
+          { "name": "Status", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "FactLoyaltyMembers",
+        "schema": "dbo",
+        "columns": [
+          { "name": "MembershipID", "dataType": "Int64", "isKey": true },
+          { "name": "GuestID", "dataType": "Int64" },
+          { "name": "EnrollmentDate", "dataType": "DateTime" },
+          { "name": "CurrentTier", "dataType": "String" },
+          { "name": "PointsEarned", "dataType": "Int64" },
+          { "name": "PointsRedeemed", "dataType": "Int64" },
+          { "name": "NightsThisYear", "dataType": "Int64" },
+          { "name": "LifetimeValue", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "FactHousekeeping",
+        "schema": "dbo",
+        "columns": [
+          { "name": "HousekeepingID", "dataType": "Int64", "isKey": true },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "StaffID", "dataType": "Int64" },
+          { "name": "ServiceDate", "dataType": "DateTime" },
+          { "name": "RoomNumber", "dataType": "String" },
+          { "name": "ServiceType", "dataType": "String" },
+          { "name": "DurationMinutes", "dataType": "Int64" },
+          { "name": "QualityScore", "dataType": "Double" },
+          { "name": "IssuesFound", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "FactMaintenance",
+        "schema": "dbo",
+        "columns": [
+          { "name": "MaintenanceID", "dataType": "Int64", "isKey": true },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "MaintenanceTypeID", "dataType": "Int64" },
+          { "name": "ReportedDate", "dataType": "DateTime" },
+          { "name": "CompletedDate", "dataType": "DateTime" },
+          { "name": "Cost", "dataType": "Double" },
+          { "name": "DurationHours", "dataType": "Double" },
+          { "name": "Priority", "dataType": "String" },
+          { "name": "Status", "dataType": "String" },
+          { "name": "AffectedRooms", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "FactEnergyUsage",
+        "schema": "dbo",
+        "columns": [
+          { "name": "EnergyID", "dataType": "Int64", "isKey": true },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "ReadingDate", "dataType": "DateTime" },
+          { "name": "ElectricityKWh", "dataType": "Double" },
+          { "name": "GasTherm", "dataType": "Double" },
+          { "name": "WaterGallons", "dataType": "Double" },
+          { "name": "ElectricityCost", "dataType": "Double" },
+          { "name": "GasCost", "dataType": "Double" },
+          { "name": "WaterCost", "dataType": "Double" },
+          { "name": "OccupiedRooms", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "FactActivityBookings",
+        "schema": "dbo",
+        "columns": [
+          { "name": "BookingID", "dataType": "Int64", "isKey": true },
+          { "name": "GuestID", "dataType": "Int64" },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "ActivityTypeID", "dataType": "Int64" },
+          { "name": "BookingDate", "dataType": "DateTime" },
+          { "name": "ActivityDate", "dataType": "DateTime" },
+          { "name": "Participants", "dataType": "Int64" },
+          { "name": "Revenue", "dataType": "Double" },
+          { "name": "Status", "dataType": "String" },
+          { "name": "WeatherCondition", "dataType": "String" },
+          { "name": "SatisfactionScore", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "FactGuideSchedules",
+        "schema": "dbo",
+        "columns": [
+          { "name": "ScheduleID", "dataType": "Int64", "isKey": true },
+          { "name": "StaffID", "dataType": "Int64" },
+          { "name": "PropertyID", "dataType": "Int64" },
+          { "name": "ActivityTypeID", "dataType": "Int64" },
+          { "name": "ScheduleDate", "dataType": "DateTime" },
+          { "name": "StartTime", "dataType": "String" },
+          { "name": "DurationHours", "dataType": "Double" },
+          { "name": "ParticipantCount", "dataType": "Int64" },
+          { "name": "Status", "dataType": "String" }
+        ]
+      }
+    ],
+    "relationships": [
+      { "fromTable": "FactReservations", "fromColumn": "GuestID", "toTable": "DimGuests", "toColumn": "GuestID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactReservations", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactReservations", "fromColumn": "RoomTypeID", "toTable": "DimRoomTypes", "toColumn": "RoomTypeID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactReservations", "fromColumn": "SeasonID", "toTable": "DimSeasons", "toColumn": "SeasonID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactReservations", "fromColumn": "BookingDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne" },
+      { "fromTable": "FactCheckIns", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactCheckIns", "fromColumn": "GuestID", "toTable": "DimGuests", "toColumn": "GuestID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactCheckIns", "fromColumn": "CheckInDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactCancellations", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactCancellations", "fromColumn": "CancellationDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactRoomRevenue", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactRoomRevenue", "fromColumn": "RoomTypeID", "toTable": "DimRoomTypes", "toColumn": "RoomTypeID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactRoomRevenue", "fromColumn": "RevenueDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne" },
+      { "fromTable": "FactFBRevenue", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactFBRevenue", "fromColumn": "RevenueDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactSpaRevenue", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactSpaRevenue", "fromColumn": "GuestID", "toTable": "DimGuests", "toColumn": "GuestID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactSpaRevenue", "fromColumn": "ServiceDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactAdventureRevenue", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactAdventureRevenue", "fromColumn": "ActivityTypeID", "toTable": "DimActivityTypes", "toColumn": "ActivityTypeID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactAdventureRevenue", "fromColumn": "RevenueDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactGuestSurveys", "fromColumn": "GuestID", "toTable": "DimGuests", "toColumn": "GuestID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactGuestSurveys", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactGuestSurveys", "fromColumn": "QuestionID", "toTable": "DimSurveyQuestions", "toColumn": "QuestionID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactGuestSurveys", "fromColumn": "SurveyDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactGuestComplaints", "fromColumn": "GuestID", "toTable": "DimGuests", "toColumn": "GuestID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactGuestComplaints", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactGuestComplaints", "fromColumn": "ComplaintDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactLoyaltyMembers", "fromColumn": "GuestID", "toTable": "DimGuests", "toColumn": "GuestID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactLoyaltyMembers", "fromColumn": "EnrollmentDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactHousekeeping", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactHousekeeping", "fromColumn": "StaffID", "toTable": "DimStaff", "toColumn": "StaffID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactHousekeeping", "fromColumn": "ServiceDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactMaintenance", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactMaintenance", "fromColumn": "MaintenanceTypeID", "toTable": "DimMaintenanceTypes", "toColumn": "MaintenanceTypeID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactMaintenance", "fromColumn": "ReportedDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactEnergyUsage", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactEnergyUsage", "fromColumn": "ReadingDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactActivityBookings", "fromColumn": "GuestID", "toTable": "DimGuests", "toColumn": "GuestID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactActivityBookings", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactActivityBookings", "fromColumn": "ActivityTypeID", "toTable": "DimActivityTypes", "toColumn": "ActivityTypeID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactActivityBookings", "fromColumn": "BookingDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactGuideSchedules", "fromColumn": "StaffID", "toTable": "DimStaff", "toColumn": "StaffID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactGuideSchedules", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactGuideSchedules", "fromColumn": "ActivityTypeID", "toTable": "DimActivityTypes", "toColumn": "ActivityTypeID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactGuideSchedules", "fromColumn": "ScheduleDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "DimRoomTypes", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne" },
+      { "fromTable": "DimStaff", "fromColumn": "PropertyID", "toTable": "DimProperties", "toColumn": "PropertyID", "cardinality": "ManyToOne", "isActive": false }
+    ],
+    "measures": [
+      { "name": "Total Room Revenue", "table": "FactRoomRevenue", "expression": "SUM(FactRoomRevenue[TotalRevenue])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue" },
+      { "name": "Total F&B Revenue", "table": "FactFBRevenue", "expression": "SUM(FactFBRevenue[TotalFBRevenue])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue" },
+      { "name": "Total Spa Revenue", "table": "FactSpaRevenue", "expression": "SUM(FactSpaRevenue[Revenue])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue" },
+      { "name": "Total Adventure Revenue", "table": "FactAdventureRevenue", "expression": "SUM(FactAdventureRevenue[Revenue])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue" },
+      { "name": "Total Revenue", "table": "FactRoomRevenue", "expression": "SUM(FactRoomRevenue[TotalRevenue]) + SUM(FactFBRevenue[TotalFBRevenue]) + SUM(FactSpaRevenue[Revenue]) + SUM(FactAdventureRevenue[Revenue])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue" },
+      { "name": "Net Room Revenue", "table": "FactRoomRevenue", "expression": "SUM(FactRoomRevenue[TotalRevenue]) - SUM(FactRoomRevenue[Discounts])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue" },
+      { "name": "Total Discounts", "table": "FactRoomRevenue", "expression": "SUM(FactRoomRevenue[Discounts])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue" },
+      { "name": "Total Taxes", "table": "FactRoomRevenue", "expression": "SUM(FactRoomRevenue[Taxes])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue" },
+      { "name": "Revenue YoY Growth", "table": "FactRoomRevenue", "expression": "VAR _CY = SUM(FactRoomRevenue[TotalRevenue]) VAR _PY = CALCULATE(SUM(FactRoomRevenue[TotalRevenue]), DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)", "formatString": "0.0%", "displayFolder": "Revenue" },
+      { "name": "Revenue MoM Change", "table": "FactRoomRevenue", "expression": "VAR _CM = SUM(FactRoomRevenue[TotalRevenue]) VAR _PM = CALCULATE(SUM(FactRoomRevenue[TotalRevenue]), DATEADD(DimDate[Date], -1, MONTH)) RETURN _CM - _PM", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue" },
+      { "name": "Rooms Occupied", "table": "FactRoomRevenue", "expression": "SUM(FactRoomRevenue[RoomsOccupied])", "formatString": "#,0", "displayFolder": "Occupancy" },
+      { "name": "Rooms Available", "table": "FactRoomRevenue", "expression": "SUM(FactRoomRevenue[RoomsAvailable])", "formatString": "#,0", "displayFolder": "Occupancy" },
+      { "name": "Occupancy Rate", "table": "FactRoomRevenue", "expression": "DIVIDE(SUM(FactRoomRevenue[RoomsOccupied]), SUM(FactRoomRevenue[RoomsAvailable]))", "formatString": "0.0%", "displayFolder": "Occupancy" },
+      { "name": "ADR", "table": "FactRoomRevenue", "expression": "DIVIDE(SUM(FactRoomRevenue[TotalRevenue]), SUM(FactRoomRevenue[RoomsOccupied]))", "formatString": "$#,0.00", "displayFolder": "Occupancy" },
+      { "name": "RevPAR", "table": "FactRoomRevenue", "expression": "DIVIDE(SUM(FactRoomRevenue[TotalRevenue]), SUM(FactRoomRevenue[RoomsAvailable]))", "formatString": "$#,0.00", "displayFolder": "Occupancy" },
+      { "name": "TRevPAR", "table": "FactRoomRevenue", "expression": "DIVIDE(SUM(FactRoomRevenue[TotalRevenue]) + SUM(FactFBRevenue[TotalFBRevenue]) + SUM(FactSpaRevenue[Revenue]) + SUM(FactAdventureRevenue[Revenue]), SUM(FactRoomRevenue[RoomsAvailable]))", "formatString": "$#,0.00", "displayFolder": "Occupancy" },
+      { "name": "GOPPAR", "table": "FactRoomRevenue", "expression": "DIVIDE(SUM(FactRoomRevenue[TotalRevenue]) + SUM(FactFBRevenue[TotalFBRevenue]) + SUM(FactSpaRevenue[Revenue]) + SUM(FactAdventureRevenue[Revenue]) - SUM(FactFBRevenue[CostOfGoods]) - SUM(FactAdventureRevenue[EquipmentCost]) - SUM(FactAdventureRevenue[GuideCost]), SUM(FactRoomRevenue[RoomsAvailable]))", "formatString": "$#,0.00", "displayFolder": "Occupancy" },
+      { "name": "Occupancy YoY", "table": "FactRoomRevenue", "expression": "VAR _CY = DIVIDE(SUM(FactRoomRevenue[RoomsOccupied]), SUM(FactRoomRevenue[RoomsAvailable])) VAR _PY = CALCULATE(DIVIDE(SUM(FactRoomRevenue[RoomsOccupied]), SUM(FactRoomRevenue[RoomsAvailable])), DATEADD(DimDate[Date], -1, YEAR)) RETURN _CY - _PY", "formatString": "0.0 pp", "displayFolder": "Occupancy" },
+      { "name": "ADR YoY Growth", "table": "FactRoomRevenue", "expression": "VAR _CY = DIVIDE(SUM(FactRoomRevenue[TotalRevenue]), SUM(FactRoomRevenue[RoomsOccupied])) VAR _PY = CALCULATE(DIVIDE(SUM(FactRoomRevenue[TotalRevenue]), SUM(FactRoomRevenue[RoomsOccupied])), DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)", "formatString": "0.0%", "displayFolder": "Occupancy" },
+      { "name": "Total Reservations", "table": "FactReservations", "expression": "COUNTROWS(FactReservations)", "formatString": "#,0", "displayFolder": "Reservations" },
+      { "name": "Total Room Nights", "table": "FactReservations", "expression": "SUM(FactReservations[RoomNights])", "formatString": "#,0", "displayFolder": "Reservations" },
+      { "name": "Avg Lead Time Days", "table": "FactReservations", "expression": "AVERAGE(FactReservations[LeadTimeDays])", "formatString": "#,0", "displayFolder": "Reservations" },
+      { "name": "Avg Daily Rate (Res)", "table": "FactReservations", "expression": "AVERAGE(FactReservations[DailyRate])", "formatString": "$#,0.00", "displayFolder": "Reservations" },
+      { "name": "Avg Stay Length", "table": "FactReservations", "expression": "AVERAGE(FactReservations[RoomNights])", "formatString": "0.0", "displayFolder": "Reservations" },
+      { "name": "Direct Booking %", "table": "FactReservations", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactReservations), FactReservations[BookingChannel] = \"Direct\"), COUNTROWS(FactReservations))", "formatString": "0.0%", "displayFolder": "Reservations" },
+      { "name": "OTA Booking %", "table": "FactReservations", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactReservations), FactReservations[BookingChannel] = \"OTA\"), COUNTROWS(FactReservations))", "formatString": "0.0%", "displayFolder": "Reservations" },
+      { "name": "Corporate Booking %", "table": "FactReservations", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactReservations), FactReservations[BookingChannel] = \"Corporate\"), COUNTROWS(FactReservations))", "formatString": "0.0%", "displayFolder": "Reservations" },
+      { "name": "Total Guests", "table": "FactReservations", "expression": "SUM(FactReservations[Adults]) + SUM(FactReservations[Children])", "formatString": "#,0", "displayFolder": "Reservations" },
+      { "name": "Reservation Revenue", "table": "FactReservations", "expression": "SUM(FactReservations[TotalAmount])", "formatString": "$#,0;($#,0)", "displayFolder": "Reservations" },
+      { "name": "Total Check-Ins", "table": "FactCheckIns", "expression": "COUNTROWS(FactCheckIns)", "formatString": "#,0", "displayFolder": "Reservations" },
+      { "name": "Early Check-In %", "table": "FactCheckIns", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactCheckIns), FactCheckIns[IsEarlyCheckIn] = TRUE()), COUNTROWS(FactCheckIns))", "formatString": "0.0%", "displayFolder": "Reservations" },
+      { "name": "Late Check-Out %", "table": "FactCheckIns", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactCheckIns), FactCheckIns[IsLateCheckOut] = TRUE()), COUNTROWS(FactCheckIns))", "formatString": "0.0%", "displayFolder": "Reservations" },
+      { "name": "Total Cancellations", "table": "FactCancellations", "expression": "COUNTROWS(FactCancellations)", "formatString": "#,0", "displayFolder": "Cancellations" },
+      { "name": "Cancellation Rate", "table": "FactCancellations", "expression": "DIVIDE(COUNTROWS(FactCancellations), COUNTROWS(FactReservations))", "formatString": "0.0%", "displayFolder": "Cancellations" },
+      { "name": "Avg Days Before Cancellation", "table": "FactCancellations", "expression": "AVERAGE(FactCancellations[DaysBeforeArrival])", "formatString": "#,0", "displayFolder": "Cancellations" },
+      { "name": "Cancellation Penalty Revenue", "table": "FactCancellations", "expression": "SUM(FactCancellations[PenaltyAmount])", "formatString": "$#,0;($#,0)", "displayFolder": "Cancellations" },
+      { "name": "Rebook Rate", "table": "FactCancellations", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactCancellations), FactCancellations[WasRebooked] = TRUE()), COUNTROWS(FactCancellations))", "formatString": "0.0%", "displayFolder": "Cancellations" },
+      { "name": "F&B Revenue per Cover", "table": "FactFBRevenue", "expression": "DIVIDE(SUM(FactFBRevenue[TotalFBRevenue]), SUM(FactFBRevenue[Covers]))", "formatString": "$#,0.00", "displayFolder": "F&B" },
+      { "name": "Total Covers", "table": "FactFBRevenue", "expression": "SUM(FactFBRevenue[Covers])", "formatString": "#,0", "displayFolder": "F&B" },
+      { "name": "Food Revenue", "table": "FactFBRevenue", "expression": "SUM(FactFBRevenue[FoodRevenue])", "formatString": "$#,0;($#,0)", "displayFolder": "F&B" },
+      { "name": "Beverage Revenue", "table": "FactFBRevenue", "expression": "SUM(FactFBRevenue[BeverageRevenue])", "formatString": "$#,0;($#,0)", "displayFolder": "F&B" },
+      { "name": "F&B Cost of Goods", "table": "FactFBRevenue", "expression": "SUM(FactFBRevenue[CostOfGoods])", "formatString": "$#,0;($#,0)", "displayFolder": "F&B" },
+      { "name": "F&B Gross Margin %", "table": "FactFBRevenue", "expression": "DIVIDE(SUM(FactFBRevenue[TotalFBRevenue]) - SUM(FactFBRevenue[CostOfGoods]), SUM(FactFBRevenue[TotalFBRevenue]))", "formatString": "0.0%", "displayFolder": "F&B" },
+      { "name": "Beverage Mix %", "table": "FactFBRevenue", "expression": "DIVIDE(SUM(FactFBRevenue[BeverageRevenue]), SUM(FactFBRevenue[TotalFBRevenue]))", "formatString": "0.0%", "displayFolder": "F&B" },
+      { "name": "Spa Treatments", "table": "FactSpaRevenue", "expression": "COUNTROWS(FactSpaRevenue)", "formatString": "#,0", "displayFolder": "Spa" },
+      { "name": "Avg Spa Revenue per Treatment", "table": "FactSpaRevenue", "expression": "DIVIDE(SUM(FactSpaRevenue[Revenue]), COUNTROWS(FactSpaRevenue))", "formatString": "$#,0.00", "displayFolder": "Spa" },
+      { "name": "Spa Utilization %", "table": "FactSpaRevenue", "expression": "DIVIDE(COUNTROWS(FactSpaRevenue), DISTINCTCOUNT(FactSpaRevenue[TherapistID]) * 6)", "formatString": "0.0%", "displayFolder": "Spa" },
+      { "name": "Avg Spa Duration", "table": "FactSpaRevenue", "expression": "AVERAGE(FactSpaRevenue[DurationMinutes])", "formatString": "#,0 min", "displayFolder": "Spa" },
+      { "name": "Spa Revenue per Available Room", "table": "FactSpaRevenue", "expression": "DIVIDE(SUM(FactSpaRevenue[Revenue]), SUM(FactRoomRevenue[RoomsAvailable]))", "formatString": "$#,0.00", "displayFolder": "Spa" },
+      { "name": "Guest Satisfaction Score", "table": "FactGuestSurveys", "expression": "AVERAGE(FactGuestSurveys[Score])", "formatString": "0.0", "displayFolder": "Guest Experience" },
+      { "name": "NPS", "table": "FactGuestSurveys", "expression": "VAR _Promoters = CALCULATE(COUNTROWS(FactGuestSurveys), FactGuestSurveys[Score] >= 9) VAR _Detractors = CALCULATE(COUNTROWS(FactGuestSurveys), FactGuestSurveys[Score] <= 6) VAR _Total = COUNTROWS(FactGuestSurveys) RETURN DIVIDE(_Promoters - _Detractors, _Total) * 100", "formatString": "#,0", "displayFolder": "Guest Experience" },
+      { "name": "Survey Response Count", "table": "FactGuestSurveys", "expression": "COUNTROWS(FactGuestSurveys)", "formatString": "#,0", "displayFolder": "Guest Experience" },
+      { "name": "Total Complaints", "table": "FactGuestComplaints", "expression": "COUNTROWS(FactGuestComplaints)", "formatString": "#,0", "displayFolder": "Guest Experience" },
+      { "name": "Avg Resolution Days", "table": "FactGuestComplaints", "expression": "AVERAGE(FactGuestComplaints[ResolutionDays])", "formatString": "0.0", "displayFolder": "Guest Experience" },
+      { "name": "Complaint Rate", "table": "FactGuestComplaints", "expression": "DIVIDE(COUNTROWS(FactGuestComplaints), COUNTROWS(FactCheckIns))", "formatString": "0.0%", "displayFolder": "Guest Experience" },
+      { "name": "Compensation Amount", "table": "FactGuestComplaints", "expression": "SUM(FactGuestComplaints[CompensationAmount])", "formatString": "$#,0;($#,0)", "displayFolder": "Guest Experience" },
+      { "name": "Critical Complaints", "table": "FactGuestComplaints", "expression": "CALCULATE(COUNTROWS(FactGuestComplaints), FactGuestComplaints[Severity] = \"Critical\")", "formatString": "#,0", "displayFolder": "Guest Experience" },
+      { "name": "Open Complaints", "table": "FactGuestComplaints", "expression": "CALCULATE(COUNTROWS(FactGuestComplaints), FactGuestComplaints[Status] = \"Open\")", "formatString": "#,0", "displayFolder": "Guest Experience" },
+      { "name": "Repeat Guest Rate", "table": "DimGuests", "expression": "DIVIDE(CALCULATE(COUNTROWS(DimGuests), DimGuests[TotalStays] > 1), COUNTROWS(DimGuests))", "formatString": "0.0%", "displayFolder": "Guest Experience" },
+      { "name": "Loyalty Members Count", "table": "FactLoyaltyMembers", "expression": "COUNTROWS(FactLoyaltyMembers)", "formatString": "#,0", "displayFolder": "Loyalty" },
+      { "name": "Avg Lifetime Value", "table": "FactLoyaltyMembers", "expression": "AVERAGE(FactLoyaltyMembers[LifetimeValue])", "formatString": "$#,0", "displayFolder": "Loyalty" },
+      { "name": "Total Points Earned", "table": "FactLoyaltyMembers", "expression": "SUM(FactLoyaltyMembers[PointsEarned])", "formatString": "#,0", "displayFolder": "Loyalty" },
+      { "name": "Total Points Redeemed", "table": "FactLoyaltyMembers", "expression": "SUM(FactLoyaltyMembers[PointsRedeemed])", "formatString": "#,0", "displayFolder": "Loyalty" },
+      { "name": "Points Redemption Rate", "table": "FactLoyaltyMembers", "expression": "DIVIDE(SUM(FactLoyaltyMembers[PointsRedeemed]), SUM(FactLoyaltyMembers[PointsEarned]))", "formatString": "0.0%", "displayFolder": "Loyalty" },
+      { "name": "Diamond Member %", "table": "FactLoyaltyMembers", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactLoyaltyMembers), FactLoyaltyMembers[CurrentTier] = \"Diamond\"), COUNTROWS(FactLoyaltyMembers))", "formatString": "0.0%", "displayFolder": "Loyalty" },
+      { "name": "Housekeeping Tasks", "table": "FactHousekeeping", "expression": "COUNTROWS(FactHousekeeping)", "formatString": "#,0", "displayFolder": "Property Ops" },
+      { "name": "Avg Cleaning Duration", "table": "FactHousekeeping", "expression": "AVERAGE(FactHousekeeping[DurationMinutes])", "formatString": "#,0 min", "displayFolder": "Property Ops" },
+      { "name": "Housekeeping Quality Score", "table": "FactHousekeeping", "expression": "AVERAGE(FactHousekeeping[QualityScore])", "formatString": "0.00", "displayFolder": "Property Ops" },
+      { "name": "Housekeeping Issues", "table": "FactHousekeeping", "expression": "SUM(FactHousekeeping[IssuesFound])", "formatString": "#,0", "displayFolder": "Property Ops" },
+      { "name": "Housekeeping Efficiency", "table": "FactHousekeeping", "expression": "DIVIDE(COUNTROWS(FactHousekeeping), DISTINCTCOUNT(FactHousekeeping[StaffID]))", "formatString": "0.0", "displayFolder": "Property Ops" },
+      { "name": "Total Maintenance Orders", "table": "FactMaintenance", "expression": "COUNTROWS(FactMaintenance)", "formatString": "#,0", "displayFolder": "Property Ops" },
+      { "name": "Total Maintenance Cost", "table": "FactMaintenance", "expression": "SUM(FactMaintenance[Cost])", "formatString": "$#,0;($#,0)", "displayFolder": "Property Ops" },
+      { "name": "Avg Maintenance Duration", "table": "FactMaintenance", "expression": "AVERAGE(FactMaintenance[DurationHours])", "formatString": "0.0 hrs", "displayFolder": "Property Ops" },
+      { "name": "Critical Maintenance Count", "table": "FactMaintenance", "expression": "CALCULATE(COUNTROWS(FactMaintenance), FactMaintenance[Priority] = \"Critical\")", "formatString": "#,0", "displayFolder": "Property Ops" },
+      { "name": "Maintenance Completion Rate", "table": "FactMaintenance", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactMaintenance), FactMaintenance[Status] = \"Completed\"), COUNTROWS(FactMaintenance))", "formatString": "0.0%", "displayFolder": "Property Ops" },
+      { "name": "Maintenance Cost per Room", "table": "FactMaintenance", "expression": "DIVIDE(SUM(FactMaintenance[Cost]), SUM(DimProperties[TotalRooms]))", "formatString": "$#,0.00", "displayFolder": "Property Ops" },
+      { "name": "Rooms Affected by Maintenance", "table": "FactMaintenance", "expression": "SUM(FactMaintenance[AffectedRooms])", "formatString": "#,0", "displayFolder": "Property Ops" },
+      { "name": "Total Electricity KWh", "table": "FactEnergyUsage", "expression": "SUM(FactEnergyUsage[ElectricityKWh])", "formatString": "#,0", "displayFolder": "Energy" },
+      { "name": "Total Water Gallons", "table": "FactEnergyUsage", "expression": "SUM(FactEnergyUsage[WaterGallons])", "formatString": "#,0", "displayFolder": "Energy" },
+      { "name": "Total Energy Cost", "table": "FactEnergyUsage", "expression": "SUM(FactEnergyUsage[ElectricityCost]) + SUM(FactEnergyUsage[GasCost]) + SUM(FactEnergyUsage[WaterCost])", "formatString": "$#,0;($#,0)", "displayFolder": "Energy" },
+      { "name": "Energy Cost per Occupied Room", "table": "FactEnergyUsage", "expression": "DIVIDE(SUM(FactEnergyUsage[ElectricityCost]) + SUM(FactEnergyUsage[GasCost]) + SUM(FactEnergyUsage[WaterCost]), SUM(FactEnergyUsage[OccupiedRooms]))", "formatString": "$#,0.00", "displayFolder": "Energy" },
+      { "name": "Electricity Cost per Room", "table": "FactEnergyUsage", "expression": "DIVIDE(SUM(FactEnergyUsage[ElectricityCost]), SUM(FactEnergyUsage[OccupiedRooms]))", "formatString": "$#,0.00", "displayFolder": "Energy" },
+      { "name": "Water Usage per Room", "table": "FactEnergyUsage", "expression": "DIVIDE(SUM(FactEnergyUsage[WaterGallons]), SUM(FactEnergyUsage[OccupiedRooms]))", "formatString": "#,0 gal", "displayFolder": "Energy" },
+      { "name": "Total Activity Bookings", "table": "FactActivityBookings", "expression": "COUNTROWS(FactActivityBookings)", "formatString": "#,0", "displayFolder": "Adventures" },
+      { "name": "Activity Revenue", "table": "FactActivityBookings", "expression": "SUM(FactActivityBookings[Revenue])", "formatString": "$#,0;($#,0)", "displayFolder": "Adventures" },
+      { "name": "Avg Activity Revenue", "table": "FactActivityBookings", "expression": "AVERAGE(FactActivityBookings[Revenue])", "formatString": "$#,0.00", "displayFolder": "Adventures" },
+      { "name": "Total Participants", "table": "FactActivityBookings", "expression": "SUM(FactActivityBookings[Participants])", "formatString": "#,0", "displayFolder": "Adventures" },
+      { "name": "Activity Attach Rate", "table": "FactActivityBookings", "expression": "DIVIDE(DISTINCTCOUNT(FactActivityBookings[GuestID]), COUNTROWS(FactCheckIns))", "formatString": "0.0%", "displayFolder": "Adventures" },
+      { "name": "Avg Activity Satisfaction", "table": "FactActivityBookings", "expression": "AVERAGE(FactActivityBookings[SatisfactionScore])", "formatString": "0.0", "displayFolder": "Adventures" },
+      { "name": "Activity Completion Rate", "table": "FactActivityBookings", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactActivityBookings), FactActivityBookings[Status] = \"Completed\"), COUNTROWS(FactActivityBookings))", "formatString": "0.0%", "displayFolder": "Adventures" },
+      { "name": "Activity Cancellation Rate", "table": "FactActivityBookings", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactActivityBookings), FactActivityBookings[Status] = \"Cancelled\"), COUNTROWS(FactActivityBookings))", "formatString": "0.0%", "displayFolder": "Adventures" },
+      { "name": "Revenue per Participant", "table": "FactActivityBookings", "expression": "DIVIDE(SUM(FactActivityBookings[Revenue]), SUM(FactActivityBookings[Participants]))", "formatString": "$#,0.00", "displayFolder": "Adventures" },
+      { "name": "Adventure Gross Margin", "table": "FactAdventureRevenue", "expression": "DIVIDE(SUM(FactAdventureRevenue[Revenue]) - SUM(FactAdventureRevenue[EquipmentCost]) - SUM(FactAdventureRevenue[GuideCost]), SUM(FactAdventureRevenue[Revenue]))", "formatString": "0.0%", "displayFolder": "Adventures" },
+      { "name": "Guide Utilization", "table": "FactGuideSchedules", "expression": "DIVIDE(COUNTROWS(FactGuideSchedules), DISTINCTCOUNT(FactGuideSchedules[StaffID]) * 250)", "formatString": "0.0%", "displayFolder": "Adventures" },
+      { "name": "Total Guide Hours", "table": "FactGuideSchedules", "expression": "SUM(FactGuideSchedules[DurationHours])", "formatString": "#,0", "displayFolder": "Adventures" },
+      { "name": "Avg Participants per Trip", "table": "FactGuideSchedules", "expression": "AVERAGE(FactGuideSchedules[ParticipantCount])", "formatString": "0.0", "displayFolder": "Adventures" },
+      { "name": "Total Properties", "table": "DimProperties", "expression": "COUNTROWS(DimProperties)", "formatString": "#,0", "displayFolder": "Portfolio" },
+      { "name": "Total Room Inventory", "table": "DimProperties", "expression": "SUM(DimProperties[TotalRooms])", "formatString": "#,0", "displayFolder": "Portfolio" },
+      { "name": "Avg Star Rating", "table": "DimProperties", "expression": "AVERAGE(DimProperties[StarRating])", "formatString": "0.0", "displayFolder": "Portfolio" },
+      { "name": "Staff Count", "table": "DimStaff", "expression": "COUNTROWS(DimStaff)", "formatString": "#,0", "displayFolder": "Portfolio" },
+      { "name": "Avg Hourly Rate", "table": "DimStaff", "expression": "AVERAGE(DimStaff[HourlyRate])", "formatString": "$#,0.00", "displayFolder": "Portfolio" },
+      { "name": "Full Time Staff %", "table": "DimStaff", "expression": "DIVIDE(CALCULATE(COUNTROWS(DimStaff), DimStaff[IsFullTime] = TRUE()), COUNTROWS(DimStaff))", "formatString": "0.0%", "displayFolder": "Portfolio" },
+      { "name": "Active Guests", "table": "DimGuests", "expression": "CALCULATE(COUNTROWS(DimGuests), DimGuests[IsActive] = TRUE())", "formatString": "#,0", "displayFolder": "Portfolio" }
+    ]
+  }
+}

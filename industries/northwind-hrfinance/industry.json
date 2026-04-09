@@ -1,16 +1,34 @@
 {
+  "schemaVersion": "1.0",
   "industry": {
     "id": "northwind-hrfinance",
     "name": "Northwind HR Finance",
     "displayName": "Northwind HR & Finance",
     "description": "Human resources, payroll, finance, and corporate performance management demo for Northwind Traders.",
     "icon": "🏢",
-    "domains": ["HR", "Payroll", "FinancialAccounting", "Budgeting", "CorporatePerformance"],
-    "dataYears": ["FY2024", "FY2025", "FY2026"],
-    "dateRange": { "start": "2023-01-01", "end": "2027-12-31" },
+    "domains": [
+      "HR",
+      "Payroll",
+      "FinancialAccounting",
+      "Budgeting",
+      "CorporatePerformance"
+    ],
+    "dataYears": [
+      "FY2024",
+      "FY2025",
+      "FY2026"
+    ],
+    "dateRange": {
+      "start": "2023-01-01",
+      "end": "2027-12-31"
+    },
     "fiscalYearStartMonth": 1,
     "headquarters": "Portland, OR",
-    "operations": ["500 employees", "20 departments", "5 regional offices"],
+    "operations": [
+      "500 employees",
+      "20 departments",
+      "5 regional offices"
+    ],
     "theme": {
       "primary": "#1565C0",
       "secondary": "#E65100",
@@ -31,8 +49,18 @@
       "gold": "GoldLH"
     },
     "schemas": {
-      "silver": ["hr", "payroll", "finance", "budgeting"],
-      "gold": ["dim", "fact", "analytics", "planning"]
+      "silver": [
+        "hr",
+        "payroll",
+        "finance",
+        "budgeting"
+      ],
+      "gold": [
+        "dim",
+        "fact",
+        "analytics",
+        "planning"
+      ]
     },
     "notebooks": 6,
     "dataflows": 5,

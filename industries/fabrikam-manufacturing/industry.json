@@ -1,16 +1,35 @@
 {
+  "schemaVersion": "1.0",
   "industry": {
     "id": "fabrikam-manufacturing",
     "name": "FabrikamManufacturing",
     "displayName": "Fabrikam Manufacturing",
     "description": "Precision automotive parts manufacturer operating 4 plants across Detroit, Guadalajara, Stuttgart, and Pune with 1,200 SKUs and 180 suppliers.",
     "icon": "🏭",
-    "domains": ["Production", "Quality", "SupplyChain", "Maintenance", "EHS"],
-    "dataYears": ["FY2024", "FY2025", "FY2026"],
-    "dateRange": { "start": "2023-01-01", "end": "2027-12-31" },
+    "domains": [
+      "Production",
+      "Quality",
+      "SupplyChain",
+      "Maintenance",
+      "EHS"
+    ],
+    "dataYears": [
+      "FY2024",
+      "FY2025",
+      "FY2026"
+    ],
+    "dateRange": {
+      "start": "2023-01-01",
+      "end": "2027-12-31"
+    },
     "fiscalYearStartMonth": 7,
     "headquarters": "Detroit, MI",
-    "operations": ["4 plants (Detroit, Guadalajara, Stuttgart, Pune)", "1,200 SKUs", "180 suppliers", "3 shifts per plant"],
+    "operations": [
+      "4 plants (Detroit, Guadalajara, Stuttgart, Pune)",
+      "1,200 SKUs",
+      "180 suppliers",
+      "3 shifts per plant"
+    ],
     "theme": {
       "primary": "#0D47A1",
       "secondary": "#E65100",
@@ -32,8 +51,20 @@
       "gold": "GoldLH"
     },
     "schemas": {
-      "silver": ["production", "quality", "supplychain", "maintenance", "ehs", "web"],
-      "gold": ["dim", "fact", "analytics", "planning"]
+      "silver": [
+        "production",
+        "quality",
+        "supplychain",
+        "maintenance",
+        "ehs",
+        "web"
+      ],
+      "gold": [
+        "dim",
+        "fact",
+        "analytics",
+        "planning"
+      ]
     },
     "notebooks": 6,
     "dataflows": 5,

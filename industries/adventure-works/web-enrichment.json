@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0",
+  "webEnrichment": {
+    "enabled": true,
+    "targetLakehouse": "SilverLH",
+    "schema": "web",
+    "sources": [
+      {
+        "name": "TravelAdvisories",
+        "description": "Travel advisories and safety alerts for destination regions",
+        "endpoint": "https://travel.state.gov/content/travel/en/traveladvisories.html",
+        "method": "GET",
+        "schedule": "daily",
+        "tableName": "WebTravelAdvisories",
+        "columns": [
+          { "name": "Country", "type": "string" },
+          { "name": "Region", "type": "string" },
+          { "name": "AdvisoryLevel", "type": "int" },
+          { "name": "AdvisoryText", "type": "string" },
+          { "name": "EffectiveDate", "type": "date" },
+          { "name": "LastUpdated", "type": "date" }
+        ]
+      },
+      {
+        "name": "WeatherForecasts",
+        "description": "7-day weather forecast for property locations",
+        "endpoint": "https://api.open-meteo.com/v1/forecast",
+        "method": "GET",
+        "schedule": "daily",
+        "tableName": "WebWeatherForecasts",
+        "columns": [
+          { "name": "PropertyID", "type": "int" },
+          { "name": "Latitude", "type": "double" },
+          { "name": "Longitude", "type": "double" },
+          { "name": "ForecastDate", "type": "date" },
+          { "name": "TemperatureHighF", "type": "double" },
+          { "name": "TemperatureLowF", "type": "double" },
+          { "name": "PrecipitationInch", "type": "double" },
+          { "name": "UVIndex", "type": "int" },
+          { "name": "Condition", "type": "string" }
+        ]
+      },
+      {
+        "name": "FlightData",
+        "description": "Flight arrival data for nearby airports affecting guest arrivals",
+        "endpoint": "https://opensky-network.org/api/flights/arrival",
+        "method": "GET",
+        "schedule": "daily",
+        "tableName": "WebFlightArrivals",
+        "columns": [
+          { "name": "AirportCode", "type": "string" },
+          { "name": "ArrivalDate", "type": "date" },
+          { "name": "FlightCount", "type": "int" },
+          { "name": "OriginCountry", "type": "string" },
+          { "name": "EstPassengers", "type": "int" },
+          { "name": "DelayMinutes", "type": "double" }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1.0",
+  "industry": {
+    "id": "lamna-healthcare",
+    "name": "LamnaHealthcare",
+    "displayName": "Lamna Healthcare",
+    "description": "Regional hospital network with 5 hospitals, 40 clinics, and 12 urgent care centers across the Pacific Northwest. Serving 420K patients annually with 8,500 clinical staff, processing 1.2M encounters per year. Focus areas: patient outcomes, operational efficiency, revenue cycle management, and population health.",
+    "domains": [
+      "Clinical",
+      "RevenueCycle",
+      "Operations",
+      "Pharmacy",
+      "PopulationHealth"
+    ],
+    "dataYears": [
+      "FY2024",
+      "FY2025",
+      "FY2026"
+    ],
+    "dateRange": {
+      "start": "2023-01-01",
+      "end": "2027-12-31"
+    },
+    "fiscalYearStartMonth": 10,
+    "headquarters": "Portland, OR",
+    "theme": {
+      "primary": "#00695C",
+      "secondary": "#E65100",
+      "background": "#0A1A18",
+      "foreground": "#FFFFFF",
+      "accent1": "#1565C0",
+      "accent2": "#AD1457"
+    }
+  },
+  "fabricArtifacts": {
+    "workspacePrefix": "LamnaHealthcare",
+    "cloud": {
+      "fabricApiBase": "https://api.fabric.microsoft.com/v1",
+      "oneLakeDfsBase": "https://onelake.dfs.fabric.microsoft.com"
+    },
+    "lakehouses": {
+      "bronze": "BronzeLH",
+      "silver": "SilverLH",
+      "gold": "GoldLH"
+    },
+    "schemas": {
+      "silver": [
+        "clinical",
+        "revenuecycle",
+        "operations",
+        "pharmacy",
+        "populationhealth",
+        "web"
+      ],
+      "gold": [
+        "dim",
+        "fact",
+        "analytics",
+        "planning"
+      ]
+    },
+    "notebooks": 6,
+    "dataflows": 5,
+    "reports": 5,
+    "pipelines": 1
+  }
+}

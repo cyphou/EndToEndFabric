@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "1.0",
+  "planningModels": [
+    {
+      "name": "RevenueTargets",
+      "description": "Revenue and collection targets by service line",
+      "sourceTable": "FactClaims",
+      "valueColumn": "PaidAmount",
+      "planningSchema": "planning",
+      "columns": [
+        { "name": "FiscalYear", "dataType": "INT" },
+        { "name": "FiscalQuarter", "dataType": "INT" },
+        { "name": "ServiceLine", "dataType": "NVARCHAR(100)" },
+        { "name": "PlannedRevenue", "dataType": "DECIMAL(18,2)" },
+        { "name": "PlannedEncounters", "dataType": "INT" },
+        { "name": "TargetCollectionRate", "dataType": "DECIMAL(5,2)" },
+        { "name": "Scenario", "dataType": "NVARCHAR(50)" }
+      ]
+    },
+    {
+      "name": "CapacityPlan",
+      "description": "Bed capacity and facility expansion plan",
+      "sourceTable": "FactBedCensus",
+      "valueColumn": "OccupiedBeds",
+      "planningSchema": "planning",
+      "columns": [
+        { "name": "FiscalYear", "dataType": "INT" },
+        { "name": "FacilityID", "dataType": "INT" },
+        { "name": "Unit", "dataType": "NVARCHAR(100)" },
+        { "name": "PlannedBeds", "dataType": "INT" },
+        { "name": "TargetOccupancy", "dataType": "DECIMAL(5,2)" },
+        { "name": "CapexAmount", "dataType": "DECIMAL(18,2)" },
+        { "name": "Scenario", "dataType": "NVARCHAR(50)" }
+      ]
+    },
+    {
+      "name": "StaffingPlan",
+      "description": "Staffing levels and workforce plan by facility",
+      "sourceTable": "FactStaffing",
+      "valueColumn": "RNCount",
+      "planningSchema": "planning",
+      "columns": [
+        { "name": "FiscalYear", "dataType": "INT" },
+        { "name": "FiscalQuarter", "dataType": "INT" },
+        { "name": "FacilityID", "dataType": "INT" },
+        { "name": "PlannedRNFTE", "dataType": "DECIMAL(18,2)" },
+        { "name": "PlannedCNAFTE", "dataType": "DECIMAL(18,2)" },
+        { "name": "PlannedPhysicianFTE", "dataType": "DECIMAL(18,2)" },
+        { "name": "TargetNurseRatio", "dataType": "DECIMAL(5,2)" },
+        { "name": "AgencyBudget", "dataType": "DECIMAL(18,2)" },
+        { "name": "Scenario", "dataType": "NVARCHAR(50)" }
+      ]
+    },
+    {
+      "name": "PlanVsActual",
+      "description": "Plan vs actual comparison across healthcare KPIs",
+      "sourceTable": null,
+      "valueColumn": null,
+      "planningSchema": "planning",
+      "columns": [
+        { "name": "FiscalYear", "dataType": "INT" },
+        { "name": "Domain", "dataType": "NVARCHAR(100)" },
+        { "name": "KPI", "dataType": "NVARCHAR(200)" },
+        { "name": "PlannedValue", "dataType": "DECIMAL(18,2)" },
+        { "name": "ActualValue", "dataType": "DECIMAL(18,2)" },
+        { "name": "Variance", "dataType": "DECIMAL(18,2)" },
+        { "name": "Scenario", "dataType": "NVARCHAR(50)" }
+      ]
+    },
+    {
+      "name": "ScenarioComparison",
+      "description": "Side-by-side scenario comparison for strategic planning",
+      "sourceTable": null,
+      "valueColumn": null,
+      "planningSchema": "planning",
+      "columns": [
+        { "name": "FiscalYear", "dataType": "INT" },
+        { "name": "KPI", "dataType": "NVARCHAR(200)" },
+        { "name": "BaseValue", "dataType": "DECIMAL(18,2)" },
+        { "name": "GrowthValue", "dataType": "DECIMAL(18,2)" },
+        { "name": "ContractionValue", "dataType": "DECIMAL(18,2)" },
+        { "name": "Scenario", "dataType": "NVARCHAR(50)" }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "Base",
+      "description": "Steady-state operations, 2% organic patient volume growth",
+      "growthRate": 0.02
+    },
+    {
+      "name": "Growth",
+      "description": "New clinic openings, population health expansion, 8% growth",
+      "growthRate": 0.08
+    },
+    {
+      "name": "Contraction",
+      "description": "Reimbursement cuts, staffing shortages, flat growth",
+      "growthRate": 0.00
+    }
+  ],
+  "fiscalYears": [
+    "FY2024",
+    "FY2025",
+    "FY2026"
+  ]
+}

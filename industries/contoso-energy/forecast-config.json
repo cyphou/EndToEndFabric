@@ -1,4 +1,5 @@
 {
+  "schemaVersion": "1.0",
   "forecastModels": [
     {
       "name": "GenerationOutput",
@@ -8,7 +9,13 @@
       "valueColumn": "MWhGenerated",
       "groupBy": "PlantID",
       "algorithm": "HoltWinters",
-      "params": {"seasonal": "additive", "alpha": 0.3, "beta": 0.1, "gamma": 0.15, "seasonalPeriods": 12},
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.3,
+        "beta": 0.1,
+        "gamma": 0.15,
+        "seasonalPeriods": 12
+      },
       "horizonMonths": 12
     },
     {
@@ -19,7 +26,13 @@
       "valueColumn": "LoadMW",
       "groupBy": "SubstationID",
       "algorithm": "HoltWinters",
-      "params": {"seasonal": "additive", "alpha": 0.25, "beta": 0.1, "gamma": 0.2, "seasonalPeriods": 12},
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.25,
+        "beta": 0.1,
+        "gamma": 0.2,
+        "seasonalPeriods": 12
+      },
       "horizonMonths": 6
     },
     {
@@ -30,7 +43,13 @@
       "valueColumn": "AmountBilled",
       "groupBy": null,
       "algorithm": "HoltWinters",
-      "params": {"seasonal": "additive", "alpha": 0.3, "beta": 0.1, "gamma": 0.1, "seasonalPeriods": 12},
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.3,
+        "beta": 0.1,
+        "gamma": 0.1,
+        "seasonalPeriods": 12
+      },
       "horizonMonths": 12
     },
     {
@@ -41,7 +60,13 @@
       "valueColumn": "CO2eTons",
       "groupBy": "SourceID",
       "algorithm": "HoltWinters",
-      "params": {"seasonal": "additive", "alpha": 0.2, "beta": 0.05, "gamma": 0.1, "seasonalPeriods": 12},
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.2,
+        "beta": 0.05,
+        "gamma": 0.1,
+        "seasonalPeriods": 12
+      },
       "horizonMonths": 12
     },
     {
@@ -52,13 +77,23 @@
       "valueColumn": "DurationHours",
       "groupBy": null,
       "algorithm": "HoltWinters",
-      "params": {"seasonal": "additive", "alpha": 0.3, "beta": 0.1, "gamma": 0.1, "seasonalPeriods": 12},
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.3,
+        "beta": 0.1,
+        "gamma": 0.1,
+        "seasonalPeriods": 12
+      },
       "horizonMonths": 6
     }
   ],
   "mlflow": {
     "experimentName": "ContosoEnergy_Forecasting",
-    "trackMetrics": ["rmse", "mae", "mape"],
+    "trackMetrics": [
+      "rmse",
+      "mae",
+      "mape"
+    ],
     "logModel": true
   }
 }

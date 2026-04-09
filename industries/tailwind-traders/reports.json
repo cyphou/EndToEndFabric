@@ -1,0 +1,310 @@
+{
+  "schemaVersion": "1.0",
+  "reports": [
+    {
+      "name": "TailwindTraders-Analytics",
+      "theme": {
+        "primary": "#E91E63",
+        "secondary": "#1565C0",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Executive Dashboard",
+          "visuals": [
+            { "type": "card", "measure": "GMV" },
+            { "type": "card", "measure": "Online Revenue" },
+            { "type": "card", "measure": "Store Revenue" },
+            { "type": "card", "measure": "Gross Margin %" },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Revenue", "COGS"] },
+            { "type": "donutChart", "legend": "DimCategories[Department]", "values": ["Total Revenue"] },
+            { "type": "clusteredBarChart", "axis": "DimDate[FiscalQuarter]", "values": ["Online Revenue", "Store Revenue"] }
+          ]
+        },
+        {
+          "name": "E-Commerce Overview",
+          "visuals": [
+            { "type": "card", "measure": "Online Order Count" },
+            { "type": "card", "measure": "AOV" },
+            { "type": "card", "measure": "Conversion Rate" },
+            { "type": "card", "measure": "Cart Abandonment Rate" },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Online Revenue"] },
+            { "type": "donutChart", "legend": "FactOnlineOrders[Channel]", "values": ["Online Revenue"] },
+            { "type": "clusteredBarChart", "axis": "FactOnlineOrders[PaymentMethod]", "values": ["Online Order Count"] }
+          ]
+        },
+        {
+          "name": "Store Performance",
+          "visuals": [
+            { "type": "card", "measure": "Store Revenue" },
+            { "type": "card", "measure": "Store Count" },
+            { "type": "card", "measure": "Revenue Per Sq Ft" },
+            { "type": "card", "measure": "Store Conversion Rate" },
+            { "type": "clusteredBarChart", "axis": "DimStores[Region]", "values": ["Store Revenue"] },
+            { "type": "table", "columns": ["DimStores[StoreName]", "Store Revenue", "Revenue Per Sq Ft", "Avg Footfall"] }
+          ]
+        },
+        {
+          "name": "Inventory Management",
+          "visuals": [
+            { "type": "card", "measure": "Total Inventory Value" },
+            { "type": "card", "measure": "Inventory Turns" },
+            { "type": "card", "measure": "GMROI" },
+            { "type": "card", "measure": "Stockout Risk Items" },
+            { "type": "clusteredBarChart", "axis": "DimWarehouses[WarehouseName]", "values": ["Total Qty On Hand"] },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Inventory Value"] }
+          ]
+        },
+        {
+          "name": "Supply Chain",
+          "visuals": [
+            { "type": "card", "measure": "PO Count" },
+            { "type": "card", "measure": "On-Time Delivery %" },
+            { "type": "card", "measure": "Supplier Quality Score" },
+            { "type": "card", "measure": "Avg Lead Time Days" },
+            { "type": "clusteredBarChart", "axis": "DimSuppliers[Country]", "values": ["Total PO Value"] },
+            { "type": "table", "columns": ["DimSuppliers[SupplierName]", "Avg Lead Time Days", "Supplier Quality Score", "On-Time Delivery %"] }
+          ]
+        },
+        {
+          "name": "Customer Analytics",
+          "visuals": [
+            { "type": "card", "measure": "Unique Customers" },
+            { "type": "card", "measure": "CLV Estimate" },
+            { "type": "card", "measure": "Avg Review Rating" },
+            { "type": "card", "measure": "NPS Proxy" },
+            { "type": "donutChart", "legend": "DimCustomerSegments[SegmentName]", "values": ["Active Loyalty Members"] },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Unique Customers", "Active Loyalty Members"] }
+          ]
+        },
+        {
+          "name": "Product Performance",
+          "visuals": [
+            { "type": "card", "measure": "Product Count" },
+            { "type": "card", "measure": "Active Product Count" },
+            { "type": "treemap", "category": "DimCategories[CategoryName]", "values": ["Line Total Revenue"] },
+            { "type": "table", "columns": ["DimProducts[Brand]", "Line Total Revenue", "Total Items Sold Online", "Avg Review Rating"] },
+            { "type": "clusteredBarChart", "axis": "DimCategories[Department]", "values": ["Gross Margin %"] }
+          ]
+        },
+        {
+          "name": "Marketing ROI",
+          "visuals": [
+            { "type": "card", "measure": "Total Marketing Spend" },
+            { "type": "card", "measure": "ROAS" },
+            { "type": "card", "measure": "CAC" },
+            { "type": "card", "measure": "Campaign ROI" },
+            { "type": "clusteredBarChart", "axis": "DimChannels[ChannelName]", "values": ["Total Marketing Spend", "Marketing Revenue Attributed"] },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Marketing Spend", "Marketing Revenue Attributed"] },
+            { "type": "table", "columns": ["DimCampaigns[CampaignName]", "Total Marketing Spend", "ROAS", "Total Conversions"] }
+          ]
+        },
+        {
+          "name": "Revenue Analysis",
+          "visuals": [
+            { "type": "card", "measure": "Total Revenue" },
+            { "type": "card", "measure": "Revenue YoY Growth" },
+            { "type": "card", "measure": "Net Revenue" },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Revenue", "Net Revenue"] },
+            { "type": "waterfallChart", "category": "DimDate[FiscalQuarter]", "values": ["Revenue MoM Change"] },
+            { "type": "pieChart", "legend": "FactOnlineOrders[Channel]", "values": ["Online Revenue"] }
+          ]
+        },
+        {
+          "name": "Returns & Refunds",
+          "visuals": [
+            { "type": "card", "measure": "Return Count" },
+            { "type": "card", "measure": "Return Rate" },
+            { "type": "card", "measure": "Total Refunds" },
+            { "type": "clusteredBarChart", "axis": "FactReturns[ReturnReason]", "values": ["Return Count"] },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Return Count", "Total Refunds"] },
+            { "type": "donutChart", "legend": "FactReturns[ReturnChannel]", "values": ["Return Count"] }
+          ]
+        },
+        {
+          "name": "Geographic Sales Map",
+          "visuals": [
+            { "type": "map", "location": "DimStores[State]", "size": "Store Revenue" },
+            { "type": "map", "location": "FactOnlineOrders[ShipState]", "size": "Online Revenue" },
+            { "type": "clusteredBarChart", "axis": "DimStores[Region]", "values": ["Total Revenue"] }
+          ]
+        },
+        {
+          "name": "Category Deep Dive",
+          "visuals": [
+            { "type": "matrix", "rows": ["DimCategories[Department]", "DimCategories[CategoryName]"], "values": ["Line Total Revenue", "Total Items Sold Online", "Avg Review Rating"] },
+            { "type": "clusteredBarChart", "axis": "DimCategories[CategoryName]", "values": ["Line Total Revenue"] },
+            { "type": "treemap", "category": "DimProducts[Brand]", "values": ["Line Total Revenue"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TailwindTraders-Forecasting",
+      "theme": {
+        "primary": "#E91E63",
+        "secondary": "#1565C0",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Demand Forecast",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Items Sold Online"], "forecast": true },
+            { "type": "card", "measure": "Total Items Sold Online" },
+            { "type": "clusteredBarChart", "axis": "DimCategories[Department]", "values": ["Total Items Sold Online"] }
+          ]
+        },
+        {
+          "name": "Revenue Forecast",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Revenue"], "forecast": true },
+            { "type": "card", "measure": "Total Revenue" },
+            { "type": "clusteredBarChart", "axis": "DimDate[Quarter]", "values": ["Total Revenue"] }
+          ]
+        },
+        {
+          "name": "Inventory Planning",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Inventory Value"], "forecast": true },
+            { "type": "card", "measure": "Avg Days of Supply" },
+            { "type": "card", "measure": "Stockout Risk Items" }
+          ]
+        },
+        {
+          "name": "Marketing Budget",
+          "visuals": [
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["Total Marketing Spend"], "forecast": true },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["ROAS"], "forecast": true }
+          ]
+        },
+        {
+          "name": "Model Accuracy",
+          "visuals": [
+            { "type": "table", "columns": ["ModelName", "RMSE", "MAE", "MAPE"] },
+            { "type": "lineChart", "axis": "Epoch", "values": ["TrainingLoss", "ValidationLoss"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TailwindTraders-HTAP",
+      "theme": {
+        "primary": "#E91E63",
+        "secondary": "#1565C0",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Real-Time Orders",
+          "visuals": [
+            { "type": "card", "measure": "Online Order Count" },
+            { "type": "card", "measure": "Store Transaction Count" },
+            { "type": "lineChart", "axis": "Timestamp", "values": ["OrderTotal"], "streaming": true },
+            { "type": "table", "columns": ["OrderID", "Channel", "OrderTotal", "Timestamp"] }
+          ]
+        },
+        {
+          "name": "Inventory Alerts",
+          "visuals": [
+            { "type": "card", "measure": "Stockout Risk Items" },
+            { "type": "card", "measure": "Total Inventory Value" },
+            { "type": "table", "columns": ["ProductName", "WarehouseName", "QuantityOnHand", "ReorderPoint", "AlertLevel"] },
+            { "type": "clusteredBarChart", "axis": "DimWarehouses[WarehouseName]", "values": ["Stockout Risk Items"] }
+          ]
+        },
+        {
+          "name": "Website Analytics",
+          "visuals": [
+            { "type": "card", "measure": "Total Page Views" },
+            { "type": "card", "measure": "Conversion Rate" },
+            { "type": "lineChart", "axis": "Timestamp", "values": ["PageViews", "Sessions"], "streaming": true },
+            { "type": "donutChart", "legend": "DeviceType", "values": ["Sessions"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TailwindTraders-Pipeline",
+      "theme": {
+        "primary": "#E91E63",
+        "secondary": "#1565C0",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Pipeline Overview",
+          "visuals": [
+            { "type": "card", "measure": "Total Tables Loaded" },
+            { "type": "card", "measure": "Total Rows Ingested" },
+            { "type": "card", "measure": "Last Refresh Time" },
+            { "type": "card", "measure": "Pipeline Success Rate" },
+            { "type": "clusteredBarChart", "axis": "Domain", "values": ["Tables Loaded", "Rows Ingested"] },
+            { "type": "table", "columns": ["Pipeline Step", "Status", "Duration (s)", "Rows Processed"] }
+          ]
+        },
+        {
+          "name": "Data Quality",
+          "visuals": [
+            { "type": "card", "measure": "Data Quality Score" },
+            { "type": "card", "measure": "Null Value Count" },
+            { "type": "card", "measure": "Duplicate Row Count" },
+            { "type": "clusteredBarChart", "axis": "TableName", "values": ["Null %", "Duplicate %"] },
+            { "type": "table", "columns": ["TableName", "TotalRows", "NullCount", "DuplicateCount", "QualityScore"] }
+          ]
+        },
+        {
+          "name": "Refresh History",
+          "visuals": [
+            { "type": "lineChart", "axis": "RefreshDate", "values": ["Duration (s)", "Rows Processed"] },
+            { "type": "table", "columns": ["RefreshDate", "Pipeline", "Status", "Duration (s)", "Error"] }
+          ]
+        },
+        {
+          "name": "Ingestion by Domain",
+          "visuals": [
+            { "type": "donutChart", "legend": "Domain", "values": ["Rows Ingested"] },
+            { "type": "clusteredBarChart", "axis": "Domain", "values": ["CSV Files", "Tables Created"] },
+            { "type": "table", "columns": ["Domain", "Dataflow", "CSV Files", "Tables", "Last Run"] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TailwindTraders-Writeback",
+      "semanticModel": "writeback",
+      "theme": {
+        "primary": "#E91E63",
+        "secondary": "#1565C0",
+        "background": "#FAFAFA"
+      },
+      "pages": [
+        {
+          "name": "Price Adjustments",
+          "visuals": [
+            { "type": "card", "measure": "Total Adjustments" },
+            { "type": "card", "measure": "Pending Count" },
+            { "type": "table", "columns": ["AdjustmentId", "ProductName", "OldPrice", "NewPrice", "Reason", "Status", "SubmittedBy", "SubmittedDate"] },
+            { "type": "clusteredBarChart", "axis": "DimCategories[Department]", "values": ["AdjustmentCount"] }
+          ]
+        },
+        {
+          "name": "Promotion Schedules",
+          "visuals": [
+            { "type": "card", "measure": "Active Promotions" },
+            { "type": "table", "columns": ["PromotionId", "PromotionName", "StartDate", "EndDate", "DiscountPct", "TargetCategory", "ModifiedBy"] },
+            { "type": "lineChart", "axis": "DimDate[MonthName]", "values": ["PromotionCount"] }
+          ]
+        },
+        {
+          "name": "Demand Overrides",
+          "visuals": [
+            { "type": "card", "measure": "Total Overrides" },
+            { "type": "table", "columns": ["OverrideId", "ProductName", "OriginalForecast", "AdjustedForecast", "Justification", "ModifiedBy"] },
+            { "type": "clusteredBarChart", "axis": "DimCategories[CategoryName]", "values": ["OriginalForecast", "AdjustedForecast"] }
+          ]
+        }
+      ]
+    }
+  ]
+}

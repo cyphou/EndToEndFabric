@@ -1,0 +1,2208 @@
+{
+  "schemaVersion": "1.0",
+  "sampleData": {
+    "description": "Woodgrove Bank sample data - 20 tables across 5 domains.",
+    "domains": [
+      {
+        "name": "RetailBanking",
+        "folder": "RetailBanking",
+        "tables": [
+          {
+            "name": "DimCustomers",
+            "fileName": "DimCustomers.csv",
+            "rowCount": 500,
+            "columns": [
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CustomerName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "name"
+                  }
+                }
+              },
+              {
+                "name": "CustomerType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Retail",
+                      "Small Business"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Segment",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Mass Market",
+                      "Affluent",
+                      "High Net Worth",
+                      "Small Business",
+                      "Premier"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "State",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "NC",
+                      "SC",
+                      "VA",
+                      "GA",
+                      "TN",
+                      "FL",
+                      "MD",
+                      "PA"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "City",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "city"
+                  }
+                }
+              },
+              {
+                "name": "JoinDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2005-01-01",
+                    "end": "2026-12-31"
+                  }
+                }
+              },
+              {
+                "name": "CreditScore",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 300,
+                    "max": 850
+                  }
+                }
+              },
+              {
+                "name": "AnnualIncome",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 25000,
+                    "max": 500000
+                  }
+                }
+              },
+              {
+                "name": "IsDigitalUser",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "RelationshipManager",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "name"
+                  }
+                }
+              },
+              {
+                "name": "RiskRating",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Low",
+                      "Medium",
+                      "High"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "DimAccounts",
+            "fileName": "DimAccounts.csv",
+            "rowCount": 800,
+            "columns": [
+              {
+                "name": "AccountID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCustomers",
+                  "column": "CustomerID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "AccountType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Checking",
+                      "Savings",
+                      "Money Market",
+                      "CD",
+                      "IRA"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "OpenDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2010-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "Status",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Active",
+                      "Dormant",
+                      "Closed"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "InterestRate",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.01,
+                    "max": 5.25
+                  }
+                }
+              },
+              {
+                "name": "BranchID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimBranches",
+                  "column": "BranchID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              }
+            ]
+          },
+          {
+            "name": "DimBranches",
+            "fileName": "DimBranches.csv",
+            "rowCount": 120,
+            "columns": [
+              {
+                "name": "BranchID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "BranchName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "company"
+                  }
+                }
+              },
+              {
+                "name": "BranchType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Full Service",
+                      "Express",
+                      "Drive-Through",
+                      "In-Store",
+                      "Flagship"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "State",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "NC",
+                      "SC",
+                      "VA",
+                      "GA",
+                      "TN",
+                      "FL",
+                      "MD",
+                      "PA"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "City",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "city"
+                  }
+                }
+              },
+              {
+                "name": "Region",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Southeast",
+                      "Mid-Atlantic",
+                      "Northeast",
+                      "Central"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "ManagerName",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "name"
+                  }
+                }
+              },
+              {
+                "name": "EmployeeCount",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 5,
+                    "max": 45
+                  }
+                }
+              },
+              {
+                "name": "OpenDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "1990-01-01",
+                    "end": "2024-12-31"
+                  }
+                }
+              },
+              {
+                "name": "HasATM",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Latitude",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 27.0,
+                    "max": 40.0
+                  }
+                }
+              },
+              {
+                "name": "Longitude",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": -88.0,
+                    "max": -75.0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "DimProducts",
+            "fileName": "DimProducts.csv",
+            "rowCount": 25,
+            "columns": [
+              {
+                "name": "ProductID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "ProductName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Basic Checking",
+                      "Premium Checking",
+                      "Student Checking",
+                      "Business Checking",
+                      "Regular Savings",
+                      "High-Yield Savings",
+                      "Money Market",
+                      "12-Month CD",
+                      "24-Month CD",
+                      "60-Month CD",
+                      "Traditional IRA",
+                      "Roth IRA",
+                      "Fixed Mortgage 15yr",
+                      "Fixed Mortgage 30yr",
+                      "ARM Mortgage",
+                      "Auto Loan New",
+                      "Auto Loan Used",
+                      "Personal Loan",
+                      "Home Equity Line",
+                      "Platinum Card",
+                      "Rewards Card",
+                      "Business Card",
+                      "Secured Card",
+                      "Wealth Management",
+                      "Business Line of Credit"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "ProductCategory",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Deposit",
+                      "Lending",
+                      "Card",
+                      "Investment",
+                      "Insurance"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Domain",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "RetailBanking",
+                      "Lending",
+                      "Cards",
+                      "WealthManagement"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "MinBalance",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 25000
+                  }
+                }
+              },
+              {
+                "name": "AnnualFee",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 500
+                  }
+                }
+              },
+              {
+                "name": "IsActive",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactTransactions",
+            "fileName": "FactTransactions.csv",
+            "rowCount": 8000,
+            "columns": [
+              {
+                "name": "TransactionID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "AccountID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimAccounts",
+                  "column": "AccountID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "TransactionDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "TransactionType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Deposit",
+                      "Withdrawal",
+                      "Transfer",
+                      "ACH",
+                      "Wire",
+                      "Check",
+                      "POS",
+                      "ATM"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Amount",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 5,
+                    "max": 50000
+                  }
+                }
+              },
+              {
+                "name": "Channel",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Branch",
+                      "Online",
+                      "Mobile",
+                      "ATM",
+                      "Phone"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "BranchID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimBranches",
+                  "column": "BranchID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "IsRecurring",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactAccountBalances",
+            "fileName": "FactAccountBalances.csv",
+            "rowCount": 2000,
+            "columns": [
+              {
+                "name": "BalanceID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "AccountID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimAccounts",
+                  "column": "AccountID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "SnapshotDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "Balance",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 500000
+                  }
+                }
+              },
+              {
+                "name": "AvgDailyBalance",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 300000
+                  }
+                }
+              },
+              {
+                "name": "InterestAccrued",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 5000
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Lending",
+        "folder": "Lending",
+        "tables": [
+          {
+            "name": "DimLoanProducts",
+            "fileName": "DimLoanProducts.csv",
+            "rowCount": 15,
+            "columns": [
+              {
+                "name": "LoanProductID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "ProductName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Fixed 15yr Mortgage",
+                      "Fixed 30yr Mortgage",
+                      "ARM 5/1",
+                      "ARM 7/1",
+                      "Jumbo Mortgage",
+                      "FHA Loan",
+                      "VA Loan",
+                      "Auto Loan New",
+                      "Auto Loan Used",
+                      "Personal Unsecured",
+                      "Personal Secured",
+                      "HELOC",
+                      "Home Equity Loan",
+                      "Business Term Loan",
+                      "Business Line of Credit"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "LoanCategory",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Mortgage",
+                      "Auto",
+                      "Personal",
+                      "Home Equity",
+                      "Business"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "BaseRate",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 3.5,
+                    "max": 12.0
+                  }
+                }
+              },
+              {
+                "name": "MaxTermMonths",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 12,
+                    "max": 360
+                  }
+                }
+              },
+              {
+                "name": "IsSecured",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactLoans",
+            "fileName": "FactLoans.csv",
+            "rowCount": 1500,
+            "columns": [
+              {
+                "name": "LoanID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCustomers",
+                  "column": "CustomerID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "LoanProductID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimLoanProducts",
+                  "column": "LoanProductID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "OriginationDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2020-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "OriginalAmount",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 5000,
+                    "max": 750000
+                  }
+                }
+              },
+              {
+                "name": "CurrentBalance",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 700000
+                  }
+                }
+              },
+              {
+                "name": "InterestRate",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 3.0,
+                    "max": 15.0
+                  }
+                }
+              },
+              {
+                "name": "TermMonths",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 12,
+                    "max": 360
+                  }
+                }
+              },
+              {
+                "name": "LoanStatus",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Current",
+                      "Delinquent 30",
+                      "Delinquent 60",
+                      "Delinquent 90+",
+                      "Default",
+                      "Paid Off"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "LTV",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.4,
+                    "max": 1.0
+                  }
+                }
+              },
+              {
+                "name": "DTI",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.15,
+                    "max": 0.55
+                  }
+                }
+              },
+              {
+                "name": "BranchID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimBranches",
+                  "column": "BranchID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactLoanPayments",
+            "fileName": "FactLoanPayments.csv",
+            "rowCount": 5000,
+            "columns": [
+              {
+                "name": "PaymentID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "LoanID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "FactLoans",
+                  "column": "LoanID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "PaymentDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "PrincipalAmount",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 100,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "InterestAmount",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 50,
+                    "max": 3000
+                  }
+                }
+              },
+              {
+                "name": "EscrowAmount",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 800
+                  }
+                }
+              },
+              {
+                "name": "PaymentStatus",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "On Time",
+                      "Late",
+                      "Missed",
+                      "Partial"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "DaysLate",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 90
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactMortgages",
+            "fileName": "FactMortgages.csv",
+            "rowCount": 600,
+            "columns": [
+              {
+                "name": "MortgageID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "LoanID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "FactLoans",
+                  "column": "LoanID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "PropertyValue",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 100000,
+                    "max": 1500000
+                  }
+                }
+              },
+              {
+                "name": "PropertyType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Single Family",
+                      "Condo",
+                      "Townhouse",
+                      "Multi-Family",
+                      "Manufactured"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "PropertyState",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "NC",
+                      "SC",
+                      "VA",
+                      "GA",
+                      "TN",
+                      "FL",
+                      "MD",
+                      "PA"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "OccupancyType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Primary",
+                      "Secondary",
+                      "Investment"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "ClosingDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2020-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "EscrowBalance",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 500,
+                    "max": 15000
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Cards",
+        "folder": "Cards",
+        "tables": [
+          {
+            "name": "DimCardProducts",
+            "fileName": "DimCardProducts.csv",
+            "rowCount": 10,
+            "columns": [
+              {
+                "name": "CardProductID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CardName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Platinum Rewards",
+                      "Cash Back",
+                      "Travel Rewards",
+                      "Business Platinum",
+                      "Business Cash",
+                      "Secured",
+                      "Student",
+                      "Premium",
+                      "World Elite",
+                      "Digital First"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "CardNetwork",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Visa",
+                      "Mastercard"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "AnnualFee",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 550
+                  }
+                }
+              },
+              {
+                "name": "RewardsRate",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.01,
+                    "max": 0.05
+                  }
+                }
+              },
+              {
+                "name": "APR",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 14.99,
+                    "max": 29.99
+                  }
+                }
+              },
+              {
+                "name": "CreditLimitMin",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 500,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "CreditLimitMax",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 10000,
+                    "max": 100000
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactCardTransactions",
+            "fileName": "FactCardTransactions.csv",
+            "rowCount": 10000,
+            "columns": [
+              {
+                "name": "CardTxnID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCustomers",
+                  "column": "CustomerID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "CardProductID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCardProducts",
+                  "column": "CardProductID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "TransactionDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "MerchantCategory",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Retail",
+                      "Grocery",
+                      "Dining",
+                      "Travel",
+                      "Entertainment",
+                      "Gas",
+                      "Healthcare",
+                      "Utilities",
+                      "Online Shopping",
+                      "Services"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Amount",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 2,
+                    "max": 5000
+                  }
+                }
+              },
+              {
+                "name": "IsInternational",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "AuthorizationStatus",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Approved",
+                      "Declined",
+                      "Pending"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "RewardsEarned",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0,
+                    "max": 250
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactFraudAlerts",
+            "fileName": "FactFraudAlerts.csv",
+            "rowCount": 200,
+            "columns": [
+              {
+                "name": "AlertID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCustomers",
+                  "column": "CustomerID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "AlertDate",
+                "type": "datetime",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "AlertType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Unusual Location",
+                      "High Amount",
+                      "Rapid Succession",
+                      "Card Not Present",
+                      "Account Takeover",
+                      "Synthetic Identity"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "RiskScore",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.5,
+                    "max": 1.0
+                  }
+                }
+              },
+              {
+                "name": "Amount",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 100,
+                    "max": 25000
+                  }
+                }
+              },
+              {
+                "name": "Resolution",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Confirmed Fraud",
+                      "False Positive",
+                      "Under Review",
+                      "Blocked"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Channel",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "POS",
+                      "Online",
+                      "ATM",
+                      "Phone"
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "RiskCompliance",
+        "folder": "RiskCompliance",
+        "tables": [
+          {
+            "name": "DimRiskCategories",
+            "fileName": "DimRiskCategories.csv",
+            "rowCount": 20,
+            "columns": [
+              {
+                "name": "RiskCategoryID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CategoryName",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Credit Risk",
+                      "Market Risk",
+                      "Operational Risk",
+                      "Liquidity Risk",
+                      "Compliance Risk",
+                      "Cyber Risk",
+                      "Reputational Risk",
+                      "Interest Rate Risk",
+                      "Concentration Risk",
+                      "Model Risk",
+                      "Counterparty Risk",
+                      "Strategic Risk",
+                      "Legal Risk",
+                      "AML/KYC",
+                      "Fraud Risk",
+                      "Regulatory Risk",
+                      "Third Party Risk",
+                      "Climate Risk",
+                      "Conduct Risk",
+                      "Data Privacy"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "RiskDomain",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Financial",
+                      "Operational",
+                      "Regulatory",
+                      "Strategic"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "SeverityWeight",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 1.0,
+                    "max": 10.0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactCreditScores",
+            "fileName": "FactCreditScores.csv",
+            "rowCount": 2000,
+            "columns": [
+              {
+                "name": "ScoreID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCustomers",
+                  "column": "CustomerID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "ScoreDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "CreditScore",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 300,
+                    "max": 850
+                  }
+                }
+              },
+              {
+                "name": "ScoreChange",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": -50,
+                    "max": 50
+                  }
+                }
+              },
+              {
+                "name": "RiskBand",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Prime",
+                      "Near Prime",
+                      "Subprime",
+                      "Deep Subprime",
+                      "Super Prime"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "ProbabilityOfDefault",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.001,
+                    "max": 0.15
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactComplianceChecks",
+            "fileName": "FactComplianceChecks.csv",
+            "rowCount": 500,
+            "columns": [
+              {
+                "name": "CheckID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CheckDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "RiskCategoryID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimRiskCategories",
+                  "column": "RiskCategoryID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "CheckType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "KYC Review",
+                      "AML Screening",
+                      "OFAC Check",
+                      "SAR Filing",
+                      "CTR Filing",
+                      "CRA Audit",
+                      "Fair Lending Review",
+                      "BSA Compliance",
+                      "GDPR Review",
+                      "SOX Audit"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Result",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Pass",
+                      "Fail",
+                      "Follow-Up Required",
+                      "Escalated"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "FindingsCount",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 15
+                  }
+                }
+              },
+              {
+                "name": "RemediationDays",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 90
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactAMLAlerts",
+            "fileName": "FactAMLAlerts.csv",
+            "rowCount": 100,
+            "columns": [
+              {
+                "name": "AMLAlertID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCustomers",
+                  "column": "CustomerID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "AlertDate",
+                "type": "datetime",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "AlertType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Structuring",
+                      "Unusual Wire",
+                      "High-Risk Country",
+                      "Cash Intensity",
+                      "Rapid Movement",
+                      "Shell Company"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "TransactionAmount",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 5000,
+                    "max": 500000
+                  }
+                }
+              },
+              {
+                "name": "RiskScore",
+                "type": "float",
+                "generator": {
+                  "method": "random_float",
+                  "params": {
+                    "min": 0.6,
+                    "max": 1.0
+                  }
+                }
+              },
+              {
+                "name": "Disposition",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "SAR Filed",
+                      "Closed - No Action",
+                      "Under Investigation",
+                      "Escalated to FinCEN"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "InvestigatorID",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 20
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Customer360",
+        "folder": "Customer360",
+        "tables": [
+          {
+            "name": "FactCustomerInteractions",
+            "fileName": "FactCustomerInteractions.csv",
+            "rowCount": 3000,
+            "columns": [
+              {
+                "name": "InteractionID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCustomers",
+                  "column": "CustomerID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "InteractionDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "Channel",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Branch",
+                      "Call Center",
+                      "Online Chat",
+                      "Email",
+                      "Mobile App",
+                      "Social Media"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "InteractionType",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Inquiry",
+                      "Complaint",
+                      "Service Request",
+                      "Product Inquiry",
+                      "Account Change",
+                      "Dispute"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "ResolutionMinutes",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 2,
+                    "max": 120
+                  }
+                }
+              },
+              {
+                "name": "SatisfactionScore",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 10
+                  }
+                }
+              },
+              {
+                "name": "IsResolved",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactDigitalBanking",
+            "fileName": "FactDigitalBanking.csv",
+            "rowCount": 5000,
+            "columns": [
+              {
+                "name": "SessionID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCustomers",
+                  "column": "CustomerID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "SessionDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "Platform",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "iOS",
+                      "Android",
+                      "Web",
+                      "Tablet"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Feature",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Balance Check",
+                      "Transfer",
+                      "Bill Pay",
+                      "Mobile Deposit",
+                      "Card Management",
+                      "Loan Apply",
+                      "Statements",
+                      "Zelle"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "SessionDurationSec",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 10,
+                    "max": 1800
+                  }
+                }
+              },
+              {
+                "name": "PagesViewed",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 1,
+                    "max": 20
+                  }
+                }
+              },
+              {
+                "name": "TransactionCompleted",
+                "type": "boolean",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      true,
+                      false
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "FactNetPromoterScore",
+            "fileName": "FactNetPromoterScore.csv",
+            "rowCount": 1000,
+            "columns": [
+              {
+                "name": "SurveyID",
+                "type": "int",
+                "primaryKey": true,
+                "generator": {
+                  "method": "sequence",
+                  "params": {
+                    "start": 1
+                  }
+                }
+              },
+              {
+                "name": "CustomerID",
+                "type": "int",
+                "foreignKey": {
+                  "table": "DimCustomers",
+                  "column": "CustomerID"
+                },
+                "generator": {
+                  "method": "foreign_key_lookup"
+                }
+              },
+              {
+                "name": "SurveyDate",
+                "type": "date",
+                "generator": {
+                  "method": "random_date",
+                  "params": {
+                    "start": "2024-01-01",
+                    "end": "2026-06-30"
+                  }
+                }
+              },
+              {
+                "name": "NPSScore",
+                "type": "int",
+                "generator": {
+                  "method": "random_int",
+                  "params": {
+                    "min": 0,
+                    "max": 10
+                  }
+                }
+              },
+              {
+                "name": "Category",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Promoter",
+                      "Passive",
+                      "Detractor"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "TouchPoint",
+                "type": "string",
+                "generator": {
+                  "method": "random_choice",
+                  "params": {
+                    "choices": [
+                      "Branch Visit",
+                      "Online Banking",
+                      "Mobile App",
+                      "Customer Service",
+                      "Loan Closing",
+                      "Account Opening"
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "Verbatim",
+                "type": "string",
+                "generator": {
+                  "method": "faker",
+                  "params": {
+                    "type": "sentence"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

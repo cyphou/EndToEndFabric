@@ -1,12 +1,26 @@
 {
+  "schemaVersion": "1.0",
   "industry": {
     "id": "contoso-energy",
     "name": "ContosoEnergy",
     "displayName": "Contoso Energy",
     "description": "Regional energy provider with renewables, grid operations, customer billing, sustainability tracking, and field operations.",
-    "domains": ["Generation", "GridOperations", "CustomerBilling", "Sustainability", "FieldOps"],
-    "dataYears": ["FY2024", "FY2025", "FY2026"],
-    "dateRange": { "start": "2023-01-01", "end": "2027-12-31" },
+    "domains": [
+      "Generation",
+      "GridOperations",
+      "CustomerBilling",
+      "Sustainability",
+      "FieldOps"
+    ],
+    "dataYears": [
+      "FY2024",
+      "FY2025",
+      "FY2026"
+    ],
+    "dateRange": {
+      "start": "2023-01-01",
+      "end": "2027-12-31"
+    },
     "fiscalYearStartMonth": 7,
     "theme": {
       "primary": "#2E7D32",
@@ -29,8 +43,20 @@
       "gold": "GoldLH"
     },
     "schemas": {
-      "silver": ["generation", "grid", "billing", "sustainability", "fieldops", "web"],
-      "gold": ["dim", "fact", "analytics", "planning"]
+      "silver": [
+        "generation",
+        "grid",
+        "billing",
+        "sustainability",
+        "fieldops",
+        "web"
+      ],
+      "gold": [
+        "dim",
+        "fact",
+        "analytics",
+        "planning"
+      ]
     },
     "notebooks": 6,
     "dataflows": 5,

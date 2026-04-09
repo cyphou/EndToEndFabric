@@ -1,0 +1,535 @@
+{
+  "schemaVersion": "1.0",
+  "semanticModel": {
+    "name": "LamnaHealthcareModel",
+    "mode": "DirectLake",
+    "defaultSchema": "gold",
+    "tables": [
+      {
+        "name": "DimDate",
+        "schema": "dbo",
+        "columns": [
+          { "name": "DateKey", "dataType": "Int64", "isKey": true },
+          { "name": "Date", "dataType": "DateTime" },
+          { "name": "Year", "dataType": "Int64" },
+          { "name": "Month", "dataType": "Int64" },
+          { "name": "Quarter", "dataType": "Int64" },
+          { "name": "MonthName", "dataType": "String" },
+          { "name": "FiscalYear", "dataType": "Int64" },
+          { "name": "FiscalQuarter", "dataType": "Int64" },
+          { "name": "DayOfWeek", "dataType": "String" },
+          { "name": "IsWeekend", "dataType": "Boolean" },
+          { "name": "IsHoliday", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "DimPatients",
+        "schema": "dbo",
+        "columns": [
+          { "name": "PatientID", "dataType": "Int64", "isKey": true },
+          { "name": "MRN", "dataType": "String" },
+          { "name": "FirstName", "dataType": "String" },
+          { "name": "LastName", "dataType": "String" },
+          { "name": "DateOfBirth", "dataType": "DateTime" },
+          { "name": "Gender", "dataType": "String" },
+          { "name": "Race", "dataType": "String" },
+          { "name": "ZipCode", "dataType": "String" },
+          { "name": "InsuranceType", "dataType": "String" },
+          { "name": "PrimaryPayorID", "dataType": "Int64" },
+          { "name": "PrimaryCarePhysicianID", "dataType": "Int64" },
+          { "name": "RiskScore", "dataType": "Double" },
+          { "name": "IsActive", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "DimPhysicians",
+        "schema": "dbo",
+        "columns": [
+          { "name": "PhysicianID", "dataType": "Int64", "isKey": true },
+          { "name": "NPI", "dataType": "String" },
+          { "name": "FirstName", "dataType": "String" },
+          { "name": "LastName", "dataType": "String" },
+          { "name": "Specialty", "dataType": "String" },
+          { "name": "DepartmentID", "dataType": "Int64" },
+          { "name": "FacilityID", "dataType": "Int64" },
+          { "name": "CredentialStatus", "dataType": "String" },
+          { "name": "HireDate", "dataType": "DateTime" },
+          { "name": "FTEPercent", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "DimDepartments",
+        "schema": "dbo",
+        "columns": [
+          { "name": "DepartmentID", "dataType": "Int64", "isKey": true },
+          { "name": "DepartmentName", "dataType": "String" },
+          { "name": "DepartmentType", "dataType": "String" },
+          { "name": "CostCenterCode", "dataType": "String" },
+          { "name": "BudgetAmount", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "DimDiagnoses",
+        "schema": "dbo",
+        "columns": [
+          { "name": "DiagnosisID", "dataType": "Int64", "isKey": true },
+          { "name": "ICD10Code", "dataType": "String" },
+          { "name": "DiagnosisDescription", "dataType": "String" },
+          { "name": "DiagnosisCategory", "dataType": "String" },
+          { "name": "IsChronic", "dataType": "Boolean" },
+          { "name": "DRGWeight", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "DimPayors",
+        "schema": "dbo",
+        "columns": [
+          { "name": "PayorID", "dataType": "Int64", "isKey": true },
+          { "name": "PayorName", "dataType": "String" },
+          { "name": "PayorType", "dataType": "String" },
+          { "name": "ContractType", "dataType": "String" },
+          { "name": "ReimbursementRate", "dataType": "Double" },
+          { "name": "IsInNetwork", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "DimCPTCodes",
+        "schema": "dbo",
+        "columns": [
+          { "name": "CPTID", "dataType": "Int64", "isKey": true },
+          { "name": "CPTCode", "dataType": "String" },
+          { "name": "Description", "dataType": "String" },
+          { "name": "Category", "dataType": "String" },
+          { "name": "BaseRVU", "dataType": "Double" },
+          { "name": "FacilityFee", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "DimFacilities",
+        "schema": "dbo",
+        "columns": [
+          { "name": "FacilityID", "dataType": "Int64", "isKey": true },
+          { "name": "FacilityName", "dataType": "String" },
+          { "name": "FacilityType", "dataType": "String" },
+          { "name": "City", "dataType": "String" },
+          { "name": "State", "dataType": "String" },
+          { "name": "LicensedBeds", "dataType": "Int64" },
+          { "name": "OperatingRooms", "dataType": "Int64" },
+          { "name": "AnnualBudget", "dataType": "Double" },
+          { "name": "Latitude", "dataType": "Double" },
+          { "name": "Longitude", "dataType": "Double" },
+          { "name": "CMSRating", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "DimBeds",
+        "schema": "dbo",
+        "columns": [
+          { "name": "BedID", "dataType": "Int64", "isKey": true },
+          { "name": "FacilityID", "dataType": "Int64" },
+          { "name": "Unit", "dataType": "String" },
+          { "name": "BedType", "dataType": "String" },
+          { "name": "Floor", "dataType": "Int64" },
+          { "name": "IsActive", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "DimMedications",
+        "schema": "dbo",
+        "columns": [
+          { "name": "MedicationID", "dataType": "Int64", "isKey": true },
+          { "name": "NDCCode", "dataType": "String" },
+          { "name": "GenericName", "dataType": "String" },
+          { "name": "BrandName", "dataType": "String" },
+          { "name": "DrugClass", "dataType": "String" },
+          { "name": "IsControlled", "dataType": "Boolean" },
+          { "name": "UnitCost", "dataType": "Double" },
+          { "name": "Route", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "FactEncounters",
+        "schema": "dbo",
+        "columns": [
+          { "name": "EncounterID", "dataType": "Int64", "isKey": true },
+          { "name": "PatientID", "dataType": "Int64" },
+          { "name": "PhysicianID", "dataType": "Int64" },
+          { "name": "DepartmentID", "dataType": "Int64" },
+          { "name": "FacilityID", "dataType": "Int64" },
+          { "name": "PrimaryDiagnosisID", "dataType": "Int64" },
+          { "name": "AdmitDate", "dataType": "DateTime" },
+          { "name": "DischargeDate", "dataType": "DateTime" },
+          { "name": "EncounterType", "dataType": "String" },
+          { "name": "LengthOfStayDays", "dataType": "Int64" },
+          { "name": "DischargeDisposition", "dataType": "String" },
+          { "name": "Acuity", "dataType": "String" },
+          { "name": "TotalCharges", "dataType": "Double" },
+          { "name": "PatientSatisfactionScore", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "FactLabResults",
+        "schema": "dbo",
+        "columns": [
+          { "name": "LabResultID", "dataType": "Int64", "isKey": true },
+          { "name": "EncounterID", "dataType": "Int64" },
+          { "name": "PatientID", "dataType": "Int64" },
+          { "name": "OrderDate", "dataType": "DateTime" },
+          { "name": "ResultDate", "dataType": "DateTime" },
+          { "name": "TestName", "dataType": "String" },
+          { "name": "ResultValue", "dataType": "Double" },
+          { "name": "Unit", "dataType": "String" },
+          { "name": "IsAbnormal", "dataType": "Boolean" },
+          { "name": "IsCritical", "dataType": "Boolean" },
+          { "name": "TurnaroundMinutes", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "FactVitalSigns",
+        "schema": "dbo",
+        "columns": [
+          { "name": "VitalSignID", "dataType": "Int64", "isKey": true },
+          { "name": "EncounterID", "dataType": "Int64" },
+          { "name": "PatientID", "dataType": "Int64" },
+          { "name": "RecordedDateTime", "dataType": "DateTime" },
+          { "name": "HeartRate", "dataType": "Int64" },
+          { "name": "SystolicBP", "dataType": "Int64" },
+          { "name": "DiastolicBP", "dataType": "Int64" },
+          { "name": "Temperature", "dataType": "Double" },
+          { "name": "RespiratoryRate", "dataType": "Int64" },
+          { "name": "SpO2", "dataType": "Double" },
+          { "name": "PainScore", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "FactClaims",
+        "schema": "dbo",
+        "columns": [
+          { "name": "ClaimID", "dataType": "Int64", "isKey": true },
+          { "name": "EncounterID", "dataType": "Int64" },
+          { "name": "PatientID", "dataType": "Int64" },
+          { "name": "PayorID", "dataType": "Int64" },
+          { "name": "CPTID", "dataType": "Int64" },
+          { "name": "DiagnosisID", "dataType": "Int64" },
+          { "name": "ServiceDate", "dataType": "DateTime" },
+          { "name": "SubmissionDate", "dataType": "DateTime" },
+          { "name": "ChargedAmount", "dataType": "Double" },
+          { "name": "AllowedAmount", "dataType": "Double" },
+          { "name": "PaidAmount", "dataType": "Double" },
+          { "name": "PatientResponsibility", "dataType": "Double" },
+          { "name": "ClaimStatus", "dataType": "String" },
+          { "name": "DaysToPayment", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "FactPayments",
+        "schema": "dbo",
+        "columns": [
+          { "name": "PaymentID", "dataType": "Int64", "isKey": true },
+          { "name": "ClaimID", "dataType": "Int64" },
+          { "name": "PayorID", "dataType": "Int64" },
+          { "name": "PaymentDate", "dataType": "DateTime" },
+          { "name": "PaymentAmount", "dataType": "Double" },
+          { "name": "AdjustmentAmount", "dataType": "Double" },
+          { "name": "PaymentMethod", "dataType": "String" },
+          { "name": "RemittanceCode", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "FactDenials",
+        "schema": "dbo",
+        "columns": [
+          { "name": "DenialID", "dataType": "Int64", "isKey": true },
+          { "name": "ClaimID", "dataType": "Int64" },
+          { "name": "PayorID", "dataType": "Int64" },
+          { "name": "DenialDate", "dataType": "DateTime" },
+          { "name": "DenialReasonCode", "dataType": "String" },
+          { "name": "DenialReason", "dataType": "String" },
+          { "name": "DeniedAmount", "dataType": "Double" },
+          { "name": "AppealStatus", "dataType": "String" },
+          { "name": "RecoveredAmount", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "FactAdmissions",
+        "schema": "dbo",
+        "columns": [
+          { "name": "AdmissionID", "dataType": "Int64", "isKey": true },
+          { "name": "PatientID", "dataType": "Int64" },
+          { "name": "FacilityID", "dataType": "Int64" },
+          { "name": "BedID", "dataType": "Int64" },
+          { "name": "AdmitDate", "dataType": "DateTime" },
+          { "name": "DischargeDate", "dataType": "DateTime" },
+          { "name": "AdmissionSource", "dataType": "String" },
+          { "name": "AdmissionPriority", "dataType": "String" },
+          { "name": "LengthOfStayDays", "dataType": "Int64" },
+          { "name": "CaseMixIndex", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "FactBedCensus",
+        "schema": "dbo",
+        "columns": [
+          { "name": "CensusID", "dataType": "Int64", "isKey": true },
+          { "name": "FacilityID", "dataType": "Int64" },
+          { "name": "CensusDate", "dataType": "DateTime" },
+          { "name": "Unit", "dataType": "String" },
+          { "name": "OccupiedBeds", "dataType": "Int64" },
+          { "name": "AvailableBeds", "dataType": "Int64" },
+          { "name": "PendingDischarges", "dataType": "Int64" },
+          { "name": "PendingAdmissions", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "FactStaffing",
+        "schema": "dbo",
+        "columns": [
+          { "name": "StaffingID", "dataType": "Int64", "isKey": true },
+          { "name": "FacilityID", "dataType": "Int64" },
+          { "name": "DepartmentID", "dataType": "Int64" },
+          { "name": "ShiftDate", "dataType": "DateTime" },
+          { "name": "Shift", "dataType": "String" },
+          { "name": "RNCount", "dataType": "Int64" },
+          { "name": "CNACount", "dataType": "Int64" },
+          { "name": "PhysicianCount", "dataType": "Int64" },
+          { "name": "PatientCount", "dataType": "Int64" },
+          { "name": "OvertimeHours", "dataType": "Double" },
+          { "name": "AgencyStaffCount", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "FactPrescriptions",
+        "schema": "dbo",
+        "columns": [
+          { "name": "PrescriptionID", "dataType": "Int64", "isKey": true },
+          { "name": "PatientID", "dataType": "Int64" },
+          { "name": "PhysicianID", "dataType": "Int64" },
+          { "name": "MedicationID", "dataType": "Int64" },
+          { "name": "EncounterID", "dataType": "Int64" },
+          { "name": "PrescriptionDate", "dataType": "DateTime" },
+          { "name": "Quantity", "dataType": "Int64" },
+          { "name": "DaysSupply", "dataType": "Int64" },
+          { "name": "Refills", "dataType": "Int64" },
+          { "name": "TotalCost", "dataType": "Double" },
+          { "name": "IsGeneric", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "FactMedicationAdministration",
+        "schema": "dbo",
+        "columns": [
+          { "name": "AdminID", "dataType": "Int64", "isKey": true },
+          { "name": "EncounterID", "dataType": "Int64" },
+          { "name": "PatientID", "dataType": "Int64" },
+          { "name": "MedicationID", "dataType": "Int64" },
+          { "name": "AdminDateTime", "dataType": "DateTime" },
+          { "name": "Dose", "dataType": "Double" },
+          { "name": "DoseUnit", "dataType": "String" },
+          { "name": "Route", "dataType": "String" },
+          { "name": "AdminStatus", "dataType": "String" },
+          { "name": "IsTimely", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "FactRiskScores",
+        "schema": "dbo",
+        "columns": [
+          { "name": "RiskScoreID", "dataType": "Int64", "isKey": true },
+          { "name": "PatientID", "dataType": "Int64" },
+          { "name": "AssessmentDate", "dataType": "DateTime" },
+          { "name": "HCCScore", "dataType": "Double" },
+          { "name": "ReadmissionRisk", "dataType": "Double" },
+          { "name": "FallRisk", "dataType": "String" },
+          { "name": "ChronicConditionCount", "dataType": "Int64" },
+          { "name": "SocialDeterminantFlag", "dataType": "Boolean" },
+          { "name": "RiskTier", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "FactReadmissions",
+        "schema": "dbo",
+        "columns": [
+          { "name": "ReadmissionID", "dataType": "Int64", "isKey": true },
+          { "name": "PatientID", "dataType": "Int64" },
+          { "name": "OriginalEncounterID", "dataType": "Int64" },
+          { "name": "ReadmitEncounterID", "dataType": "Int64" },
+          { "name": "OriginalDischargeDate", "dataType": "DateTime" },
+          { "name": "ReadmitDate", "dataType": "DateTime" },
+          { "name": "DaysBetween", "dataType": "Int64" },
+          { "name": "ReadmitReason", "dataType": "String" },
+          { "name": "WasPreventable", "dataType": "Boolean" },
+          { "name": "PenaltyApplied", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "FactPreventiveCare",
+        "schema": "dbo",
+        "columns": [
+          { "name": "PreventiveCareID", "dataType": "Int64", "isKey": true },
+          { "name": "PatientID", "dataType": "Int64" },
+          { "name": "MeasureName", "dataType": "String" },
+          { "name": "MeasureDate", "dataType": "DateTime" },
+          { "name": "IsCompliant", "dataType": "Boolean" },
+          { "name": "GapDays", "dataType": "Int64" },
+          { "name": "OutreachAttempts", "dataType": "Int64" },
+          { "name": "HEDISMeasure", "dataType": "String" }
+        ]
+      }
+    ],
+    "relationships": [
+      { "fromTable": "FactEncounters", "fromColumn": "PatientID", "toTable": "DimPatients", "toColumn": "PatientID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactEncounters", "fromColumn": "PhysicianID", "toTable": "DimPhysicians", "toColumn": "PhysicianID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactEncounters", "fromColumn": "DepartmentID", "toTable": "DimDepartments", "toColumn": "DepartmentID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactEncounters", "fromColumn": "FacilityID", "toTable": "DimFacilities", "toColumn": "FacilityID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactEncounters", "fromColumn": "PrimaryDiagnosisID", "toTable": "DimDiagnoses", "toColumn": "DiagnosisID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactEncounters", "fromColumn": "AdmitDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne" },
+      { "fromTable": "FactLabResults", "fromColumn": "EncounterID", "toTable": "FactEncounters", "toColumn": "EncounterID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactLabResults", "fromColumn": "PatientID", "toTable": "DimPatients", "toColumn": "PatientID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactLabResults", "fromColumn": "OrderDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactVitalSigns", "fromColumn": "EncounterID", "toTable": "FactEncounters", "toColumn": "EncounterID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactVitalSigns", "fromColumn": "PatientID", "toTable": "DimPatients", "toColumn": "PatientID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactClaims", "fromColumn": "EncounterID", "toTable": "FactEncounters", "toColumn": "EncounterID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactClaims", "fromColumn": "PatientID", "toTable": "DimPatients", "toColumn": "PatientID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactClaims", "fromColumn": "PayorID", "toTable": "DimPayors", "toColumn": "PayorID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactClaims", "fromColumn": "CPTID", "toTable": "DimCPTCodes", "toColumn": "CPTID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactClaims", "fromColumn": "DiagnosisID", "toTable": "DimDiagnoses", "toColumn": "DiagnosisID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactClaims", "fromColumn": "ServiceDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactPayments", "fromColumn": "ClaimID", "toTable": "FactClaims", "toColumn": "ClaimID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactPayments", "fromColumn": "PayorID", "toTable": "DimPayors", "toColumn": "PayorID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactPayments", "fromColumn": "PaymentDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactDenials", "fromColumn": "ClaimID", "toTable": "FactClaims", "toColumn": "ClaimID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactDenials", "fromColumn": "PayorID", "toTable": "DimPayors", "toColumn": "PayorID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactDenials", "fromColumn": "DenialDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactAdmissions", "fromColumn": "PatientID", "toTable": "DimPatients", "toColumn": "PatientID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactAdmissions", "fromColumn": "FacilityID", "toTable": "DimFacilities", "toColumn": "FacilityID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactAdmissions", "fromColumn": "BedID", "toTable": "DimBeds", "toColumn": "BedID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactAdmissions", "fromColumn": "AdmitDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "DimBeds", "fromColumn": "FacilityID", "toTable": "DimFacilities", "toColumn": "FacilityID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactBedCensus", "fromColumn": "FacilityID", "toTable": "DimFacilities", "toColumn": "FacilityID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactBedCensus", "fromColumn": "CensusDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactStaffing", "fromColumn": "FacilityID", "toTable": "DimFacilities", "toColumn": "FacilityID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactStaffing", "fromColumn": "DepartmentID", "toTable": "DimDepartments", "toColumn": "DepartmentID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactStaffing", "fromColumn": "ShiftDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "DimPhysicians", "fromColumn": "DepartmentID", "toTable": "DimDepartments", "toColumn": "DepartmentID", "cardinality": "ManyToOne" },
+      { "fromTable": "DimPhysicians", "fromColumn": "FacilityID", "toTable": "DimFacilities", "toColumn": "FacilityID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "DimPatients", "fromColumn": "PrimaryPayorID", "toTable": "DimPayors", "toColumn": "PayorID", "cardinality": "ManyToOne" },
+      { "fromTable": "DimPatients", "fromColumn": "PrimaryCarePhysicianID", "toTable": "DimPhysicians", "toColumn": "PhysicianID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactPrescriptions", "fromColumn": "PatientID", "toTable": "DimPatients", "toColumn": "PatientID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactPrescriptions", "fromColumn": "PhysicianID", "toTable": "DimPhysicians", "toColumn": "PhysicianID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactPrescriptions", "fromColumn": "MedicationID", "toTable": "DimMedications", "toColumn": "MedicationID", "cardinality": "ManyToOne" },
+      { "fromTable": "FactPrescriptions", "fromColumn": "EncounterID", "toTable": "FactEncounters", "toColumn": "EncounterID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactPrescriptions", "fromColumn": "PrescriptionDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactMedicationAdministration", "fromColumn": "EncounterID", "toTable": "FactEncounters", "toColumn": "EncounterID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactMedicationAdministration", "fromColumn": "MedicationID", "toTable": "DimMedications", "toColumn": "MedicationID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactRiskScores", "fromColumn": "PatientID", "toTable": "DimPatients", "toColumn": "PatientID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactRiskScores", "fromColumn": "AssessmentDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactReadmissions", "fromColumn": "PatientID", "toTable": "DimPatients", "toColumn": "PatientID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactReadmissions", "fromColumn": "ReadmitDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactPreventiveCare", "fromColumn": "PatientID", "toTable": "DimPatients", "toColumn": "PatientID", "cardinality": "ManyToOne", "isActive": false },
+      { "fromTable": "FactPreventiveCare", "fromColumn": "MeasureDate", "toTable": "DimDate", "toColumn": "Date", "cardinality": "ManyToOne", "isActive": false }
+    ],
+    "measures": [
+      { "name": "Total Encounters", "table": "FactEncounters", "expression": "COUNTROWS(FactEncounters)", "formatString": "#,0", "displayFolder": "Clinical" },
+      { "name": "Total Patients", "table": "DimPatients", "expression": "COUNTROWS(DimPatients)", "formatString": "#,0", "displayFolder": "Clinical" },
+      { "name": "Active Patients", "table": "DimPatients", "expression": "CALCULATE(COUNTROWS(DimPatients), DimPatients[IsActive] = TRUE())", "formatString": "#,0", "displayFolder": "Clinical" },
+      { "name": "Unique Patients Seen", "table": "FactEncounters", "expression": "DISTINCTCOUNT(FactEncounters[PatientID])", "formatString": "#,0", "displayFolder": "Clinical" },
+      { "name": "Avg Length of Stay", "table": "FactEncounters", "expression": "AVERAGE(FactEncounters[LengthOfStayDays])", "formatString": "0.0", "displayFolder": "Clinical" },
+      { "name": "Inpatient LOS", "table": "FactEncounters", "expression": "CALCULATE(AVERAGE(FactEncounters[LengthOfStayDays]), FactEncounters[EncounterType] = \"Inpatient\")", "formatString": "0.0", "displayFolder": "Clinical" },
+      { "name": "ED Encounters", "table": "FactEncounters", "expression": "CALCULATE(COUNTROWS(FactEncounters), FactEncounters[EncounterType] = \"Emergency\")", "formatString": "#,0", "displayFolder": "Clinical" },
+      { "name": "Inpatient Encounters", "table": "FactEncounters", "expression": "CALCULATE(COUNTROWS(FactEncounters), FactEncounters[EncounterType] = \"Inpatient\")", "formatString": "#,0", "displayFolder": "Clinical" },
+      { "name": "Outpatient Encounters", "table": "FactEncounters", "expression": "CALCULATE(COUNTROWS(FactEncounters), FactEncounters[EncounterType] = \"Outpatient\")", "formatString": "#,0", "displayFolder": "Clinical" },
+      { "name": "Telehealth Encounters", "table": "FactEncounters", "expression": "CALCULATE(COUNTROWS(FactEncounters), FactEncounters[EncounterType] = \"Telehealth\")", "formatString": "#,0", "displayFolder": "Clinical" },
+      { "name": "Avg Patient Satisfaction", "table": "FactEncounters", "expression": "AVERAGE(FactEncounters[PatientSatisfactionScore])", "formatString": "0.00", "displayFolder": "Clinical" },
+      { "name": "Mortality Rate", "table": "FactEncounters", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactEncounters), FactEncounters[DischargeDisposition] = \"Expired\"), COUNTROWS(FactEncounters))", "formatString": "0.00%", "displayFolder": "Clinical" },
+      { "name": "AMA Rate", "table": "FactEncounters", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactEncounters), FactEncounters[DischargeDisposition] = \"AMA\"), COUNTROWS(FactEncounters))", "formatString": "0.00%", "displayFolder": "Clinical" },
+      { "name": "Patient Volume YoY", "table": "FactEncounters", "expression": "VAR _CY = COUNTROWS(FactEncounters) VAR _PY = CALCULATE(COUNTROWS(FactEncounters), DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)", "formatString": "0.0%", "displayFolder": "Clinical" },
+      { "name": "Encounter MoM Change", "table": "FactEncounters", "expression": "VAR _CM = COUNTROWS(FactEncounters) VAR _PM = CALCULATE(COUNTROWS(FactEncounters), DATEADD(DimDate[Date], -1, MONTH)) RETURN _CM - _PM", "formatString": "#,0", "displayFolder": "Clinical" },
+      { "name": "Avg Charges per Encounter", "table": "FactEncounters", "expression": "AVERAGE(FactEncounters[TotalCharges])", "formatString": "$#,0", "displayFolder": "Clinical" },
+      { "name": "Total Lab Results", "table": "FactLabResults", "expression": "COUNTROWS(FactLabResults)", "formatString": "#,0", "displayFolder": "Clinical" },
+      { "name": "Abnormal Lab Rate", "table": "FactLabResults", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactLabResults), FactLabResults[IsAbnormal] = TRUE()), COUNTROWS(FactLabResults))", "formatString": "0.0%", "displayFolder": "Clinical" },
+      { "name": "Critical Lab Rate", "table": "FactLabResults", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactLabResults), FactLabResults[IsCritical] = TRUE()), COUNTROWS(FactLabResults))", "formatString": "0.0%", "displayFolder": "Clinical" },
+      { "name": "Avg Lab Turnaround (min)", "table": "FactLabResults", "expression": "AVERAGE(FactLabResults[TurnaroundMinutes])", "formatString": "#,0", "displayFolder": "Clinical" },
+      { "name": "Avg Heart Rate", "table": "FactVitalSigns", "expression": "AVERAGE(FactVitalSigns[HeartRate])", "formatString": "0", "displayFolder": "Clinical" },
+      { "name": "Avg Systolic BP", "table": "FactVitalSigns", "expression": "AVERAGE(FactVitalSigns[SystolicBP])", "formatString": "0", "displayFolder": "Clinical" },
+      { "name": "Avg SpO2", "table": "FactVitalSigns", "expression": "AVERAGE(FactVitalSigns[SpO2])", "formatString": "0.0%", "displayFolder": "Clinical" },
+      { "name": "Avg Pain Score", "table": "FactVitalSigns", "expression": "AVERAGE(FactVitalSigns[PainScore])", "formatString": "0.0", "displayFolder": "Clinical" },
+      { "name": "Total Charges", "table": "FactClaims", "expression": "SUM(FactClaims[ChargedAmount])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue Cycle" },
+      { "name": "Total Allowed", "table": "FactClaims", "expression": "SUM(FactClaims[AllowedAmount])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue Cycle" },
+      { "name": "Total Paid", "table": "FactClaims", "expression": "SUM(FactClaims[PaidAmount])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue Cycle" },
+      { "name": "Total Patient Responsibility", "table": "FactClaims", "expression": "SUM(FactClaims[PatientResponsibility])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue Cycle" },
+      { "name": "Collection Rate", "table": "FactClaims", "expression": "DIVIDE(SUM(FactClaims[PaidAmount]), SUM(FactClaims[ChargedAmount]))", "formatString": "0.0%", "displayFolder": "Revenue Cycle" },
+      { "name": "Net Collection Rate", "table": "FactClaims", "expression": "DIVIDE(SUM(FactClaims[PaidAmount]), SUM(FactClaims[AllowedAmount]))", "formatString": "0.0%", "displayFolder": "Revenue Cycle" },
+      { "name": "Denial Rate", "table": "FactClaims", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactClaims), FactClaims[ClaimStatus] = \"Denied\"), COUNTROWS(FactClaims))", "formatString": "0.0%", "displayFolder": "Revenue Cycle" },
+      { "name": "Avg Days to Payment", "table": "FactClaims", "expression": "AVERAGE(FactClaims[DaysToPayment])", "formatString": "0.0", "displayFolder": "Revenue Cycle" },
+      { "name": "Revenue per Encounter", "table": "FactClaims", "expression": "DIVIDE(SUM(FactClaims[PaidAmount]), DISTINCTCOUNT(FactClaims[EncounterID]))", "formatString": "$#,0", "displayFolder": "Revenue Cycle" },
+      { "name": "Revenue YoY Growth", "table": "FactClaims", "expression": "VAR _CY = SUM(FactClaims[PaidAmount]) VAR _PY = CALCULATE(SUM(FactClaims[PaidAmount]), DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)", "formatString": "0.0%", "displayFolder": "Revenue Cycle" },
+      { "name": "Total Claims", "table": "FactClaims", "expression": "COUNTROWS(FactClaims)", "formatString": "#,0", "displayFolder": "Revenue Cycle" },
+      { "name": "Clean Claim Rate", "table": "FactClaims", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactClaims), FactClaims[ClaimStatus] = \"Paid\"), COUNTROWS(FactClaims))", "formatString": "0.0%", "displayFolder": "Revenue Cycle" },
+      { "name": "Contractual Adjustment", "table": "FactClaims", "expression": "SUM(FactClaims[ChargedAmount]) - SUM(FactClaims[AllowedAmount])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue Cycle" },
+      { "name": "Total Payments Received", "table": "FactPayments", "expression": "SUM(FactPayments[PaymentAmount])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue Cycle" },
+      { "name": "Total Adjustments", "table": "FactPayments", "expression": "SUM(FactPayments[AdjustmentAmount])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue Cycle" },
+      { "name": "Total Denials", "table": "FactDenials", "expression": "COUNTROWS(FactDenials)", "formatString": "#,0", "displayFolder": "Revenue Cycle" },
+      { "name": "Total Denied Amount", "table": "FactDenials", "expression": "SUM(FactDenials[DeniedAmount])", "formatString": "$#,0;($#,0)", "displayFolder": "Revenue Cycle" },
+      { "name": "Denial Recovery Rate", "table": "FactDenials", "expression": "DIVIDE(SUM(FactDenials[RecoveredAmount]), SUM(FactDenials[DeniedAmount]))", "formatString": "0.0%", "displayFolder": "Revenue Cycle" },
+      { "name": "Appeal Success Rate", "table": "FactDenials", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactDenials), FactDenials[AppealStatus] = \"Appeal Won\"), CALCULATE(COUNTROWS(FactDenials), FactDenials[AppealStatus] IN {\"Appeal Won\", \"Appeal Denied\"}))", "formatString": "0.0%", "displayFolder": "Revenue Cycle" },
+      { "name": "Payor Mix Commercial %", "table": "FactClaims", "expression": "DIVIDE(CALCULATE(SUM(FactClaims[PaidAmount]), DimPayors[PayorType] = \"Commercial\"), SUM(FactClaims[PaidAmount]))", "formatString": "0.0%", "displayFolder": "Revenue Cycle" },
+      { "name": "Payor Mix Medicare %", "table": "FactClaims", "expression": "DIVIDE(CALCULATE(SUM(FactClaims[PaidAmount]), DimPayors[PayorType] = \"Medicare\"), SUM(FactClaims[PaidAmount]))", "formatString": "0.0%", "displayFolder": "Revenue Cycle" },
+      { "name": "Payor Mix Medicaid %", "table": "FactClaims", "expression": "DIVIDE(CALCULATE(SUM(FactClaims[PaidAmount]), DimPayors[PayorType] = \"Medicaid\"), SUM(FactClaims[PaidAmount]))", "formatString": "0.0%", "displayFolder": "Revenue Cycle" },
+      { "name": "Total RVUs", "table": "FactClaims", "expression": "SUMX(FactClaims, RELATED(DimCPTCodes[BaseRVU]))", "formatString": "#,0.0", "displayFolder": "Revenue Cycle" },
+      { "name": "Bed Occupancy Rate", "table": "FactBedCensus", "expression": "DIVIDE(SUM(FactBedCensus[OccupiedBeds]), SUM(FactBedCensus[OccupiedBeds]) + SUM(FactBedCensus[AvailableBeds]))", "formatString": "0.0%", "displayFolder": "Operations" },
+      { "name": "Available Beds", "table": "FactBedCensus", "expression": "SUM(FactBedCensus[AvailableBeds])", "formatString": "#,0", "displayFolder": "Operations" },
+      { "name": "Occupied Beds", "table": "FactBedCensus", "expression": "SUM(FactBedCensus[OccupiedBeds])", "formatString": "#,0", "displayFolder": "Operations" },
+      { "name": "Pending Discharges", "table": "FactBedCensus", "expression": "SUM(FactBedCensus[PendingDischarges])", "formatString": "#,0", "displayFolder": "Operations" },
+      { "name": "Pending Admissions", "table": "FactBedCensus", "expression": "SUM(FactBedCensus[PendingAdmissions])", "formatString": "#,0", "displayFolder": "Operations" },
+      { "name": "Total Admissions", "table": "FactAdmissions", "expression": "COUNTROWS(FactAdmissions)", "formatString": "#,0", "displayFolder": "Operations" },
+      { "name": "Avg Admission LOS", "table": "FactAdmissions", "expression": "AVERAGE(FactAdmissions[LengthOfStayDays])", "formatString": "0.0", "displayFolder": "Operations" },
+      { "name": "Case Mix Index", "table": "FactAdmissions", "expression": "AVERAGE(FactAdmissions[CaseMixIndex])", "formatString": "0.000", "displayFolder": "Operations" },
+      { "name": "Emergency Admissions %", "table": "FactAdmissions", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactAdmissions), FactAdmissions[AdmissionPriority] = \"Emergency\"), COUNTROWS(FactAdmissions))", "formatString": "0.0%", "displayFolder": "Operations" },
+      { "name": "Elective Admissions %", "table": "FactAdmissions", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactAdmissions), FactAdmissions[AdmissionPriority] = \"Elective\"), COUNTROWS(FactAdmissions))", "formatString": "0.0%", "displayFolder": "Operations" },
+      { "name": "Transfer Rate", "table": "FactAdmissions", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactAdmissions), FactAdmissions[AdmissionSource] = \"Transfer\"), COUNTROWS(FactAdmissions))", "formatString": "0.0%", "displayFolder": "Operations" },
+      { "name": "Nurse-to-Patient Ratio", "table": "FactStaffing", "expression": "DIVIDE(SUM(FactStaffing[RNCount]), SUM(FactStaffing[PatientCount]))", "formatString": "0.00", "displayFolder": "Operations" },
+      { "name": "Total RN Hours", "table": "FactStaffing", "expression": "SUM(FactStaffing[RNCount]) * 8", "formatString": "#,0", "displayFolder": "Operations" },
+      { "name": "Overtime Hours", "table": "FactStaffing", "expression": "SUM(FactStaffing[OvertimeHours])", "formatString": "#,0.0", "displayFolder": "Operations" },
+      { "name": "Agency Staff %", "table": "FactStaffing", "expression": "DIVIDE(SUM(FactStaffing[AgencyStaffCount]), SUM(FactStaffing[RNCount]) + SUM(FactStaffing[CNACount]) + SUM(FactStaffing[AgencyStaffCount]))", "formatString": "0.0%", "displayFolder": "Operations" },
+      { "name": "Staffing Ratio by Shift", "table": "FactStaffing", "expression": "DIVIDE(SUM(FactStaffing[RNCount]) + SUM(FactStaffing[CNACount]), SUM(FactStaffing[PatientCount]))", "formatString": "0.00", "displayFolder": "Operations" },
+      { "name": "ICU Occupancy Rate", "table": "FactBedCensus", "expression": "CALCULATE(DIVIDE(SUM(FactBedCensus[OccupiedBeds]), SUM(FactBedCensus[OccupiedBeds]) + SUM(FactBedCensus[AvailableBeds])), FactBedCensus[Unit] = \"ICU\")", "formatString": "0.0%", "displayFolder": "Operations" },
+      { "name": "ED Boarding Hours", "table": "FactBedCensus", "expression": "CALCULATE(SUM(FactBedCensus[PendingAdmissions]) * 4, FactBedCensus[Unit] = \"ED Holding\")", "formatString": "#,0", "displayFolder": "Operations" },
+      { "name": "Total Prescriptions", "table": "FactPrescriptions", "expression": "COUNTROWS(FactPrescriptions)", "formatString": "#,0", "displayFolder": "Pharmacy" },
+      { "name": "Total Rx Cost", "table": "FactPrescriptions", "expression": "SUM(FactPrescriptions[TotalCost])", "formatString": "$#,0;($#,0)", "displayFolder": "Pharmacy" },
+      { "name": "Avg Rx Cost", "table": "FactPrescriptions", "expression": "AVERAGE(FactPrescriptions[TotalCost])", "formatString": "$#,0.00", "displayFolder": "Pharmacy" },
+      { "name": "Generic Dispensing Rate", "table": "FactPrescriptions", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactPrescriptions), FactPrescriptions[IsGeneric] = TRUE()), COUNTROWS(FactPrescriptions))", "formatString": "0.0%", "displayFolder": "Pharmacy" },
+      { "name": "Controlled Substance %", "table": "FactPrescriptions", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactPrescriptions), RELATED(DimMedications[IsControlled]) = TRUE()), COUNTROWS(FactPrescriptions))", "formatString": "0.0%", "displayFolder": "Pharmacy" },
+      { "name": "Avg Days Supply", "table": "FactPrescriptions", "expression": "AVERAGE(FactPrescriptions[DaysSupply])", "formatString": "0.0", "displayFolder": "Pharmacy" },
+      { "name": "Total Med Administrations", "table": "FactMedicationAdministration", "expression": "COUNTROWS(FactMedicationAdministration)", "formatString": "#,0", "displayFolder": "Pharmacy" },
+      { "name": "Med Admin Timeliness", "table": "FactMedicationAdministration", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactMedicationAdministration), FactMedicationAdministration[IsTimely] = TRUE()), COUNTROWS(FactMedicationAdministration))", "formatString": "0.0%", "displayFolder": "Pharmacy" },
+      { "name": "Med Given Rate", "table": "FactMedicationAdministration", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactMedicationAdministration), FactMedicationAdministration[AdminStatus] = \"Given\"), COUNTROWS(FactMedicationAdministration))", "formatString": "0.0%", "displayFolder": "Pharmacy" },
+      { "name": "Med Held Rate", "table": "FactMedicationAdministration", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactMedicationAdministration), FactMedicationAdministration[AdminStatus] = \"Held\"), COUNTROWS(FactMedicationAdministration))", "formatString": "0.0%", "displayFolder": "Pharmacy" },
+      { "name": "Rx per Encounter", "table": "FactPrescriptions", "expression": "DIVIDE(COUNTROWS(FactPrescriptions), DISTINCTCOUNT(FactPrescriptions[EncounterID]))", "formatString": "0.0", "displayFolder": "Pharmacy" },
+      { "name": "Pharmacy Spend per Patient", "table": "FactPrescriptions", "expression": "DIVIDE(SUM(FactPrescriptions[TotalCost]), DISTINCTCOUNT(FactPrescriptions[PatientID]))", "formatString": "$#,0", "displayFolder": "Pharmacy" },
+      { "name": "Top Drug Class by Cost", "table": "FactPrescriptions", "expression": "MAXX(TOPN(1, SUMMARIZE(FactPrescriptions, DimMedications[DrugClass], \"DrugCost\", SUM(FactPrescriptions[TotalCost])), [DrugCost], DESC), DimMedications[DrugClass])", "formatString": "", "displayFolder": "Pharmacy" },
+      { "name": "Avg HCC Score", "table": "FactRiskScores", "expression": "AVERAGE(FactRiskScores[HCCScore])", "formatString": "0.00", "displayFolder": "Population Health" },
+      { "name": "Avg Readmission Risk", "table": "FactRiskScores", "expression": "AVERAGE(FactRiskScores[ReadmissionRisk])", "formatString": "0.0%", "displayFolder": "Population Health" },
+      { "name": "High Risk Patients", "table": "FactRiskScores", "expression": "CALCULATE(DISTINCTCOUNT(FactRiskScores[PatientID]), FactRiskScores[RiskTier] IN {\"High\", \"Complex\"})", "formatString": "#,0", "displayFolder": "Population Health" },
+      { "name": "Avg Chronic Conditions", "table": "FactRiskScores", "expression": "AVERAGE(FactRiskScores[ChronicConditionCount])", "formatString": "0.0", "displayFolder": "Population Health" },
+      { "name": "Social Determinant Flag Rate", "table": "FactRiskScores", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactRiskScores), FactRiskScores[SocialDeterminantFlag] = TRUE()), COUNTROWS(FactRiskScores))", "formatString": "0.0%", "displayFolder": "Population Health" },
+      { "name": "30-Day Readmission Rate", "table": "FactReadmissions", "expression": "DIVIDE(COUNTROWS(FactReadmissions), CALCULATE(COUNTROWS(FactEncounters), FactEncounters[EncounterType] = \"Inpatient\"))", "formatString": "0.0%", "displayFolder": "Population Health" },
+      { "name": "Total Readmissions", "table": "FactReadmissions", "expression": "COUNTROWS(FactReadmissions)", "formatString": "#,0", "displayFolder": "Population Health" },
+      { "name": "Preventable Readmission %", "table": "FactReadmissions", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactReadmissions), FactReadmissions[WasPreventable] = TRUE()), COUNTROWS(FactReadmissions))", "formatString": "0.0%", "displayFolder": "Population Health" },
+      { "name": "Readmission Penalty Count", "table": "FactReadmissions", "expression": "CALCULATE(COUNTROWS(FactReadmissions), FactReadmissions[PenaltyApplied] = TRUE())", "formatString": "#,0", "displayFolder": "Population Health" },
+      { "name": "Avg Days Between Readmit", "table": "FactReadmissions", "expression": "AVERAGE(FactReadmissions[DaysBetween])", "formatString": "0.0", "displayFolder": "Population Health" },
+      { "name": "HEDIS Compliance Rate", "table": "FactPreventiveCare", "expression": "DIVIDE(CALCULATE(COUNTROWS(FactPreventiveCare), FactPreventiveCare[IsCompliant] = TRUE()), COUNTROWS(FactPreventiveCare))", "formatString": "0.0%", "displayFolder": "Population Health" },
+      { "name": "Total Preventive Screenings", "table": "FactPreventiveCare", "expression": "COUNTROWS(FactPreventiveCare)", "formatString": "#,0", "displayFolder": "Population Health" },
+      { "name": "Avg Care Gap Days", "table": "FactPreventiveCare", "expression": "AVERAGE(FactPreventiveCare[GapDays])", "formatString": "#,0", "displayFolder": "Population Health" },
+      { "name": "Avg Outreach Attempts", "table": "FactPreventiveCare", "expression": "AVERAGE(FactPreventiveCare[OutreachAttempts])", "formatString": "0.0", "displayFolder": "Population Health" },
+      { "name": "Diabetes Screening Rate", "table": "FactPreventiveCare", "expression": "CALCULATE(DIVIDE(CALCULATE(COUNTROWS(FactPreventiveCare), FactPreventiveCare[IsCompliant] = TRUE()), COUNTROWS(FactPreventiveCare)), FactPreventiveCare[HEDISMeasure] = \"CDC-HbA1c\")", "formatString": "0.0%", "displayFolder": "Population Health" },
+      { "name": "BP Control Rate", "table": "FactPreventiveCare", "expression": "CALCULATE(DIVIDE(CALCULATE(COUNTROWS(FactPreventiveCare), FactPreventiveCare[IsCompliant] = TRUE()), COUNTROWS(FactPreventiveCare)), FactPreventiveCare[HEDISMeasure] = \"CBP\")", "formatString": "0.0%", "displayFolder": "Population Health" },
+      { "name": "Physician Count", "table": "DimPhysicians", "expression": "COUNTROWS(DimPhysicians)", "formatString": "#,0", "displayFolder": "Clinical" },
+      { "name": "Active Physicians", "table": "DimPhysicians", "expression": "CALCULATE(COUNTROWS(DimPhysicians), DimPhysicians[CredentialStatus] = \"Active\")", "formatString": "#,0", "displayFolder": "Clinical" },
+      { "name": "Facility Count", "table": "DimFacilities", "expression": "COUNTROWS(DimFacilities)", "formatString": "#,0", "displayFolder": "Operations" },
+      { "name": "Hospital Count", "table": "DimFacilities", "expression": "CALCULATE(COUNTROWS(DimFacilities), DimFacilities[FacilityType] = \"Hospital\")", "formatString": "#,0", "displayFolder": "Operations" },
+      { "name": "Clinic Count", "table": "DimFacilities", "expression": "CALCULATE(COUNTROWS(DimFacilities), DimFacilities[FacilityType] = \"Clinic\")", "formatString": "#,0", "displayFolder": "Operations" },
+      { "name": "Total Licensed Beds", "table": "DimFacilities", "expression": "SUM(DimFacilities[LicensedBeds])", "formatString": "#,0", "displayFolder": "Operations" },
+      { "name": "Avg CMS Rating", "table": "DimFacilities", "expression": "AVERAGE(DimFacilities[CMSRating])", "formatString": "0.0", "displayFolder": "Operations" }
+    ]
+  }
+}

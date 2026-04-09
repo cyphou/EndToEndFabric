@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "1.0",
+  "planningModels": [
+    {
+      "name": "RevenueTargets",
+      "description": "Revenue targets by channel and region",
+      "sourceTable": "FactOnlineOrders",
+      "valueColumn": "OrderTotal",
+      "planningSchema": "planning",
+      "columns": [
+        { "name": "FiscalYear", "dataType": "INT" },
+        { "name": "FiscalQuarter", "dataType": "INT" },
+        { "name": "Channel", "dataType": "NVARCHAR(50)" },
+        { "name": "Region", "dataType": "NVARCHAR(100)" },
+        { "name": "PlannedRevenue", "dataType": "DECIMAL(18,2)" },
+        { "name": "PlannedOrders", "dataType": "INT" },
+        { "name": "Scenario", "dataType": "NVARCHAR(50)" }
+      ]
+    },
+    {
+      "name": "InventoryPlan",
+      "description": "Inventory investment and stock level targets by warehouse",
+      "sourceTable": "FactInventorySnapshots",
+      "valueColumn": "QuantityOnHand",
+      "planningSchema": "planning",
+      "columns": [
+        { "name": "PlanYear", "dataType": "INT" },
+        { "name": "PlanQuarter", "dataType": "INT" },
+        { "name": "WarehouseName", "dataType": "NVARCHAR(100)" },
+        { "name": "PlannedInventoryValue", "dataType": "DECIMAL(18,2)" },
+        { "name": "TargetTurns", "dataType": "DECIMAL(5,2)" },
+        { "name": "TargetDaysOfSupply", "dataType": "INT" },
+        { "name": "Scenario", "dataType": "NVARCHAR(50)" }
+      ]
+    },
+    {
+      "name": "MarketingBudget",
+      "description": "Marketing budget allocation by channel and campaign type",
+      "sourceTable": "FactMarketingSpend",
+      "valueColumn": "AmountSpent",
+      "planningSchema": "planning",
+      "columns": [
+        { "name": "FiscalYear", "dataType": "INT" },
+        { "name": "FiscalQuarter", "dataType": "INT" },
+        { "name": "ChannelName", "dataType": "NVARCHAR(100)" },
+        { "name": "PlannedSpend", "dataType": "DECIMAL(18,2)" },
+        { "name": "TargetROAS", "dataType": "DECIMAL(5,2)" },
+        { "name": "TargetConversions", "dataType": "INT" },
+        { "name": "Scenario", "dataType": "NVARCHAR(50)" }
+      ]
+    },
+    {
+      "name": "PlanVsActual",
+      "description": "Plan vs actual comparison across all retail domains",
+      "sourceTable": null,
+      "valueColumn": null,
+      "planningSchema": "planning",
+      "columns": [
+        { "name": "FiscalYear", "dataType": "INT" },
+        { "name": "Domain", "dataType": "NVARCHAR(100)" },
+        { "name": "KPI", "dataType": "NVARCHAR(200)" },
+        { "name": "PlannedValue", "dataType": "DECIMAL(18,2)" },
+        { "name": "ActualValue", "dataType": "DECIMAL(18,2)" },
+        { "name": "Scenario", "dataType": "NVARCHAR(50)" }
+      ]
+    },
+    {
+      "name": "ScenarioComparison",
+      "description": "Side-by-side scenario comparison for strategic planning",
+      "sourceTable": null,
+      "valueColumn": null,
+      "planningSchema": "planning",
+      "columns": [
+        { "name": "FiscalYear", "dataType": "INT" },
+        { "name": "KPI", "dataType": "NVARCHAR(200)" },
+        { "name": "BaseScenario", "dataType": "DECIMAL(18,2)" },
+        { "name": "GrowthScenario", "dataType": "DECIMAL(18,2)" },
+        { "name": "ConservativeScenario", "dataType": "DECIMAL(18,2)" },
+        { "name": "VariancePct", "dataType": "DECIMAL(5,2)" }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "Base",
+      "description": "Steady-state retail operations, 5% organic growth",
+      "growthRate": 0.05
+    },
+    {
+      "name": "AggressiveGrowth",
+      "description": "E-commerce expansion, 50 new stores, heavy marketing",
+      "growthRate": 0.15
+    },
+    {
+      "name": "Conservative",
+      "description": "Market contraction, focus on profitability over growth",
+      "growthRate": 0.02
+    }
+  ],
+  "fiscalYears": [
+    "FY2024",
+    "FY2025",
+    "FY2026"
+  ]
+}

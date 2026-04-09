@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0",
+  "webEnrichment": {
+    "enabled": true,
+    "targetLakehouse": "SilverLH",
+    "schema": "web",
+    "sources": [
+      {
+        "name": "CompetitorPricing",
+        "description": "Daily competitor pricing data for top product categories",
+        "endpoint": "https://api.priceapi.com/v2/jobs",
+        "method": "GET",
+        "schedule": "daily",
+        "tableName": "WebCompetitorPricing",
+        "columns": [
+          { "name": "ProductCategory", "type": "string" },
+          { "name": "CompetitorName", "type": "string" },
+          { "name": "CompetitorPrice", "type": "double" },
+          { "name": "OurPrice", "type": "double" },
+          { "name": "PriceDifference", "type": "double" },
+          { "name": "AsOfDate", "type": "date" }
+        ]
+      },
+      {
+        "name": "WeatherImpact",
+        "description": "7-day weather forecast for store locations to predict foot traffic",
+        "endpoint": "https://api.open-meteo.com/v1/forecast",
+        "method": "GET",
+        "schedule": "daily",
+        "tableName": "WebWeatherForecast",
+        "columns": [
+          { "name": "City", "type": "string" },
+          { "name": "State", "type": "string" },
+          { "name": "ForecastDate", "type": "date" },
+          { "name": "TemperatureHighF", "type": "double" },
+          { "name": "TemperatureLowF", "type": "double" },
+          { "name": "PrecipitationProbability", "type": "double" },
+          { "name": "WeatherCondition", "type": "string" }
+        ]
+      },
+      {
+        "name": "SocialMediaSentiment",
+        "description": "Brand and product sentiment from social media platforms",
+        "endpoint": "https://api.brandwatch.com/projects/query",
+        "method": "GET",
+        "schedule": "daily",
+        "tableName": "WebSocialSentiment",
+        "columns": [
+          { "name": "Platform", "type": "string" },
+          { "name": "Mentions", "type": "int" },
+          { "name": "PositivePct", "type": "double" },
+          { "name": "NegativePct", "type": "double" },
+          { "name": "NeutralPct", "type": "double" },
+          { "name": "TopKeywords", "type": "string" },
+          { "name": "AsOfDate", "type": "date" }
+        ]
+      }
+    ]
+  }
+}

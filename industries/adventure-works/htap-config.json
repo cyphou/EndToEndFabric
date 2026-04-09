@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "1.0",
+  "eventhouse": {
+    "name": "AdventureWorksEventhouse",
+    "kqlDatabase": "AdventureWorksKQLDB",
+    "retentionDays": 730
+  },
+  "eventStreams": [
+    {
+      "name": "GuestMovements",
+      "description": "Real-time guest check-in, check-out, and room change events",
+      "eventsPerSecond": 50,
+      "schema": [
+        { "name": "PropertyID", "type": "int" },
+        { "name": "GuestID", "type": "int" },
+        { "name": "Timestamp", "type": "datetime" },
+        { "name": "EventType", "type": "string" },
+        { "name": "RoomNumber", "type": "string" },
+        { "name": "RoomType", "type": "string" },
+        { "name": "FloorLevel", "type": "int" },
+        { "name": "IsVIP", "type": "bool" }
+      ],
+      "kqlTable": "GuestMovementEvents",
+      "kqlAggregations": [
+        "GuestMovementEvents | summarize CheckIns=countif(EventType=='CheckIn'), CheckOuts=countif(EventType=='CheckOut'), RoomChanges=countif(EventType=='RoomChange') by PropertyID, bin(Timestamp, 1h)",
+        "GuestMovementEvents | summarize CurrentOccupancy=dcountif(GuestID, EventType=='CheckIn') - dcountif(GuestID, EventType=='CheckOut') by PropertyID, bin(Timestamp, 15m)"
+      ]
+    },
+    {
+      "name": "PropertyTelemetry",
+      "description": "HVAC, energy consumption, and water usage telemetry from properties",
+      "eventsPerSecond": 100,
+      "schema": [
+        { "name": "PropertyID", "type": "int" },
+        { "name": "Timestamp", "type": "datetime" },
+        { "name": "SensorType", "type": "string" },
+        { "name": "Location", "type": "string" },
+        { "name": "Value", "type": "real" },
+        { "name": "Unit", "type": "string" },
+        { "name": "IsAlarm", "type": "bool" }
+      ],
+      "kqlTable": "PropertyTelemetryEvents",
+      "kqlAggregations": [
+        "PropertyTelemetryEvents | summarize AvgValue=avg(Value), MaxValue=max(Value), AlarmCount=countif(IsAlarm) by PropertyID, SensorType, bin(Timestamp, 5m)",
+        "PropertyTelemetryEvents | where SensorType=='Energy' | summarize TotalKWh=sum(Value) by PropertyID, bin(Timestamp, 1h)"
+      ]
+    },
+    {
+      "name": "ActivityEvents",
+      "description": "Adventure activity bookings, completions, and safety incidents",
+      "eventsPerSecond": 20,
+      "schema": [
+        { "name": "PropertyID", "type": "int" },
+        { "name": "ActivityTypeID", "type": "int" },
+        { "name": "Timestamp", "type": "datetime" },
+        { "name": "EventType", "type": "string" },
+        { "name": "GuestID", "type": "int" },
+        { "name": "GuideID", "type": "int" },
+        { "name": "ParticipantCount", "type": "int" },
+        { "name": "Severity", "type": "string" }
+      ],
+      "kqlTable": "ActivityStreamEvents",
+      "kqlAggregations": [
+        "ActivityStreamEvents | summarize Bookings=countif(EventType=='Booking'), Completions=countif(EventType=='Completed'), Incidents=countif(EventType=='Incident') by PropertyID, ActivityTypeID, bin(Timestamp, 1h)",
+        "ActivityStreamEvents | where Severity in ('Critical','High') | summarize IncidentCount=count() by PropertyID, ActivityTypeID, bin(Timestamp, 15m)"
+      ]
+    }
+  ],
+  "bridgeQueries": [
+    {
+      "name": "OccupancyBridge",
+      "description": "Bridge real-time guest movements with cold reservation data",
+      "hotTable": "GuestMovementEvents",
+      "coldTable": "FactCheckIns",
+      "joinKey": "PropertyID"
+    },
+    {
+      "name": "EnergyBridge",
+      "description": "Bridge property telemetry with cold energy usage data",
+      "hotTable": "PropertyTelemetryEvents",
+      "coldTable": "FactEnergyUsage",
+      "joinKey": "PropertyID"
+    }
+  ]
+}

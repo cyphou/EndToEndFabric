@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "1.0",
+  "webEnrichment": {
+    "enabled": true,
+    "targetLakehouse": "SilverLH",
+    "schema": "web",
+    "sources": [
+      {
+        "name": "MarketRates",
+        "description": "Daily interest rates (Fed Funds, Treasury yields, SOFR)",
+        "endpoint": "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/avg_interest_rates",
+        "method": "GET",
+        "schedule": "daily",
+        "tableName": "WebMarketRates",
+        "columns": [
+          {
+            "name": "RateDate",
+            "type": "date"
+          },
+          {
+            "name": "RateType",
+            "type": "string"
+          },
+          {
+            "name": "Rate",
+            "type": "double"
+          },
+          {
+            "name": "PriorDayRate",
+            "type": "double"
+          },
+          {
+            "name": "Change",
+            "type": "double"
+          }
+        ]
+      },
+      {
+        "name": "EconomicIndicators",
+        "description": "Key economic indicators (GDP, unemployment, CPI)",
+        "endpoint": "https://api.bls.gov/publicAPI/v2/timeseries/data/",
+        "method": "GET",
+        "schedule": "weekly",
+        "tableName": "WebEconomicIndicators",
+        "columns": [
+          {
+            "name": "IndicatorDate",
+            "type": "date"
+          },
+          {
+            "name": "IndicatorName",
+            "type": "string"
+          },
+          {
+            "name": "Value",
+            "type": "double"
+          },
+          {
+            "name": "PriorValue",
+            "type": "double"
+          },
+          {
+            "name": "PercentChange",
+            "type": "double"
+          },
+          {
+            "name": "Source",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "CreditBureauScores",
+        "description": "Regional average credit score benchmarks",
+        "endpoint": "https://api.newyorkfed.org/hcc/data",
+        "method": "GET",
+        "schedule": "monthly",
+        "tableName": "WebCreditBureauScores",
+        "columns": [
+          {
+            "name": "ReportDate",
+            "type": "date"
+          },
+          {
+            "name": "Region",
+            "type": "string"
+          },
+          {
+            "name": "AvgCreditScore",
+            "type": "double"
+          },
+          {
+            "name": "DelinquencyRate",
+            "type": "double"
+          },
+          {
+            "name": "NewAccountsPerCapita",
+            "type": "double"
+          }
+        ]
+      }
+    ]
+  }
+}

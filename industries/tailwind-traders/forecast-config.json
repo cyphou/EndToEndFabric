@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "1.0",
+  "forecastModels": [
+    {
+      "name": "DemandForecast",
+      "description": "Forecast product demand by category for inventory planning",
+      "table": "FactOrderItems",
+      "dateColumn": "FactOnlineOrders[OrderDate]",
+      "valueColumn": "Quantity",
+      "groupBy": "ProductID",
+      "algorithm": "HoltWinters",
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.3,
+        "beta": 0.1,
+        "gamma": 0.2,
+        "seasonalPeriods": 12
+      },
+      "horizonMonths": 6
+    },
+    {
+      "name": "Revenue",
+      "description": "Forecast total omni-channel revenue",
+      "table": "FactOnlineOrders",
+      "dateColumn": "OrderDate",
+      "valueColumn": "OrderTotal",
+      "groupBy": null,
+      "algorithm": "HoltWinters",
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.3,
+        "beta": 0.1,
+        "gamma": 0.15,
+        "seasonalPeriods": 12
+      },
+      "horizonMonths": 12
+    },
+    {
+      "name": "InventoryDemand",
+      "description": "Forecast inventory replenishment needs by warehouse",
+      "table": "FactInventorySnapshots",
+      "dateColumn": "SnapshotDate",
+      "valueColumn": "QuantityOnHand",
+      "groupBy": "WarehouseID",
+      "algorithm": "HoltWinters",
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.25,
+        "beta": 0.1,
+        "gamma": 0.2,
+        "seasonalPeriods": 12
+      },
+      "horizonMonths": 6
+    },
+    {
+      "name": "MarketingBudget",
+      "description": "Forecast marketing spend effectiveness and budget allocation",
+      "table": "FactMarketingSpend",
+      "dateColumn": "SpendDate",
+      "valueColumn": "RevenueAttributed",
+      "groupBy": "ChannelID",
+      "algorithm": "HoltWinters",
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.3,
+        "beta": 0.1,
+        "gamma": 0.1,
+        "seasonalPeriods": 12
+      },
+      "horizonMonths": 12
+    },
+    {
+      "name": "CustomerGrowth",
+      "description": "Forecast unique customer acquisition and loyalty membership growth",
+      "table": "FactOnlineOrders",
+      "dateColumn": "OrderDate",
+      "valueColumn": "CustomerID",
+      "groupBy": null,
+      "algorithm": "HoltWinters",
+      "params": {
+        "seasonal": "additive",
+        "alpha": 0.2,
+        "beta": 0.05,
+        "gamma": 0.1,
+        "seasonalPeriods": 12
+      },
+      "horizonMonths": 12
+    }
+  ],
+  "mlflow": {
+    "experimentName": "TailwindTraders_Forecasting",
+    "trackMetrics": [
+      "rmse",
+      "mae",
+      "mape"
+    ],
+    "logModel": true
+  }
+}

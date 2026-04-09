@@ -1,4 +1,5 @@
 {
+  "schemaVersion": "1.0",
   "sampleData": {
     "description": "Northwind HR & Finance sample data — 22 CSV files across HR, Payroll, FinancialAccounting, Budgeting, CorporatePerformance, and Training domains.",
     "domains": [

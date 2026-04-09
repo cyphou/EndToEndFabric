@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "dataAgent": {
+    "name": "WoodgroveBank-Agent",
+    "displayName": "Woodgrove Bank AI Assistant",
+    "description": "AI-powered Q&A agent for Woodgrove Bank analytics, connected to the WoodgroveBankModel semantic model.",
+    "semanticModel": "WoodgroveBankModel",
+    "systemPrompt": "You are an AI assistant for Woodgrove Bank, a mid-size retail bank with 120 branches across 8 states. You help analysts, relationship managers, and executives explore deposit portfolios, lending performance, credit card analytics, risk and compliance metrics, and customer experience data. Answer questions using the WoodgroveBankModel semantic model. Always provide context for numbers (currency in USD, percentages, counts). For credit risk use basis points or percentage. For deposits and loans use dollar amounts. Distinguish between retail and small business segments when relevant.",
+    "exampleQuestions": [
+      "What is our total deposit balance and how has it grown year-over-year?",
+      "Which loan categories have the highest delinquency rates?",
+      "What is our current NPL ratio and how does it compare to last quarter?",
+      "Show me credit card spend by merchant category for this fiscal year.",
+      "What is our NPS score and how does it trend by month?",
+      "Which branches have the highest transaction volume?",
+      "What is our digital banking adoption rate compared to last year?"
+    ],
+    "capabilities": {
+      "requiresF64": true,
+      "supportsFollowUp": true,
+      "supportsVisualization": true
+    }
+  }
+}

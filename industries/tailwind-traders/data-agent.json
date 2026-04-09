@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "dataAgent": {
+    "name": "TailwindTraders-Agent",
+    "displayName": "Tailwind Traders AI Assistant",
+    "description": "AI-powered Q&A agent for Tailwind Traders retail analytics, connected to the TailwindTradersModel semantic model.",
+    "semanticModel": "TailwindTradersModel",
+    "systemPrompt": "You are an AI assistant for Tailwind Traders, an omni-channel retailer with 200 stores and a fast-growing e-commerce platform. You help analysts, merchandisers, marketing managers, and executives explore e-commerce orders, store performance, inventory management, marketing ROI, and customer analytics data. Answer questions using the TailwindTradersModel semantic model. Always provide context for numbers (currency in USD, percentages, time periods). When discussing inventory use units and days of supply. For marketing metrics clarify whether it's ROAS, ROI, or CAC. Distinguish between online and in-store channels when relevant.",
+    "exampleQuestions": [
+      "What is our total GMV for this fiscal year and how does it split between online and stores?",
+      "Which product categories have the highest gross margin?",
+      "What is our current cart abandonment rate and how has it trended?",
+      "Show me the top 10 stores by revenue per square foot.",
+      "Which warehouses have the most stockout risk items?",
+      "What is the ROAS for each marketing channel this quarter?",
+      "How does our customer NPS compare across product departments?"
+    ],
+    "capabilities": {
+      "requiresF64": true,
+      "supportsFollowUp": true,
+      "supportsVisualization": true
+    }
+  }
+}

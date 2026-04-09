@@ -1,0 +1,1307 @@
+{
+  "schemaVersion": "1.0",
+  "semanticModel": {
+    "name": "TailwindTradersModel",
+    "mode": "DirectLake",
+    "defaultSchema": "gold",
+    "tables": [
+      {
+        "name": "DimDate",
+        "schema": "dbo",
+        "columns": [
+          { "name": "DateKey", "dataType": "Int64", "isKey": true },
+          { "name": "Date", "dataType": "DateTime" },
+          { "name": "Year", "dataType": "Int64" },
+          { "name": "Month", "dataType": "Int64" },
+          { "name": "Quarter", "dataType": "Int64" },
+          { "name": "MonthName", "dataType": "String" },
+          { "name": "FiscalYear", "dataType": "Int64" },
+          { "name": "FiscalQuarter", "dataType": "Int64" },
+          { "name": "DayOfWeek", "dataType": "String" },
+          { "name": "IsWeekend", "dataType": "Boolean" },
+          { "name": "IsHoliday", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "DimProducts",
+        "schema": "dbo",
+        "columns": [
+          { "name": "ProductID", "dataType": "Int64", "isKey": true },
+          { "name": "ProductName", "dataType": "String" },
+          { "name": "CategoryID", "dataType": "Int64" },
+          { "name": "SupplierID", "dataType": "Int64" },
+          { "name": "SKU", "dataType": "String" },
+          { "name": "UnitPrice", "dataType": "Double" },
+          { "name": "CostPrice", "dataType": "Double" },
+          { "name": "Weight", "dataType": "Double" },
+          { "name": "Brand", "dataType": "String" },
+          { "name": "LaunchDate", "dataType": "DateTime" },
+          { "name": "IsActive", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "DimCategories",
+        "schema": "dbo",
+        "columns": [
+          { "name": "CategoryID", "dataType": "Int64", "isKey": true },
+          { "name": "CategoryName", "dataType": "String" },
+          { "name": "Department", "dataType": "String" },
+          { "name": "IsOnline", "dataType": "Boolean" },
+          { "name": "IsInStore", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "DimSuppliers",
+        "schema": "dbo",
+        "columns": [
+          { "name": "SupplierID", "dataType": "Int64", "isKey": true },
+          { "name": "SupplierName", "dataType": "String" },
+          { "name": "Country", "dataType": "String" },
+          { "name": "LeadTimeDays", "dataType": "Int64" },
+          { "name": "Rating", "dataType": "Double" },
+          { "name": "ContractStart", "dataType": "DateTime" },
+          { "name": "IsPreferred", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "DimStores",
+        "schema": "dbo",
+        "columns": [
+          { "name": "StoreID", "dataType": "Int64", "isKey": true },
+          { "name": "StoreName", "dataType": "String" },
+          { "name": "StoreType", "dataType": "String" },
+          { "name": "Region", "dataType": "String" },
+          { "name": "State", "dataType": "String" },
+          { "name": "SquareFootage", "dataType": "Int64" },
+          { "name": "OpenDate", "dataType": "DateTime" },
+          { "name": "ManagerName", "dataType": "String" },
+          { "name": "Latitude", "dataType": "Double" },
+          { "name": "Longitude", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "DimEmployees",
+        "schema": "dbo",
+        "columns": [
+          { "name": "EmployeeID", "dataType": "Int64", "isKey": true },
+          { "name": "StoreID", "dataType": "Int64" },
+          { "name": "EmployeeName", "dataType": "String" },
+          { "name": "Role", "dataType": "String" },
+          { "name": "Department", "dataType": "String" },
+          { "name": "HireDate", "dataType": "DateTime" },
+          { "name": "HourlyRate", "dataType": "Double" },
+          { "name": "IsFullTime", "dataType": "Boolean" }
+        ]
+      },
+      {
+        "name": "DimWarehouses",
+        "schema": "dbo",
+        "columns": [
+          { "name": "WarehouseID", "dataType": "Int64", "isKey": true },
+          { "name": "WarehouseName", "dataType": "String" },
+          { "name": "City", "dataType": "String" },
+          { "name": "State", "dataType": "String" },
+          { "name": "CapacitySqFt", "dataType": "Int64" },
+          { "name": "Latitude", "dataType": "Double" },
+          { "name": "Longitude", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "DimCampaigns",
+        "schema": "dbo",
+        "columns": [
+          { "name": "CampaignID", "dataType": "Int64", "isKey": true },
+          { "name": "CampaignName", "dataType": "String" },
+          { "name": "CampaignType", "dataType": "String" },
+          { "name": "StartDate", "dataType": "DateTime" },
+          { "name": "EndDate", "dataType": "DateTime" },
+          { "name": "Budget", "dataType": "Double" },
+          { "name": "TargetAudience", "dataType": "String" },
+          { "name": "Status", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "DimChannels",
+        "schema": "dbo",
+        "columns": [
+          { "name": "ChannelID", "dataType": "Int64", "isKey": true },
+          { "name": "ChannelName", "dataType": "String" },
+          { "name": "ChannelType", "dataType": "String" },
+          { "name": "CostModel", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "DimCustomerSegments",
+        "schema": "dbo",
+        "columns": [
+          { "name": "SegmentID", "dataType": "Int64", "isKey": true },
+          { "name": "SegmentName", "dataType": "String" },
+          { "name": "MinSpend", "dataType": "Double" },
+          { "name": "AvgOrderFrequency", "dataType": "Double" },
+          { "name": "RetentionRate", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "FactOnlineOrders",
+        "schema": "dbo",
+        "columns": [
+          { "name": "OrderID", "dataType": "Int64", "isKey": true },
+          { "name": "CustomerID", "dataType": "Int64" },
+          { "name": "OrderDate", "dataType": "DateTime" },
+          { "name": "OrderTotal", "dataType": "Double" },
+          { "name": "ShippingCost", "dataType": "Double" },
+          { "name": "DiscountAmount", "dataType": "Double" },
+          { "name": "PaymentMethod", "dataType": "String" },
+          { "name": "OrderStatus", "dataType": "String" },
+          { "name": "Channel", "dataType": "String" },
+          { "name": "ShipState", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "FactOrderItems",
+        "schema": "dbo",
+        "columns": [
+          { "name": "OrderItemID", "dataType": "Int64", "isKey": true },
+          { "name": "OrderID", "dataType": "Int64" },
+          { "name": "ProductID", "dataType": "Int64" },
+          { "name": "Quantity", "dataType": "Int64" },
+          { "name": "UnitPrice", "dataType": "Double" },
+          { "name": "LineTotal", "dataType": "Double" },
+          { "name": "DiscountPct", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "FactWebTraffic",
+        "schema": "dbo",
+        "columns": [
+          { "name": "TrafficID", "dataType": "Int64", "isKey": true },
+          { "name": "SessionDate", "dataType": "DateTime" },
+          { "name": "PageViews", "dataType": "Int64" },
+          { "name": "UniqueSessions", "dataType": "Int64" },
+          { "name": "BounceRate", "dataType": "Double" },
+          { "name": "AvgSessionDuration", "dataType": "Double" },
+          { "name": "ConversionRate", "dataType": "Double" },
+          { "name": "CartAbandonment", "dataType": "Double" },
+          { "name": "TrafficSource", "dataType": "String" },
+          { "name": "DeviceType", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "FactReturns",
+        "schema": "dbo",
+        "columns": [
+          { "name": "ReturnID", "dataType": "Int64", "isKey": true },
+          { "name": "OrderID", "dataType": "Int64" },
+          { "name": "ProductID", "dataType": "Int64" },
+          { "name": "ReturnDate", "dataType": "DateTime" },
+          { "name": "ReturnReason", "dataType": "String" },
+          { "name": "RefundAmount", "dataType": "Double" },
+          { "name": "ReturnChannel", "dataType": "String" },
+          { "name": "ReturnStatus", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "FactPOSTransactions",
+        "schema": "dbo",
+        "columns": [
+          { "name": "TransactionID", "dataType": "Int64", "isKey": true },
+          { "name": "StoreID", "dataType": "Int64" },
+          { "name": "EmployeeID", "dataType": "Int64" },
+          { "name": "TransactionDate", "dataType": "DateTime" },
+          { "name": "ProductID", "dataType": "Int64" },
+          { "name": "Quantity", "dataType": "Int64" },
+          { "name": "SaleAmount", "dataType": "Double" },
+          { "name": "PaymentType", "dataType": "String" },
+          { "name": "DiscountApplied", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "FactStoreTraffic",
+        "schema": "dbo",
+        "columns": [
+          { "name": "TrafficID", "dataType": "Int64", "isKey": true },
+          { "name": "StoreID", "dataType": "Int64" },
+          { "name": "TrafficDate", "dataType": "DateTime" },
+          { "name": "FootfallCount", "dataType": "Int64" },
+          { "name": "ConversionCount", "dataType": "Int64" },
+          { "name": "AvgDwellMinutes", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "FactInventorySnapshots",
+        "schema": "dbo",
+        "columns": [
+          { "name": "SnapshotID", "dataType": "Int64", "isKey": true },
+          { "name": "ProductID", "dataType": "Int64" },
+          { "name": "WarehouseID", "dataType": "Int64" },
+          { "name": "SnapshotDate", "dataType": "DateTime" },
+          { "name": "QuantityOnHand", "dataType": "Int64" },
+          { "name": "ReorderPoint", "dataType": "Int64" },
+          { "name": "SafetyStock", "dataType": "Int64" },
+          { "name": "UnitCost", "dataType": "Double" },
+          { "name": "DaysOfSupply", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "FactPurchaseOrders",
+        "schema": "dbo",
+        "columns": [
+          { "name": "POID", "dataType": "Int64", "isKey": true },
+          { "name": "SupplierID", "dataType": "Int64" },
+          { "name": "WarehouseID", "dataType": "Int64" },
+          { "name": "OrderDate", "dataType": "DateTime" },
+          { "name": "ExpectedDelivery", "dataType": "DateTime" },
+          { "name": "TotalAmount", "dataType": "Double" },
+          { "name": "ItemCount", "dataType": "Int64" },
+          { "name": "POStatus", "dataType": "String" }
+        ]
+      },
+      {
+        "name": "FactGoodsReceipts",
+        "schema": "dbo",
+        "columns": [
+          { "name": "ReceiptID", "dataType": "Int64", "isKey": true },
+          { "name": "POID", "dataType": "Int64" },
+          { "name": "WarehouseID", "dataType": "Int64" },
+          { "name": "ReceiptDate", "dataType": "DateTime" },
+          { "name": "QuantityReceived", "dataType": "Int64" },
+          { "name": "QuantityDamaged", "dataType": "Int64" },
+          { "name": "DaysLate", "dataType": "Int64" },
+          { "name": "QualityScore", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "FactMarketingSpend",
+        "schema": "dbo",
+        "columns": [
+          { "name": "SpendID", "dataType": "Int64", "isKey": true },
+          { "name": "CampaignID", "dataType": "Int64" },
+          { "name": "ChannelID", "dataType": "Int64" },
+          { "name": "SpendDate", "dataType": "DateTime" },
+          { "name": "AmountSpent", "dataType": "Double" },
+          { "name": "Impressions", "dataType": "Int64" },
+          { "name": "Clicks", "dataType": "Int64" },
+          { "name": "Conversions", "dataType": "Int64" },
+          { "name": "RevenueAttributed", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "FactCampaignResponses",
+        "schema": "dbo",
+        "columns": [
+          { "name": "ResponseID", "dataType": "Int64", "isKey": true },
+          { "name": "CampaignID", "dataType": "Int64" },
+          { "name": "CustomerID", "dataType": "Int64" },
+          { "name": "ResponseDate", "dataType": "DateTime" },
+          { "name": "ResponseType", "dataType": "String" },
+          { "name": "ChannelID", "dataType": "Int64" },
+          { "name": "ConversionValue", "dataType": "Double" }
+        ]
+      },
+      {
+        "name": "FactCustomerReviews",
+        "schema": "dbo",
+        "columns": [
+          { "name": "ReviewID", "dataType": "Int64", "isKey": true },
+          { "name": "ProductID", "dataType": "Int64" },
+          { "name": "CustomerID", "dataType": "Int64" },
+          { "name": "ReviewDate", "dataType": "DateTime" },
+          { "name": "Rating", "dataType": "Int64" },
+          { "name": "SentimentScore", "dataType": "Double" },
+          { "name": "IsVerifiedPurchase", "dataType": "Boolean" },
+          { "name": "HelpfulVotes", "dataType": "Int64" }
+        ]
+      },
+      {
+        "name": "FactLoyaltyPoints",
+        "schema": "dbo",
+        "columns": [
+          { "name": "LoyaltyID", "dataType": "Int64", "isKey": true },
+          { "name": "CustomerID", "dataType": "Int64" },
+          { "name": "SegmentID", "dataType": "Int64" },
+          { "name": "TransactionDate", "dataType": "DateTime" },
+          { "name": "PointsEarned", "dataType": "Int64" },
+          { "name": "PointsRedeemed", "dataType": "Int64" },
+          { "name": "PointsBalance", "dataType": "Int64" },
+          { "name": "TierStatus", "dataType": "String" }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "fromTable": "DimProducts",
+        "fromColumn": "CategoryID",
+        "toTable": "DimCategories",
+        "toColumn": "CategoryID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "DimProducts",
+        "fromColumn": "SupplierID",
+        "toTable": "DimSuppliers",
+        "toColumn": "SupplierID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "DimEmployees",
+        "fromColumn": "StoreID",
+        "toTable": "DimStores",
+        "toColumn": "StoreID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactOnlineOrders",
+        "fromColumn": "OrderDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactOrderItems",
+        "fromColumn": "OrderID",
+        "toTable": "FactOnlineOrders",
+        "toColumn": "OrderID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactOrderItems",
+        "fromColumn": "ProductID",
+        "toTable": "DimProducts",
+        "toColumn": "ProductID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactWebTraffic",
+        "fromColumn": "SessionDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactReturns",
+        "fromColumn": "OrderID",
+        "toTable": "FactOnlineOrders",
+        "toColumn": "OrderID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactReturns",
+        "fromColumn": "ProductID",
+        "toTable": "DimProducts",
+        "toColumn": "ProductID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactReturns",
+        "fromColumn": "ReturnDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactPOSTransactions",
+        "fromColumn": "StoreID",
+        "toTable": "DimStores",
+        "toColumn": "StoreID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactPOSTransactions",
+        "fromColumn": "EmployeeID",
+        "toTable": "DimEmployees",
+        "toColumn": "EmployeeID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactPOSTransactions",
+        "fromColumn": "ProductID",
+        "toTable": "DimProducts",
+        "toColumn": "ProductID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactPOSTransactions",
+        "fromColumn": "TransactionDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactStoreTraffic",
+        "fromColumn": "StoreID",
+        "toTable": "DimStores",
+        "toColumn": "StoreID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactStoreTraffic",
+        "fromColumn": "TrafficDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactInventorySnapshots",
+        "fromColumn": "ProductID",
+        "toTable": "DimProducts",
+        "toColumn": "ProductID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactInventorySnapshots",
+        "fromColumn": "WarehouseID",
+        "toTable": "DimWarehouses",
+        "toColumn": "WarehouseID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactInventorySnapshots",
+        "fromColumn": "SnapshotDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactPurchaseOrders",
+        "fromColumn": "SupplierID",
+        "toTable": "DimSuppliers",
+        "toColumn": "SupplierID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactPurchaseOrders",
+        "fromColumn": "WarehouseID",
+        "toTable": "DimWarehouses",
+        "toColumn": "WarehouseID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactPurchaseOrders",
+        "fromColumn": "OrderDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactGoodsReceipts",
+        "fromColumn": "POID",
+        "toTable": "FactPurchaseOrders",
+        "toColumn": "POID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactGoodsReceipts",
+        "fromColumn": "WarehouseID",
+        "toTable": "DimWarehouses",
+        "toColumn": "WarehouseID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactGoodsReceipts",
+        "fromColumn": "ReceiptDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactMarketingSpend",
+        "fromColumn": "CampaignID",
+        "toTable": "DimCampaigns",
+        "toColumn": "CampaignID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactMarketingSpend",
+        "fromColumn": "ChannelID",
+        "toTable": "DimChannels",
+        "toColumn": "ChannelID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactMarketingSpend",
+        "fromColumn": "SpendDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactCampaignResponses",
+        "fromColumn": "CampaignID",
+        "toTable": "DimCampaigns",
+        "toColumn": "CampaignID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactCampaignResponses",
+        "fromColumn": "ChannelID",
+        "toTable": "DimChannels",
+        "toColumn": "ChannelID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactCampaignResponses",
+        "fromColumn": "ResponseDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactCustomerReviews",
+        "fromColumn": "ProductID",
+        "toTable": "DimProducts",
+        "toColumn": "ProductID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactCustomerReviews",
+        "fromColumn": "ReviewDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactLoyaltyPoints",
+        "fromColumn": "SegmentID",
+        "toTable": "DimCustomerSegments",
+        "toColumn": "SegmentID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactLoyaltyPoints",
+        "fromColumn": "TransactionDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      }
+    ],
+    "measures": [
+      {
+        "name": "GMV",
+        "table": "FactOnlineOrders",
+        "expression": "SUM(FactOnlineOrders[OrderTotal]) + SUM(FactPOSTransactions[SaleAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Revenue"
+      },
+      {
+        "name": "Online Revenue",
+        "table": "FactOnlineOrders",
+        "expression": "SUM(FactOnlineOrders[OrderTotal])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Revenue"
+      },
+      {
+        "name": "Store Revenue",
+        "table": "FactPOSTransactions",
+        "expression": "SUM(FactPOSTransactions[SaleAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Revenue"
+      },
+      {
+        "name": "Total Revenue",
+        "table": "FactOnlineOrders",
+        "expression": "SUM(FactOnlineOrders[OrderTotal]) + SUM(FactPOSTransactions[SaleAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Revenue"
+      },
+      {
+        "name": "Revenue YoY Growth",
+        "table": "FactOnlineOrders",
+        "expression": "VAR _CY = [Total Revenue] VAR _PY = CALCULATE([Total Revenue], DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)",
+        "formatString": "0.0%",
+        "displayFolder": "Revenue"
+      },
+      {
+        "name": "Revenue MoM Change",
+        "table": "FactOnlineOrders",
+        "expression": "VAR _CM = [Total Revenue] VAR _PM = CALCULATE([Total Revenue], DATEADD(DimDate[Date], -1, MONTH)) RETURN _CM - _PM",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Revenue"
+      },
+      {
+        "name": "AOV",
+        "table": "FactOnlineOrders",
+        "expression": "DIVIDE(SUM(FactOnlineOrders[OrderTotal]), COUNTROWS(FactOnlineOrders))",
+        "formatString": "$#,0.00",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Online Order Count",
+        "table": "FactOnlineOrders",
+        "expression": "COUNTROWS(FactOnlineOrders)",
+        "formatString": "#,0",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Total Items Sold Online",
+        "table": "FactOrderItems",
+        "expression": "SUM(FactOrderItems[Quantity])",
+        "formatString": "#,0",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Avg Items Per Order",
+        "table": "FactOrderItems",
+        "expression": "DIVIDE(SUM(FactOrderItems[Quantity]), DISTINCTCOUNT(FactOrderItems[OrderID]))",
+        "formatString": "0.0",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Total Shipping Cost",
+        "table": "FactOnlineOrders",
+        "expression": "SUM(FactOnlineOrders[ShippingCost])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Avg Shipping Cost",
+        "table": "FactOnlineOrders",
+        "expression": "AVERAGE(FactOnlineOrders[ShippingCost])",
+        "formatString": "$#,0.00",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Total Discounts",
+        "table": "FactOnlineOrders",
+        "expression": "SUM(FactOnlineOrders[DiscountAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Discount Rate",
+        "table": "FactOnlineOrders",
+        "expression": "DIVIDE(SUM(FactOnlineOrders[DiscountAmount]), SUM(FactOnlineOrders[OrderTotal]))",
+        "formatString": "0.0%",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Conversion Rate",
+        "table": "FactWebTraffic",
+        "expression": "AVERAGE(FactWebTraffic[ConversionRate])",
+        "formatString": "0.00%",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Cart Abandonment Rate",
+        "table": "FactWebTraffic",
+        "expression": "AVERAGE(FactWebTraffic[CartAbandonment])",
+        "formatString": "0.0%",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Total Page Views",
+        "table": "FactWebTraffic",
+        "expression": "SUM(FactWebTraffic[PageViews])",
+        "formatString": "#,0",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Unique Sessions",
+        "table": "FactWebTraffic",
+        "expression": "SUM(FactWebTraffic[UniqueSessions])",
+        "formatString": "#,0",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Bounce Rate",
+        "table": "FactWebTraffic",
+        "expression": "AVERAGE(FactWebTraffic[BounceRate])",
+        "formatString": "0.0%",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Avg Session Duration",
+        "table": "FactWebTraffic",
+        "expression": "AVERAGE(FactWebTraffic[AvgSessionDuration])",
+        "formatString": "#,0",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Delivered Order %",
+        "table": "FactOnlineOrders",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactOnlineOrders), FactOnlineOrders[OrderStatus] = \"Delivered\"), COUNTROWS(FactOnlineOrders))",
+        "formatString": "0.0%",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Cancelled Order %",
+        "table": "FactOnlineOrders",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactOnlineOrders), FactOnlineOrders[OrderStatus] = \"Cancelled\"), COUNTROWS(FactOnlineOrders))",
+        "formatString": "0.0%",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Return Rate",
+        "table": "FactReturns",
+        "expression": "DIVIDE(COUNTROWS(FactReturns), COUNTROWS(FactOnlineOrders))",
+        "formatString": "0.0%",
+        "displayFolder": "Returns"
+      },
+      {
+        "name": "Total Refunds",
+        "table": "FactReturns",
+        "expression": "SUM(FactReturns[RefundAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Returns"
+      },
+      {
+        "name": "Avg Refund Amount",
+        "table": "FactReturns",
+        "expression": "AVERAGE(FactReturns[RefundAmount])",
+        "formatString": "$#,0.00",
+        "displayFolder": "Returns"
+      },
+      {
+        "name": "Return Count",
+        "table": "FactReturns",
+        "expression": "COUNTROWS(FactReturns)",
+        "formatString": "#,0",
+        "displayFolder": "Returns"
+      },
+      {
+        "name": "COGS",
+        "table": "FactOrderItems",
+        "expression": "SUMX(FactOrderItems, FactOrderItems[Quantity] * RELATED(DimProducts[CostPrice]))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Profitability"
+      },
+      {
+        "name": "Gross Profit",
+        "table": "FactOrderItems",
+        "expression": "[Total Revenue] - [COGS]",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Profitability"
+      },
+      {
+        "name": "Gross Margin %",
+        "table": "FactOrderItems",
+        "expression": "DIVIDE([Gross Profit], [Total Revenue])",
+        "formatString": "0.0%",
+        "displayFolder": "Profitability"
+      },
+      {
+        "name": "Net Revenue",
+        "table": "FactOnlineOrders",
+        "expression": "[Total Revenue] - [Total Refunds] - [Total Discounts]",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Profitability"
+      },
+      {
+        "name": "Store Transaction Count",
+        "table": "FactPOSTransactions",
+        "expression": "COUNTROWS(FactPOSTransactions)",
+        "formatString": "#,0",
+        "displayFolder": "Stores"
+      },
+      {
+        "name": "Avg Transaction Value",
+        "table": "FactPOSTransactions",
+        "expression": "AVERAGE(FactPOSTransactions[SaleAmount])",
+        "formatString": "$#,0.00",
+        "displayFolder": "Stores"
+      },
+      {
+        "name": "Revenue Per Sq Ft",
+        "table": "FactPOSTransactions",
+        "expression": "DIVIDE(SUM(FactPOSTransactions[SaleAmount]), SUM(DimStores[SquareFootage]))",
+        "formatString": "$#,0.00",
+        "displayFolder": "Stores"
+      },
+      {
+        "name": "Store Count",
+        "table": "DimStores",
+        "expression": "COUNTROWS(DimStores)",
+        "formatString": "#,0",
+        "displayFolder": "Stores"
+      },
+      {
+        "name": "Avg Footfall",
+        "table": "FactStoreTraffic",
+        "expression": "AVERAGE(FactStoreTraffic[FootfallCount])",
+        "formatString": "#,0",
+        "displayFolder": "Stores"
+      },
+      {
+        "name": "Store Conversion Rate",
+        "table": "FactStoreTraffic",
+        "expression": "DIVIDE(SUM(FactStoreTraffic[ConversionCount]), SUM(FactStoreTraffic[FootfallCount]))",
+        "formatString": "0.0%",
+        "displayFolder": "Stores"
+      },
+      {
+        "name": "Avg Dwell Time (min)",
+        "table": "FactStoreTraffic",
+        "expression": "AVERAGE(FactStoreTraffic[AvgDwellMinutes])",
+        "formatString": "0.0",
+        "displayFolder": "Stores"
+      },
+      {
+        "name": "Total Footfall",
+        "table": "FactStoreTraffic",
+        "expression": "SUM(FactStoreTraffic[FootfallCount])",
+        "formatString": "#,0",
+        "displayFolder": "Stores"
+      },
+      {
+        "name": "Employee Count",
+        "table": "DimEmployees",
+        "expression": "COUNTROWS(DimEmployees)",
+        "formatString": "#,0",
+        "displayFolder": "Stores"
+      },
+      {
+        "name": "Revenue Per Employee",
+        "table": "FactPOSTransactions",
+        "expression": "DIVIDE(SUM(FactPOSTransactions[SaleAmount]), DISTINCTCOUNT(FactPOSTransactions[EmployeeID]))",
+        "formatString": "$#,0.00",
+        "displayFolder": "Stores"
+      },
+      {
+        "name": "Total Inventory Value",
+        "table": "FactInventorySnapshots",
+        "expression": "SUMX(FactInventorySnapshots, FactInventorySnapshots[QuantityOnHand] * FactInventorySnapshots[UnitCost])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Inventory"
+      },
+      {
+        "name": "Total Qty On Hand",
+        "table": "FactInventorySnapshots",
+        "expression": "SUM(FactInventorySnapshots[QuantityOnHand])",
+        "formatString": "#,0",
+        "displayFolder": "Inventory"
+      },
+      {
+        "name": "Inventory Turns",
+        "table": "FactInventorySnapshots",
+        "expression": "DIVIDE([COGS], [Total Inventory Value])",
+        "formatString": "0.0",
+        "displayFolder": "Inventory"
+      },
+      {
+        "name": "GMROI",
+        "table": "FactInventorySnapshots",
+        "expression": "DIVIDE([Gross Profit], [Total Inventory Value])",
+        "formatString": "0.00",
+        "displayFolder": "Inventory"
+      },
+      {
+        "name": "Sell-Through Rate",
+        "table": "FactInventorySnapshots",
+        "expression": "DIVIDE(SUM(FactOrderItems[Quantity]), SUM(FactOrderItems[Quantity]) + SUM(FactInventorySnapshots[QuantityOnHand]))",
+        "formatString": "0.0%",
+        "displayFolder": "Inventory"
+      },
+      {
+        "name": "Avg Days of Supply",
+        "table": "FactInventorySnapshots",
+        "expression": "AVERAGE(FactInventorySnapshots[DaysOfSupply])",
+        "formatString": "0.0",
+        "displayFolder": "Inventory"
+      },
+      {
+        "name": "Stockout Risk Items",
+        "table": "FactInventorySnapshots",
+        "expression": "CALCULATE(COUNTROWS(FactInventorySnapshots), FactInventorySnapshots[QuantityOnHand] <= FactInventorySnapshots[ReorderPoint])",
+        "formatString": "#,0",
+        "displayFolder": "Inventory"
+      },
+      {
+        "name": "PO Count",
+        "table": "FactPurchaseOrders",
+        "expression": "COUNTROWS(FactPurchaseOrders)",
+        "formatString": "#,0",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Total PO Value",
+        "table": "FactPurchaseOrders",
+        "expression": "SUM(FactPurchaseOrders[TotalAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Avg Lead Time Days",
+        "table": "DimSuppliers",
+        "expression": "AVERAGE(DimSuppliers[LeadTimeDays])",
+        "formatString": "0.0",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Supplier Quality Score",
+        "table": "FactGoodsReceipts",
+        "expression": "AVERAGE(FactGoodsReceipts[QualityScore])",
+        "formatString": "0.0%",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "On-Time Delivery %",
+        "table": "FactGoodsReceipts",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactGoodsReceipts), FactGoodsReceipts[DaysLate] <= 0), COUNTROWS(FactGoodsReceipts))",
+        "formatString": "0.0%",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Damaged Goods Rate",
+        "table": "FactGoodsReceipts",
+        "expression": "DIVIDE(SUM(FactGoodsReceipts[QuantityDamaged]), SUM(FactGoodsReceipts[QuantityReceived]))",
+        "formatString": "0.00%",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Avg Days Late",
+        "table": "FactGoodsReceipts",
+        "expression": "AVERAGE(FactGoodsReceipts[DaysLate])",
+        "formatString": "0.0",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Total Marketing Spend",
+        "table": "FactMarketingSpend",
+        "expression": "SUM(FactMarketingSpend[AmountSpent])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Marketing"
+      },
+      {
+        "name": "Total Impressions",
+        "table": "FactMarketingSpend",
+        "expression": "SUM(FactMarketingSpend[Impressions])",
+        "formatString": "#,0",
+        "displayFolder": "Marketing"
+      },
+      {
+        "name": "Total Clicks",
+        "table": "FactMarketingSpend",
+        "expression": "SUM(FactMarketingSpend[Clicks])",
+        "formatString": "#,0",
+        "displayFolder": "Marketing"
+      },
+      {
+        "name": "CTR",
+        "table": "FactMarketingSpend",
+        "expression": "DIVIDE(SUM(FactMarketingSpend[Clicks]), SUM(FactMarketingSpend[Impressions]))",
+        "formatString": "0.00%",
+        "displayFolder": "Marketing"
+      },
+      {
+        "name": "CPC",
+        "table": "FactMarketingSpend",
+        "expression": "DIVIDE(SUM(FactMarketingSpend[AmountSpent]), SUM(FactMarketingSpend[Clicks]))",
+        "formatString": "$0.00",
+        "displayFolder": "Marketing"
+      },
+      {
+        "name": "Total Conversions",
+        "table": "FactMarketingSpend",
+        "expression": "SUM(FactMarketingSpend[Conversions])",
+        "formatString": "#,0",
+        "displayFolder": "Marketing"
+      },
+      {
+        "name": "CAC",
+        "table": "FactMarketingSpend",
+        "expression": "DIVIDE(SUM(FactMarketingSpend[AmountSpent]), SUM(FactMarketingSpend[Conversions]))",
+        "formatString": "$#,0.00",
+        "displayFolder": "Marketing"
+      },
+      {
+        "name": "ROAS",
+        "table": "FactMarketingSpend",
+        "expression": "DIVIDE(SUM(FactMarketingSpend[RevenueAttributed]), SUM(FactMarketingSpend[AmountSpent]))",
+        "formatString": "0.00",
+        "displayFolder": "Marketing"
+      },
+      {
+        "name": "Campaign ROI",
+        "table": "FactMarketingSpend",
+        "expression": "DIVIDE(SUM(FactMarketingSpend[RevenueAttributed]) - SUM(FactMarketingSpend[AmountSpent]), SUM(FactMarketingSpend[AmountSpent]))",
+        "formatString": "0.0%",
+        "displayFolder": "Marketing"
+      },
+      {
+        "name": "Marketing Revenue Attributed",
+        "table": "FactMarketingSpend",
+        "expression": "SUM(FactMarketingSpend[RevenueAttributed])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Marketing"
+      },
+      {
+        "name": "Budget Utilization %",
+        "table": "FactMarketingSpend",
+        "expression": "DIVIDE(SUM(FactMarketingSpend[AmountSpent]), SUM(DimCampaigns[Budget]))",
+        "formatString": "0.0%",
+        "displayFolder": "Marketing"
+      },
+      {
+        "name": "Campaign Response Count",
+        "table": "FactCampaignResponses",
+        "expression": "COUNTROWS(FactCampaignResponses)",
+        "formatString": "#,0",
+        "displayFolder": "Marketing"
+      },
+      {
+        "name": "Avg Review Rating",
+        "table": "FactCustomerReviews",
+        "expression": "AVERAGE(FactCustomerReviews[Rating])",
+        "formatString": "0.0",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "NPS Proxy",
+        "table": "FactCustomerReviews",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactCustomerReviews), FactCustomerReviews[Rating] >= 4), COUNTROWS(FactCustomerReviews)) - DIVIDE(CALCULATE(COUNTROWS(FactCustomerReviews), FactCustomerReviews[Rating] <= 2), COUNTROWS(FactCustomerReviews))",
+        "formatString": "0.0%",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Avg Sentiment Score",
+        "table": "FactCustomerReviews",
+        "expression": "AVERAGE(FactCustomerReviews[SentimentScore])",
+        "formatString": "0.00",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Verified Review %",
+        "table": "FactCustomerReviews",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactCustomerReviews), FactCustomerReviews[IsVerifiedPurchase] = TRUE()), COUNTROWS(FactCustomerReviews))",
+        "formatString": "0.0%",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Review Count",
+        "table": "FactCustomerReviews",
+        "expression": "COUNTROWS(FactCustomerReviews)",
+        "formatString": "#,0",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Total Points Earned",
+        "table": "FactLoyaltyPoints",
+        "expression": "SUM(FactLoyaltyPoints[PointsEarned])",
+        "formatString": "#,0",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Total Points Redeemed",
+        "table": "FactLoyaltyPoints",
+        "expression": "SUM(FactLoyaltyPoints[PointsRedeemed])",
+        "formatString": "#,0",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Redemption Rate",
+        "table": "FactLoyaltyPoints",
+        "expression": "DIVIDE(SUM(FactLoyaltyPoints[PointsRedeemed]), SUM(FactLoyaltyPoints[PointsEarned]))",
+        "formatString": "0.0%",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Active Loyalty Members",
+        "table": "FactLoyaltyPoints",
+        "expression": "DISTINCTCOUNT(FactLoyaltyPoints[CustomerID])",
+        "formatString": "#,0",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Repeat Purchase Rate",
+        "table": "FactOnlineOrders",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(VALUES(FactOnlineOrders[CustomerID])), COUNTROWS(FactOnlineOrders) > 1), DISTINCTCOUNT(FactOnlineOrders[CustomerID]))",
+        "formatString": "0.0%",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Unique Customers",
+        "table": "FactOnlineOrders",
+        "expression": "DISTINCTCOUNT(FactOnlineOrders[CustomerID])",
+        "formatString": "#,0",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "CLV Estimate",
+        "table": "FactOnlineOrders",
+        "expression": "DIVIDE(SUM(FactOnlineOrders[OrderTotal]), DISTINCTCOUNT(FactOnlineOrders[CustomerID])) * 3",
+        "formatString": "$#,0.00",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Product Count",
+        "table": "DimProducts",
+        "expression": "COUNTROWS(DimProducts)",
+        "formatString": "#,0",
+        "displayFolder": "Product"
+      },
+      {
+        "name": "Active Product Count",
+        "table": "DimProducts",
+        "expression": "CALCULATE(COUNTROWS(DimProducts), DimProducts[IsActive] = TRUE())",
+        "formatString": "#,0",
+        "displayFolder": "Product"
+      },
+      {
+        "name": "Supplier Count",
+        "table": "DimSuppliers",
+        "expression": "COUNTROWS(DimSuppliers)",
+        "formatString": "#,0",
+        "displayFolder": "Product"
+      },
+      {
+        "name": "Avg Supplier Rating",
+        "table": "DimSuppliers",
+        "expression": "AVERAGE(DimSuppliers[Rating])",
+        "formatString": "0.0",
+        "displayFolder": "Product"
+      },
+      {
+        "name": "Preferred Supplier %",
+        "table": "DimSuppliers",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(DimSuppliers), DimSuppliers[IsPreferred] = TRUE()), COUNTROWS(DimSuppliers))",
+        "formatString": "0.0%",
+        "displayFolder": "Product"
+      },
+      {
+        "name": "Online Channel Mix %",
+        "table": "FactOnlineOrders",
+        "expression": "DIVIDE(SUM(FactOnlineOrders[OrderTotal]), [Total Revenue])",
+        "formatString": "0.0%",
+        "displayFolder": "Revenue"
+      },
+      {
+        "name": "Store Channel Mix %",
+        "table": "FactPOSTransactions",
+        "expression": "DIVIDE(SUM(FactPOSTransactions[SaleAmount]), [Total Revenue])",
+        "formatString": "0.0%",
+        "displayFolder": "Revenue"
+      },
+      {
+        "name": "Revenue Per Store",
+        "table": "FactPOSTransactions",
+        "expression": "DIVIDE(SUM(FactPOSTransactions[SaleAmount]), COUNTROWS(DimStores))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Stores"
+      },
+      {
+        "name": "Warehouse Count",
+        "table": "DimWarehouses",
+        "expression": "COUNTROWS(DimWarehouses)",
+        "formatString": "#,0",
+        "displayFolder": "Inventory"
+      },
+      {
+        "name": "CPM",
+        "table": "FactMarketingSpend",
+        "expression": "DIVIDE(SUM(FactMarketingSpend[AmountSpent]), SUM(FactMarketingSpend[Impressions])) * 1000",
+        "formatString": "$0.00",
+        "displayFolder": "Marketing"
+      },
+      {
+        "name": "Total Campaign Budget",
+        "table": "DimCampaigns",
+        "expression": "SUM(DimCampaigns[Budget])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Marketing"
+      },
+      {
+        "name": "Active Campaigns",
+        "table": "DimCampaigns",
+        "expression": "CALCULATE(COUNTROWS(DimCampaigns), DimCampaigns[Status] = \"Active\")",
+        "formatString": "#,0",
+        "displayFolder": "Marketing"
+      },
+      {
+        "name": "Segment Count",
+        "table": "DimCustomerSegments",
+        "expression": "COUNTROWS(DimCustomerSegments)",
+        "formatString": "#,0",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Avg Retention Rate",
+        "table": "DimCustomerSegments",
+        "expression": "AVERAGE(DimCustomerSegments[RetentionRate])",
+        "formatString": "0.0%",
+        "displayFolder": "Customer"
+      },
+      {
+        "name": "Avg Discount %",
+        "table": "FactOrderItems",
+        "expression": "AVERAGE(FactOrderItems[DiscountPct])",
+        "formatString": "0.0%",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Revenue by Website",
+        "table": "FactOnlineOrders",
+        "expression": "CALCULATE(SUM(FactOnlineOrders[OrderTotal]), FactOnlineOrders[Channel] = \"Website\")",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Revenue by Mobile App",
+        "table": "FactOnlineOrders",
+        "expression": "CALCULATE(SUM(FactOnlineOrders[OrderTotal]), FactOnlineOrders[Channel] = \"Mobile App\")",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Store POS Discount Total",
+        "table": "FactPOSTransactions",
+        "expression": "SUM(FactPOSTransactions[DiscountApplied])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Stores"
+      },
+      {
+        "name": "Avg PO Value",
+        "table": "FactPurchaseOrders",
+        "expression": "AVERAGE(FactPurchaseOrders[TotalAmount])",
+        "formatString": "$#,0.00",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Received PO %",
+        "table": "FactPurchaseOrders",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactPurchaseOrders), FactPurchaseOrders[POStatus] = \"Received\"), COUNTROWS(FactPurchaseOrders))",
+        "formatString": "0.0%",
+        "displayFolder": "Supply Chain"
+      },
+      {
+        "name": "Line Total Revenue",
+        "table": "FactOrderItems",
+        "expression": "SUM(FactOrderItems[LineTotal])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Avg Line Item Value",
+        "table": "FactOrderItems",
+        "expression": "AVERAGE(FactOrderItems[LineTotal])",
+        "formatString": "$#,0.00",
+        "displayFolder": "E-Commerce"
+      },
+      {
+        "name": "Top Return Reason",
+        "table": "FactReturns",
+        "expression": "TOPN(1, VALUES(FactReturns[ReturnReason]), CALCULATE(COUNTROWS(FactReturns)))",
+        "formatString": "",
+        "displayFolder": "Returns"
+      }
+    ]
+  }
+}

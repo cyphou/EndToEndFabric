@@ -1,0 +1,1685 @@
+{
+  "schemaVersion": "1.0",
+  "semanticModel": {
+    "name": "WoodgroveBankModel",
+    "mode": "DirectLake",
+    "defaultSchema": "gold",
+    "tables": [
+      {
+        "name": "DimDate",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "DateKey",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "Date",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Year",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Month",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Quarter",
+            "dataType": "Int64"
+          },
+          {
+            "name": "MonthName",
+            "dataType": "String"
+          },
+          {
+            "name": "FiscalYear",
+            "dataType": "Int64"
+          },
+          {
+            "name": "FiscalQuarter",
+            "dataType": "Int64"
+          },
+          {
+            "name": "DayOfWeek",
+            "dataType": "String"
+          },
+          {
+            "name": "IsWeekend",
+            "dataType": "Boolean"
+          },
+          {
+            "name": "IsHoliday",
+            "dataType": "Boolean"
+          }
+        ]
+      },
+      {
+        "name": "DimCustomers",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "CustomerID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerName",
+            "dataType": "String"
+          },
+          {
+            "name": "CustomerType",
+            "dataType": "String"
+          },
+          {
+            "name": "Segment",
+            "dataType": "String"
+          },
+          {
+            "name": "State",
+            "dataType": "String"
+          },
+          {
+            "name": "City",
+            "dataType": "String"
+          },
+          {
+            "name": "JoinDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "CreditScore",
+            "dataType": "Int64"
+          },
+          {
+            "name": "AnnualIncome",
+            "dataType": "Double"
+          },
+          {
+            "name": "IsDigitalUser",
+            "dataType": "Boolean"
+          },
+          {
+            "name": "RelationshipManager",
+            "dataType": "String"
+          },
+          {
+            "name": "RiskRating",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "DimAccounts",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "AccountID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "AccountType",
+            "dataType": "String"
+          },
+          {
+            "name": "OpenDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Status",
+            "dataType": "String"
+          },
+          {
+            "name": "InterestRate",
+            "dataType": "Double"
+          },
+          {
+            "name": "BranchID",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "DimBranches",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "BranchID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "BranchName",
+            "dataType": "String"
+          },
+          {
+            "name": "BranchType",
+            "dataType": "String"
+          },
+          {
+            "name": "State",
+            "dataType": "String"
+          },
+          {
+            "name": "City",
+            "dataType": "String"
+          },
+          {
+            "name": "Region",
+            "dataType": "String"
+          },
+          {
+            "name": "ManagerName",
+            "dataType": "String"
+          },
+          {
+            "name": "EmployeeCount",
+            "dataType": "Int64"
+          },
+          {
+            "name": "OpenDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "HasATM",
+            "dataType": "Boolean"
+          },
+          {
+            "name": "Latitude",
+            "dataType": "Double"
+          },
+          {
+            "name": "Longitude",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "DimProducts",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "ProductID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "ProductName",
+            "dataType": "String"
+          },
+          {
+            "name": "ProductCategory",
+            "dataType": "String"
+          },
+          {
+            "name": "Domain",
+            "dataType": "String"
+          },
+          {
+            "name": "MinBalance",
+            "dataType": "Double"
+          },
+          {
+            "name": "AnnualFee",
+            "dataType": "Double"
+          },
+          {
+            "name": "IsActive",
+            "dataType": "Boolean"
+          }
+        ]
+      },
+      {
+        "name": "DimLoanProducts",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "LoanProductID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "ProductName",
+            "dataType": "String"
+          },
+          {
+            "name": "LoanCategory",
+            "dataType": "String"
+          },
+          {
+            "name": "BaseRate",
+            "dataType": "Double"
+          },
+          {
+            "name": "MaxTermMonths",
+            "dataType": "Int64"
+          },
+          {
+            "name": "IsSecured",
+            "dataType": "Boolean"
+          }
+        ]
+      },
+      {
+        "name": "DimCardProducts",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "CardProductID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CardName",
+            "dataType": "String"
+          },
+          {
+            "name": "CardNetwork",
+            "dataType": "String"
+          },
+          {
+            "name": "AnnualFee",
+            "dataType": "Double"
+          },
+          {
+            "name": "RewardsRate",
+            "dataType": "Double"
+          },
+          {
+            "name": "APR",
+            "dataType": "Double"
+          },
+          {
+            "name": "CreditLimitMin",
+            "dataType": "Int64"
+          },
+          {
+            "name": "CreditLimitMax",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "DimRiskCategories",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "RiskCategoryID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CategoryName",
+            "dataType": "String"
+          },
+          {
+            "name": "RiskDomain",
+            "dataType": "String"
+          },
+          {
+            "name": "SeverityWeight",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactTransactions",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "TransactionID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "AccountID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "TransactionDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "TransactionType",
+            "dataType": "String"
+          },
+          {
+            "name": "Amount",
+            "dataType": "Double"
+          },
+          {
+            "name": "Channel",
+            "dataType": "String"
+          },
+          {
+            "name": "BranchID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "IsRecurring",
+            "dataType": "Boolean"
+          }
+        ]
+      },
+      {
+        "name": "FactAccountBalances",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "BalanceID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "AccountID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "SnapshotDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Balance",
+            "dataType": "Double"
+          },
+          {
+            "name": "AvgDailyBalance",
+            "dataType": "Double"
+          },
+          {
+            "name": "InterestAccrued",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactLoans",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "LoanID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "LoanProductID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "OriginationDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "OriginalAmount",
+            "dataType": "Double"
+          },
+          {
+            "name": "CurrentBalance",
+            "dataType": "Double"
+          },
+          {
+            "name": "InterestRate",
+            "dataType": "Double"
+          },
+          {
+            "name": "TermMonths",
+            "dataType": "Int64"
+          },
+          {
+            "name": "LoanStatus",
+            "dataType": "String"
+          },
+          {
+            "name": "LTV",
+            "dataType": "Double"
+          },
+          {
+            "name": "DTI",
+            "dataType": "Double"
+          },
+          {
+            "name": "BranchID",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "FactLoanPayments",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "PaymentID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "LoanID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "PaymentDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "PrincipalAmount",
+            "dataType": "Double"
+          },
+          {
+            "name": "InterestAmount",
+            "dataType": "Double"
+          },
+          {
+            "name": "EscrowAmount",
+            "dataType": "Double"
+          },
+          {
+            "name": "PaymentStatus",
+            "dataType": "String"
+          },
+          {
+            "name": "DaysLate",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "FactMortgages",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "MortgageID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "LoanID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "PropertyValue",
+            "dataType": "Double"
+          },
+          {
+            "name": "PropertyType",
+            "dataType": "String"
+          },
+          {
+            "name": "PropertyState",
+            "dataType": "String"
+          },
+          {
+            "name": "OccupancyType",
+            "dataType": "String"
+          },
+          {
+            "name": "ClosingDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "EscrowBalance",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactCardTransactions",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "CardTxnID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "CardProductID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "TransactionDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "MerchantCategory",
+            "dataType": "String"
+          },
+          {
+            "name": "Amount",
+            "dataType": "Double"
+          },
+          {
+            "name": "IsInternational",
+            "dataType": "Boolean"
+          },
+          {
+            "name": "AuthorizationStatus",
+            "dataType": "String"
+          },
+          {
+            "name": "RewardsEarned",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactFraudAlerts",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "AlertID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "AlertDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "AlertType",
+            "dataType": "String"
+          },
+          {
+            "name": "RiskScore",
+            "dataType": "Double"
+          },
+          {
+            "name": "Amount",
+            "dataType": "Double"
+          },
+          {
+            "name": "Resolution",
+            "dataType": "String"
+          },
+          {
+            "name": "Channel",
+            "dataType": "String"
+          }
+        ]
+      },
+      {
+        "name": "FactCreditScores",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "ScoreID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ScoreDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "CreditScore",
+            "dataType": "Int64"
+          },
+          {
+            "name": "ScoreChange",
+            "dataType": "Int64"
+          },
+          {
+            "name": "RiskBand",
+            "dataType": "String"
+          },
+          {
+            "name": "ProbabilityOfDefault",
+            "dataType": "Double"
+          }
+        ]
+      },
+      {
+        "name": "FactComplianceChecks",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "CheckID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CheckDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "RiskCategoryID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "CheckType",
+            "dataType": "String"
+          },
+          {
+            "name": "Result",
+            "dataType": "String"
+          },
+          {
+            "name": "FindingsCount",
+            "dataType": "Int64"
+          },
+          {
+            "name": "RemediationDays",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "FactAMLAlerts",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "AMLAlertID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "AlertDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "AlertType",
+            "dataType": "String"
+          },
+          {
+            "name": "TransactionAmount",
+            "dataType": "Double"
+          },
+          {
+            "name": "RiskScore",
+            "dataType": "Double"
+          },
+          {
+            "name": "Disposition",
+            "dataType": "String"
+          },
+          {
+            "name": "InvestigatorID",
+            "dataType": "Int64"
+          }
+        ]
+      },
+      {
+        "name": "FactCustomerInteractions",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "InteractionID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "InteractionDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Channel",
+            "dataType": "String"
+          },
+          {
+            "name": "InteractionType",
+            "dataType": "String"
+          },
+          {
+            "name": "ResolutionMinutes",
+            "dataType": "Int64"
+          },
+          {
+            "name": "SatisfactionScore",
+            "dataType": "Int64"
+          },
+          {
+            "name": "IsResolved",
+            "dataType": "Boolean"
+          }
+        ]
+      },
+      {
+        "name": "FactDigitalBanking",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "SessionID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "SessionDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "Platform",
+            "dataType": "String"
+          },
+          {
+            "name": "Feature",
+            "dataType": "String"
+          },
+          {
+            "name": "SessionDurationSec",
+            "dataType": "Int64"
+          },
+          {
+            "name": "PagesViewed",
+            "dataType": "Int64"
+          },
+          {
+            "name": "TransactionCompleted",
+            "dataType": "Boolean"
+          }
+        ]
+      },
+      {
+        "name": "FactNetPromoterScore",
+        "schema": "dbo",
+        "columns": [
+          {
+            "name": "SurveyID",
+            "dataType": "Int64",
+            "isKey": true
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "Int64"
+          },
+          {
+            "name": "SurveyDate",
+            "dataType": "DateTime"
+          },
+          {
+            "name": "NPSScore",
+            "dataType": "Int64"
+          },
+          {
+            "name": "Category",
+            "dataType": "String"
+          },
+          {
+            "name": "TouchPoint",
+            "dataType": "String"
+          },
+          {
+            "name": "Verbatim",
+            "dataType": "String"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "fromTable": "DimAccounts",
+        "fromColumn": "CustomerID",
+        "toTable": "DimCustomers",
+        "toColumn": "CustomerID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "DimAccounts",
+        "fromColumn": "BranchID",
+        "toTable": "DimBranches",
+        "toColumn": "BranchID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactTransactions",
+        "fromColumn": "AccountID",
+        "toTable": "DimAccounts",
+        "toColumn": "AccountID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactTransactions",
+        "fromColumn": "BranchID",
+        "toTable": "DimBranches",
+        "toColumn": "BranchID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactTransactions",
+        "fromColumn": "TransactionDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactAccountBalances",
+        "fromColumn": "AccountID",
+        "toTable": "DimAccounts",
+        "toColumn": "AccountID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactAccountBalances",
+        "fromColumn": "SnapshotDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactLoans",
+        "fromColumn": "CustomerID",
+        "toTable": "DimCustomers",
+        "toColumn": "CustomerID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactLoans",
+        "fromColumn": "LoanProductID",
+        "toTable": "DimLoanProducts",
+        "toColumn": "LoanProductID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactLoans",
+        "fromColumn": "BranchID",
+        "toTable": "DimBranches",
+        "toColumn": "BranchID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactLoans",
+        "fromColumn": "OriginationDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactLoanPayments",
+        "fromColumn": "LoanID",
+        "toTable": "FactLoans",
+        "toColumn": "LoanID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactLoanPayments",
+        "fromColumn": "PaymentDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactMortgages",
+        "fromColumn": "LoanID",
+        "toTable": "FactLoans",
+        "toColumn": "LoanID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactCardTransactions",
+        "fromColumn": "CustomerID",
+        "toTable": "DimCustomers",
+        "toColumn": "CustomerID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactCardTransactions",
+        "fromColumn": "CardProductID",
+        "toTable": "DimCardProducts",
+        "toColumn": "CardProductID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactCardTransactions",
+        "fromColumn": "TransactionDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactFraudAlerts",
+        "fromColumn": "CustomerID",
+        "toTable": "DimCustomers",
+        "toColumn": "CustomerID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactFraudAlerts",
+        "fromColumn": "AlertDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactCreditScores",
+        "fromColumn": "CustomerID",
+        "toTable": "DimCustomers",
+        "toColumn": "CustomerID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactCreditScores",
+        "fromColumn": "ScoreDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactComplianceChecks",
+        "fromColumn": "RiskCategoryID",
+        "toTable": "DimRiskCategories",
+        "toColumn": "RiskCategoryID",
+        "cardinality": "ManyToOne"
+      },
+      {
+        "fromTable": "FactComplianceChecks",
+        "fromColumn": "CheckDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactAMLAlerts",
+        "fromColumn": "CustomerID",
+        "toTable": "DimCustomers",
+        "toColumn": "CustomerID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactAMLAlerts",
+        "fromColumn": "AlertDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactCustomerInteractions",
+        "fromColumn": "CustomerID",
+        "toTable": "DimCustomers",
+        "toColumn": "CustomerID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactCustomerInteractions",
+        "fromColumn": "InteractionDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactDigitalBanking",
+        "fromColumn": "CustomerID",
+        "toTable": "DimCustomers",
+        "toColumn": "CustomerID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactDigitalBanking",
+        "fromColumn": "SessionDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactNetPromoterScore",
+        "fromColumn": "CustomerID",
+        "toTable": "DimCustomers",
+        "toColumn": "CustomerID",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      },
+      {
+        "fromTable": "FactNetPromoterScore",
+        "fromColumn": "SurveyDate",
+        "toTable": "DimDate",
+        "toColumn": "Date",
+        "cardinality": "ManyToOne",
+        "isActive": false
+      }
+    ],
+    "measures": [
+      {
+        "name": "Total Deposits",
+        "table": "FactAccountBalances",
+        "expression": "SUM(FactAccountBalances[Balance])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Avg Account Balance",
+        "table": "FactAccountBalances",
+        "expression": "AVERAGE(FactAccountBalances[Balance])",
+        "formatString": "$#,0.00",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Total Interest Accrued",
+        "table": "FactAccountBalances",
+        "expression": "SUM(FactAccountBalances[InterestAccrued])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Transaction Count",
+        "table": "FactTransactions",
+        "expression": "COUNTROWS(FactTransactions)",
+        "formatString": "#,0",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Total Transaction Volume",
+        "table": "FactTransactions",
+        "expression": "SUM(FactTransactions[Amount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Avg Transaction Amount",
+        "table": "FactTransactions",
+        "expression": "AVERAGE(FactTransactions[Amount])",
+        "formatString": "$#,0.00",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Digital Transaction %",
+        "table": "FactTransactions",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactTransactions), FactTransactions[Channel] IN {\"Online\", \"Mobile\"}), COUNTROWS(FactTransactions))",
+        "formatString": "0.0%",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Active Accounts",
+        "table": "DimAccounts",
+        "expression": "CALCULATE(COUNTROWS(DimAccounts), DimAccounts[Status] = \"Active\")",
+        "formatString": "#,0",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Customer Count",
+        "table": "DimCustomers",
+        "expression": "COUNTROWS(DimCustomers)",
+        "formatString": "#,0",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Avg Customer Tenure Years",
+        "table": "DimCustomers",
+        "expression": "AVERAGEX(DimCustomers, DATEDIFF(DimCustomers[JoinDate], TODAY(), YEAR))",
+        "formatString": "#,0.0",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Deposit Growth YoY",
+        "table": "FactAccountBalances",
+        "expression": "VAR _CY = SUM(FactAccountBalances[Balance]) VAR _PY = CALCULATE(SUM(FactAccountBalances[Balance]), DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)",
+        "formatString": "0.0%",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Checking Accounts",
+        "table": "DimAccounts",
+        "expression": "CALCULATE(COUNTROWS(DimAccounts), DimAccounts[AccountType] = \"Checking\")",
+        "formatString": "#,0",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Savings Accounts",
+        "table": "DimAccounts",
+        "expression": "CALCULATE(COUNTROWS(DimAccounts), DimAccounts[AccountType] = \"Savings\")",
+        "formatString": "#,0",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Avg Daily Balance",
+        "table": "FactAccountBalances",
+        "expression": "AVERAGE(FactAccountBalances[AvgDailyBalance])",
+        "formatString": "$#,0.00",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Branch Transaction Volume",
+        "table": "FactTransactions",
+        "expression": "CALCULATE(COUNTROWS(FactTransactions), FactTransactions[Channel] = \"Branch\")",
+        "formatString": "#,0",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Branch Count",
+        "table": "DimBranches",
+        "expression": "COUNTROWS(DimBranches)",
+        "formatString": "#,0",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Avg Branch Employees",
+        "table": "DimBranches",
+        "expression": "AVERAGE(DimBranches[EmployeeCount])",
+        "formatString": "#,0",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "ATM Branches %",
+        "table": "DimBranches",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(DimBranches), DimBranches[HasATM] = TRUE()), COUNTROWS(DimBranches))",
+        "formatString": "0.0%",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Cost to Income Ratio",
+        "table": "FactLoanPayments",
+        "expression": "DIVIDE(SUM(DimBranches[EmployeeCount]) * 75000, SUM(FactLoanPayments[InterestAmount]) + SUM(FactCardTransactions[Amount]) * 0.025)",
+        "formatString": "0.0%",
+        "displayFolder": "Retail Banking"
+      },
+      {
+        "name": "Total Loans Outstanding",
+        "table": "FactLoans",
+        "expression": "SUM(FactLoans[CurrentBalance])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Total Loan Originations",
+        "table": "FactLoans",
+        "expression": "SUM(FactLoans[OriginalAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Loan Count",
+        "table": "FactLoans",
+        "expression": "COUNTROWS(FactLoans)",
+        "formatString": "#,0",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Avg Loan Size",
+        "table": "FactLoans",
+        "expression": "AVERAGE(FactLoans[OriginalAmount])",
+        "formatString": "$#,0",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Weighted Avg Interest Rate",
+        "table": "FactLoans",
+        "expression": "DIVIDE(SUMX(FactLoans, FactLoans[CurrentBalance] * FactLoans[InterestRate]), SUM(FactLoans[CurrentBalance]))",
+        "formatString": "0.00%",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "NPL Ratio",
+        "table": "FactLoans",
+        "expression": "DIVIDE(CALCULATE(SUM(FactLoans[CurrentBalance]), FactLoans[LoanStatus] IN {\"Delinquent 90+\", \"Default\"}), SUM(FactLoans[CurrentBalance]))",
+        "formatString": "0.00%",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Delinquency Rate 30+",
+        "table": "FactLoans",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactLoans), FactLoans[LoanStatus] IN {\"Delinquent 30\", \"Delinquent 60\", \"Delinquent 90+\", \"Default\"}), COUNTROWS(FactLoans))",
+        "formatString": "0.0%",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Avg LTV",
+        "table": "FactLoans",
+        "expression": "AVERAGE(FactLoans[LTV])",
+        "formatString": "0.0%",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Avg DTI",
+        "table": "FactLoans",
+        "expression": "AVERAGE(FactLoans[DTI])",
+        "formatString": "0.0%",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Net Interest Income",
+        "table": "FactLoanPayments",
+        "expression": "SUM(FactLoanPayments[InterestAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Total Principal Collected",
+        "table": "FactLoanPayments",
+        "expression": "SUM(FactLoanPayments[PrincipalAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Payment On-Time Rate",
+        "table": "FactLoanPayments",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactLoanPayments), FactLoanPayments[PaymentStatus] = \"On Time\"), COUNTROWS(FactLoanPayments))",
+        "formatString": "0.0%",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Loan Origination YoY",
+        "table": "FactLoans",
+        "expression": "VAR _CY = SUM(FactLoans[OriginalAmount]) VAR _PY = CALCULATE(SUM(FactLoans[OriginalAmount]), DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)",
+        "formatString": "0.0%",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Mortgage Portfolio",
+        "table": "FactMortgages",
+        "expression": "SUM(FactMortgages[PropertyValue])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Avg Property Value",
+        "table": "FactMortgages",
+        "expression": "AVERAGE(FactMortgages[PropertyValue])",
+        "formatString": "$#,0",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Mortgage Count",
+        "table": "FactMortgages",
+        "expression": "COUNTROWS(FactMortgages)",
+        "formatString": "#,0",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Net Interest Margin",
+        "table": "FactLoanPayments",
+        "expression": "DIVIDE(SUM(FactLoanPayments[InterestAmount]) - SUM(FactAccountBalances[InterestAccrued]), SUM(FactLoans[CurrentBalance]))",
+        "formatString": "0.00%",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Loan to Deposit Ratio",
+        "table": "FactLoans",
+        "expression": "DIVIDE(SUM(FactLoans[CurrentBalance]), SUM(FactAccountBalances[Balance]))",
+        "formatString": "0.0%",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Total Escrow Balance",
+        "table": "FactMortgages",
+        "expression": "SUM(FactMortgages[EscrowBalance])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Provision for Loan Losses",
+        "table": "FactLoans",
+        "expression": "SUMX(FactLoans, FactLoans[CurrentBalance] * SWITCH(FactLoans[LoanStatus], \"Current\", 0.005, \"Delinquent 30\", 0.02, \"Delinquent 60\", 0.05, \"Delinquent 90+\", 0.15, \"Default\", 0.50, 0.005))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Lending"
+      },
+      {
+        "name": "Total Card Spend",
+        "table": "FactCardTransactions",
+        "expression": "SUM(FactCardTransactions[Amount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cards"
+      },
+      {
+        "name": "Card Transaction Count",
+        "table": "FactCardTransactions",
+        "expression": "COUNTROWS(FactCardTransactions)",
+        "formatString": "#,0",
+        "displayFolder": "Cards"
+      },
+      {
+        "name": "Avg Card Transaction",
+        "table": "FactCardTransactions",
+        "expression": "AVERAGE(FactCardTransactions[Amount])",
+        "formatString": "$#,0.00",
+        "displayFolder": "Cards"
+      },
+      {
+        "name": "Total Rewards Earned",
+        "table": "FactCardTransactions",
+        "expression": "SUM(FactCardTransactions[RewardsEarned])",
+        "formatString": "$#,0",
+        "displayFolder": "Cards"
+      },
+      {
+        "name": "International Transaction %",
+        "table": "FactCardTransactions",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactCardTransactions), FactCardTransactions[IsInternational] = TRUE()), COUNTROWS(FactCardTransactions))",
+        "formatString": "0.0%",
+        "displayFolder": "Cards"
+      },
+      {
+        "name": "Card Approval Rate",
+        "table": "FactCardTransactions",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactCardTransactions), FactCardTransactions[AuthorizationStatus] = \"Approved\"), COUNTROWS(FactCardTransactions))",
+        "formatString": "0.0%",
+        "displayFolder": "Cards"
+      },
+      {
+        "name": "Fraud Alert Count",
+        "table": "FactFraudAlerts",
+        "expression": "COUNTROWS(FactFraudAlerts)",
+        "formatString": "#,0",
+        "displayFolder": "Cards"
+      },
+      {
+        "name": "Fraud Rate",
+        "table": "FactFraudAlerts",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactFraudAlerts), FactFraudAlerts[Resolution] = \"Confirmed Fraud\"), COUNTROWS(FactCardTransactions))",
+        "formatString": "0.000%",
+        "displayFolder": "Cards"
+      },
+      {
+        "name": "Avg Fraud Risk Score",
+        "table": "FactFraudAlerts",
+        "expression": "AVERAGE(FactFraudAlerts[RiskScore])",
+        "formatString": "0.00",
+        "displayFolder": "Cards"
+      },
+      {
+        "name": "Fraud Loss Amount",
+        "table": "FactFraudAlerts",
+        "expression": "CALCULATE(SUM(FactFraudAlerts[Amount]), FactFraudAlerts[Resolution] = \"Confirmed Fraud\")",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cards"
+      },
+      {
+        "name": "Card Spend YoY",
+        "table": "FactCardTransactions",
+        "expression": "VAR _CY = SUM(FactCardTransactions[Amount]) VAR _PY = CALCULATE(SUM(FactCardTransactions[Amount]), DATEADD(DimDate[Date], -1, YEAR)) RETURN DIVIDE(_CY - _PY, _PY)",
+        "formatString": "0.0%",
+        "displayFolder": "Cards"
+      },
+      {
+        "name": "False Positive Rate",
+        "table": "FactFraudAlerts",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactFraudAlerts), FactFraudAlerts[Resolution] = \"False Positive\"), COUNTROWS(FactFraudAlerts))",
+        "formatString": "0.0%",
+        "displayFolder": "Cards"
+      },
+      {
+        "name": "Spend by Category",
+        "table": "FactCardTransactions",
+        "expression": "SUM(FactCardTransactions[Amount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Cards"
+      },
+      {
+        "name": "Avg Credit Score",
+        "table": "FactCreditScores",
+        "expression": "AVERAGE(FactCreditScores[CreditScore])",
+        "formatString": "#,0",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "Credit Score Distribution",
+        "table": "FactCreditScores",
+        "expression": "MEDIAN(FactCreditScores[CreditScore])",
+        "formatString": "#,0",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "Avg Probability of Default",
+        "table": "FactCreditScores",
+        "expression": "AVERAGE(FactCreditScores[ProbabilityOfDefault])",
+        "formatString": "0.00%",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "High Risk Customers",
+        "table": "FactCreditScores",
+        "expression": "CALCULATE(DISTINCTCOUNT(FactCreditScores[CustomerID]), FactCreditScores[RiskBand] IN {\"Subprime\", \"Deep Subprime\"})",
+        "formatString": "#,0",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "Compliance Pass Rate",
+        "table": "FactComplianceChecks",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactComplianceChecks), FactComplianceChecks[Result] = \"Pass\"), COUNTROWS(FactComplianceChecks))",
+        "formatString": "0.0%",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "Total Compliance Checks",
+        "table": "FactComplianceChecks",
+        "expression": "COUNTROWS(FactComplianceChecks)",
+        "formatString": "#,0",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "Avg Remediation Days",
+        "table": "FactComplianceChecks",
+        "expression": "AVERAGE(FactComplianceChecks[RemediationDays])",
+        "formatString": "#,0",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "Total Findings",
+        "table": "FactComplianceChecks",
+        "expression": "SUM(FactComplianceChecks[FindingsCount])",
+        "formatString": "#,0",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "AML Alert Count",
+        "table": "FactAMLAlerts",
+        "expression": "COUNTROWS(FactAMLAlerts)",
+        "formatString": "#,0",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "SAR Filing Rate",
+        "table": "FactAMLAlerts",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactAMLAlerts), FactAMLAlerts[Disposition] = \"SAR Filed\"), COUNTROWS(FactAMLAlerts))",
+        "formatString": "0.0%",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "AML Suspicious Amount",
+        "table": "FactAMLAlerts",
+        "expression": "SUM(FactAMLAlerts[TransactionAmount])",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "Risk Weighted Assets",
+        "table": "FactLoans",
+        "expression": "SUMX(FactLoans, FactLoans[CurrentBalance] * SWITCH(FactLoans[LoanStatus], \"Current\", 0.5, \"Delinquent 30\", 0.75, \"Delinquent 60\", 1.0, \"Delinquent 90+\", 1.5, \"Default\", 2.0, 0.5))",
+        "formatString": "$#,0;($#,0)",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "Capital Adequacy Ratio",
+        "table": "FactLoans",
+        "expression": "DIVIDE(SUM(FactAccountBalances[Balance]) * 0.08, SUMX(FactLoans, FactLoans[CurrentBalance] * 0.5))",
+        "formatString": "0.0%",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "Credit Score Improvement",
+        "table": "FactCreditScores",
+        "expression": "AVERAGE(FactCreditScores[ScoreChange])",
+        "formatString": "#,0",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "Prime Customers %",
+        "table": "FactCreditScores",
+        "expression": "DIVIDE(CALCULATE(DISTINCTCOUNT(FactCreditScores[CustomerID]), FactCreditScores[RiskBand] IN {\"Prime\", \"Super Prime\"}), DISTINCTCOUNT(FactCreditScores[CustomerID]))",
+        "formatString": "0.0%",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "Escalated AML Cases",
+        "table": "FactAMLAlerts",
+        "expression": "CALCULATE(COUNTROWS(FactAMLAlerts), FactAMLAlerts[Disposition] = \"Escalated to FinCEN\")",
+        "formatString": "#,0",
+        "displayFolder": "Risk & Compliance"
+      },
+      {
+        "name": "NPS Score",
+        "table": "FactNetPromoterScore",
+        "expression": "VAR _Promoters = CALCULATE(COUNTROWS(FactNetPromoterScore), FactNetPromoterScore[NPSScore] >= 9) VAR _Detractors = CALCULATE(COUNTROWS(FactNetPromoterScore), FactNetPromoterScore[NPSScore] <= 6) VAR _Total = COUNTROWS(FactNetPromoterScore) RETURN DIVIDE(_Promoters - _Detractors, _Total) * 100",
+        "formatString": "#,0",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Avg Satisfaction Score",
+        "table": "FactCustomerInteractions",
+        "expression": "AVERAGE(FactCustomerInteractions[SatisfactionScore])",
+        "formatString": "0.0",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Total Interactions",
+        "table": "FactCustomerInteractions",
+        "expression": "COUNTROWS(FactCustomerInteractions)",
+        "formatString": "#,0",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Avg Resolution Time (min)",
+        "table": "FactCustomerInteractions",
+        "expression": "AVERAGE(FactCustomerInteractions[ResolutionMinutes])",
+        "formatString": "#,0",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "First Call Resolution %",
+        "table": "FactCustomerInteractions",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactCustomerInteractions), FactCustomerInteractions[IsResolved] = TRUE()), COUNTROWS(FactCustomerInteractions))",
+        "formatString": "0.0%",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Complaint Count",
+        "table": "FactCustomerInteractions",
+        "expression": "CALCULATE(COUNTROWS(FactCustomerInteractions), FactCustomerInteractions[InteractionType] = \"Complaint\")",
+        "formatString": "#,0",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Digital Adoption Rate",
+        "table": "DimCustomers",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(DimCustomers), DimCustomers[IsDigitalUser] = TRUE()), COUNTROWS(DimCustomers))",
+        "formatString": "0.0%",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Digital Sessions",
+        "table": "FactDigitalBanking",
+        "expression": "COUNTROWS(FactDigitalBanking)",
+        "formatString": "#,0",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Avg Session Duration (sec)",
+        "table": "FactDigitalBanking",
+        "expression": "AVERAGE(FactDigitalBanking[SessionDurationSec])",
+        "formatString": "#,0",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Mobile Adoption %",
+        "table": "FactDigitalBanking",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactDigitalBanking), FactDigitalBanking[Platform] IN {\"iOS\", \"Android\"}), COUNTROWS(FactDigitalBanking))",
+        "formatString": "0.0%",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Digital Completion Rate",
+        "table": "FactDigitalBanking",
+        "expression": "DIVIDE(CALCULATE(COUNTROWS(FactDigitalBanking), FactDigitalBanking[TransactionCompleted] = TRUE()), COUNTROWS(FactDigitalBanking))",
+        "formatString": "0.0%",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Promoter Count",
+        "table": "FactNetPromoterScore",
+        "expression": "CALCULATE(COUNTROWS(FactNetPromoterScore), FactNetPromoterScore[NPSScore] >= 9)",
+        "formatString": "#,0",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Detractor Count",
+        "table": "FactNetPromoterScore",
+        "expression": "CALCULATE(COUNTROWS(FactNetPromoterScore), FactNetPromoterScore[NPSScore] <= 6)",
+        "formatString": "#,0",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Revenue per Customer",
+        "table": "FactLoanPayments",
+        "expression": "DIVIDE(SUM(FactLoanPayments[InterestAmount]) + SUM(FactCardTransactions[Amount]) * 0.025, COUNTROWS(DimCustomers))",
+        "formatString": "$#,0.00",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Products per Customer",
+        "table": "DimAccounts",
+        "expression": "DIVIDE(COUNTROWS(DimAccounts), COUNTROWS(DimCustomers))",
+        "formatString": "0.0",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Affluent Customer Count",
+        "table": "DimCustomers",
+        "expression": "CALCULATE(COUNTROWS(DimCustomers), DimCustomers[Segment] IN {\"Affluent\", \"High Net Worth\"})",
+        "formatString": "#,0",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Small Business Customers",
+        "table": "DimCustomers",
+        "expression": "CALCULATE(COUNTROWS(DimCustomers), DimCustomers[CustomerType] = \"Small Business\")",
+        "formatString": "#,0",
+        "displayFolder": "Customer 360"
+      },
+      {
+        "name": "Avg Pages Per Session",
+        "table": "FactDigitalBanking",
+        "expression": "AVERAGE(FactDigitalBanking[PagesViewed])",
+        "formatString": "0.0",
+        "displayFolder": "Customer 360"
+      }
+    ]
+  }
+}

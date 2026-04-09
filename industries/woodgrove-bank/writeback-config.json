@@ -1,0 +1,195 @@
+{
+  "schemaVersion": "1.0",
+  "writebackConfig": {
+    "enabled": true,
+    "targetLakehouse": "GoldLH",
+    "schema": "writeback",
+    "tables": [
+      {
+        "name": "BudgetAdjustments",
+        "description": "User-submitted budget adjustments from Power BI report",
+        "columns": [
+          {
+            "name": "AdjustmentId",
+            "dataType": "STRING",
+            "isKey": true
+          },
+          {
+            "name": "FiscalYear",
+            "dataType": "INT"
+          },
+          {
+            "name": "FiscalQuarter",
+            "dataType": "INT"
+          },
+          {
+            "name": "Department",
+            "dataType": "STRING"
+          },
+          {
+            "name": "AdjustmentAmount",
+            "dataType": "DECIMAL(18,2)"
+          },
+          {
+            "name": "Justification",
+            "dataType": "STRING"
+          },
+          {
+            "name": "Status",
+            "dataType": "STRING",
+            "default": "Pending"
+          },
+          {
+            "name": "SubmittedBy",
+            "dataType": "STRING"
+          },
+          {
+            "name": "SubmittedDate",
+            "dataType": "TIMESTAMP"
+          },
+          {
+            "name": "ApprovedBy",
+            "dataType": "STRING"
+          },
+          {
+            "name": "ApprovedDate",
+            "dataType": "TIMESTAMP"
+          }
+        ],
+        "partitionBy": [
+          "FiscalYear"
+        ]
+      },
+      {
+        "name": "InterestRateOverrides",
+        "description": "Manual interest rate overrides for loan products",
+        "columns": [
+          {
+            "name": "OverrideId",
+            "dataType": "STRING",
+            "isKey": true
+          },
+          {
+            "name": "ProductName",
+            "dataType": "STRING"
+          },
+          {
+            "name": "LoanCategory",
+            "dataType": "STRING"
+          },
+          {
+            "name": "OriginalRate",
+            "dataType": "DECIMAL(5,2)"
+          },
+          {
+            "name": "OverrideRate",
+            "dataType": "DECIMAL(5,2)"
+          },
+          {
+            "name": "EffectiveDate",
+            "dataType": "TIMESTAMP"
+          },
+          {
+            "name": "ExpirationDate",
+            "dataType": "TIMESTAMP"
+          },
+          {
+            "name": "Reason",
+            "dataType": "STRING"
+          },
+          {
+            "name": "ApprovedBy",
+            "dataType": "STRING"
+          },
+          {
+            "name": "ApprovedDate",
+            "dataType": "TIMESTAMP"
+          }
+        ],
+        "partitionBy": [
+          "LoanCategory"
+        ]
+      },
+      {
+        "name": "CampaignTargets",
+        "description": "Marketing campaign targets and budgets",
+        "columns": [
+          {
+            "name": "CampaignId",
+            "dataType": "STRING",
+            "isKey": true
+          },
+          {
+            "name": "CampaignName",
+            "dataType": "STRING"
+          },
+          {
+            "name": "TargetSegment",
+            "dataType": "STRING"
+          },
+          {
+            "name": "ProductCategory",
+            "dataType": "STRING"
+          },
+          {
+            "name": "Budget",
+            "dataType": "DECIMAL(18,2)"
+          },
+          {
+            "name": "TargetAccounts",
+            "dataType": "INT"
+          },
+          {
+            "name": "StartDate",
+            "dataType": "TIMESTAMP"
+          },
+          {
+            "name": "EndDate",
+            "dataType": "TIMESTAMP"
+          },
+          {
+            "name": "Channel",
+            "dataType": "STRING"
+          },
+          {
+            "name": "ModifiedBy",
+            "dataType": "STRING"
+          },
+          {
+            "name": "ModifiedDate",
+            "dataType": "TIMESTAMP"
+          }
+        ],
+        "partitionBy": [
+          "ProductCategory"
+        ]
+      }
+    ],
+    "storedProcedures": [
+      {
+        "name": "usp_UpsertBudgetAdjustment",
+        "table": "BudgetAdjustments",
+        "operation": "upsert",
+        "keyColumns": [
+          "AdjustmentId"
+        ]
+      },
+      {
+        "name": "usp_UpsertInterestRateOverride",
+        "table": "InterestRateOverrides",
+        "operation": "upsert",
+        "keyColumns": [
+          "OverrideId"
+        ]
+      },
+      {
+        "name": "usp_UpsertCampaignTarget",
+        "table": "CampaignTargets",
+        "operation": "upsert",
+        "keyColumns": [
+          "CampaignId"
+        ]
+      }
+    ]
+  }
+}

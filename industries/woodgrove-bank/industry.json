@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0",
+  "industry": {
+    "id": "woodgrove-bank",
+    "name": "WoodgroveBank",
+    "displayName": "Woodgrove Bank",
+    "description": "Mid-size retail bank with 120 branches across 8 states, serving 850K retail customers and 12K small business clients. Products include checking, savings, mortgage, auto loan, credit card, and wealth management.",
+    "domains": [
+      "RetailBanking",
+      "Lending",
+      "Cards",
+      "RiskCompliance",
+      "Customer360"
+    ],
+    "dataYears": [
+      "FY2024",
+      "FY2025",
+      "FY2026"
+    ],
+    "dateRange": {
+      "start": "2023-01-01",
+      "end": "2027-12-31"
+    },
+    "fiscalYearStartMonth": 1,
+    "theme": {
+      "primary": "#003087",
+      "secondary": "#FFB819",
+      "background": "#0A1628",
+      "foreground": "#FFFFFF",
+      "accent1": "#2E7D32",
+      "accent2": "#C62828"
+    }
+  },
+  "fabricArtifacts": {
+    "workspacePrefix": "WoodgroveBank",
+    "cloud": {
+      "fabricApiBase": "https://api.fabric.microsoft.com/v1",
+      "oneLakeDfsBase": "https://onelake.dfs.fabric.microsoft.com"
+    },
+    "lakehouses": {
+      "bronze": "BronzeLH",
+      "silver": "SilverLH",
+      "gold": "GoldLH"
+    },
+    "schemas": {
+      "silver": [
+        "retail_banking",
+        "lending",
+        "cards",
+        "risk_compliance",
+        "customer360",
+        "web"
+      ],
+      "gold": [
+        "dim",
+        "fact",
+        "analytics",
+        "planning"
+      ]
+    },
+    "notebooks": 6,
+    "dataflows": 5,
+    "reports": 3,
+    "pipelines": 1
+  }
+}

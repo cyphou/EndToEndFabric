@@ -1,4 +1,5 @@
 {
+  "schemaVersion": "1.0",
   "eventhouse": {
     "name": "FabrikamManufacturingEventhouse",
     "kqlDatabase": "FabrikamManufacturingRealtime",
@@ -10,13 +11,34 @@
       "description": "Real-time PLC/MES output from production lines — cycle times, unit counts, scrap per part",
       "eventsPerSecond": 50,
       "schema": [
-        {"name": "LineID", "type": "int"},
-        {"name": "Timestamp", "type": "datetime"},
-        {"name": "ProductID", "type": "int"},
-        {"name": "CycleTimeSeconds", "type": "real"},
-        {"name": "GoodUnit", "type": "bool"},
-        {"name": "DefectCode", "type": "string"},
-        {"name": "OperatorID", "type": "string"}
+        {
+          "name": "LineID",
+          "type": "int"
+        },
+        {
+          "name": "Timestamp",
+          "type": "datetime"
+        },
+        {
+          "name": "ProductID",
+          "type": "int"
+        },
+        {
+          "name": "CycleTimeSeconds",
+          "type": "real"
+        },
+        {
+          "name": "GoodUnit",
+          "type": "bool"
+        },
+        {
+          "name": "DefectCode",
+          "type": "string"
+        },
+        {
+          "name": "OperatorID",
+          "type": "string"
+        }
       ],
       "kqlTable": "ProductionLineEvents",
       "kqlAggregations": [
@@ -29,14 +51,38 @@
       "description": "Inline SPC measurement results from inspection stations",
       "eventsPerSecond": 20,
       "schema": [
-        {"name": "InspectionPointID", "type": "int"},
-        {"name": "Timestamp", "type": "datetime"},
-        {"name": "ProductID", "type": "int"},
-        {"name": "MeasuredValue", "type": "real"},
-        {"name": "UpperSpec", "type": "real"},
-        {"name": "LowerSpec", "type": "real"},
-        {"name": "Result", "type": "string"},
-        {"name": "SerialNumber", "type": "string"}
+        {
+          "name": "InspectionPointID",
+          "type": "int"
+        },
+        {
+          "name": "Timestamp",
+          "type": "datetime"
+        },
+        {
+          "name": "ProductID",
+          "type": "int"
+        },
+        {
+          "name": "MeasuredValue",
+          "type": "real"
+        },
+        {
+          "name": "UpperSpec",
+          "type": "real"
+        },
+        {
+          "name": "LowerSpec",
+          "type": "real"
+        },
+        {
+          "name": "Result",
+          "type": "string"
+        },
+        {
+          "name": "SerialNumber",
+          "type": "string"
+        }
       ],
       "kqlTable": "QualityInspectionEvents",
       "kqlAggregations": [
@@ -49,12 +95,30 @@
       "description": "IoT vibration, temperature, and power sensors on critical equipment",
       "eventsPerSecond": 100,
       "schema": [
-        {"name": "EquipmentID", "type": "int"},
-        {"name": "Timestamp", "type": "datetime"},
-        {"name": "SensorType", "type": "string"},
-        {"name": "Value", "type": "real"},
-        {"name": "Unit", "type": "string"},
-        {"name": "IsAlarm", "type": "bool"}
+        {
+          "name": "EquipmentID",
+          "type": "int"
+        },
+        {
+          "name": "Timestamp",
+          "type": "datetime"
+        },
+        {
+          "name": "SensorType",
+          "type": "string"
+        },
+        {
+          "name": "Value",
+          "type": "real"
+        },
+        {
+          "name": "Unit",
+          "type": "string"
+        },
+        {
+          "name": "IsAlarm",
+          "type": "bool"
+        }
       ],
       "kqlTable": "EquipmentSensorEvents",
       "kqlAggregations": [
@@ -67,12 +131,30 @@
       "description": "Barcode scan events for material issues from warehouse to production",
       "eventsPerSecond": 5,
       "schema": [
-        {"name": "MaterialID", "type": "int"},
-        {"name": "Timestamp", "type": "datetime"},
-        {"name": "WarehouseID", "type": "int"},
-        {"name": "LineID", "type": "int"},
-        {"name": "QuantityIssued", "type": "real"},
-        {"name": "BatchNumber", "type": "string"}
+        {
+          "name": "MaterialID",
+          "type": "int"
+        },
+        {
+          "name": "Timestamp",
+          "type": "datetime"
+        },
+        {
+          "name": "WarehouseID",
+          "type": "int"
+        },
+        {
+          "name": "LineID",
+          "type": "int"
+        },
+        {
+          "name": "QuantityIssued",
+          "type": "real"
+        },
+        {
+          "name": "BatchNumber",
+          "type": "string"
+        }
       ],
       "kqlTable": "MaterialConsumptionEvents",
       "kqlAggregations": [
