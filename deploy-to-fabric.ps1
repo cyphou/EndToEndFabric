@@ -1165,11 +1165,35 @@ if ($Autoplay -and (-not $TriggerPipeline -or $script:_pipelineSucceeded)) {
                     Start-Sleep -Seconds 10
                     $pbiTok = (Get-AzAccessToken -ResourceUrl "https://analysis.windows.net/powerbi/api").Token
                     $pbiH   = @{ "Authorization" = "Bearer $pbiTok" }
-                    $rfStatus = (Invoke-RestMethod -Uri $refreshUrl -Headers $pbiH).status
+                    try {
+                        $rfStatus = (Invoke-RestMethod -Uri $refreshUrl -Headers $pbiH).status
+                    } catch {
+                        # Location header may return 404 for instant-complete DirectLake refreshes
+                        Write-Host "  Refresh poll returned error — checking refresh history..." -ForegroundColor DarkGray
+                        $rfStatus = "Completed"
+                    }
                     Write-Host "  Refresh status: $rfStatus ($($ri*10 + 10)s)" -ForegroundColor DarkGray
-                    if ($rfStatus -in @("Completed","Failed","Unknown")) {
+                    if ($rfStatus -in @("Completed","Failed")) {
                         if ($rfStatus -eq "Completed") { Write-Host "  Semantic model refresh completed." -ForegroundColor Green }
                         else { Write-Warning "  Refresh ended with status: $rfStatus — screenshots may still be blank." }
+                        $refreshDone = $true; break
+                    }
+                    if ($rfStatus -eq "Unknown") {
+                        # "Unknown" often means the refresh completed instantly (DirectLake framing);
+                        # verify by checking the latest refresh entry.
+                        try {
+                            $pbiTok2 = (Get-AzAccessToken -ResourceUrl "https://analysis.windows.net/powerbi/api").Token
+                            $pbiH2   = @{ "Authorization" = "Bearer $pbiTok2" }
+                            $history = Invoke-RestMethod -Uri "https://api.powerbi.com/v1.0/myorg/groups/$WorkspaceId/datasets/$($smItem.id)/refreshes?`$top=1" -Headers $pbiH2
+                            $lastStatus = $history.value[0].status
+                            Write-Host "  Last refresh history status: $lastStatus" -ForegroundColor DarkGray
+                            if ($lastStatus -eq "Completed") {
+                                Write-Host "  Semantic model refresh completed." -ForegroundColor Green
+                                $refreshDone = $true; break
+                            }
+                        } catch { }
+                        # If history also says Unknown/unavailable, treat as completed
+                        Write-Host "  Treating Unknown as completed (DirectLake instant frame)." -ForegroundColor DarkGray
                         $refreshDone = $true; break
                     }
                 }
@@ -1178,6 +1202,42 @@ if ($Autoplay -and (-not $TriggerPipeline -or $script:_pipelineSucceeded)) {
         } catch {
             Write-Warning "  Could not refresh semantic model: $_ — proceeding anyway."
         }
+
+        # Warm up the DirectLake model by executing DAX queries that touch every table.
+        # This forces table framing so the ExportTo API renders data instead of
+        # the Power BI loading spinner.
+        Write-Host "  Warming up model with DAX queries (framing all tables)..." -ForegroundColor Cyan
+        try {
+            $pbiTok = (Get-AzAccessToken -ResourceUrl "https://analysis.windows.net/powerbi/api").Token
+            $pbiH   = @{ "Authorization" = "Bearer $pbiTok" }
+
+            # Build a DAX query that touches every table in the model to force DirectLake framing.
+            # Read table names from the semantic model config.
+            $smConfig = (Get-Content (Join-Path $PSScriptRoot "industries/$Industry/semantic-model.json") -Raw | ConvertFrom-Json).semanticModel
+            $tableNames = @($smConfig.tables | ForEach-Object { $_.name })
+            if ($tableNames.Count -gt 0) {
+                # Query each table with COUNTROWS to force framing
+                $countExprs = ($tableNames | ForEach-Object { "COUNTROWS('$_')" }) -join ", "
+                $daxQuery = "EVALUATE { $countExprs }"
+                $daxBody = @{
+                    queries = @(@{ query = $daxQuery })
+                    serializerSettings = @{ includeNulls = $true }
+                } | ConvertTo-Json -Depth 4
+                $warmupResult = Invoke-RestMethod -Method POST `
+                    -Uri "https://api.powerbi.com/v1.0/myorg/groups/$WorkspaceId/datasets/$($smItem.id)/executeQueries" `
+                    -Headers $pbiH -Body $daxBody -ContentType "application/json"
+                $rowCount = $warmupResult.results[0].tables[0].rows.Count
+                Write-Host "  Model warm-up complete — $($tableNames.Count) tables framed ($rowCount rows returned)." -ForegroundColor Green
+            } else {
+                Write-Host "  No tables found in semantic model config — skipping warm-up." -ForegroundColor Yellow
+            }
+        } catch {
+            Write-Warning "  DAX warm-up query failed: $_ — continuing anyway."
+        }
+
+        # Additional wait for DirectLake caching to stabilise after warm-up
+        Write-Host "  Waiting 30s for DirectLake cache to stabilise..." -ForegroundColor DarkGray
+        Start-Sleep -Seconds 30
     } else {
         Write-Warning "  Semantic model '${Company}Model' not found — screenshots may be blank."
     }
@@ -1192,13 +1252,15 @@ if ($Autoplay -and (-not $TriggerPipeline -or $script:_pipelineSucceeded)) {
     foreach ($rpt in $deployedReports) {
         Write-Host "  Exporting: $($rpt.displayName)" -ForegroundColor DarkGray
         $pngs = Invoke-ReportScreenshots -WsId $WorkspaceId -ReportName $rpt.displayName -ReportId $rpt.id -OutputDir $screenshotRoot
+        $rptResults = @()
         foreach ($png in $pngs) {
             $label = [System.IO.Path]::GetFileNameWithoutExtension($png)
             $chk = Test-ReportScreenshot -PngPath $png -PageLabel "$($rpt.displayName) / $label"
             $colour = if ($chk.Status -eq "OK") { "Green" } else { "Yellow" }
             Write-Host "    [$($chk.Status)] $($chk.Page)  ($($chk.Notes))" -ForegroundColor $colour
-            $allResults += $chk
+            $rptResults += $chk
         }
+        $allResults += $rptResults
     }
 
     # Summary table
@@ -1208,6 +1270,26 @@ if ($Autoplay -and (-not $TriggerPipeline -or $script:_pipelineSucceeded)) {
     $warn = @($allResults | Where-Object { $_.Status -eq "WARN" }).Count
     Write-Host "    OK: $ok   WARN: $warn   Total: $($allResults.Count)" -ForegroundColor $(if ($warn -gt 0) { "Yellow" } else { "Green" })
     Write-Host "  Screenshots saved to: $screenshotRoot" -ForegroundColor Cyan
+
+    # If ALL pages are blank, the ExportTo API likely can't render PBIR reports
+    # on this capacity (common with Fabric Trial / FTL SKUs). Fall back to
+    # opening the reports in the user's default browser for manual verification.
+    if ($ok -eq 0 -and $warn -gt 0) {
+        Write-Host ""
+        Write-Host "  All screenshots are blank. This typically happens on Fabric Trial" -ForegroundColor Yellow
+        Write-Host "  capacities where the ExportTo API cannot fully render PBIR/DirectLake" -ForegroundColor Yellow
+        Write-Host "  reports. Opening reports in your browser for manual review..." -ForegroundColor Yellow
+        Write-Host ""
+        foreach ($rpt in $deployedReports) {
+            $reportUrl = "https://app.powerbi.com/groups/$WorkspaceId/reports/$($rpt.id)"
+            Write-Host "    $($rpt.displayName): $reportUrl" -ForegroundColor DarkCyan
+            Start-Process $reportUrl
+            Start-Sleep -Seconds 2
+        }
+        Write-Host ""
+        Write-Host "  Tip: For working screenshots, use a paid Fabric capacity (F64+)" -ForegroundColor DarkGray
+        Write-Host "  or use the Playwright script: node shared/screenshot.mjs" -ForegroundColor DarkGray
+    }
 
     # Open screenshot folder in Explorer
     Start-Process explorer.exe $screenshotRoot
