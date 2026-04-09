@@ -20,7 +20,9 @@ No external Python packages are required for core generation.
 
 ```
 FabricEndtoEnd/
-├── generate.py              # CLI entry point (12-step pipeline)
+├── generate.py              # CLI entry point (15-step pipeline)
+├── generate.ps1             # PowerShell wrapper
+├── deploy-to-fabric.ps1     # One-command Fabric deployment + Autoplay screenshots
 ├── core/                    # Generator modules (one per pipeline step)
 ├── industries/              # Per-industry JSON configs (10 files each)
 ├── templates/               # .tpl template files (deploy, kql, notebooks, reports, tmdl)
@@ -44,7 +46,7 @@ cd FabricEndtoEnd
 python -m pytest tests/ -v
 ```
 
-All 250 tests should pass before making changes.
+All 303 tests should pass before making changes.
 
 ### 2. Make changes
 
@@ -94,7 +96,7 @@ python generate.py -i fabrikam-manufacturing
 | `data-agent.json` | Fabric AI Agent configuration and instructions |
 
 3. Validate configs match the JSON schemas in `core/schemas/`
-4. Run `python generate.py -i <new-id>` to verify all 12 steps succeed
+4. Run `python generate.py -i <new-id>` to verify all 15 steps succeed
 5. Add tests if introducing new column types or visual types
 6. Include `writeback-config.json` and `data-agent.json` for full feature coverage
 

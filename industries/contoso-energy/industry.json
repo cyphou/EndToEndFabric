@@ -6,6 +6,8 @@
     "description": "Regional energy provider with renewables, grid operations, customer billing, sustainability tracking, and field operations.",
     "domains": ["Generation", "GridOperations", "CustomerBilling", "Sustainability", "FieldOps"],
     "dataYears": ["FY2024", "FY2025", "FY2026"],
+    "dateRange": { "start": "2023-01-01", "end": "2027-12-31" },
+    "fiscalYearStartMonth": 7,
     "theme": {
       "primary": "#2E7D32",
       "secondary": "#FF6F00",
@@ -17,6 +19,10 @@
   },
   "fabricArtifacts": {
     "workspacePrefix": "ContosoEnergy",
+    "cloud": {
+      "fabricApiBase": "https://api.fabric.microsoft.com/v1",
+      "oneLakeDfsBase": "https://onelake.dfs.fabric.microsoft.com"
+    },
     "lakehouses": {
       "bronze": "BronzeLH",
       "silver": "SilverLH",

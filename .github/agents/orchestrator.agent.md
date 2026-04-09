@@ -2,7 +2,7 @@
 name: "Orchestrator"
 description: "Use when: coordinating the generation pipeline, parsing CLI flags, loading configs, invoking other agents in sequence. Owns: generate.py, generate.ps1, top-level configs."
 tools: [read, edit, search, execute, todo, agent]
-agents: [DataEngineer, SemanticModel, ReportBuilder, Forecaster, HTAPEngineer, Deployer, Tester, IndustryDesigner]
+agents: [DataEngineer, SemanticModel, ReportBuilder, Forecaster, HTAPEngineer, Deployer, Tester, IndustryDesigner, Validator]
 user-invocable: true
 ---
 
@@ -20,6 +20,10 @@ user-invocable: true
 - `generate.ps1` — PowerShell wrapper
 - `core/config_loader.py`
 - `core/template_engine.py`
+- `core/pipeline_generator.py`
+- `core/agent_generator.py`
+- `core/schemas/*.json`
+- `pyproject.toml`
 
 ## Does NOT Own
 - ❌ CSV data generation (→ @data-engineer)

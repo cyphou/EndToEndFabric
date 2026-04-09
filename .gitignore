@@ -27,6 +27,15 @@ coverage.xml
 # Generated output
 output/
 
+# Node
+node_modules/
+package-lock.json
+package.json
+
+# Temp scripts
+export-test.ps1
+screenshot.mjs
+
 # OS
 Thumbs.db
 .DS_Store

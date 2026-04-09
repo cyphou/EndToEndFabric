@@ -13,15 +13,28 @@ from pathlib import Path
 
 def generate_deploy_scripts(industry_config: dict,
                             sample_data_config: dict | None,
-                            output_dir: Path) -> list[Path]:
+                            output_dir: Path,
+                            reports_config: dict | None = None) -> list[Path]:
     """Generate PowerShell deployment scripts for the industry demo."""
     industry = industry_config["industry"]
     company = industry["name"].replace(" ", "")
     artifacts = industry_config.get("fabricArtifacts", {})
+    cloud = artifacts.get("cloud", {})
     lakehouses = artifacts.get("lakehouses", {})
     bronze_lh = lakehouses.get("bronze", "BronzeLH")
     silver_lh = lakehouses.get("silver", "SilverLH")
     gold_lh = lakehouses.get("gold", "GoldLH")
+
+    # Resolve report names from reports.json config (not guessed from convention)
+    report_names = []
+    if reports_config:
+        for r in reports_config.get("reports", []):
+            rn = r.get("name")
+            if rn:
+                report_names.append(rn)
+    if not report_names:
+        # Fallback to convention-based names
+        report_names = [f"{company}-Analytics", f"{company}-Forecasting", f"{company}-HTAP"]
 
     domains = []
     tables_by_domain = {}
@@ -35,14 +48,14 @@ def generate_deploy_scripts(industry_config: dict,
     created = []
 
     # ── Shared Module ──
-    psm1 = _generate_shared_module(company, bronze_lh, silver_lh, gold_lh, domains)
+    psm1 = _generate_shared_module(company, bronze_lh, silver_lh, gold_lh, domains, cloud)
     psm1_path = deploy_dir / f"{company}.psm1"
     psm1_path.write_text(psm1, encoding="utf-8")
     created.append(psm1_path)
 
     # ── Deploy-Full.ps1 ──
     full = _generate_deploy_full(company, bronze_lh, silver_lh, gold_lh,
-                                 domains, tables_by_domain)
+                                 domains, tables_by_domain, report_names, cloud)
     full_path = deploy_dir / "Deploy-Full.ps1"
     full_path.write_text(full, encoding="utf-8")
     created.append(full_path)
@@ -55,7 +68,7 @@ def generate_deploy_scripts(industry_config: dict,
 
     # ── Validate-Deployment.ps1 ──
     validate = _generate_validate_script(company, bronze_lh, silver_lh, gold_lh,
-                                         domains, tables_by_domain)
+                                         domains, tables_by_domain, artifacts, cloud)
     validate_path = deploy_dir / "Validate-Deployment.ps1"
     validate_path.write_text(validate, encoding="utf-8")
     created.append(validate_path)
@@ -63,8 +76,10 @@ def generate_deploy_scripts(industry_config: dict,
     return created
 
 
-def _generate_shared_module(company, bronze_lh, silver_lh, gold_lh, domains):
+def _generate_shared_module(company, bronze_lh, silver_lh, gold_lh, domains, cloud=None):
     """Generate the shared PowerShell module (.psm1)."""
+    fabric_base = (cloud or {}).get("fabricApiBase", "https://api.fabric.microsoft.com/v1")
+    onelake_base = (cloud or {}).get("oneLakeDfsBase", "https://onelake.dfs.fabric.microsoft.com")
     domain_df_ids = "\n".join(
         f'    "DF_{d.upper()}_ID" = $null' for d in domains
     )
@@ -77,8 +92,8 @@ def _generate_shared_module(company, bronze_lh, silver_lh, gold_lh, domains):
 #>
 
 # ── Constants ──
-$script:FabricBaseUri = "https://api.fabric.microsoft.com/v1"
-$script:OneLakeBaseUri = "https://onelake.dfs.fabric.microsoft.com"
+$script:FabricBaseUri = "{fabric_base}"
+$script:OneLakeBaseUri = "{onelake_base}"
 
 # ── Tokens ──
 $script:Tokens = @{{
@@ -281,9 +296,11 @@ Export-ModuleMember -Function Get-FabricToken, Get-StorageToken, Invoke-FabricRa
 
 
 def _generate_deploy_full(company, bronze_lh, silver_lh, gold_lh,
-                          domains, tables_by_domain):
+                          domains, tables_by_domain, report_names=None,
+                          cloud=None):
     """Generate the main Deploy-Full.ps1 orchestrator."""
     total_steps = 12
+    fabric_base = (cloud or {}).get("fabricApiBase", "https://api.fabric.microsoft.com/v1")
     upload_blocks = ""
     for domain in domains:
         upload_blocks += f'''
@@ -299,12 +316,9 @@ def _generate_deploy_full(company, bronze_lh, silver_lh, gold_lh,
     }}
 '''
 
-    # Build report info from output naming convention: <Company>-Analytics, -Forecasting, -HTAP
-    report_names = [
-        f"{company}-Analytics",
-        f"{company}-Forecasting",
-        f"{company}-HTAP",
-    ]
+    # Report names from config (or fallback to convention)
+    if not report_names:
+        report_names = [f"{company}-Analytics", f"{company}-Forecasting", f"{company}-HTAP"]
     report_array_entries = "\n".join(
         f'    @{{ Name = "{r}"; Dir = "{r}.Report" }}'
         for r in report_names
@@ -337,7 +351,7 @@ $OutputRoot = Split-Path $PSScriptRoot -Parent
 Import-Module (Join-Path $PSScriptRoot "{company}.psm1") -Force
 
 $totalSteps = {total_steps}
-$FabricBase = "https://api.fabric.microsoft.com/v1"
+$FabricBase = "{fabric_base}"
 
 # ── Step 1: Authentication ──
 Write-Step -Number 1 -Total $totalSteps -Message "Authenticating to Fabric..."
@@ -648,12 +662,21 @@ Write-Host "Upload complete." -ForegroundColor Green
 
 
 def _generate_validate_script(company, bronze_lh, silver_lh, gold_lh,
-                              domains, tables_by_domain):
+                              domains, tables_by_domain, artifacts=None, cloud=None):
     """Generate Validate-Deployment.ps1."""
     all_tables = []
     for d in domains:
         all_tables.extend(tables_by_domain.get(d, []))
     table_count = len(all_tables)
+
+    fabric_base = (cloud or {}).get("fabricApiBase", "https://api.fabric.microsoft.com/v1")
+
+    # Compute expected counts from fabricArtifacts config (not hardcoded)
+    art = artifacts or {}
+    nb_count = art.get("notebooks", 4)
+    df_count = art.get("dataflows", len(domains))
+    rpt_count = art.get("reports", 2)
+    pipeline_count = 1 if art.get("pipelines", 1) else 1
 
     return f'''<#
 .SYNOPSIS
@@ -673,15 +696,15 @@ Write-Host ""
 Write-Host "Validating {company} deployment..." -ForegroundColor Cyan
 Write-Host ("=" * 60)
 
-$baseUri = "https://api.fabric.microsoft.com/v1/workspaces/$WorkspaceId"
+$baseUri = "{fabric_base}/workspaces/$WorkspaceId"
 $items = (Invoke-FabricApi -Uri "$baseUri/items").value
 
 $expectedTypes = @{{
     "Lakehouse"    = 3
-    "Notebook"     = 4
-    "DataPipeline" = 1
+    "Notebook"     = {nb_count}
+    "DataPipeline" = {pipeline_count}
     "SemanticModel"= 1
-    "Report"       = 2
+    "Report"       = {rpt_count}
 }}
 
 $pass = 0

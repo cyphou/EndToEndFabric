@@ -9,13 +9,24 @@
     Industry folder name under output/ (e.g. contoso-energy, horizon-books). Defaults to contoso-energy.
 .PARAMETER Clean
     Delete all existing items in the workspace before deploying.
+.PARAMETER TriggerPipeline
+    After deployment, trigger the ETL pipeline run and wait for it to complete.
+.PARAMETER Autoplay
+    After the pipeline succeeds (or standalone), export PNG screenshots of every report page,
+    run basic visual-overlap and empty-data checks, then open the screenshot folder.
+.PARAMETER SkipDeploy
+    Skip all deployment steps (1-10). Only trigger the pipeline (-TriggerPipeline) and/or
+    take screenshots (-Autoplay). Requires the workspace to already be deployed.
 #>
 [CmdletBinding()]
 param(
     [Parameter(Mandatory)]
     [string]$WorkspaceId,
     [string]$Industry = "contoso-energy",
-    [switch]$Clean
+    [switch]$Clean,
+    [switch]$TriggerPipeline,
+    [switch]$Autoplay,
+    [switch]$SkipDeploy
 )
 
 Set-StrictMode -Version Latest
@@ -71,9 +82,9 @@ function Invoke-Fabric {
 }
 
 function Wait-LongRunning {
-    param([string]$OperationUrl)
-    $maxWait = 120; $elapsed = 0
-    while ($elapsed -lt $maxWait) {
+    param([string]$OperationUrl, [int]$MaxWait = 300)
+    $elapsed = 0
+    while ($elapsed -lt $MaxWait) {
         $retryAfter = 5
         Start-Sleep -Seconds $retryAfter; $elapsed += $retryAfter
         $h = Get-Headers
@@ -84,20 +95,177 @@ function Wait-LongRunning {
         if ($status.status -eq "Failed") { throw "LRO failed: $($resp.Content)" }
         if ($resp.Headers["Retry-After"]) { $retryAfter = [int]$resp.Headers["Retry-After"] }
     }
-    Write-Warning "LRO timed out after ${maxWait}s at $OperationUrl"
+    Write-Warning "LRO timed out after ${MaxWait}s at $OperationUrl"
 }
 
 function To-Base64 { param([string]$Text) return [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($Text)) }
 
 function Write-Step { param([int]$N, [int]$T, [string]$Msg) Write-Host "`n[$N/$T] $Msg" -ForegroundColor Cyan; Write-Host ("-" * 60) -ForegroundColor DarkGray }
 
-$totalSteps = 10
+# ── Power BI Export-to-File screenshot helper ──────────────────────────
+function Invoke-ReportScreenshots {
+    param(
+        [string]$WsId,
+        [string]$ReportName,
+        [string]$ReportId,
+        [string]$OutputDir
+    )
+    $pbiBase = "https://api.powerbi.com/v1.0/myorg"
+    $pbiToken = (Get-AzAccessToken -ResourceUrl "https://analysis.windows.net/powerbi/api").Token
+    $pbiH = @{ "Authorization" = "Bearer $pbiToken" }
+
+    # Enumerate pages from local output (page.json) — fast, no extra API call
+    $localReportDir = Join-Path (Join-Path (Join-Path $PSScriptRoot "output") $Industry) "${ReportName}.Report"
+    $pagesDir = Join-Path $localReportDir "definition\pages"
+    $pages = @()
+    if (Test-Path $pagesDir) {
+        foreach ($d in (Get-ChildItem $pagesDir -Directory)) {
+            $pjson = Join-Path $d.FullName "page.json"
+            if (Test-Path $pjson) {
+                $pdata = Get-Content $pjson -Raw | ConvertFrom-Json
+                $visProp = $pdata.PSObject.Properties['visibility']
+                if ($null -eq $visProp -or $visProp.Value -ne 1) {   # 1 = hidden
+                    $pages += [PSCustomObject]@{ Name = $d.Name; DisplayName = $pdata.displayName }
+                }
+            }
+        }
+    }
+    if ($pages.Count -eq 0) {
+        Write-Host "    No visible pages found for $ReportName" -ForegroundColor DarkGray
+        return @()
+    }
+
+    # Build paginated export request (PNG per page)
+    $pagePayloads = $pages | ForEach-Object { @{ pageName = $_.Name } }
+    $exportBody = @{
+        format = "PNG"
+        powerBIReportConfiguration = @{
+            pages = $pagePayloads
+        }
+    } | ConvertTo-Json -Depth 6
+
+    try {
+        $startResp = Invoke-WebRequest -Method POST `
+            -Uri "$pbiBase/groups/$WsId/reports/$ReportId/ExportTo" `
+            -Headers $pbiH -Body $exportBody -ContentType "application/json" -UseBasicParsing
+        $exportId = ($startResp.Content | ConvertFrom-Json).id
+    } catch {
+        Write-Warning "    ExportTo failed for $ReportName : $_"
+        return @()
+    }
+
+    # Poll export status (up to 3 min)
+    $elapsed = 0
+    $exportStatus = $null
+    while ($elapsed -lt 180) {
+        Start-Sleep -Seconds 5; $elapsed += 5
+        $pbiToken = (Get-AzAccessToken -ResourceUrl "https://analysis.windows.net/powerbi/api").Token
+        $pbiH = @{ "Authorization" = "Bearer $pbiToken" }
+        $poll = Invoke-RestMethod -Uri "$pbiBase/groups/$WsId/reports/$ReportId/exports/$exportId" -Headers $pbiH
+        if ($poll.status -in @("Succeeded","Failed")) { $exportStatus = $poll.status; break }
+    }
+    if ($exportStatus -ne "Succeeded") {
+        Write-Warning "    Export did not succeed for $ReportName (status=$exportStatus)"
+        return @()
+    }
+
+    # Download the ZIP / multi-page PNG archive
+    $zipPath = Join-Path $OutputDir "${ReportName}_export.zip"
+    $pbiToken = (Get-AzAccessToken -ResourceUrl "https://analysis.windows.net/powerbi/api").Token
+    $pbiH = @{ "Authorization" = "Bearer $pbiToken" }
+    Invoke-WebRequest -Uri "$pbiBase/groups/$WsId/reports/$ReportId/exports/$exportId/file" `
+        -Headers $pbiH -OutFile $zipPath -UseBasicParsing
+
+    # Unzip — wipe the extract dir first so stale named PNGs from prior runs
+    # don't mix with the newly-extracted hash-named files.
+    $extractDir = Join-Path $OutputDir $ReportName
+    if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force }
+    New-Item -ItemType Directory -Path $extractDir -Force | Out-Null
+    Expand-Archive -Path $zipPath -DestinationPath $extractDir -Force
+    Remove-Item $zipPath -Force
+
+    # Rename extracted PNGs to page display name
+    $pngFiles = Get-ChildItem $extractDir -Filter "*.png" | Sort-Object Name
+    $results = @()
+    for ($i = 0; $i -lt $pngFiles.Count; $i++) {
+        $pageLabel = if ($i -lt $pages.Count) { $pages[$i].DisplayName -replace '[\\/:*?"<>|]','_' } else { "Page$($i+1)" }
+        $target = Join-Path $extractDir "${pageLabel}.png"
+        Rename-Item $pngFiles[$i].FullName $target -Force
+        $results += $target
+    }
+    return $results
+}
+
+# ── Visual-overlap and empty-data checker (pixel-based) ──────────────────
+function Test-ReportScreenshot {
+    param([string]$PngPath, [string]$PageLabel)
+    Add-Type -AssemblyName System.Drawing
+    $bmp = [System.Drawing.Bitmap]::FromFile($PngPath)
+    $w = $bmp.Width; $h = $bmp.Height
+    $totalPx = $w * $h
+
+    # Count white/near-white pixels (background) vs. coloured pixels (data ink)
+    $whitePx = 0; $colourPx = 0
+    $sampleStep = [math]::Max(1, [int]($totalPx / 50000))   # sample ~50k pixels for speed
+    for ($y = 0; $y -lt $h; $y += $sampleStep) {
+        for ($x = 0; $x -lt $w; $x += $sampleStep) {
+            $c = $bmp.GetPixel($x, $y)
+            if ($c.R -gt 240 -and $c.G -gt 240 -and $c.B -gt 240) { $whitePx++ } else { $colourPx++ }
+        }
+    }
+    $bmp.Dispose()
+    $inkRatio = if (($whitePx + $colourPx) -gt 0) { [math]::Round($colourPx / ($whitePx + $colourPx) * 100, 1) } else { 0 }
+
+    # --- Overlap detection: look at a 10×10 grid of regions; flag regions
+    #     that contain near-identical solid blocks (simplified heuristic)
+    $bmp2 = [System.Drawing.Bitmap]::FromFile($PngPath)
+    $gridSize = 10; $regionW = [int]($w / $gridSize); $regionH = [int]($h / $gridSize)
+    $overlapWarning = $false
+    if ($regionW -gt 0 -and $regionH -gt 0) {
+        $regionColors = @{}
+        for ($row = 0; $row -lt $gridSize; $row++) {
+            for ($col = 0; $col -lt $gridSize; $col++) {
+                $cx = $col * $regionW + [int]($regionW / 2)
+                $cy = $row * $regionH + [int]($regionH / 2)
+                if ($cx -lt $w -and $cy -lt $h) {
+                    $col_rgb = $bmp2.GetPixel($cx,$cy)
+                    $key = "$($col_rgb.R).$($col_rgb.G).$($col_rgb.B)"
+                    if ($regionColors[$key]) { $regionColors[$key]++ } else { $regionColors[$key] = 1 }
+                }
+            }
+        }
+        # If more than 60% of grid regions share one exact colour it may be a full-bleed blank/overlap
+        $maxCount = ($regionColors.Values | Measure-Object -Maximum).Maximum
+        if ($maxCount -gt [int]($gridSize * $gridSize * 0.65)) { $overlapWarning = $true }
+    }
+    $bmp2.Dispose()
+
+    $status = "OK"
+    $notes  = "ink=$inkRatio%"
+    if ($inkRatio -lt 3) { $status = "WARN"; $notes += " [possible empty/no-data]" }
+    if ($overlapWarning) { $status = "WARN"; $notes += " [possible visual overlap or blank fill]" }
+
+    return [PSCustomObject]@{ Page=$PageLabel; Status=$status; Notes=$notes; Path=$PngPath }
+}
+
+$totalSteps = if ($SkipDeploy) { 0 } else { 10 }
+if ($TriggerPipeline) { $totalSteps++ }
+if ($Autoplay) { $totalSteps++ }
 $tokens = @{}
+$script:_pipelineSucceeded = $false
+$finalItems = $null
+
+if ($SkipDeploy) {
+    Write-Host "`n[SKIP DEPLOY] Loading existing workspace state..." -ForegroundColor Yellow
+    Write-Host ("-" * 60) -ForegroundColor DarkGray
+    $finalItems = (Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/items").value
+    Write-Host "  Found $($finalItems.Count) items in workspace." -ForegroundColor Gray
+}
 
 # ======================================================================
 # Step 0 (optional): Clean workspace
 # ======================================================================
-if ($Clean) {
+if (-not $SkipDeploy -and $Clean) {
     Write-Host "`n[CLEAN] Deleting all items in workspace $WorkspaceId ..." -ForegroundColor Red
     Write-Host ("-" * 60) -ForegroundColor DarkGray
     $allItems = (Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/items").value
@@ -142,6 +310,7 @@ if ($Clean) {
 # ======================================================================
 # Create workspace folders for organization
 # ======================================================================
+if (-not $SkipDeploy) {
 Write-Host "`n[FOLDERS] Organizing workspace into folders..." -ForegroundColor Cyan
 Write-Host ("-" * 60) -ForegroundColor DarkGray
 
@@ -200,9 +369,16 @@ Write-Step -N 1 -T $totalSteps -Msg "Creating Lakehouses..."
 $lhUri = "$FabricBase/workspaces/$WorkspaceId/lakehouses"
 foreach ($lh in @("BronzeLH", "SilverLH", "GoldLH")) {
     $created = $false
+    # SilverLH and GoldLH need schema support so sub-folder Delta writes (Tables/schema/table)
+    # are registered as SQL endpoint schemas.  BronzeLH uses flat staging tables.
+    $lhBody = if ($lh -in @("SilverLH", "GoldLH")) {
+        @{ displayName = $lh; creationPayload = @{ enableSchemas = $true } }
+    } else {
+        @{ displayName = $lh }
+    }
     for ($attempt = 1; $attempt -le 6; $attempt++) {
         try {
-            $resp = Invoke-Fabric -Method POST -Uri $lhUri -Body @{ displayName = $lh }
+            $resp = Invoke-Fabric -Method POST -Uri $lhUri -Body $lhBody
             if ($resp -and $resp.id) {
                 $tokens[$lh] = $resp.id
                 Write-Host "  Created $lh = $($resp.id)" -ForegroundColor Green
@@ -357,6 +533,18 @@ foreach ($nb in $nbFiles) {
         metadata = @{
             language_info = @{ name = "python" }
             kernel_info = @{ name = "synapse_pyspark" }
+            trident = @{
+                lakehouse = @{
+                    default_lakehouse              = $tokens["BronzeLH"]
+                    default_lakehouse_name         = "BronzeLH"
+                    default_lakehouse_workspace_id = $WorkspaceId
+                    known_lakehouses = @(
+                        @{ id = $tokens["BronzeLH"] }
+                        @{ id = $tokens["SilverLH"] }
+                        @{ id = $tokens["GoldLH"]   }
+                    )
+                }
+            }
         }
     }
     $ipynbJson = $ipynb | ConvertTo-Json -Depth 10 -Compress
@@ -440,8 +628,18 @@ $parts += @{ path = "definition.pbism"; payload = (To-Base64 $pbism); payloadTyp
 
 # model.tmdl
 $modelTmdl = Get-Content (Join-Path $defDir "model.tmdl") -Raw -Encoding UTF8
+# Look up SQL endpoint connection string for DirectLake binding
+if (-not $tokens.ContainsKey("SQL_ENDPOINT")) {
+    $goldLhProps = Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/lakehouses/$($tokens['GoldLH'])"
+    $tokens["SQL_ENDPOINT"] = $goldLhProps.properties.sqlEndpointProperties.connectionString
+    $tokens["SQL_ENDPOINT_ID"] = $goldLhProps.properties.sqlEndpointProperties.id
+    Write-Host "  SQL Endpoint: $($tokens['SQL_ENDPOINT'])" -ForegroundColor DarkGray
+    Write-Host "  SQL Endpoint ID: $($tokens['SQL_ENDPOINT_ID'])" -ForegroundColor DarkGray
+}
 # Replace tokens in model
 $modelTmdl = $modelTmdl -replace "\{\{GOLD_LH_ID\}\}", $tokens["GoldLH"]
+$modelTmdl = $modelTmdl -replace "\{\{SQL_ENDPOINT\}\}", $tokens["SQL_ENDPOINT"]
+$modelTmdl = $modelTmdl -replace "\{\{SQL_ENDPOINT_ID\}\}", $tokens["SQL_ENDPOINT_ID"]
 $modelTmdl = $modelTmdl -replace "\{\{WORKSPACE_ID\}\}", $WorkspaceId
 $parts += @{ path = "definition/model.tmdl"; payload = (To-Base64 $modelTmdl); payloadType = "InlineBase64" }
 
@@ -539,18 +737,32 @@ if ((Test-Path $wbSmDir) -and $tokens.ContainsKey("SQLDB_SERVER")) {
         }
     }
 
+    $wbSmId = $null
     $existingWbSM = $allItems | Where-Object { $_.displayName -eq "${Company}WritebackModel" -and $_.type -eq "SemanticModel" } | Select-Object -First 1
     if ($existingWbSM) {
         Write-Host "  WritebackModel already exists: $($existingWbSM.id)" -ForegroundColor Yellow
+        $wbSmId = $existingWbSM.id
     } else {
         try {
             Invoke-Fabric -Method POST -Uri "$FabricBase/workspaces/$WorkspaceId/items" -Body $wbSmBody | Out-Null
-            Write-Host "  Created WritebackModel: ${Company}WritebackModel" -ForegroundColor Green
+            # Look up created item by name (LRO result does not include id)
+            $wbItems = (Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/items").value
+            $wbSmItem = $wbItems | Where-Object { $_.displayName -eq "${Company}WritebackModel" -and $_.type -eq "SemanticModel" } | Select-Object -First 1
+            if ($wbSmItem) {
+                $wbSmId = $wbSmItem.id
+                Write-Host "  Created WritebackModel: ${Company}WritebackModel" -ForegroundColor Green
+            } else {
+                Write-Warning "  WritebackModel created but ID not found in items list."
+            }
         } catch {
             $errDetail = $_.ToString()
             try { $sr = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream()); $errDetail = $sr.ReadToEnd(); $sr.Close() } catch {}
             Write-Warning "  WritebackModel deploy failed: $errDetail"
         }
+    }
+    if ($wbSmId) {
+        $tokens["WRITEBACK_MODEL_ID"] = $wbSmId
+        Write-Host "  WritebackModel ID: $wbSmId" -ForegroundColor Green
     }
 }
 
@@ -649,6 +861,7 @@ $reportDirs = @(
     @{ Name = "${Company}-Forecasting"; Dir = "${Company}-Forecasting.Report" }
     @{ Name = "${Company}-HTAP"; Dir = "${Company}-HTAP.Report" }
     @{ Name = "${Company}-Pipeline"; Dir = "${Company}-Pipeline.Report" }
+    @{ Name = "${Company}-Writeback"; Dir = "${Company}-Writeback.Report" }
 )
 
 foreach ($reportInfo in $reportDirs) {
@@ -666,6 +879,7 @@ foreach ($reportInfo in $reportDirs) {
     if (Test-Path $pbirFile) {
         $content = Get-Content $pbirFile -Raw -Encoding UTF8
         if ($smId) { $content = $content -replace "\{\{SEMANTIC_MODEL_ID\}\}", $smId }
+        if ($wbSmId) { $content = $content -replace "\{\{WRITEBACK_MODEL_ID\}\}", $wbSmId }
         $rptParts += @{ path = "definition.pbir"; payload = (To-Base64 $content); payloadType = "InlineBase64" }
     }
 
@@ -677,6 +891,9 @@ foreach ($reportInfo in $reportDirs) {
         # Replace SM reference if needed
         if ($smId) {
             $content = $content -replace "\{\{SEMANTIC_MODEL_ID\}\}", $smId
+        }
+        if ($wbSmId) {
+            $content = $content -replace "\{\{WRITEBACK_MODEL_ID\}\}", $wbSmId
         }
         $content = $content -replace "\{\{WORKSPACE_ID\}\}", $WorkspaceId
         $rptParts += @{
@@ -720,7 +937,7 @@ foreach ($key in $tokens.Keys) {
     $pipelineJson = $pipelineJson -replace "\{\{$key\}\}", $tokens[$key]
 }
 foreach ($key in $nbTokens.Keys) {
-    $tokenName = $key -replace "^(\d+)_", 'NB0$1_ID'
+    $tokenName = $key -replace "^(\d+)_.*", 'NB$1_ID'
     $pipelineJson = $pipelineJson -replace "\{\{$tokenName\}\}", $nbTokens[$key]
 }
 
@@ -797,15 +1014,15 @@ foreach ($item in ($finalAll | Where-Object { $_.type -in @("Notebook", "DataPip
     Start-Sleep -Seconds 1
 }
 
-# Analytics folder: SemanticModel + Reports (except WritebackModel)
-foreach ($item in ($finalAll | Where-Object { $_.type -in @("SemanticModel", "Report") -and $_.displayName -notlike "*WritebackModel*" })) {
+# Analytics folder: SemanticModel + Reports (except WritebackModel / Writeback report)
+foreach ($item in ($finalAll | Where-Object { $_.type -in @("SemanticModel", "Report") -and $_.displayName -notlike "*WritebackModel*" -and $_.displayName -notlike "*-Writeback" })) {
     Write-Host "  Moving $($item.type): $($item.displayName) -> 03 Analytics" -ForegroundColor DarkGray
     if (Move-ToFolder -ItemId $item.id -FolderName "03 Analytics") { $movedCount++ } else { $failCount++ }
     Start-Sleep -Seconds 1
 }
 
-# Writeback folder: SQLDatabase + UserDataFunction + WritebackModel
-foreach ($item in ($finalAll | Where-Object { $_.type -in @("SQLDatabase", "UserDataFunction") -or ($_.type -eq "SemanticModel" -and $_.displayName -like "*WritebackModel*") })) {
+# Writeback folder: SQLDatabase + UserDataFunction + WritebackModel + Writeback report
+foreach ($item in ($finalAll | Where-Object { $_.type -in @("SQLDatabase", "UserDataFunction") -or ($_.type -eq "SemanticModel" -and $_.displayName -like "*WritebackModel*") -or ($_.type -eq "Report" -and $_.displayName -like "*-Writeback") })) {
     Write-Host "  Moving $($item.type): $($item.displayName) -> 04 Writeback" -ForegroundColor DarkGray
     if (Move-ToFolder -ItemId $item.id -FolderName "04 Writeback") { $movedCount++ } else { $failCount++ }
     Start-Sleep -Seconds 1
@@ -830,3 +1047,168 @@ $finalItems | Group-Object type | ForEach-Object { Write-Host "    $($_.Name): $
 Write-Host ""
 Write-Host "  Open: https://app.powerbi.com/groups/$WorkspaceId/list" -ForegroundColor Cyan
 Write-Host ""
+
+} # end if (-not $SkipDeploy) — deploy block
+
+# Ensure $finalItems is always populated before Steps 11/12
+if (-not $finalItems) {
+    $finalItems = (Invoke-Fabric -Uri "$FabricBase/workspaces/$WorkspaceId/items").value
+}
+
+# ======================================================================
+# Step 11 (optional): Trigger ETL pipeline run
+# ======================================================================
+if ($TriggerPipeline) {
+    $stepNum = if ($SkipDeploy) { 1 } else { 11 }
+    Write-Step -N $stepNum -T $totalSteps -Msg "Triggering ETL Pipeline run..."
+
+    $pipelineName = "${Company}-ETL"
+    $pipelineItem = $finalItems | Where-Object { $_.displayName -eq $pipelineName -and $_.type -eq "DataPipeline" } | Select-Object -First 1
+
+    if (-not $pipelineItem) {
+        Write-Warning "  Pipeline '$pipelineName' not found in workspace -- cannot trigger."
+    } else {
+        $pipelineId = $pipelineItem.id
+        Write-Host "  Pipeline: $pipelineName ($pipelineId)" -ForegroundColor Gray
+
+        try {
+            # POST to trigger a pipeline run (jobType=Pipeline)
+            $runResp = Invoke-FabricRaw -Method POST `
+                -Uri "$FabricBase/workspaces/$WorkspaceId/dataPipelines/$pipelineId/jobs/instances?jobType=Pipeline"
+
+            # Fabric returns 202 with Location header pointing to the job instance
+            $jobLocation = $runResp.Headers["Location"]
+            if (-not $jobLocation) {
+                # Some tenants return 200 with body
+                $jobBody = $runResp.Content | ConvertFrom-Json
+                $jobInstanceId = $jobBody.id
+                $jobLocation = "$FabricBase/workspaces/$WorkspaceId/dataPipelines/$pipelineId/jobs/instances/$jobInstanceId"
+            }
+
+            Write-Host "  Pipeline run triggered. Polling for completion..." -ForegroundColor Green
+            Write-Host "  Job URL: $jobLocation" -ForegroundColor DarkGray
+
+            # Poll job status
+            $maxPollMinutes = 60
+            $pollInterval  = 15
+            $elapsed       = 0
+            $finalStatus   = $null
+
+            while ($elapsed -lt ($maxPollMinutes * 60)) {
+                Start-Sleep -Seconds $pollInterval
+                $elapsed += $pollInterval
+
+                $h        = Get-Headers
+                $pollResp = Invoke-WebRequest -Uri $jobLocation -Headers $h -UseBasicParsing
+                $jobState = $pollResp.Content | ConvertFrom-Json
+
+                $status   = $jobState.status
+                $elapsed_min = [math]::Round($elapsed / 60, 1)
+                Write-Host "    Status: $status (${elapsed_min}m elapsed)" -ForegroundColor DarkGray
+
+                if ($status -in @("Succeeded", "Completed")) {
+                    $finalStatus = "Succeeded"
+                    break
+                } elseif ($status -in @("Failed", "Cancelled", "Deduped")) {
+                    $finalStatus = $status
+                    break
+                }
+            }
+
+            if ($finalStatus -eq "Succeeded") {
+                Write-Host "  Pipeline run SUCCEEDED." -ForegroundColor Green
+                Write-Host "  Bronze -> Silver -> Gold data is now populated." -ForegroundColor Green
+                if ($Autoplay) { $script:_pipelineSucceeded = $true }
+            } elseif ($finalStatus) {
+                Write-Warning "  Pipeline run ended with status: $finalStatus"
+            } else {
+                Write-Warning "  Pipeline run did not complete within ${maxPollMinutes} minutes. Check Fabric portal for status."
+                Write-Host "  Job URL: $jobLocation" -ForegroundColor DarkGray
+            }
+
+        } catch {
+            $errDetail = $_.ToString()
+            try { $sr = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream()); $errDetail = $sr.ReadToEnd(); $sr.Close() } catch {}
+            Write-Warning "  Failed to trigger pipeline: $errDetail"
+        }
+    }
+}
+
+# ======================================================================
+# Step 12 (optional): Autoplay — screenshot every report page & verify
+# ======================================================================
+if ($Autoplay -and (-not $TriggerPipeline -or $script:_pipelineSucceeded)) {
+    $stepNum = if ($SkipDeploy -and -not $TriggerPipeline) { 1 } elseif ($SkipDeploy) { 2 } else { 12 }
+    Write-Step -N $stepNum -T $totalSteps -Msg "Autoplay: exporting report screenshots..."
+
+    $screenshotRoot = Join-Path $OutputRoot "screenshots"
+    New-Item -ItemType Directory -Path $screenshotRoot -Force | Out-Null
+
+    # Refresh the semantic model so reports render with freshly-loaded Gold data.
+    # DirectLake models do NOT auto-refresh after a pipeline run, so exported
+    # pages would otherwise come back as blank white images.
+    $smItem = ($finalItems | Where-Object { $_.displayName -eq "${Company}Model" -and $_.type -eq "SemanticModel" } | Select-Object -First 1)
+    if ($smItem) {
+        Write-Host "  Refreshing semantic model: ${Company}Model..." -ForegroundColor Cyan
+        try {
+            # Power BI enhanced refresh (type=Full) — works for DirectLake models in Fabric.
+            $pbiTok = (Get-AzAccessToken -ResourceUrl "https://analysis.windows.net/powerbi/api").Token
+            $pbiH   = @{ "Authorization" = "Bearer $pbiTok" }
+            $refreshResp = Invoke-WebRequest -Method POST `
+                -Uri "https://api.powerbi.com/v1.0/myorg/groups/$WorkspaceId/datasets/$($smItem.id)/refreshes" `
+                -Headers $pbiH -Body '{"type":"Full"}' -ContentType "application/json" -UseBasicParsing
+            $refreshUrl = $refreshResp.Headers["Location"]
+            if ($refreshUrl) {
+                # Poll until Completed / Failed (up to 5 min)
+                $refreshDone = $false
+                for ($ri = 0; $ri -lt 30; $ri++) {
+                    Start-Sleep -Seconds 10
+                    $pbiTok = (Get-AzAccessToken -ResourceUrl "https://analysis.windows.net/powerbi/api").Token
+                    $pbiH   = @{ "Authorization" = "Bearer $pbiTok" }
+                    $rfStatus = (Invoke-RestMethod -Uri $refreshUrl -Headers $pbiH).status
+                    Write-Host "  Refresh status: $rfStatus ($($ri*10 + 10)s)" -ForegroundColor DarkGray
+                    if ($rfStatus -in @("Completed","Failed","Unknown")) {
+                        if ($rfStatus -eq "Completed") { Write-Host "  Semantic model refresh completed." -ForegroundColor Green }
+                        else { Write-Warning "  Refresh ended with status: $rfStatus — screenshots may still be blank." }
+                        $refreshDone = $true; break
+                    }
+                }
+                if (-not $refreshDone) { Write-Warning "  Refresh poll timed out — proceeding anyway." }
+            }
+        } catch {
+            Write-Warning "  Could not refresh semantic model: $_ — proceeding anyway."
+        }
+    } else {
+        Write-Warning "  Semantic model '${Company}Model' not found — screenshots may be blank."
+    }
+
+    # Collect all deployed reports — deduplicate by displayName (workspace may have
+    # multiple items with same name from prior non-clean deploys).
+    # Pick the last item per group — newest deploy overwrites oldest.
+    $deployedReports = ($finalItems | Where-Object { $_.type -eq "Report" -and $_.displayName -like "${Company}-*" } |
+        Group-Object displayName | ForEach-Object { $_.Group[-1] })
+
+    $allResults = @()
+    foreach ($rpt in $deployedReports) {
+        Write-Host "  Exporting: $($rpt.displayName)" -ForegroundColor DarkGray
+        $pngs = Invoke-ReportScreenshots -WsId $WorkspaceId -ReportName $rpt.displayName -ReportId $rpt.id -OutputDir $screenshotRoot
+        foreach ($png in $pngs) {
+            $label = [System.IO.Path]::GetFileNameWithoutExtension($png)
+            $chk = Test-ReportScreenshot -PngPath $png -PageLabel "$($rpt.displayName) / $label"
+            $colour = if ($chk.Status -eq "OK") { "Green" } else { "Yellow" }
+            Write-Host "    [$($chk.Status)] $($chk.Page)  ($($chk.Notes))" -ForegroundColor $colour
+            $allResults += $chk
+        }
+    }
+
+    # Summary table
+    Write-Host ""
+    Write-Host "  Screenshot check summary:" -ForegroundColor Cyan
+    $ok   = @($allResults | Where-Object { $_.Status -eq "OK" }).Count
+    $warn = @($allResults | Where-Object { $_.Status -eq "WARN" }).Count
+    Write-Host "    OK: $ok   WARN: $warn   Total: $($allResults.Count)" -ForegroundColor $(if ($warn -gt 0) { "Yellow" } else { "Green" })
+    Write-Host "  Screenshots saved to: $screenshotRoot" -ForegroundColor Cyan
+
+    # Open screenshot folder in Explorer
+    Start-Process explorer.exe $screenshotRoot
+}

@@ -134,7 +134,7 @@ def _generate_model_file(sm_dir: Path, sm_config: dict, company_name: str,
 
 expression DatabaseQuery =
 \t\tlet
-\t\t\tdatabase = Sql.Database("{{{{WORKSPACE_ID}}}}", "{{{{GOLD_LH_ID}}}}")
+\t\t\tdatabase = Sql.Database("{{{{SQL_ENDPOINT}}}}", "{{{{SQL_ENDPOINT_ID}}}}")
 \t\tin
 \t\t\tdatabase
 \tlineageTag: {_pseudo_guid(model_name + '_expr')}
@@ -381,7 +381,7 @@ def _pseudo_guid(seed_str: str) -> str:
     Not a real UUID — just deterministic hex for idempotent generation.
     """
     import hashlib
-    h = hashlib.md5(seed_str.encode()).hexdigest()
+    h = hashlib.md5(seed_str.encode(), usedforsecurity=False).hexdigest()
     return f"{h[:8]}-{h[8:12]}-{h[12:16]}-{h[16:20]}-{h[20:32]}"
 
 

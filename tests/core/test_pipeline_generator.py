@@ -44,10 +44,12 @@ class TestPipelineGenerator(unittest.TestCase):
         activities = data.get("properties", {}).get("activities", [])
         self.assertGreater(len(activities), 0)
 
-    def test_pipeline_references_dataflows(self):
+    def test_pipeline_notebook_only_activities(self):
+        """Pipeline should use TridentNotebook activities only (no RefreshDataflow)."""
         pc = [p for p in self.artifacts if p.name == "pipeline-content.json"][0]
         content = pc.read_text(encoding="utf-8")
-        self.assertIn("RefreshDataflow", content)
+        self.assertNotIn("RefreshDataflow", content)
+        self.assertIn("TridentNotebook", content)
 
     def test_pipeline_references_notebooks(self):
         pc = [p for p in self.artifacts if p.name == "pipeline-content.json"][0]

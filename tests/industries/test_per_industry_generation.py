@@ -17,7 +17,7 @@ from core.notebook_generator import generate_notebooks
 # Expected counts from PLAN.md §10.3
 EXPECTED = {
     "contoso-energy": {
-        "csv_min": 20, "tmdl_tables": 28, "measures_min": 110,
+        "csv_min": 20, "tmdl_tables": 26, "measures_min": 110,
         "relationships_min": 30, "notebooks": 4,
     },
     "horizon-books": {

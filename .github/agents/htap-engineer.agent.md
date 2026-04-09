@@ -19,7 +19,8 @@ user-invocable: true
 ## Owns
 - `core/htap_generator.py`
 - `templates/kql/*.tpl`
-- `templates/notebooks/05_TransactionalAnalytics.py.tpl`
+
+> **Note:** NB05 (Transactional Analytics) notebook generation is inline. No `.tpl` template file is used.
 
 ## Does NOT Own
 - ❌ Batch ETL notebooks (→ @data-engineer)

@@ -6,7 +6,7 @@
     "tables": [
       {
         "name": "DimDate",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "DateKey",
@@ -57,7 +57,7 @@
       },
       {
         "name": "DimPowerPlants",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "PlantID",
@@ -104,7 +104,7 @@
       },
       {
         "name": "DimSubstations",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "SubstationID",
@@ -143,7 +143,7 @@
       },
       {
         "name": "DimCustomers",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "CustomerID",
@@ -178,7 +178,7 @@
       },
       {
         "name": "DimRatePlans",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "RatePlanID",
@@ -205,7 +205,7 @@
       },
       {
         "name": "DimEmissionSources",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "SourceID",
@@ -228,7 +228,7 @@
       },
       {
         "name": "DimCrews",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "CrewID",
@@ -255,7 +255,7 @@
       },
       {
         "name": "DimRegions",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "RegionID",
@@ -290,7 +290,7 @@
       },
       {
         "name": "DimWeatherStations",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "StationID",
@@ -317,7 +317,7 @@
       },
       {
         "name": "DimVehicles",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "VehicleID",
@@ -348,7 +348,7 @@
       },
       {
         "name": "DimAssets",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "AssetID",
@@ -383,7 +383,7 @@
       },
       {
         "name": "DimPrograms",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "ProgramID",
@@ -410,7 +410,7 @@
       },
       {
         "name": "FactGeneration",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "GenerationID",
@@ -457,7 +457,7 @@
       },
       {
         "name": "FactGridLoad",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "LoadID",
@@ -496,7 +496,7 @@
       },
       {
         "name": "FactOutages",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "OutageID",
@@ -528,10 +528,6 @@
             "dataType": "Boolean"
           },
           {
-            "name": "RestorationTime",
-            "dataType": "DateTime"
-          },
-          {
             "name": "EstimatedDamageCost",
             "dataType": "Double"
           }
@@ -539,7 +535,7 @@
       },
       {
         "name": "FactBilling",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "BillID",
@@ -582,7 +578,7 @@
       },
       {
         "name": "FactEmissions",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "EmissionID",
@@ -617,7 +613,7 @@
       },
       {
         "name": "FactWorkOrders",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "WorkOrderID",
@@ -664,7 +660,7 @@
       },
       {
         "name": "FactSafetyIncidents",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "IncidentID",
@@ -703,7 +699,7 @@
       },
       {
         "name": "FactWeather",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "WeatherID",
@@ -742,7 +738,7 @@
       },
       {
         "name": "FactMeterReadings",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "ReadingID",
@@ -777,7 +773,7 @@
       },
       {
         "name": "FactAssetCondition",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "ConditionID",
@@ -812,7 +808,7 @@
       },
       {
         "name": "FactCustomerComplaints",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "ComplaintID",
@@ -847,7 +843,7 @@
       },
       {
         "name": "FactDemandResponse",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "EventID",
@@ -882,7 +878,7 @@
       },
       {
         "name": "FactVehicleUsage",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "TripID",
@@ -913,7 +909,7 @@
       },
       {
         "name": "FactRegulatoryFiling",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "FilingID",
@@ -943,62 +939,6 @@
           {
             "name": "RegulatoryBodyID",
             "dataType": "Int64"
-          }
-        ]
-      },
-      {
-        "name": "DimRegulatoryBodies",
-        "schema": "dim",
-        "tableType": "dim",
-        "columns": [
-          {
-            "name": "RegulatoryBodyID",
-            "dataType": "Int64",
-            "isKey": true
-          },
-          {
-            "name": "BodyName",
-            "dataType": "String"
-          },
-          {
-            "name": "Jurisdiction",
-            "dataType": "String"
-          },
-          {
-            "name": "ContactEmail",
-            "dataType": "String"
-          }
-        ]
-      },
-      {
-        "name": "DimTariffPlans",
-        "schema": "dim",
-        "tableType": "dim",
-        "columns": [
-          {
-            "name": "TariffPlanID",
-            "dataType": "Int64",
-            "isKey": true
-          },
-          {
-            "name": "PlanName",
-            "dataType": "String"
-          },
-          {
-            "name": "RatePerKWh",
-            "dataType": "Double"
-          },
-          {
-            "name": "PeakRate",
-            "dataType": "Double"
-          },
-          {
-            "name": "OffPeakRate",
-            "dataType": "Double"
-          },
-          {
-            "name": "EffectiveDate",
-            "dataType": "DateTime"
           }
         ]
       }
@@ -1236,12 +1176,6 @@
         "toColumn": "Date",
         "cardinality": "ManyToOne",
         "isActive": false
-      },
-      {
-        "fromTable": "FactRegulatoryFiling",
-        "fromColumn": "RegulatoryBodyID",
-        "toTable": "DimRegulatoryBodies",
-        "toColumn": "RegulatoryBodyID"
       }
     ],
     "measures": [

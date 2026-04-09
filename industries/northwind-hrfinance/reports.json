@@ -154,6 +154,29 @@
           {"type": "table", "columns": ["RefreshDate", "Pipeline", "Status", "Duration (s)", "Error"]}
         ]}
       ]
+    },
+    {
+      "name": "NorthwindHRFinance-Writeback",
+      "semanticModel": "writeback",
+      "theme": {"primary": "#00695C", "secondary": "#FF6F00", "background": "#FAFAFA"},
+      "pages": [
+        {"name": "Headcount Plan", "visuals": [
+          {"type": "card", "measure": "Total Planned Headcount"},
+          {"type": "table", "columns": ["PlanId", "FiscalYear", "FiscalQuarter", "Department", "RoleCategory", "PlannedHeadcount", "PlannedCostPerFTE", "ModifiedBy"]},
+          {"type": "clusteredBarChart", "axis": "Department", "values": ["PlannedHeadcount"]}
+        ]},
+        {"name": "Budget Line Items", "visuals": [
+          {"type": "card", "measure": "Total Budget Amount"},
+          {"type": "card", "measure": "Draft Count"},
+          {"type": "table", "columns": ["LineItemId", "FiscalYear", "CostCenter", "GLAccount", "BudgetAmount", "RevisedAmount", "Variance", "Status"]},
+          {"type": "clusteredBarChart", "axis": "CostCenter", "values": ["BudgetAmount", "RevisedAmount"]}
+        ]},
+        {"name": "Compensation Review", "visuals": [
+          {"type": "card", "measure": "Pending Count"},
+          {"type": "table", "columns": ["ReviewId", "EmployeeId", "ReviewCycle", "CurrentSalary", "ProposedSalary", "AdjustmentPct", "PerformanceRating", "Status"]},
+          {"type": "clusteredBarChart", "axis": "PerformanceRating", "values": ["ProposedSalary"]}
+        ]}
+      ]
     }
   ]
 }

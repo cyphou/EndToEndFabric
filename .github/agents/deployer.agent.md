@@ -17,9 +17,12 @@ user-invocable: true
 
 ## Owns
 - `core/deploy_generator.py`
+- `core/writeback_generator.py`
+- `core/udf_generator.py`
 - `shared/deploy/FabricHelpers.psm1`
 - `shared/deploy/OneLakeHelpers.psm1`
 - `templates/deploy/*.tpl`
+- `deploy-to-fabric.ps1`
 
 ## Does NOT Own
 - ❌ Sample data content (→ @data-engineer)

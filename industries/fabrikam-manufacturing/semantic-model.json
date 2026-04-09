@@ -6,7 +6,7 @@
     "tables": [
       {
         "name": "DimDate",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "DateKey",
@@ -45,7 +45,7 @@
       },
       {
         "name": "DimProducts",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "ProductID",
@@ -80,7 +80,7 @@
       },
       {
         "name": "DimPlants",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "PlantID",
@@ -111,7 +111,7 @@
       },
       {
         "name": "DimProductionLines",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "LineID",
@@ -138,7 +138,7 @@
       },
       {
         "name": "DimShifts",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "ShiftID",
@@ -161,7 +161,7 @@
       },
       {
         "name": "DimInspectionPoints",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "InspectionPointID",
@@ -188,7 +188,7 @@
       },
       {
         "name": "DimDefectTypes",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "DefectTypeID",
@@ -211,7 +211,7 @@
       },
       {
         "name": "DimSuppliers",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "SupplierID",
@@ -242,7 +242,7 @@
       },
       {
         "name": "DimMaterials",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "MaterialID",
@@ -269,7 +269,7 @@
       },
       {
         "name": "DimWarehouses",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "WarehouseID",
@@ -296,7 +296,7 @@
       },
       {
         "name": "DimEquipment",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "EquipmentID",
@@ -331,7 +331,7 @@
       },
       {
         "name": "DimMaintenanceTypes",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "MaintenanceTypeID",
@@ -350,7 +350,7 @@
       },
       {
         "name": "DimHazards",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "HazardID",
@@ -373,7 +373,7 @@
       },
       {
         "name": "FactProductionOrders",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "OrderID",
@@ -420,7 +420,7 @@
       },
       {
         "name": "FactProductionOutput",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "OutputID",
@@ -463,7 +463,7 @@
       },
       {
         "name": "FactQualityInspections",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "InspectionID",
@@ -510,7 +510,7 @@
       },
       {
         "name": "FactNonConformance",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "NCRID",
@@ -553,7 +553,7 @@
       },
       {
         "name": "FactPurchaseOrders",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "POID",
@@ -592,7 +592,7 @@
       },
       {
         "name": "FactGoodsReceipt",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "ReceiptID",
@@ -627,7 +627,7 @@
       },
       {
         "name": "FactInventory",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "InventoryID",
@@ -662,7 +662,7 @@
       },
       {
         "name": "FactMaintenanceWorkOrders",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "WorkOrderID",
@@ -705,7 +705,7 @@
       },
       {
         "name": "FactDowntime",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "DowntimeID",
@@ -740,7 +740,7 @@
       },
       {
         "name": "FactSafetyIncidents",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "IncidentID",
@@ -779,7 +779,7 @@
       },
       {
         "name": "FactEnvironmentalReadings",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "ReadingID",
@@ -814,7 +814,7 @@
       },
       {
         "name": "DimCustomers",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "CustomerID",
@@ -841,7 +841,7 @@
       },
       {
         "name": "FactSalesOrders",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "SalesOrderID",
@@ -880,7 +880,7 @@
       },
       {
         "name": "FactScrapWaste",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "ScrapID",
@@ -915,7 +915,7 @@
       },
       {
         "name": "FactEnergyUsage",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "UsageID",
@@ -950,7 +950,7 @@
       },
       {
         "name": "FactShipments",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "ShipmentID",
@@ -985,7 +985,7 @@
       },
       {
         "name": "DimWorkCenters",
-        "schema": "dim",
+        "schema": "dbo",
         "columns": [
           {
             "name": "WorkCenterID",
@@ -1012,7 +1012,7 @@
       },
       {
         "name": "FactTooling",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "ToolingID",
@@ -1047,7 +1047,7 @@
       },
       {
         "name": "FactReturnsClaims",
-        "schema": "fact",
+        "schema": "dbo",
         "columns": [
           {
             "name": "ClaimID",

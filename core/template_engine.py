@@ -5,7 +5,6 @@ with values from industry configs. Supports nested templates and
 conditional blocks.
 """
 
-import os
 import re
 from pathlib import Path
 

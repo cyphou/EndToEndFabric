@@ -1,8 +1,8 @@
-"""Pipeline generator — produces Fabric Data Pipeline JSON definitions.
+"""Pipeline generator -- produces Fabric Data Pipeline JSON definitions.
 
 Generates a pipeline-content.json with activities orchestrating:
-Phase 1: Parallel Dataflow refreshes (CSV → Bronze)
-Phase 2-N: Sequential notebook activities (Bronze→Silver→Gold→Forecast)
+Phase 1: NB01 (ingests CSVs + Bronze -> Silver)
+Phase 2-N: Sequential notebook activities (Silver->Gold->Forecast)
 """
 
 import json
@@ -10,7 +10,9 @@ from pathlib import Path
 
 
 def generate_pipeline(industry_config: dict, sample_data_config: dict | None,
-                      output_dir: Path) -> list[Path]:
+                      output_dir: Path,
+                      skip_forecast: bool = False,
+                      skip_htap: bool = False) -> list[Path]:
     """Generate pipeline definition JSON for the industry demo.
 
     Returns list of created file paths.
@@ -27,41 +29,8 @@ def generate_pipeline(industry_config: dict, sample_data_config: dict | None,
 
     activities = []
 
-    # Phase 1: Parallel dataflow refreshes
-    df_activities = []
-    for domain in domains:
-        act_name = f"{company_prefix}_DF_{domain}"
-        tables_desc = ""
-        if sample_data_config:
-            for d in sample_data_config["sampleData"]["domains"]:
-                if d["name"] == domain:
-                    tables_desc = ", ".join(t["name"] for t in d["tables"])
-                    break
-
-        activity = {
-            "name": act_name,
-            "type": "RefreshDataflow",
-            "description": f"Dataflow Gen2: Loads {tables_desc} CSVs into BronzeLH tables.",
-            "dependsOn": [],
-            "policy": {
-                "timeout": "0.12:00:00",
-                "retry": 0,
-                "retryIntervalInSeconds": 30,
-                "secureOutput": False,
-                "secureInput": False,
-            },
-            "typeProperties": {
-                "workspaceId": "{{WORKSPACE_ID}}",
-                "dataflowId": "{{" + f"DF_{domain.upper()}_ID" + "}}",
-                "notifyOption": "NoNotification",
-                "dataflowType": "DataflowFabric",
-            },
-            "folder": {"name": "1. Data Ingestion"},
-        }
-        activities.append(activity)
-        df_activities.append(act_name)
-
-    # Phase 2+: Sequential notebooks
+    # Sequential notebooks -- NB01 ingests CSVs itself, subsequent notebooks depend on prior
+    # (RefreshDataflow activities removed; NB01 now self-contained for CSV ingestion)
     notebook_sequence = [
         ("01", "BronzeToSilver", "2. Transformation",
          "PySpark: BronzeLH tables → SilverLH Delta. Quality checks, transforms, dedup."),
@@ -69,17 +38,27 @@ def generate_pipeline(industry_config: dict, sample_data_config: dict | None,
          "PySpark: fetches external API data → SilverLH.web schema."),
         ("03", "SilverToGold", "3. Gold Layer",
          "PySpark: SilverLH → GoldLH star schema (dim/fact schemas) + analytics views."),
-        ("04", "Forecasting", "4. Forecasting",
-         "PySpark: Builds Holt-Winters forecasts on Gold data."),
     ]
+
+    if not skip_forecast:
+        notebook_sequence.append(
+            ("04", "Forecasting", "4. Forecasting",
+             "PySpark: Builds Holt-Winters forecasts on Gold data."))
+
+    if not skip_htap:
+        notebook_sequence.append(
+            ("05", "EventSimulator", "5. HTAP",
+             "PySpark: Simulates real-time events for Eventhouse ingestion."))
+
+    # NB06 Diagnostic always runs last
+    notebook_sequence.append(
+        ("06", "DiagnosticCheck", "6. Validation",
+         "PySpark: Validates table row counts, schema integrity, and logs summary."))
 
     prev_activity = None
     for nb_num, nb_name, folder, description in notebook_sequence:
         act_name = f"{company_prefix}_{nb_num}_{nb_name}"
-        if nb_num == "01":
-            # Depends on all dataflows
-            depends = [{"activity": a, "dependencyConditions": ["Succeeded"]} for a in df_activities]
-        elif prev_activity:
+        if prev_activity:
             depends = [{"activity": prev_activity, "dependencyConditions": ["Succeeded"]}]
         else:
             depends = []
@@ -104,12 +83,10 @@ def generate_pipeline(industry_config: dict, sample_data_config: dict | None,
         prev_activity = act_name
 
     pipeline_name = f"PL_{company_prefix}_Orchestration"
+    nb_desc = " → ".join(f"NB{nb[0]}({nb[1]})" for nb in notebook_sequence)
     pipeline_content = {
         "properties": {
-            "description": (
-                "Medallion ETL: DF(CSV→Bronze) → NB01(Bronze→Silver) → "
-                "NB02(WebEnrich) → NB03(Silver→Gold) → NB04(Forecasting)"
-            ),
+            "description": f"Medallion ETL: DF(CSV→Bronze) → {nb_desc}",
             "activities": activities,
         }
     }
@@ -133,7 +110,7 @@ def generate_pipeline(industry_config: dict, sample_data_config: dict | None,
     lines.append("    ↓ all succeed")
     for nb_num, nb_name, _, _ in notebook_sequence:
         lines.append(f"Phase {int(nb_num)+1}: NB{nb_num} {nb_name}")
-        if nb_num != "04":
+        if nb_num != notebook_sequence[-1][0]:
             lines.append("    ↓")
     lines.append("```")
     lines.append("")

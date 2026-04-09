@@ -7,6 +7,8 @@
     "icon": "🏭",
     "domains": ["Production", "Quality", "SupplyChain", "Maintenance", "EHS"],
     "dataYears": ["FY2024", "FY2025", "FY2026"],
+    "dateRange": { "start": "2023-01-01", "end": "2027-12-31" },
+    "fiscalYearStartMonth": 7,
     "headquarters": "Detroit, MI",
     "operations": ["4 plants (Detroit, Guadalajara, Stuttgart, Pune)", "1,200 SKUs", "180 suppliers", "3 shifts per plant"],
     "theme": {
@@ -20,6 +22,10 @@
   },
   "fabricArtifacts": {
     "workspacePrefix": "FabrikamManufacturing",
+    "cloud": {
+      "fabricApiBase": "https://api.fabric.microsoft.com/v1",
+      "oneLakeDfsBase": "https://onelake.dfs.fabric.microsoft.com"
+    },
     "lakehouses": {
       "bronze": "BronzeLH",
       "silver": "SilverLH",

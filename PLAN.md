@@ -6,14 +6,14 @@
 
 > **Reference:** Architecture inspired by [TableauToPowerBI](../TableauToPowerBI) (8+1 agent model) and [FullDemoFabricBookUseCase](../FullDemoFabricBookUseCase) (Horizon Books demo pattern).
 
-> **Status: ✅ ALL 8 PHASES COMPLETE** — 18 core modules, 24 templates, 10 agent definitions, 4 industries (10 config files each), 250 tests passing, CI/CD operational, generation under 1.2s per industry.
+> **Status: ✅ ALL 8 PHASES COMPLETE** — 20 core modules, 24 templates, 11 agent definitions, 4 industries (10 config files each), 303 tests passing, CI/CD operational, generation under 1.2s per industry.
 
 ---
 
 ## Table of Contents
 
 1. [Industry Demos Overview](#1-industry-demos-overview)
-2. [Multi-Agent Architecture (9+1 Agents)](#2-multi-agent-architecture-91-agents)
+2. [Multi-Agent Architecture (11+1 Agents)](#2-multi-agent-architecture-111-agents)
 3. [Shared Framework (Core Engine)](#3-shared-framework-core-engine)
 4. [Industry Demo Specifications](#4-industry-demo-specifications)
 5. [Transactional Analytics (HTAP) Module](#5-transactional-analytics-htap-module)
@@ -47,16 +47,18 @@ Each demo follows the **Horizon Books blueprint** but with industry-specific dat
 | Data Pipeline | 1 | Linked orchestration (DF → NB01 → NB02 → NB03 → NB04 → NB05) |
 | Spark Environment | 1 | Python deps + Spark config |
 | Semantic Models | 2 | Direct Lake on Gold Lakehouse + DirectQuery writeback on SQL Database |
-| Power BI Reports | 4 | Analytics (10+ pages), Forecasting (5 pages), HTAP Dashboard (3 pages), Pipeline (3 pages) |
+| Power BI Reports | 5 | Analytics (10+ pages), Forecasting (5 pages), HTAP Dashboard (3 pages), Pipeline (3 pages), Writeback (3 pages) |
 | Data Agent | 1 | AI Q&A on semantic model (F64+) |
 | SQL Database | 1 | Fabric SQL Database for writeback stored procedures |
 | User Data Function | 1 | API bridge (7 functions: list + upsert/read per writeback table) |
 | Eventhouses | 1 | Real-time event stream for HTAP scenarios |
 | KQL Databases | 1 | Hot-path query layer for transactional analytics |
+| Task Flow | 1 | Architecture DAG visualising the full data flow (nodes + edges) |
+| Workspace Icon | 1 | Branded SVG icon per industry uploaded to the Fabric workspace |
 
 ---
 
-## 2. Multi-Agent Architecture (9+1 Agents)
+## 2. Multi-Agent Architecture (11+1 Agents)
 
 Modeled after TableauToPowerBI's proven 8+1 agent pattern, adapted for Fabric demo generation.
 
@@ -97,11 +99,13 @@ Modeled after TableauToPowerBI's proven 8+1 agent pattern, adapted for Fabric de
 | **@data-engineer** | Sample data generation, notebooks, dataflows | `SampleData/`, `notebooks/`, `Dataflows/` | read, edit, search, execute, todo |
 | **@semantic-model** | TMDL generation, DAX measures, relationships | `SemanticModel/`, `.SemanticModel/` definitions | read, edit, search, execute, todo |
 | **@report-builder** | PBIR reports, visuals, themes, pages | `Reports/`, `.Report/` definitions | read, edit, search, execute, todo |
+| **@report-designer** | Logo, color harmony, layout grid, visual-overlap audit | `core/report_designer.py`, `shared/assets/` | read, edit, search, execute, todo |
 | **@forecaster** | Holt-Winters models, MLflow, Planning IQ | `Forecasting/`, `Planning/`, NB04, NB planning | read, edit, search, execute, todo |
 | **@htap-engineer** | Eventhouse, KQL, real-time streams, HTAP | `Transactional/`, NB05, Eventhouse configs | read, edit, search, execute, todo |
 | **@deployer** | PowerShell deployment, Fabric REST, OneLake | `deploy/`, `.psm1` helpers | read, edit, search, execute, todo |
 | **@tester** | Pester tests, validation, data quality | `tests/` | read, edit, search, execute, todo |
 | **@industry-designer** | Domain schemas, KPIs, business rules, story | `industries/*/` config files | read, edit, search, execute, todo |
+| **@validator** | Post-generation output verification (structure, TMDL, cross-refs, placeholders) | `core/validator.py` | read, search, execute, todo |
 | **@shared** | Cross-cutting constraints, conventions | `.github/agents/shared.instructions.md` | — (inherited) |
 
 ---
@@ -978,6 +982,7 @@ applies_to: all_agents
 | HTAP event streams | 3 | 3 | 3 | 4 |
 | Notebooks | 9 | 9 | 9 | 9 |
 | Deployment scripts | 4 | 4 | 4 | 4 |
+| Workspace artifacts | 2 | 2 | 2 | 2 |
 
 ---
 
@@ -1025,34 +1030,115 @@ on:
 
 ## Summary
 
-This plan has been **fully implemented**. The single-industry Horizon Books demo has been transformed into a **multi-industry demo factory** with:
+Phases 1–8 are **fully implemented**. Phase 9 introduces post-generation validation and quality hardening.
 
 - **4 industry demos** (Publishing, Energy, HR/Finance, Manufacturing) — all generating cleanly
-- **9+1 specialized agents** with clear ownership, handoff protocols, and shared constraints
+- **11+1 specialized agents** with clear ownership, handoff protocols, and shared constraints
 - **Configuration-driven generation** — add a new industry by adding 10 JSON config files
 - **Transactional Analytics (HTAP)** — Eventhouse + KQL + real-time dashboards
 - **Forecasting + Planning** — Holt-Winters + MLflow + Fabric IQ
-- **Writeback** — NB07/NB08 notebooks with stored procedure integration
+- **Writeback** — NB07/NB08/NB09 notebooks with stored procedure + SQL Database integration
+- **User Data Functions** — 7 writeback API functions per industry
 - **Data Agent** — Fabric AI Agent config + README per industry
-- **One-command deployment** — `Deploy-Full.ps1 -WorkspaceId "<guid>" -Industry "contoso-energy"`
-- **Comprehensive testing** — 224+ pytest tests + Pester integration framework
+- **One-command deployment** — `deploy-to-fabric.ps1 -WorkspaceId "<guid>" -Industry "contoso-energy"`
+- **Autoplay** — `deploy-to-fabric.ps1 -Autoplay` refreshes semantic model, exports PNG screenshots of every report page, runs visual-overlap and empty-data checks
+- **Post-generation validation** — @validator agent verifies all output artifacts (step 15/15)
+- **Comprehensive testing** — 303 pytest tests + 80 subtests + Pester integration framework
 - **CI/CD** — GitHub Actions (ci-tests.yml, generate-demo.yml)
 - **Performance** — All 4 industries generate in under 1.2 seconds each
-- **CLI features** — `--wizard` interactive mode, `--compare` cross-industry report
-- **20-sprint roadmap** completed with all deliverables verified
+- **CLI features** — `--wizard` interactive mode, `--compare` cross-industry report, `--new-industry` scaffolding, `--skip-validate`
 
-### Final Metrics
+### Deployment Scripts
+
+| Script | Purpose |
+|---|---|
+| `deploy-to-fabric.ps1` | One-command Fabric deployment with `-Clean`, `-TriggerPipeline`, `-Autoplay`, `-SkipDeploy` flags |
+| `_update-items.ps1` | Hot-patch notebook + pipeline definitions in a live workspace |
+| `patch-pipeline.ps1` | Patch pipeline definition with resolved notebook IDs |
+
+### Current Metrics
 
 | Metric | Value |
 |---|---|
-| Core Python modules | 17 |
+| Core Python modules | 20 (including validator.py, workspace_generator.py) |
 | Template files | 24 |
-| Agent definitions | 10 (9 + shared) |
+| Agent definitions | 11+1 (11 specialized + shared) |
 | Industries | 4 |
 | Config files per industry | 10 |
-| Test files | 21 (18 pytest + 2 Pester + 1 performance) |
-| Tests passing | 224+ (plus 80 subtests) |
+| Test files | 24 (21 pytest + 2 Pester + 1 performance) |
+| Tests passing | 303 (plus 80+ subtests) |
 | Generation time (max) | < 1.2s per industry |
 | CI/CD workflows | 2 (ci-tests.yml, generate-demo.yml) |
 
 The architecture ensures that adding a 5th or 6th industry demo requires only writing new JSON config files — no code changes to the core generators.
+
+---
+
+## Phase 9 — Validation, Quality Hardening & Next Enhancements (Sprint 21–26)
+
+> **Status: 🟡 IN PROGRESS** — Validator agent created, core bugs fixed, next sprint items planned.
+
+### Sprint 21 ✅ COMPLETE — Validator Agent & Bug Bash
+
+| Deliverable | Agent Lead | Status |
+|-------------|------------|--------|
+| Bug bash: hardcoded values audit (report colors, DimDate range, fiscal year, Fabric URLs) | @shared | ✅ |
+| Bug bash: code bugs (step numbering, wizard dead code, pester unwrap, SQL injection, FIPS MD5) | All agents | ✅ |
+| Agent definitions sync (6 ownership gaps, 5 phantom references, naming convention) | @shared | ✅ |
+| `core/validator.py` — 9-category post-generation validator | @validator | ✅ |
+| `validator.agent.md` — agent definition | @validator | ✅ |
+| Wire validator into `generate.py` as step 14/14 (`--skip-validate`) | @orchestrator | ✅ |
+| `test_validator.py` — 11 unit/integration tests | @tester | ✅ |
+| Register @validator in AGENTS.md, shared.instructions.md, orchestrator | @shared | ✅ |
+
+### Sprint 22 — Hardcoded Values Cleanup ✅
+
+| Deliverable | Agent Lead | Status |
+|-------------|------------|--------|
+| Make report CY24SU06 + version 5.56 configurable or auto-detect | @report-builder | ✅ |
+| DimDate range from industry config (`dateRange.start/end`) | @data-engineer | ✅ |
+| Fiscal year start month from industry config | @data-engineer | ✅ |
+| Sovereign cloud support (configurable Fabric API base URLs) | @deployer | ✅ |
+| Deploy script reads report names from reports.json (not guessed) | @deployer | ✅ |
+| Pipeline includes all generated notebooks dynamically | @orchestrator | ✅ |
+| Validation item counts computed from config | @deployer | ✅ |
+
+### Sprint 23 — Enhanced Validation ✅
+
+| Deliverable | Agent Lead | Status |
+|-------------|------------|--------|
+| TMDL relationship cross-ref (fromColumn/toColumn → table columns exist) | @validator | ✅ |
+| Report visual → semantic model column binding validation | @validator | ✅ |
+| Dataflow M query syntax validation (balanced `let`/`in`, section closing) | @validator | ✅ |
+| Pipeline DAG cycle detection | @validator | ✅ |
+| UDF function list ↔ stored procedures cross-ref | @validator | ✅ |
+| Validation report export (JSON + HTML summary) | @validator | ✅ |
+
+### Sprint 24 — New Industry Template
+
+| Deliverable | Agent Lead | Status |
+|-------------|------------|--------|
+| `generate.py --new-industry <id>` scaffold command | @orchestrator | ✅ |
+| Blank industry template (10 JSON skeletons with required fields) | @industry-designer | ✅ |
+| Industry config completeness validator (all tables have columns, all measures have DAX) | @validator | ✅ |
+| Documentation: "Adding a New Industry" step-by-step guide (built-in CLI output) | @orchestrator | ✅ |
+
+### Sprint 25 — Deployment Enhancements
+
+| Deliverable | Agent Lead | Status |
+|-------------|------------|--------|
+| Incremental deploy (only upload changed CSVs/notebooks) | @deployer | 🔲 |
+| Fabric REST API v2 endpoints (if available) | @deployer | 🔲 |
+| Post-deploy validation (live Fabric workspace artifact check) | @validator + @deployer | 🔲 |
+| Deployment dry-run mode (`--dry-run` flag) | @deployer | 🔲 |
+| Deploy to multiple workspaces (dev/test/prod) | @deployer | 🔲 |
+
+### Sprint 26 — Quality & Performance
+
+| Deliverable | Agent Lead | Status |
+|-------------|------------|--------|
+| Mutation testing (mutmut) for critical validators | @tester | 🔲 |
+| Code coverage gate (90%+ for core/) | @tester | 🔲 |
+| Generated notebook runtime testing (PySpark syntax check) | @tester | 🔲 |
+| Performance regression test (fail if any industry > 2s) | @tester | 🔲 |
+| CI pipeline: add validator step to ci-tests.yml | @tester | 🔲 |

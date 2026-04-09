@@ -17,8 +17,11 @@ user-invocable: true
 
 ## Owns
 - `core/test_generator.py`
+- `core/pester_generator.py`
 - `tests/core/*.py`
+- `tests/industries/*.py`
 - `tests/industries/*.Tests.ps1`
+- `tests/integration/*.py`
 - `tests/integration/*.Tests.ps1`
 
 ## Does NOT Own

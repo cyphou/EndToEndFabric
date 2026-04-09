@@ -1,6 +1,6 @@
 # Multi-Agent Architecture
 
-This document describes the **9+1 specialized agents** used for AI-assisted development of the Fabric End-to-End Industry Demo Generator.
+This document describes the **11+1 specialized agents** used for AI-assisted development of the Fabric End-to-End Industry Demo Generator.
 
 Agent definitions live in `.github/agents/` and are inherited by GitHub Copilot when working in this repository.
 
@@ -21,9 +21,10 @@ Agent definitions live in `.github/agents/` and are inherited by GitHub Copilot 
 ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
 │@FORECAST │ │@HTAP     │ │@DEPLOYER │ │@TESTER   │
 └──────────┘ └──────────┘ └──────────┘ └──────────┘
-                    ┌──────────┐
-                    │@INDUSTRY │
-                    └──────────┘
+┌──────────┐ ┌──────────┐ ┌──────────┐
+│@INDUSTRY │ │@VALIDATOR│ │@REPORT   │
+│          │ │          │ │-DESIGNER │
+└──────────┘ └──────────┘ └──────────┘
 ```
 
 ---
@@ -32,15 +33,17 @@ Agent definitions live in `.github/agents/` and are inherited by GitHub Copilot 
 
 | Agent | Definition File | Owns | Responsibilities |
 |-------|-----------------|------|------------------|
-| **@orchestrator** | `orchestrator.agent.md` | `generate.py`, `generate.ps1`, top-level configs | CLI pipeline coordination, config loading, step sequencing, `--wizard`, `--compare` |
-| **@data-engineer** | `data-engineer.agent.md` | `core/csv_generator.py`, `core/notebook_generator.py`, `core/dataflow_generator.py`, `templates/notebooks/` | Sample CSV data, PySpark notebooks, Dataflow Gen2 configs |
+| **@orchestrator** | `orchestrator.agent.md` | `generate.py`, `generate.ps1`, `core/config_loader.py`, `core/template_engine.py`, `core/pipeline_generator.py`, `core/agent_generator.py`, `core/schemas/` | CLI pipeline coordination, config loading, step sequencing, `--wizard`, `--compare` |
+| **@data-engineer** | `data-engineer.agent.md` | `core/csv_generator.py`, `core/notebook_generator.py`, `core/dataflow_generator.py`, `templates/notebooks/` | Sample CSV data, PySpark notebooks (NB01–NB03, NB06), Dataflow Gen2 configs |
 | **@semantic-model** | `semantic-model.agent.md` | `core/tmdl_generator.py`, `templates/tmdl/` | TMDL table definitions, DAX measures, relationships |
-| **@report-builder** | `report-builder.agent.md` | `core/report_generator.py`, `core/comparison_generator.py`, `templates/reports/` | PBIR v4.0 pages, visuals, themes, cross-industry comparison |
+| **@report-builder** | `report-builder.agent.md` | `core/report_generator.py`, `core/comparison_generator.py`, `templates/reports/`, `shared/assets/` | PBIR v4.0 pages, visuals, themes, cross-industry comparison |
 | **@forecaster** | `forecaster.agent.md` | `core/forecast_generator.py`, `core/planning_generator.py` | Holt-Winters models, MLflow tracking, Planning IQ tables |
 | **@htap-engineer** | `htap-engineer.agent.md` | `core/htap_generator.py`, `templates/kql/` | Eventhouse, KQL database, event simulator, hot-cold bridge |
-| **@deployer** | `deployer.agent.md` | `core/deploy_generator.py`, `core/writeback_generator.py`, `core/udf_generator.py`, `shared/deploy/`, `templates/deploy/` | PowerShell deployment scripts, Fabric REST API, writeback notebooks, User Data Functions |
+| **@deployer** | `deployer.agent.md` | `core/deploy_generator.py`, `core/writeback_generator.py`, `core/udf_generator.py`, `shared/deploy/`, `templates/deploy/`, `deploy-to-fabric.ps1` | PowerShell deployment scripts, Fabric REST API, writeback notebooks, User Data Functions |
 | **@tester** | `tester.agent.md` | `core/pester_generator.py`, `core/test_generator.py`, `tests/` | pytest + Pester test suites, validation, performance benchmarks |
 | **@industry-designer** | `industry-designer.agent.md` | `industries/*/` config files (10 per industry) | Domain schemas, KPIs, company stories, data-agent configs |
+| **@validator** | `validator.agent.md` | `core/validator.py` | Post-generation output verification: structure, metadata, TMDL, cross-refs, placeholders |
+| **@report-designer** | `report-designer.agent.md` | `core/report_designer.py`, `shared/assets/logos/`, `shared/assets/themes/` | Logo placement, color harmony, layout grid, visual-overlap audit, screenshot design validation |
 | **@shared** | `shared.instructions.md` | Cross-cutting constraints | Hard rules inherited by all agents |
 
 ---
@@ -51,7 +54,7 @@ All agents inherit these hard rules:
 
 1. **Configuration-driven** — Industry-specific behavior comes from `industries/<id>/*.json`, never hard-coded.
 2. **Idempotent generation** — Re-running `generate.py` produces identical output for the same config + seed.
-3. **Zero external deps for core** — Python stdlib only (`csv`, `json`, `os`, `pathlib`).
+3. **Zero external deps for core** — Python stdlib only (`csv`, `json`, `os`, `pathlib`, `string`, `re`, `datetime`, `random`).
 4. **Read before write** — Never assume file contents; always load config first.
 5. **Test after change** — Run `python -m pytest tests/ -v` after every modification.
 6. **Template discipline** — Templates use `{{PLACEHOLDER}}` syntax; never raw string concatenation.

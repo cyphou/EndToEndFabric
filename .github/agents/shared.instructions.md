@@ -16,6 +16,7 @@ These rules are **mandatory** for every agent in the FabricEndtoEnd project.
 6. **Git hygiene** — Conventional commits: `feat(energy):`, `fix(core):`, `test(hrfinance):`, `docs:`.
 7. **Template discipline** — Templates use `{{PLACEHOLDER}}` syntax. Never use raw string concatenation for multi-line artifacts.
 8. **Schema validation** — All JSON configs are validated against `core/schemas/*.json` before generation.
+9. **No PEM files** — Never generate, store, or commit `.pem` certificate files. Use managed identity or token-based auth for all service connections.
 
 ## Naming Conventions
 
@@ -25,7 +26,7 @@ These rules are **mandatory** for every agent in the FabricEndtoEnd project.
 | Notebook | `NB0X_<Name>` | `NB01_BronzeToSilver` |
 | Dataflow | `DF_<Domain>` | `DF_Generation`, `DF_Billing` |
 | Pipeline | `PL_<CompanyName>_Orchestration` | `PL_ContosoEnergy_Orchestration` |
-| Report | `<CompanyName><Type>` | `ContosoEnergyAnalytics` |
+| Report | `<CompanyName>-<Type>` | `ContosoEnergy-Analytics` |
 | SemanticModel | `<CompanyName>Model` | `ContosoEnergyModel` |
 | Eventhouse | `RT_<Prefix>_Events` | `RT_ContosoEnergy_Events` |
 
@@ -34,6 +35,22 @@ These rules are **mandatory** for every agent in the FabricEndtoEnd project.
 - **One owner per module** — Only the owning agent modifies it.
 - **Universal read access** — Any agent can read any file for context.
 - **@tester is special** — Reads all source, writes only to `tests/`.
+
+## Agent Registry
+
+| Agent | File | Primary domain |
+|-------|------|----------------|
+| @orchestrator | `orchestrator.agent.md` | CLI pipeline, config loading |
+| @data-engineer | `data-engineer.agent.md` | CSV data, PySpark notebooks, Dataflows |
+| @semantic-model | `semantic-model.agent.md` | TMDL, DAX measures, relationships |
+| @report-builder | `report-builder.agent.md` | PBIR v4.0 pages, visuals, themes |
+| @report-designer | `report-designer.agent.md` | Logo, color harmony, layout grid, screenshot validation |
+| @forecaster | `forecaster.agent.md` | Holt-Winters, MLflow, Planning IQ |
+| @htap-engineer | `htap-engineer.agent.md` | Eventhouse, KQL, event simulator |
+| @deployer | `deployer.agent.md` | PowerShell deploy scripts, Fabric REST, UDF |
+| @tester | `tester.agent.md` | pytest + Pester, benchmarks |
+| @industry-designer | `industry-designer.agent.md` | Domain schemas, KPIs, company stories |
+| @validator | `validator.agent.md` | Structure, TMDL, cross-refs, placeholder hygiene |
 
 ## Handoff Protocol
 

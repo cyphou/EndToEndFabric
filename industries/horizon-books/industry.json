@@ -7,6 +7,8 @@
     "icon": "📚",
     "domains": ["Finance", "HR", "Operations"],
     "dataYears": ["FY2024", "FY2025", "FY2026"],
+    "dateRange": { "start": "2023-01-01", "end": "2027-12-31" },
+    "fiscalYearStartMonth": 7,
     "headquarters": "New York, NY",
     "operations": ["6 imprints", "Chicago warehouse", "International ops (London, Tokyo, Frankfurt, Mexico City)"],
     "theme": {
@@ -19,6 +21,10 @@
   },
   "fabricArtifacts": {
     "workspacePrefix": "HorizonBooks",
+    "cloud": {
+      "fabricApiBase": "https://api.fabric.microsoft.com/v1",
+      "oneLakeDfsBase": "https://onelake.dfs.fabric.microsoft.com"
+    },
     "lakehouses": {
       "bronze": "BronzeLH",
       "silver": "SilverLH",

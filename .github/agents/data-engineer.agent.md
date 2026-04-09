@@ -18,7 +18,7 @@ user-invocable: true
 - `core/csv_generator.py`
 - `core/notebook_generator.py`
 - `core/dataflow_generator.py`
-- `templates/notebooks/*.tpl`
+- `templates/notebooks/` (currently inline generation; NB04→@forecaster, NB05→@htap-engineer)
 
 ## Does NOT Own
 - ❌ Forecast notebook (→ @forecaster)

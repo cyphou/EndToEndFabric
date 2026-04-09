@@ -183,6 +183,28 @@
           {"type": "table", "columns": ["RefreshDate", "Pipeline", "Status", "Duration (s)", "Error"]}
         ]}
       ]
+    },
+    {
+      "name": "HorizonBooks-Writeback",
+      "semanticModel": "writeback",
+      "theme": {"primary": "#6A1B9A", "secondary": "#FF6F00", "background": "#FAFAFA"},
+      "pages": [
+        {"name": "Sales Targets", "visuals": [
+          {"type": "card", "measure": "Total Target Revenue"},
+          {"type": "card", "measure": "Total Target Units Sold"},
+          {"type": "table", "columns": ["TargetId", "FiscalYear", "FiscalQuarter", "Imprint", "Genre", "TargetRevenue", "TargetUnitsSold", "ModifiedBy"]},
+          {"type": "clusteredBarChart", "axis": "Imprint", "values": ["TargetRevenue"]}
+        ]},
+        {"name": "Inventory Overrides", "visuals": [
+          {"type": "table", "columns": ["OverrideId", "WarehouseId", "ISBN", "OverrideQty", "ReasonCode", "EffectiveDate", "ModifiedBy"]},
+          {"type": "clusteredBarChart", "axis": "ReasonCode", "values": ["OverrideQty"]}
+        ]},
+        {"name": "Royalty Adjustments", "visuals": [
+          {"type": "card", "measure": "Pending Count"},
+          {"type": "table", "columns": ["AdjustmentId", "AuthorId", "ContractYear", "CurrentRate", "ProposedRate", "Status", "SubmittedBy"]},
+          {"type": "clusteredBarChart", "axis": "Status", "values": ["ProposedRate"]}
+        ]}
+      ]
     }
   ]
 }

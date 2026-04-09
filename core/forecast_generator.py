@@ -94,7 +94,7 @@ try:
 
     # Build forecast per grain combination
     forecast_rows = []
-    source_df = spark.table(f"{gold_lh}.{output_schema}.{model.get('table', output_table.replace('Forecast', 'Fact'))}")
+    source_df = spark.read.format("delta").load(f"abfss://{{WORKSPACE_ID}}@onelake.dfs.fabric.microsoft.com/{{GOLD_LH_ID}}/Tables/{output_schema}/{model.get('table', output_table.replace('Forecast', 'Fact'))}")
 
     if source_df.count() == 0:
         print(f"  WARNING: No source data found, generating synthetic forecast")
@@ -190,7 +190,7 @@ try:
         df_fc = spark.createDataFrame(forecast_rows)
         df_fc.write.mode("overwrite").format("delta") \\
             .option("overwriteSchema", "true") \\
-            .saveAsTable(f"{gold_lh}.{output_schema}.{output_table}")
+            .save(f"abfss://{{WORKSPACE_ID}}@onelake.dfs.fabric.microsoft.com/{{GOLD_LH_ID}}/Tables/{output_schema}/{output_table}")
         print(f"  ✓ {output_table}: {{len(forecast_rows)}} forecast rows")
 
     # MLflow tracking
@@ -219,12 +219,13 @@ from pyspark.sql import functions as F
 import datetime
 
 GOLD_LH = "{gold_lh}"
+WORKSPACE_ID = "{{{{WORKSPACE_ID}}}}"
+GOLD_LH_ID = "{{{{GOLD_LH_ID}}}}"
 FORECAST_HORIZON = {horizon}
 CONFIDENCE_LEVEL = {confidence}
 SEASONAL_PERIODS = {seasonal_periods}
 
-# Create analytics schema
-spark.sql(f"CREATE SCHEMA IF NOT EXISTS {gold_lh}.analytics")
+# Note: all Delta writes use abfss:// paths to avoid catalog registration issues.
 
 errors = []
 print("=" * 60)
@@ -232,7 +233,7 @@ print(f"  {company} Forecasting — {{len([{', '.join(repr(m['name']) for m in m
 print("=" * 60)
 
 # Start MLflow parent run
-mlflow.set_experiment(f"/Shared/{company}_Forecasting")
+mlflow.set_experiment(f"{company}_Forecasting")
 with mlflow.start_run(run_name=f"NB04_Forecasting_{{datetime.datetime.now().strftime('%Y%m%d_%H%M')}}"):
     mlflow.log_param("company", "{company}")
     mlflow.log_param("horizon", FORECAST_HORIZON)

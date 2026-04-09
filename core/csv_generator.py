@@ -6,11 +6,9 @@ while maintaining referential integrity across tables.
 """
 
 import csv
-import math
-import os
 import random
 import string
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from pathlib import Path
 
 

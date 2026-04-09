@@ -17,8 +17,9 @@ user-invocable: true
 
 ## Owns
 - `core/report_generator.py`
-- `templates/reports/*.tpl`
-- `shared/assets/default-theme.json`
+- `core/comparison_generator.py`
+- `templates/reports/*`
+- `shared/assets/`
 
 ## Does NOT Own
 - ❌ Semantic model / DAX (→ @semantic-model)

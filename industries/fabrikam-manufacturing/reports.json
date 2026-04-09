@@ -173,6 +173,28 @@
           {"type": "table", "columns": ["RefreshDate", "Pipeline", "Status", "Duration (s)", "Error"]}
         ]}
       ]
+    },
+    {
+      "name": "FabrikamManufacturing-Writeback",
+      "semanticModel": "writeback",
+      "theme": {"primary": "#1565C0", "secondary": "#FF8F00", "background": "#FAFAFA"},
+      "pages": [
+        {"name": "Production Targets", "visuals": [
+          {"type": "card", "measure": "Total Target Units"},
+          {"type": "table", "columns": ["TargetId", "FiscalYear", "FiscalMonth", "PlantName", "ProductLine", "TargetUnits", "TargetYieldPct", "ModifiedBy"]},
+          {"type": "clusteredBarChart", "axis": "PlantName", "values": ["TargetUnits"]}
+        ]},
+        {"name": "Quality Thresholds", "visuals": [
+          {"type": "table", "columns": ["ThresholdId", "ProductLine", "MetricName", "MinValue", "MaxValue", "EffectiveDate", "ModifiedBy"]},
+          {"type": "clusteredBarChart", "axis": "ProductLine", "values": ["MinValue", "MaxValue"]}
+        ]},
+        {"name": "Maintenance Budget", "visuals": [
+          {"type": "card", "measure": "Total Budget Amount"},
+          {"type": "card", "measure": "Draft Count"},
+          {"type": "table", "columns": ["BudgetId", "FiscalYear", "PlantName", "Category", "BudgetAmount", "Status", "ModifiedBy"]},
+          {"type": "clusteredBarChart", "axis": "Category", "values": ["BudgetAmount"]}
+        ]}
+      ]
     }
   ]
 }

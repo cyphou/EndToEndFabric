@@ -155,30 +155,30 @@ def _build_event_simulator(company, gold_lh, streams):
             ctype = col.get("type", "string")
             cname = col["name"]
             if ctype == "datetime":
-                col_assignments.append(f'            "{cname}": datetime.datetime.now().isoformat()')
+                col_assignments.append(f'    "{cname}": datetime.datetime.now().isoformat()')
             elif ctype in ("float", "real", "double"):
-                col_assignments.append(f'            "{cname}": round(random.uniform(0, 1000), 2)')
+                col_assignments.append(f'    "{cname}": round(random.uniform(0, 1000), 2)')
             elif ctype in ("int", "integer", "long"):
-                col_assignments.append(f'            "{cname}": random.randint(1, 10000)')
+                col_assignments.append(f'    "{cname}": random.randint(1, 10000)')
             elif ctype in ("bool", "boolean"):
-                col_assignments.append(f'            "{cname}": random.choice([True, False])')
+                col_assignments.append(f'    "{cname}": random.choice([True, False])')
             else:
-                col_assignments.append(f'            "{cname}": f"{{random.choice(sample_ids)}}"')
+                col_assignments.append(f'    "{cname}": f"{{random.choice(sample_ids)}}"')
 
         assignments_str = ",\n".join(col_assignments)
 
         stream_blocks.append(f'''
-    # ── {name} ──
-    print(f"  Simulating {name} ({rate} events/batch)...")
-    events = []
-    for _ in range({rate}):
-        events.append({{
+# ── {name} ──
+print(f"  Simulating {name} ({rate} events/batch)...")
+events = []
+for _ in range({rate}):
+    events.append({{
 {assignments_str}
-        }})
-    df = spark.createDataFrame(events)
-    df.write.mode("append").format("delta") \\
-        .saveAsTable(f"{gold_lh}.analytics.{table}_staging")
-    print(f"    ✓ {{len(events)}} events → {table}_staging")
+    }})
+df = spark.createDataFrame(events)
+df.write.mode("append").format("delta") \\
+    .save(f"abfss://{{WORKSPACE_ID}}@onelake.dfs.fabric.microsoft.com/{{GOLD_LH_ID}}/Tables/analytics/{table}_staging")
+print(f"    ✓ {{len(events)}} events → {table}_staging")
 ''')
 
     all_blocks = "\n".join(stream_blocks)
@@ -194,9 +194,11 @@ import datetime
 from pyspark.sql import Row
 
 GOLD_LH = "{gold_lh}"
+WORKSPACE_ID = "{{{{WORKSPACE_ID}}}}"
+GOLD_LH_ID = "{{{{GOLD_LH_ID}}}}"
 sample_ids = [f"ID-{{i:04d}}" for i in range(1, 101)]
 
-spark.sql(f"CREATE SCHEMA IF NOT EXISTS {gold_lh}.analytics")
+# Note: all Delta writes use abfss:// paths to avoid catalog registration issues.
 
 print("=" * 60)
 print(f"  {company} Event Simulator")

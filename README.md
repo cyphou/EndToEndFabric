@@ -10,7 +10,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white" alt="Python 3.12+">
   <img src="https://img.shields.io/badge/dependencies-zero-brightgreen" alt="Zero Dependencies">
-  <img src="https://img.shields.io/badge/tests-250%20passing-success" alt="250 Tests Passing">
+  <img src="https://img.shields.io/badge/tests-303%20passing-success" alt="303 Tests Passing">
   <img src="https://img.shields.io/badge/industries-4-orange" alt="4 Industries">
   <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT License">
 </p>
@@ -47,10 +47,10 @@ Or use the PowerShell wrapper:
 
 ---
 
-## 13-Step Generation Pipeline
+## 15-Step Generation Pipeline
 
 <p align="center">
-  <img src="docs/images/pipeline-architecture.png" alt="13-Step Generation Pipeline" width="100%">
+  <img src="docs/images/pipeline-architecture.png" alt="15-Step Generation Pipeline" width="100%">
 </p>
 
 | Step | Generator | Output |
@@ -60,7 +60,7 @@ Or use the PowerShell wrapper:
 | **3** | Notebook Generator | PySpark NB01–NB03 + NB06 (Bronze→Silver→Gold + diagnostics) |
 | **4** | Dataflow Generator | Power Query M ingestion configs |
 | **5** | TMDL Generator | Direct Lake semantic model (tables, measures, relationships) |
-| **6** | Report Generator | PBIR v4.0 pages, visuals, themes (4 reports) |
+| **6** | Report Generator | PBIR v4.0 pages, visuals, themes (5 reports) |
 | **7** | Pipeline Generator | Fabric Data Pipeline JSON orchestration |
 | **8** | Forecast Generator | Holt-Winters + MLflow tracking notebooks (NB04) |
 | **9** | HTAP Generator | Eventhouse, KQL database, event simulator (NB05) |
@@ -68,6 +68,8 @@ Or use the PowerShell wrapper:
 | **11** | UDF Generator | User Data Function (7 functions per industry) |
 | **12** | Data Agent Generator | Fabric AI Agent config + README |
 | **13** | Deploy Generator | PowerShell scripts (Deploy, Upload, Validate) |
+| **14** | Workspace Generator | Task Flow DAG + SVG workspace icon (branded per industry) |
+| **15** | Validator | Post-generation output verification (structure, TMDL, cross-refs, placeholders) |
 
 ---
 
@@ -257,7 +259,7 @@ pip install matplotlib pillow   # For docs/generate_diagrams.py
   <img src="docs/images/multi-agent-architecture.png" alt="Multi-Agent Architecture" width="100%">
 </p>
 
-The project uses **9+1 specialized agents** defined in `.github/agents/`:
+The project uses **11+1 specialized agents** defined in `.github/agents/`:
 
 | Agent | Responsibility | Key Files |
 |---|---|---|
@@ -265,11 +267,13 @@ The project uses **9+1 specialized agents** defined in `.github/agents/`:
 | **Data Engineer** | CSV, Notebook, Dataflow generation | `csv_generator.py`, `notebook_generator.py`, `dataflow_generator.py` |
 | **Semantic Model** | TMDL tables, measures, relationships | `tmdl_generator.py` |
 | **Report Builder** | PBIR pages, visuals, themes | `report_generator.py` |
+| **Report Designer** | Logo placement, color harmony, layout grid, visual-overlap audit | `report_designer.py` |
 | **Forecaster** | Holt-Winters + MLflow notebooks | `forecast_generator.py` |
 | **HTAP Engineer** | Eventhouse + KQL + event simulator | `htap_generator.py` |
 | **Deployer** | PowerShell deployment scripts | `deploy_generator.py` |
 | **Tester** | Test suite, coverage, Pester validation | `pester_generator.py` |
 | **Industry Designer** | New industry config authoring | `industries/` |
+| **Validator** | Post-generation output verification | `validator.py` |
 | **Shared** | Hard constraints for all agents | `shared.instructions.md` |
 
 ---
@@ -309,6 +313,7 @@ output/<industry>/
 ├── <Company>-Forecasting.Report/
 ├── <Company>-HTAP.Report/
 ├── <Company>-Pipeline.Report/
+├── <Company>-Writeback.Report/
 ├── Pipeline/
 │   ├── pipeline-content.json
 │   └── README.md
@@ -331,6 +336,10 @@ output/<industry>/
 ├── DataAgent/
 │   ├── agent-config.json
 │   └── README.md
+├── TaskFlow/
+│   └── taskflow-definition.json  # Architecture DAG (nodes, edges, layout)
+├── WorkspaceIcon/
+│   └── icon.svg                  # SVG workspace icon (theme colors + industry symbol)
 └── deploy/
     ├── Deploy-Full.ps1
     ├── <Company>.psm1
@@ -344,9 +353,11 @@ output/<industry>/
 
 ```
 FabricEndtoEnd/
-├── generate.py                  # CLI entry point (13-step pipeline)
+├── generate.py                  # CLI entry point (15-step pipeline)
 ├── generate.ps1                 # PowerShell wrapper
-├── deploy-to-fabric.ps1         # One-command Fabric deployment (Lakehouses, Notebooks, SM, Reports, UDF)
+├── deploy-to-fabric.ps1         # One-command Fabric deployment + Autoplay screenshots
+├── _update-items.ps1            # Hot-patch notebook + pipeline definitions in a live workspace
+├── patch-pipeline.ps1           # Patch pipeline definition with resolved notebook IDs
 ├── core/                        # Core generator engine
 │   ├── config_loader.py         # JSON config loading & validation
 │   ├── template_engine.py       # {{PLACEHOLDER}} template rendering
@@ -355,6 +366,7 @@ FabricEndtoEnd/
 │   ├── dataflow_generator.py    # Dataflow Gen2 Power Query M generation
 │   ├── tmdl_generator.py        # TMDL semantic model generation
 │   ├── report_generator.py      # PBIR v4.0 report generation
+│   ├── report_designer.py       # Logo placement, color harmony, layout grid, visual-overlap audit
 │   ├── pipeline_generator.py    # Fabric Data Pipeline JSON generation
 │   ├── forecast_generator.py    # Holt-Winters + MLflow notebook generation (NB04)
 │   ├── planning_generator.py    # Planning IQ tables & notebooks
@@ -362,7 +374,9 @@ FabricEndtoEnd/
 │   ├── writeback_generator.py   # Writeback notebooks + stored procedures (NB07–NB09)
 │   ├── udf_generator.py         # User Data Function generation (7 functions per industry)
 │   ├── agent_generator.py       # Fabric Data Agent config generation
+│   ├── workspace_generator.py   # Task Flow DAG + workspace icon SVG generation
 │   ├── deploy_generator.py      # PowerShell deployment scripts
+│   ├── validator.py             # Post-generation output verification (9 categories)
 │   ├── test_generator.py        # Pester + validation script generation
 │   ├── comparison_generator.py  # Cross-industry comparison report
 │   └── schemas/                 # JSON validation schemas
@@ -372,14 +386,14 @@ FabricEndtoEnd/
 │   ├── northwind-hrfinance/     # 10 JSON configs
 │   └── fabrikam-manufacturing/  # 10 JSON configs
 ├── templates/                   # .tpl template files (deploy, kql, notebooks, reports, tmdl)
-├── tests/                       # pytest test suite (250 tests)
-│   ├── core/                    # Unit tests per module (18 files)
+├── tests/                       # pytest test suite (303 tests)
+│   ├── core/                    # Unit tests per module (21 files)
 │   ├── industries/              # Per-industry target validation
 │   └── integration/             # End-to-end pipeline tests
 ├── docs/                        # Documentation
 │   ├── images/                  # Generated PNG diagrams
 │   └── generate_diagrams.py     # Diagram generation script
-└── .github/agents/              # 9+1 agent definitions
+└── .github/agents/              # 11+1 agent definitions
 ```
 
 ---
@@ -394,7 +408,7 @@ python -m pytest tests/ -v
 python -m pytest tests/ -v --cov=core --cov-report=term-missing
 ```
 
-**Current status:** 250 tests passing across 22 test modules.
+**Current status:** 303 tests passing across 24 test modules.
 
 | Module | Tests | Coverage Area |
 |---|---|---|
@@ -416,6 +430,8 @@ python -m pytest tests/ -v --cov=core --cov-report=term-missing
 | `test_agent_generator.py` | 4 | Data Agent config + README generation |
 | `test_comparison_generator.py` | 5 | Cross-industry comparison report |
 | `test_test_generator.py` | 5 | Pester + validation script generation |
+| `test_validator.py` | 22 | Post-generation output validator (9 categories) |
+| `test_workspace_generator.py` | 31 | Task Flow + workspace icon generation |
 | `test_industry_configs.py` | 11 | Industry config schema contracts |
 | `test_per_industry_generation.py` | 20 | PLAN.md §10.3 target validation per industry |
 | `test_full_pipeline.py` | 7 | End-to-end pipeline + idempotency |
@@ -425,7 +441,7 @@ python -m pytest tests/ -v --cov=core --cov-report=term-missing
 
 ## Generation Results
 
-All 4 industries generate successfully with the full 12-step pipeline:
+All 4 industries generate successfully with the full 15-step pipeline:
 
 | | Horizon Books | Contoso Energy | Northwind HR/Finance | Fabrikam Manufacturing |
 |---|:---:|:---:|:---:|:---:|
@@ -482,11 +498,31 @@ Generated PowerShell scripts include:
 Additionally, `deploy-to-fabric.ps1` (at the repo root) provides **one-command deployment** to a Fabric workspace:
 
 ```powershell
+# Full deployment
 .\deploy-to-fabric.ps1 -WorkspaceId "<guid>" -Industry "contoso-energy"
-.\deploy-to-fabric.ps1 -WorkspaceId "<guid>" -Industry "contoso-energy" -Clean  # Delete & recreate
+
+# Clean workspace first, then deploy and trigger ETL pipeline
+.\deploy-to-fabric.ps1 -WorkspaceId "<guid>" -Industry "contoso-energy" -Clean -TriggerPipeline
+
+# Deploy, trigger pipeline, then screenshot all reports (Autoplay)
+.\deploy-to-fabric.ps1 -WorkspaceId "<guid>" -Industry "contoso-energy" -TriggerPipeline -Autoplay
+
+# Skip deploy, just trigger pipeline and/or take screenshots on existing workspace
+.\deploy-to-fabric.ps1 -WorkspaceId "<guid>" -Industry "contoso-energy" -SkipDeploy -Autoplay
 ```
 
-This creates Lakehouses, uploads CSV data, deploys 9 Notebooks, Semantic Models (DirectLake + DirectQuery writeback), 4 Reports, a Data Pipeline, a SQL Database (with DDL), a User Data Function (7 writeback functions), and organizes items into workspace folders.
+| Parameter | Description |
+|---|---|
+| `-WorkspaceId` | Target Fabric workspace GUID (required) |
+| `-Industry` | Industry folder name under `output/` (default: `contoso-energy`) |
+| `-Clean` | Delete all existing items in the workspace before deploying |
+| `-TriggerPipeline` | After deployment, trigger the ETL pipeline run and wait for completion |
+| `-Autoplay` | After pipeline succeeds (or standalone), refresh the semantic model, export PNG screenshots of every report page, run visual-overlap and empty-data checks, then open the screenshot folder |
+| `-SkipDeploy` | Skip all deployment steps (1–10). Only trigger the pipeline and/or take screenshots. Requires the workspace to already be deployed |
+
+The deployment creates Lakehouses (Bronze/Silver/Gold), uploads CSV data, deploys 9 Notebooks, Semantic Models (DirectLake + DirectQuery writeback), 5 Reports, a Data Pipeline, a SQL Database (with DDL), a User Data Function (7 writeback functions), and organizes items into workspace folders.
+
+With **Autoplay**, the script also refreshes the DirectLake semantic model, exports PNG screenshots of every visible report page via the Power BI Export-to-File API, and runs automated quality checks (ink ratio, visual overlap detection) on each screenshot.
 
 ---
 
@@ -504,7 +540,7 @@ This creates Lakehouses, uploads CSV data, deploys 9 Notebooks, Semantic Models 
 
 - [PLAN.md](PLAN.md) — Full implementation plan, phase roadmap, and industry specifications
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md) — Detailed architecture documentation
-- [Agent Definitions](.github/agents/) — 9+1 agent role specifications
+- [Agent Definitions](.github/agents/) — 11+1 agent role specifications
 
 ---
 

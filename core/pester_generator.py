@@ -121,7 +121,7 @@ if (-not $OutputDir) {{ $OutputDir = (Join-Path $PSScriptRoot "..") }}
 
     # ── TMDL Tests ──
     if semantic_model_config:
-        sm = semantic_model_config
+        sm = semantic_model_config.get("semanticModel", semantic_model_config)
         table_count = len(sm.get("tables", []))
         rel_count = len(sm.get("relationships", []))
         measure_count = len(sm.get("measures", []))

@@ -18,8 +18,8 @@ user-invocable: true
 ## Owns
 - `core/forecast_generator.py`
 - `core/planning_generator.py`
-- `templates/notebooks/04_Forecasting.py.tpl`
-- Planning notebook templates
+
+> **Note:** Notebook generation for NB04 (Forecasting) is inline within the generators. No `.tpl` template files are used.
 
 ## Does NOT Own
 - ❌ Bronze→Silver→Gold notebooks (→ @data-engineer)

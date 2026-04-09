@@ -6,7 +6,7 @@
     "tables": [
       {
         "name": "DimDate",
-        "schema": "dim",
+        "schema": "dbo",
         "tableType": "date",
         "columns": [
           {
@@ -60,7 +60,7 @@
       },
       {
         "name": "DimAccounts",
-        "schema": "dim",
+        "schema": "dbo",
         "tableType": "dim",
         "columns": [
           {
@@ -88,7 +88,7 @@
       },
       {
         "name": "DimCostCenters",
-        "schema": "dim",
+        "schema": "dbo",
         "tableType": "dim",
         "columns": [
           {
@@ -108,7 +108,7 @@
       },
       {
         "name": "DimBooks",
-        "schema": "dim",
+        "schema": "dbo",
         "tableType": "dim",
         "columns": [
           {
@@ -149,7 +149,7 @@
       },
       {
         "name": "DimAuthors",
-        "schema": "dim",
+        "schema": "dbo",
         "tableType": "dim",
         "columns": [
           {
@@ -173,7 +173,7 @@
       },
       {
         "name": "DimCustomers",
-        "schema": "dim",
+        "schema": "dbo",
         "tableType": "dim",
         "columns": [
           {
@@ -201,7 +201,7 @@
       },
       {
         "name": "DimEmployees",
-        "schema": "dim",
+        "schema": "dbo",
         "tableType": "dim",
         "columns": [
           {
@@ -242,7 +242,7 @@
       },
       {
         "name": "DimDepartments",
-        "schema": "dim",
+        "schema": "dbo",
         "tableType": "dim",
         "columns": [
           {
@@ -262,7 +262,7 @@
       },
       {
         "name": "DimWarehouses",
-        "schema": "dim",
+        "schema": "dbo",
         "tableType": "dim",
         "columns": [
           {
@@ -286,7 +286,7 @@
       },
       {
         "name": "DimGeography",
-        "schema": "dim",
+        "schema": "dbo",
         "tableType": "dim",
         "columns": [
           {
@@ -310,7 +310,7 @@
       },
       {
         "name": "FactFinancialTransactions",
-        "schema": "fact",
+        "schema": "dbo",
         "tableType": "fact",
         "columns": [
           {
@@ -343,7 +343,7 @@
       },
       {
         "name": "FactBudget",
-        "schema": "fact",
+        "schema": "dbo",
         "tableType": "fact",
         "columns": [
           {
@@ -376,7 +376,7 @@
       },
       {
         "name": "FactOrders",
-        "schema": "fact",
+        "schema": "dbo",
         "tableType": "fact",
         "columns": [
           {
@@ -413,7 +413,7 @@
       },
       {
         "name": "FactInventory",
-        "schema": "fact",
+        "schema": "dbo",
         "tableType": "fact",
         "columns": [
           {
@@ -445,7 +445,7 @@
       },
       {
         "name": "FactReturns",
-        "schema": "fact",
+        "schema": "dbo",
         "tableType": "fact",
         "columns": [
           {
@@ -473,7 +473,7 @@
       },
       {
         "name": "FactPayroll",
-        "schema": "fact",
+        "schema": "dbo",
         "tableType": "fact",
         "columns": [
           {
@@ -508,7 +508,7 @@
       },
       {
         "name": "FactPerformanceReviews",
-        "schema": "fact",
+        "schema": "dbo",
         "tableType": "fact",
         "columns": [
           {
@@ -536,7 +536,7 @@
       },
       {
         "name": "FactRecruitment",
-        "schema": "fact",
+        "schema": "dbo",
         "tableType": "fact",
         "columns": [
           {
@@ -568,7 +568,7 @@
       },
       {
         "name": "DimChannels",
-        "schema": "dim",
+        "schema": "dbo",
         "tableType": "dim",
         "columns": [
           {
@@ -588,7 +588,7 @@
       },
       {
         "name": "DimPromotions",
-        "schema": "dim",
+        "schema": "dbo",
         "tableType": "dim",
         "columns": [
           {
@@ -616,7 +616,7 @@
       },
       {
         "name": "DimPayGrades",
-        "schema": "dim",
+        "schema": "dbo",
         "tableType": "dim",
         "columns": [
           {
@@ -640,7 +640,7 @@
       },
       {
         "name": "FactShipments",
-        "schema": "fact",
+        "schema": "dbo",
         "tableType": "fact",
         "columns": [
           {
@@ -677,7 +677,7 @@
       },
       {
         "name": "FactWebTraffic",
-        "schema": "fact",
+        "schema": "dbo",
         "tableType": "fact",
         "columns": [
           {

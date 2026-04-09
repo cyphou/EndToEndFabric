@@ -40,15 +40,16 @@ This document describes the architecture of the **Fabric End-to-End Industry Dem
           │                    │                     │
           ▼                    ▼                     ▼
     ┌───────────────────────────────────────────────────┐
-    │          13-Step Generation Pipeline               │
+    │          15-Step Generation Pipeline               │
     │                                                    │
-    │  1. Config Loader     8. Forecast Generator        │
-    │  2. CSV Generator     9. HTAP Generator            │
-    │  3. Notebook Gen     10. Writeback Generator       │
-    │  4. Dataflow Gen     11. UDF Generator             │
-    │  5. TMDL Generator   12. Data Agent Generator      │
-    │  6. Report Generator 13. Deploy Generator          │
-    │  7. Pipeline Gen                                   │
+    │  1. Config Loader     9. HTAP Generator            │
+    │  2. CSV Generator    10. Writeback Generator       │
+    │  3. Notebook Gen     11. UDF Generator             │
+    │  4. Dataflow Gen     12. Data Agent Generator      │
+    │  5. TMDL Generator   13. Deploy Generator          │
+    │  6. Report Generator 14. Workspace Generator       │
+    │  7. Pipeline Gen     15. Validator                  │
+    │  8. Forecast Gen                                   │
     └───────────────────────────────────────────────────┘
                                │
                     ┌──────────▼──────────┐
@@ -90,8 +91,11 @@ Generated notebooks follow the **Bronze → Silver → Gold** medallion pattern:
 
 | File | Role |
 |---|---|
-| `generate.py` | CLI orchestrator — parses args, loads configs, runs all 12 steps |
+| `generate.py` | CLI orchestrator — parses args, loads configs, runs all 15 steps |
 | `generate.ps1` | PowerShell wrapper around `generate.py` |
+| `deploy-to-fabric.ps1` | One-command Fabric deployment + pipeline trigger + Autoplay screenshots |
+| `_update-items.ps1` | Hot-patch notebook + pipeline definitions in a live workspace |
+| `patch-pipeline.ps1` | Patch pipeline definition with resolved notebook IDs |
 
 ### Core Generators (`core/`)
 
@@ -102,14 +106,16 @@ Generated notebooks follow the **Bronze → Silver → Gold** medallion pattern:
 | `notebook_generator.py` | 3 | `industry.json` + `sample-data.json` | PySpark `.py` notebooks (NB01–NB03, NB06) |
 | `dataflow_generator.py` | 4 | `industry.json` + `sample-data.json` | Dataflow Gen2 JSON configs |
 | `tmdl_generator.py` | 5 | `industry.json` + `semantic-model.json` | TMDL files (tables, measures, relationships) |
-| `report_generator.py` | 6 | `industry.json` + `reports.json` | PBIR v4.0 report structure |
+| `report_generator.py` | 6 | `industry.json` + `reports.json` | PBIR v4.0 report structure (5 reports) |
 | `pipeline_generator.py` | 7 | `industry.json` + `sample-data.json` | Fabric Pipeline JSON |
 | `forecast_generator.py` | 8 | `industry.json` + `forecast-config.json` | Holt-Winters notebook + config |
 | `htap_generator.py` | 9 | `industry.json` + `htap-config.json` | Eventhouse, KQL, event simulator |
 | `writeback_generator.py` | 10 | `industry.json` + `writeback-config.json` | NB07–NB09 writeback notebooks + stored procedures |
 | `udf_generator.py` | 11 | `industry.json` + `writeback-config.json` | User Data Function (definition, metadata, Python source) |
-| `deploy_generator.py` | 13 | `industry.json` | PowerShell deploy scripts |
 | `agent_generator.py` | 12 | `industry.json` + `data-agent.json` | Fabric Data Agent config + README |
+| `deploy_generator.py` | 13 | `industry.json` | PowerShell deploy scripts |
+| `workspace_generator.py` | 14 | `industry.json` + `sample-data.json` | Task Flow DAG + workspace icon SVG |
+| `validator.py` | 15 | all configs | Post-generation output verification (9 categories) |
 
 ### Supporting Modules
 
@@ -117,6 +123,7 @@ Generated notebooks follow the **Bronze → Silver → Gold** medallion pattern:
 |---|---|
 | `template_engine.py` | `{{PLACEHOLDER}}`, `{{#if}}`, `{{#each}}` template rendering |
 | `comparison_generator.py` | Cross-industry comparison Markdown report |
+| `report_designer.py` | Logo placement, color harmony, layout grid, visual-overlap audit |
 | `planning_generator.py` | Planning IQ table schemas + scenario notebooks |
 | `pester_generator.py` | Pester 5 test suite for deployment validation |
 | `test_generator.py` | Pester + cross-artifact validation script generation |
@@ -172,7 +179,7 @@ Each industry lives in `industries/<id>/` with up to 10 JSON files:
 1. Create `industries/<new-id>/`
 2. Author the 10 JSON config files (or copy/modify from an existing industry)
 3. Run `python generate.py -i <new-id>`
-4. All 12 pipeline steps produce output tailored to the new industry
+4. All 15 pipeline steps produce output tailored to the new industry
 
 No Python code changes required.
 
@@ -184,7 +191,7 @@ No Python code changes required.
   <img src="images/multi-agent-architecture.png" alt="Multi-Agent Architecture" width="100%">
 </p>
 
-The project defines **9+1 specialized agents** in `.github/agents/` for AI-assisted development:
+The project defines **11+1 specialized agents** in `.github/agents/` for AI-assisted development:
 
 | Agent | File | Expertise |
 |---|---|---|
@@ -192,11 +199,13 @@ The project defines **9+1 specialized agents** in `.github/agents/` for AI-assis
 | **Data Engineer** | `data-engineer.agent.md` | CSV, PySpark notebooks, Dataflow Gen2 |
 | **Semantic Model** | `semantic-model.agent.md` | TMDL tables, DAX measures, relationships |
 | **Report Builder** | `report-builder.agent.md` | PBIR pages, visuals, themes |
+| **Report Designer** | `report-designer.agent.md` | Logo placement, color harmony, layout grid, visual-overlap audit |
 | **Forecaster** | `forecaster.agent.md` | Holt-Winters, MLflow, Planning IQ |
 | **HTAP Engineer** | `htap-engineer.agent.md` | Eventhouse, KQL, event simulator |
 | **Deployer** | `deployer.agent.md` | PowerShell deploy scripts |
 | **Tester** | `tester.agent.md` | pytest, Pester test suites |
 | **Industry Designer** | `industry-designer.agent.md` | New industry config authoring |
+| **Validator** | `validator.agent.md` | Post-generation output verification |
 | **Shared** | `shared.instructions.md` | Hard constraints applied to all agents |
 
 Each agent has clear ownership boundaries, preventing conflicting edits during multi-agent sessions.
@@ -214,31 +223,36 @@ output/<industry>/
 ├── SampleData/           ← Step 2: CSV Generator
 │   ├── <domain>/         # Domain-organized CSV files
 │   └── ...
-├── Notebooks/            ← Step 3: Notebook Generator
-│   ├── NB01_Bronze_to_Silver.py
-│   ├── NB02_Web_Enrichment.py
-│   ├── NB03_Silver_to_Gold.py
-│   ├── NB06_Diagnostic.py
-│   ├── NB07_WritebackCapture.py
-│   └── NB08_WritebackApply.py
+├── notebooks/            ← Step 3: Notebook Generator
+│   ├── 01_BronzeToSilver.py
+│   ├── 02_WebEnrichment.py
+│   ├── 03_SilverToGold.py
+│   ├── 04_Forecasting.py
+│   ├── 05_EventSimulator.py
+│   ├── 06_DiagnosticCheck.py
+│   ├── 07_WritebackSetup.py
+│   ├── 08_WritebackAPI.py
+│   └── 09_SQLDatabaseSetup.py
 ├── Dataflows/            ← Step 4: Dataflow Generator
-│   └── DF_<domain>_ingestion.json
-├── SemanticModel/        ← Step 5: TMDL Generator
+│   ├── DF_<domain>.json
+│   └── DF_<domain>.pq
+├── <Company>Model.SemanticModel/        ← Step 5: TMDL Generator
 │   ├── model.tmdl
 │   ├── tables/
 │   ├── relationships/
 │   └── definition.pbism
-├── Reports/              ← Step 6: Report Generator
-│   └── <Report>-Analytics/
-│       ├── report.json
-│       ├── pages/
-│       └── theme.json
+├── <Company>WritebackModel.SemanticModel/  ← DirectQuery on SQL DB
+├── <Company>-Analytics.Report/   ← Step 6: Report Generator
+├── <Company>-Forecasting.Report/
+├── <Company>-HTAP.Report/
+├── <Company>-Pipeline.Report/
+├── <Company>-Writeback.Report/
 ├── Pipeline/             ← Step 7: Pipeline Generator
 │   └── pipeline-content.json
-├── Forecast/             ← Step 8: Forecast Generator
+├── Forecasting/          ← Step 8: Forecast Generator
 │   ├── NB04_Forecast.py
 │   └── forecast-config.json
-├── HTAP/                 ← Step 9: HTAP Generator
+├── Transactional/        ← Step 9: HTAP Generator
 │   ├── eventhouse-definition.json
 │   ├── kql-database-script.kql
 │   ├── NB05_EventSimulator.py
@@ -247,6 +261,8 @@ output/<industry>/
 │   ├── writeback-config.json
 │   ├── NB07_WritebackSetup.py
 │   ├── NB08_WritebackAPI.py
+│   ├── NB09_SQLDatabaseSetup.py
+│   ├── sqldb/setup_writeback.sql
 │   └── stored_procedures/
 ├── UserDataFunction/     ← Step 11: UDF Generator
 │   ├── definition.json
@@ -256,11 +272,15 @@ output/<industry>/
 ├── DataAgent/            ← Step 12: Agent Generator
 │   ├── agent-config.json
 │   └── README.md
-└── Deploy/               ← Step 13: Deploy Generator
-    ├── Deploy-Full.ps1
-    ├── <Company>.psm1
-    ├── Upload-SampleData.ps1
-    └── Validate-Deployment.ps1
+├── deploy/               ← Step 13: Deploy Generator
+│   ├── Deploy-Full.ps1
+│   ├── <Company>.psm1
+│   ├── Upload-SampleData.ps1
+│   └── Validate-Deployment.ps1
+├── TaskFlow/             ← Step 14: Workspace Generator
+│   └── taskflow-definition.json
+└── WorkspaceIcon/        ← Step 14: Workspace Generator
+    └── icon.svg
 ```
 
 ---
@@ -334,6 +354,9 @@ tests/
 │   ├── test_pipeline_generator.py   # Pipeline JSON generation
 │   ├── test_planning_generator.py   # Planning IQ tables
 │   ├── test_test_generator.py       # Pester + validation script generation
+│   ├── test_udf_generator.py        # User Data Function generation
+│   ├── test_validator.py            # Post-generation output validator (9 categories)
+│   ├── test_workspace_generator.py  # Task Flow + workspace icon generation
 │   └── test_writeback_generator.py  # Writeback notebook generation
 ├── industries/
 │   ├── test_industry_configs.py     # Config schema validation
@@ -344,7 +367,7 @@ tests/
     └── Deploy-Integration.Tests.ps1 # Live Fabric workspace validation (Pester)
 ```
 
-**224+ tests** (plus 80+ subtests), all passing. Tests cover:
+**303 tests** (plus 80+ subtests), all passing. Tests cover:
 - Config loading with invalid inputs (missing fields, bad schemas)
 - CSV generation determinism (same seed → same output)
 - FK integrity validation (child references match parent values)
@@ -352,6 +375,46 @@ tests/
 - TMDL schema correctness (valid Direct Lake expressions)
 
 Run: `python -m pytest tests/ -v`
+
+---
+
+## Deployment & Autoplay
+
+### deploy-to-fabric.ps1
+
+The `deploy-to-fabric.ps1` script at the repo root provides one-command deployment of a generated industry demo to a Microsoft Fabric workspace via REST API.
+
+**Deployment steps (1–10):**
+1. Create Lakehouses (Bronze/Silver/Gold + SQL Database for writeback)
+2. Upload sample CSV data to BronzeLH via OneLake DFS API
+3. Deploy 9 Notebooks (with lakehouse ID token replacement)
+4. Deploy Semantic Models (DirectLake + DirectQuery writeback with TMDL)
+5. Deploy User Data Function (writeback API bridge, 7 functions)
+6. Deploy 5 Power BI Reports (PBIR format with SM binding)
+7. Deploy Data Pipeline (with notebook ID token replacement)
+8. Upload Dataflow Gen2 definitions to GoldLH
+9. Organize items into workspace folders (01 Data, 02 Transform, 03 Analytics, 04 Writeback)
+10. Print deployment summary
+
+**Optional flags:**
+
+| Flag | Description |
+|---|---|
+| `-Clean` | Wipe all items in the workspace before deploying |
+| `-TriggerPipeline` | Trigger the ETL pipeline (Bronze→Silver→Gold) and poll until completion |
+| `-Autoplay` | After pipeline succeeds, refresh the DirectLake semantic model, export PNG screenshots of every visible report page via the Power BI Export-to-File API, run automated quality checks (ink ratio, visual-overlap detection), and open the screenshot folder |
+| `-SkipDeploy` | Skip steps 1–10 entirely — only run `-TriggerPipeline` and/or `-Autoplay` on an already-deployed workspace |
+
+### Autoplay Details
+
+The Autoplay feature performs:
+1. **Semantic model refresh** — triggers a Full refresh on the DirectLake model so report pages render with data
+2. **PNG export** — calls the Power BI Export-to-File API for each report, downloads the ZIP, and renames PNGs to page display names
+3. **Quality checks** — for each screenshot, measures ink ratio (colored vs. white pixels) and scans a 10×10 grid for visual overlap or blank fill
+4. **Summary table** — prints OK/WARN status per page with notes
+5. **Opens screenshot folder** in Windows Explorer
+
+Screenshots are saved to `output/<industry>/screenshots/<ReportName>/`.
 
 ---
 

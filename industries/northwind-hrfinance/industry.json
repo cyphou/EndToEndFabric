@@ -7,6 +7,8 @@
     "icon": "🏢",
     "domains": ["HR", "Payroll", "FinancialAccounting", "Budgeting", "CorporatePerformance"],
     "dataYears": ["FY2024", "FY2025", "FY2026"],
+    "dateRange": { "start": "2023-01-01", "end": "2027-12-31" },
+    "fiscalYearStartMonth": 1,
     "headquarters": "Portland, OR",
     "operations": ["500 employees", "20 departments", "5 regional offices"],
     "theme": {
@@ -19,6 +21,10 @@
   },
   "fabricArtifacts": {
     "workspacePrefix": "NorthwindHRFinance",
+    "cloud": {
+      "fabricApiBase": "https://api.fabric.microsoft.com/v1",
+      "oneLakeDfsBase": "https://onelake.dfs.fabric.microsoft.com"
+    },
     "lakehouses": {
       "bronze": "BronzeLH",
       "silver": "SilverLH",
