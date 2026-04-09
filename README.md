@@ -115,7 +115,7 @@ Additional notebooks:
 |---|---|
 | CSV Tables | 17 |
 | Total Sample Rows | 9,496 |
-| Semantic Model Tables | 23 |
+| Semantic Model Tables | 26 |
 | DAX Measures | 96 |
 | Report Pages | 18 (10 + 5 + 3) |
 | Forecast Models | 5 (Holt-Winters) |
@@ -138,7 +138,7 @@ Additional notebooks:
 |---|---|
 | CSV Tables | 25 |
 | Total Sample Rows | 37,063 |
-| Semantic Model Tables | 28 |
+| Semantic Model Tables | 29 |
 | DAX Measures | 113 |
 | Report Pages | 20 (12 + 5 + 3) |
 | Forecast Models | 5 (Generation, Demand, Revenue, Emissions, Maintenance) |
@@ -161,7 +161,7 @@ Additional notebooks:
 |---|---|
 | CSV Tables | 22 |
 | Total Sample Rows | 42,385 |
-| Semantic Model Tables | 30 |
+| Semantic Model Tables | 33 |
 | DAX Measures | 130 |
 | Report Pages | 22 (14 + 5 + 3) |
 | Forecast Models | 5 (Payroll, Attrition, Collections, Budget, Headcount) |
@@ -184,7 +184,7 @@ Additional notebooks:
 |---|---|
 | CSV Tables | 25 |
 | Total Sample Rows | 61,718 |
-| Semantic Model Tables | 32 |
+| Semantic Model Tables | 35 |
 | DAX Measures | 120 |
 | Report Pages | 20 (12 + 5 + 3) |
 | Forecast Models | 5 (Demand, Capacity, Materials, Quality, Maintenance) |
@@ -446,19 +446,20 @@ All 4 industries generate successfully with the full 15-step pipeline:
 | | Horizon Books | Contoso Energy | Northwind HR/Finance | Fabrikam Manufacturing |
 |---|:---:|:---:|:---:|:---:|
 | **CSV Files** | 17 | 25 | 22 | 25 |
-| **Notebooks** | 6 | 6 | 6 | 6 |
-| **Dataflows** | 4 | 6 | 6 | 6 |
-| **TMDL Tables** | 23 | 28 | 30 | 32 |
+| **Notebooks** | 4 | 4 | 4 | 4 |
+| **Dataflows** | 7 | 13 | 13 | 13 |
+| **TMDL Tables** | 26 | 29 | 33 | 35 |
 | **DAX Measures** | 96 | 113 | 130 | 120 |
-| **Relationships** | 27 | 32 | 41 | 38 |
-| **Report Files** | 92 | 94 | 107 | 115 |
+| **Relationships** | 27 | 31 | 41 | 38 |
+| **Report Files** | 140 | 144 | 156 | 163 |
 | **Pipeline** | 2 | 2 | 2 | 2 |
 | **Forecast** | 2 | 2 | 2 | 2 |
 | **HTAP** | 6 | 6 | 6 | 6 |
-| **Writeback** | 4 | 4 | 4 | 4 |
+| **Writeback** | 8 | 8 | 8 | 8 |
 | **UDF** | 3 | 3 | 3 | 3 |
 | **Data Agent** | 2 | 2 | 2 | 2 |
 | **Deploy Scripts** | 4 | 4 | 4 | 4 |
+| **Workspace** | 2 | 2 | 2 | 2 |
 
 ---
 
@@ -533,6 +534,63 @@ With **Autoplay**, the script also refreshes the DirectLake semantic model, expo
 | **Python** | 3.12+ | No external dependencies for core generation |
 | **PowerShell** | 5.1+ | Optional, for `generate.ps1` and deploy scripts |
 | **matplotlib** | any | Optional, only for `docs/generate_diagrams.py` |
+
+---
+
+## Roadmap
+
+All 8 implementation phases are **complete**. The roadmap below tracks planned improvements.
+
+### Completed
+
+| Phase | Description | Status |
+|:---:|---|---|
+| 1 | Core framework (config loader, template engine, generators) | Done |
+| 2 | Horizon Books industry migration | Done |
+| 3 | Forecasting & Planning (Holt-Winters, MLflow, Planning IQ) | Done |
+| 4 | Transactional Analytics / HTAP (Eventhouse, KQL, event simulator) | Done |
+| 5 | Contoso Energy industry demo | Done |
+| 6 | Northwind HR & Finance industry demo | Done |
+| 7 | Fabrikam Manufacturing industry demo | Done |
+| 8 | Polish (cross-industry comparison, wizard CLI, CI/CD, docs) | Done |
+
+### Planned — Quality & Robustness
+
+| Item | Description | Priority |
+|---|---|:---:|
+| Screenshot rendering on paid capacity | ExportTo API blank-page issue resolved on F64+ (Trial limitation documented) | High |
+| Coverage expansion | Increase test coverage beyond 303 tests; add mutation testing | Medium |
+| Config schema versioning | Add `schemaVersion` field to all 10 config files for forward compatibility | Medium |
+| Validation strictness | Reduce warnings (currently 23–40 per industry); promote actionable warnings to errors | Medium |
+
+### Planned — New Capabilities
+
+| Item | Description | Priority |
+|---|---|:---:|
+| Lakehouse schemas | Schema-on-write enforcement in Bronze/Silver/Gold notebooks via Delta table schemas | High |
+| Incremental refresh | Add incremental load patterns in NB01 (watermark-based, partition-based) | High |
+| Data Activator | Generate Reflex triggers from HTAP alert definitions (threshold-based real-time alerts) | Medium |
+| Copilot instructions | Generate `.copilot/instructions.md` per workspace with domain-specific semantic context | Medium |
+| Shortcut support | Generate Lakehouse shortcuts (OneLake, ADLS Gen2, S3) as an alternative to CSV upload | Medium |
+| Mirroring configs | Generate Fabric Mirroring definitions for external database connectivity | Low |
+
+### Planned — New Industries
+
+| Industry | Domain | Status |
+|---|---|:---:|
+| Woodgrove Bank | Retail Banking (Transactions, Risk, Compliance, Customer 360) | Planned |
+| Tailwind Traders | E-Commerce & Retail (Orders, Inventory, Customer, Marketing) | Planned |
+| Lamna Healthcare | Healthcare (Patient, Clinical, Claims, Pharmacy, Population Health) | Planned |
+| Adventure Works | Travel & Hospitality (Reservations, Revenue, Guest Experience, Fleet) | Planned |
+
+### Planned — Developer Experience
+
+| Item | Description | Priority |
+|---|---|:---:|
+| `generate.py --dry-run` | Preview what would be generated without writing files | Medium |
+| `generate.py --diff` | Show delta between current output and what would be generated | Medium |
+| Workspace-as-code sync | Two-way sync between local output and live Fabric workspace via Git integration | Low |
+| VS Code extension | Tree view of industries, one-click generate, deploy, and screenshot commands | Low |
 
 ---
 
