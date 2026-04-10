@@ -10,7 +10,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white" alt="Python 3.12+">
   <img src="https://img.shields.io/badge/dependencies-zero-brightgreen" alt="Zero Dependencies">
-  <img src="https://img.shields.io/badge/tests-303%20passing-success" alt="303 Tests Passing">
+  <img src="https://img.shields.io/badge/tests-356%20passing-success" alt="356 Tests Passing">
   <img src="https://img.shields.io/badge/industries-8-orange" alt="8 Industries">
   <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT License">
 </p>
@@ -53,10 +53,10 @@ Or use the PowerShell wrapper:
 
 ---
 
-## 17-Step Generation Pipeline
+## 19-Step Generation Pipeline
 
 <p align="center">
-  <img src="docs/images/pipeline-architecture.png" alt="17-Step Generation Pipeline" width="100%">
+  <img src="docs/images/pipeline-architecture.png" alt="19-Step Generation Pipeline" width="100%">
 </p>
 
 | Step | Generator | Output |
@@ -77,7 +77,9 @@ Or use the PowerShell wrapper:
 | **14** | Workspace Generator | Task Flow DAG + SVG workspace icon (branded per industry) |
 | **15** | Copilot Generator | `.copilot/instructions.md` with domain-specific semantic context |
 | **16** | Data Activator Generator | Reflex trigger definitions from HTAP alert thresholds |
-| **17** | Validator | Post-generation output verification (structure, TMDL, cross-refs, placeholders) |
+| **17** | Shortcut Generator | Lakehouse shortcuts (OneLake, ADLS Gen2, S3) per table |
+| **18** | Mirroring Generator | Fabric Mirroring definitions for 5 external DB types |
+| **19** | Validator | Post-generation output verification (structure, TMDL, cross-refs, placeholders) |
 
 ---
 
@@ -429,6 +431,12 @@ output/<industry>/
 ├── DataActivator/
 │   ├── reflex-definition.json         # Reflex trigger definitions
 │   └── README.md
+├── Shortcuts/
+│   ├── shortcuts.json                 # Lakehouse shortcuts (OneLake, ADLS Gen2, S3)
+│   └── README.md
+├── Mirroring/
+│   ├── mirroring-definition.json      # Fabric Mirroring (SQL Server, Azure SQL, Cosmos DB, PostgreSQL, Snowflake)
+│   └── README.md
 ├── TaskFlow/
 │   └── taskflow-definition.json  # Architecture DAG (nodes, edges, layout)
 ├── WorkspaceIcon/
@@ -446,7 +454,7 @@ output/<industry>/
 
 ```
 FabricEndtoEnd/
-├── generate.py                  # CLI entry point (17-step pipeline)
+├── generate.py                  # CLI entry point (19-step pipeline)
 ├── generate.ps1                 # PowerShell wrapper
 ├── deploy-to-fabric.ps1         # One-command Fabric deployment + Autoplay screenshots
 ├── _update-items.ps1            # Hot-patch notebook + pipeline definitions in a live workspace
@@ -470,6 +478,8 @@ FabricEndtoEnd/
 │   ├── workspace_generator.py   # Task Flow DAG + workspace icon SVG generation
 │   ├── copilot_generator.py     # .copilot/instructions.md generation
 │   ├── activator_generator.py   # Data Activator Reflex trigger generation
+│   ├── shortcut_generator.py    # Lakehouse shortcut definitions (OneLake/ADLS/S3)
+│   ├── mirroring_generator.py   # Fabric Mirroring definitions (5 DB types)
 │   ├── deploy_generator.py      # PowerShell deployment scripts
 │   ├── validator.py             # Post-generation output verification (9 categories)
 │   ├── test_generator.py        # Pester + validation script generation
@@ -485,8 +495,8 @@ FabricEndtoEnd/
 │   ├── lamna-healthcare/        # 10 JSON configs
 │   └── adventure-works/         # 10 JSON configs
 ├── templates/                   # .tpl template files (deploy, kql, notebooks, reports, tmdl)
-├── tests/                       # pytest test suite (303 tests)
-│   ├── core/                    # Unit tests per module (21 files)
+├── tests/                       # pytest test suite (356 tests)
+│   ├── core/                    # Unit tests per module (25 files)
 │   ├── industries/              # Per-industry target validation
 │   └── integration/             # End-to-end pipeline tests
 ├── docs/                        # Documentation
@@ -507,7 +517,7 @@ python -m pytest tests/ -v
 python -m pytest tests/ -v --cov=core --cov-report=term-missing
 ```
 
-**Current status:** 303 tests passing across 24 test modules.
+**Current status:** 356 tests passing across 28 test modules.
 
 | Module | Tests | Coverage Area |
 |---|---|---|
@@ -527,12 +537,16 @@ python -m pytest tests/ -v --cov=core --cov-report=term-missing
 | `test_planning_generator.py` | 9 | Planning IQ tables + scenarios |
 | `test_pester_generator.py` | 11 | Pester 5 test suite generation |
 | `test_agent_generator.py` | 4 | Data Agent config + README generation |
+| `test_copilot_generator.py` | 10 | Copilot instructions generation (all industries) |
+| `test_activator_generator.py` | 9 | Data Activator Reflex trigger generation |
+| `test_shortcut_generator.py` | 8 | Lakehouse shortcut definitions (3 target types) |
+| `test_mirroring_generator.py` | 9 | Fabric Mirroring definitions (5 DB types) |
 | `test_comparison_generator.py` | 5 | Cross-industry comparison report |
 | `test_test_generator.py` | 5 | Pester + validation script generation |
 | `test_validator.py` | 22 | Post-generation output validator (9 categories) |
 | `test_workspace_generator.py` | 31 | Task Flow + workspace icon generation |
 | `test_industry_configs.py` | 11 | Industry config schema contracts |
-| `test_per_industry_generation.py` | 20 | PLAN.md §10.3 target validation per industry |
+| `test_per_industry_generation.py` | 40 | Target validation per industry (8 industries) |
 | `test_full_pipeline.py` | 7 | End-to-end pipeline + idempotency |
 | `test_performance.py` | 1 | Generation performance (<60s budget) |
 
@@ -540,7 +554,7 @@ python -m pytest tests/ -v --cov=core --cov-report=term-missing
 
 ## Generation Results
 
-All 8 industries generate successfully with the full 17-step pipeline:
+All 8 industries generate successfully with the full 19-step pipeline:
 
 | | Horizon Books | Contoso Energy | Northwind HR | Fabrikam Mfg | Woodgrove Bank | Tailwind Traders | Lamna Healthcare | Adventure Works |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -559,6 +573,8 @@ All 8 industries generate successfully with the full 17-step pipeline:
 | **Data Agent** | 2 | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
 | **Copilot** | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
 | **Activator** | 2 | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
+| **Shortcuts** | 2 | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
+| **Mirroring** | 2 | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
 | **Deploy Scripts** | 4 | 4 | 4 | 4 | 4 | 4 | 4 | 4 |
 | **Workspace** | 2 | 2 | 2 | 2 | 2 | 2 | 2 | 2 |
 
@@ -660,8 +676,8 @@ All 8 implementation phases are **complete**. The roadmap below tracks planned i
 | Item | Description | Priority |
 |---|---|:---:|
 | Screenshot rendering on paid capacity | ExportTo API blank-page issue resolved on F64+ (Trial limitation documented) | High |
-| Coverage expansion | Increase test coverage beyond 303 tests; add mutation testing | Medium |
-| Validation strictness | Reduce warnings (currently 23–46 per industry); promote actionable warnings to errors | Medium |
+| Coverage expansion | Increase test coverage beyond 356 tests; add mutation testing | Medium |
+| Validation strictness | Reduce warnings (currently 22–45 per industry); promote actionable warnings to errors | Medium |
 
 ### Recently Completed
 
@@ -678,13 +694,13 @@ All 8 implementation phases are **complete**. The roadmap below tracks planned i
 | Tailwind Traders | E-Commerce & Retail (22 tables, 101 measures, 5 forecast models) |
 | Lamna Healthcare | Healthcare (23 tables, 101 measures, 5 forecast models) |
 | Adventure Works | Travel & Hospitality (24 tables, 103 measures, 5 forecast models) |
+| Shortcut support | Lakehouse shortcuts for OneLake, ADLS Gen2, and S3 per table |
+| Mirroring configs | Fabric Mirroring definitions for 5 external DB types |
+| Validation improvements | Eliminated false-positive placeholder warnings, added known tokens |
 
 ### Planned — New Capabilities
 
-| Item | Description | Priority |
-|---|---|:---:|
-| Shortcut support | Generate Lakehouse shortcuts (OneLake, ADLS Gen2, S3) as an alternative to CSV upload | Medium |
-| Mirroring configs | Generate Fabric Mirroring definitions for external database connectivity | Low |
+_All planned capabilities are now implemented. The pipeline generates 19 artifact types per industry._
 
 ### Planned — New Industries
 

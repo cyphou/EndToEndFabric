@@ -35,6 +35,15 @@ _KNOWN_PLACEHOLDERS = {
     "WORKSPACE_ID", "SEMANTIC_MODEL_ID", "GOLD_LH_ID", "SILVER_LH_ID",
     "BRONZE_LH_ID", "SQLDB_ID", "SQLDB_SERVER", "SQLDB_NAME",
     "EVENTHOUSE_ID", "KQL_DB_ID", "ENVIRONMENT_ID",
+    "ALERT_RECIPIENTS",
+    "SOURCE_WORKSPACE_ID", "SOURCE_LAKEHOUSE_ID",
+    "ADLS_CONNECTION_ID", "STORAGE_ACCOUNT", "CONTAINER",
+    "S3_CONNECTION_ID", "S3_BUCKET", "AWS_REGION",
+    "SQL_SERVER", "SQL_DATABASE", "SQL_USERNAME", "SQL_PASSWORD",
+    "AZURE_SQL_SERVER", "AZURE_SQL_DATABASE",
+    "COSMOS_ENDPOINT", "COSMOS_DATABASE",
+    "PG_SERVER", "PG_DATABASE",
+    "SNOWFLAKE_ACCOUNT", "SNOWFLAKE_WAREHOUSE", "SNOWFLAKE_DATABASE",
 }
 _PLACEHOLDER_RE = re.compile(r"\{\{([A-Z_]+(?:_ID)?)\}\}")
 # Match any {{...}} including malformed ones
@@ -677,6 +686,9 @@ def _validate_placeholders(output_dir: Path) -> list[ValidationResult]:
 
         for match in _ANY_PLACEHOLDER_RE.finditer(content):
             token = match.group(1)
+            # Skip known non-placeholder patterns (e.g. ODBC connection strings)
+            if any(skip in token for skip in ("ODBC", "Driver", "SQL Server")):
+                continue
             if not token:
                 results.append(ValidationResult(
                     "ERROR", cat, str(rel_path),

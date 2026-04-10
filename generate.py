@@ -42,6 +42,8 @@ from core.validator import validate_and_report
 from core.workspace_generator import generate_workspace_artifacts
 from core.copilot_generator import generate_copilot_instructions
 from core.activator_generator import generate_data_activator
+from core.shortcut_generator import generate_shortcuts
+from core.mirroring_generator import generate_mirroring
 
 
 def _scaffold_new_industry(industry_id: str) -> int:
@@ -578,6 +580,10 @@ def _dry_run(args, industry_id: str) -> int:
     print(f"  Data Agent:     {'yes' if configs.get('data_agent') else 'no'}")
     print(f"  Deploy scripts: 4")
     print(f"  Workspace:      2 files")
+    print(f"  Copilot:        1 file")
+    print(f"  Activator:      {'2 files' if streams else 'none'}")
+    print(f"  Shortcuts:      2 files")
+    print(f"  Mirroring:      2 files")
     print()
     return 0
 
@@ -662,7 +668,7 @@ def _generate_single(args, industry_id: str) -> int:
     try:
         # Step 1: Load and validate all configs
         step_start = time.time()
-        print("[1/17] Loading configs...", end=" ", flush=True)
+        print("[1/19] Loading configs...", end=" ", flush=True)
         configs = load_all_configs(industry_id)
         print(f"OK ({time.time() - step_start:.1f}s)")
 
@@ -680,17 +686,17 @@ def _generate_single(args, industry_id: str) -> int:
         # Step 2: Generate sample CSV data
         if configs.get("sample_data"):
             step_start = time.time()
-            print("[2/17] Generating sample CSV data...", end=" ", flush=True)
+            print("[2/19] Generating sample CSV data...", end=" ", flush=True)
             csv_paths = generate_all_csvs(configs["sample_data"], output_dir, seed=args.seed)
             summary["csv_files"] = len(csv_paths)
             print(f"OK  --  {len(csv_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[2/17] Skipping CSV generation (no sample-data.json)")
+            print("[2/19] Skipping CSV generation (no sample-data.json)")
             summary["csv_files"] = 0
 
         # Step 3: Generate notebooks
         step_start = time.time()
-        print("[3/17] Generating notebooks...", end=" ", flush=True)
+        print("[3/19] Generating notebooks...", end=" ", flush=True)
         nb_paths = generate_notebooks(
             configs["industry"],
             configs.get("sample_data"),
@@ -703,7 +709,7 @@ def _generate_single(args, industry_id: str) -> int:
         # Step 4: Generate dataflows
         if configs.get("sample_data"):
             step_start = time.time()
-            print("[4/17] Generating Dataflow Gen2 configs...", end=" ", flush=True)
+            print("[4/19] Generating Dataflow Gen2 configs...", end=" ", flush=True)
             df_paths = generate_dataflows(
                 configs["industry"],
                 configs["sample_data"],
@@ -712,13 +718,13 @@ def _generate_single(args, industry_id: str) -> int:
             summary["dataflows"] = len(df_paths)
             print(f"OK  --  {len(df_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[4/17] Skipping Dataflow generation")
+            print("[4/19] Skipping Dataflow generation")
             summary["dataflows"] = 0
 
         # Step 5: Generate semantic model (TMDL)
         if configs.get("semantic_model"):
             step_start = time.time()
-            print("[5/17] Generating Semantic Model (TMDL)...", end=" ", flush=True)
+            print("[5/19] Generating Semantic Model (TMDL)...", end=" ", flush=True)
             sm_result = generate_semantic_model(
                 configs["industry"],
                 configs["semantic_model"],
@@ -739,14 +745,14 @@ def _generate_single(args, industry_id: str) -> int:
             else:
                 print(f"OK  --  {summary['tmdl_tables']} tables, {summary['tmdl_relationships']} relationships ({time.time() - step_start:.1f}s)")
         else:
-            print("[5/17] Skipping Semantic Model (no semantic-model.json)")
+            print("[5/19] Skipping Semantic Model (no semantic-model.json)")
             summary["tmdl_tables"] = 0
             summary["tmdl_relationships"] = 0
 
         # Step 6: Generate reports
         if configs.get("reports"):
             step_start = time.time()
-            print("[6/17] Generating Power BI Reports...", end=" ", flush=True)
+            print("[6/19] Generating Power BI Reports...", end=" ", flush=True)
             report_paths = generate_reports(
                 configs["industry"],
                 configs["reports"],
@@ -756,12 +762,12 @@ def _generate_single(args, industry_id: str) -> int:
             summary["report_files"] = len(report_paths)
             print(f"OK  --  {len(report_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[6/17] Skipping Reports (no reports.json)")
+            print("[6/19] Skipping Reports (no reports.json)")
             summary["report_files"] = 0
 
         # Step 7: Pipeline
         step_start = time.time()
-        print("[7/17] Generating Pipeline...", end=" ", flush=True)
+        print("[7/19] Generating Pipeline...", end=" ", flush=True)
         pl_paths = generate_pipeline(
             configs["industry"],
             configs.get("sample_data"),
@@ -775,65 +781,65 @@ def _generate_single(args, industry_id: str) -> int:
         # Step 8: Forecast & Planning
         if not args.skip_forecast and configs.get("forecast"):
             step_start = time.time()
-            print("[8/17] Generating Forecasting...", end=" ", flush=True)
+            print("[8/19] Generating Forecasting...", end=" ", flush=True)
             from core.forecast_generator import generate_forecast
             fc_paths = generate_forecast(configs["industry"], configs["forecast"], output_dir)
             summary["forecast"] = f"{len(fc_paths)} files"
             print(f"OK  --  {len(fc_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[8/17] Skipping Forecasting" + (" (no config)" if not configs.get("forecast") else " (--skip-forecast)"))
+            print("[8/19] Skipping Forecasting" + (" (no config)" if not configs.get("forecast") else " (--skip-forecast)"))
             summary["forecast"] = "skipped"
 
         # Step 9: HTAP
         if not args.skip_htap and configs.get("htap"):
             step_start = time.time()
-            print("[9/17] Generating HTAP...", end=" ", flush=True)
+            print("[9/19] Generating HTAP...", end=" ", flush=True)
             from core.htap_generator import generate_htap
             htap_paths = generate_htap(configs["industry"], configs["htap"], output_dir)
             summary["htap"] = f"{len(htap_paths)} files"
             print(f"OK  --  {len(htap_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[9/17] Skipping HTAP" + (" (no config)" if not configs.get("htap") else " (--skip-htap)"))
+            print("[9/19] Skipping HTAP" + (" (no config)" if not configs.get("htap") else " (--skip-htap)"))
             summary["htap"] = "skipped"
 
         # Step 10: Writeback
         if not args.skip_writeback and configs.get("writeback"):
             step_start = time.time()
-            print("[10/17] Generating Writeback...", end=" ", flush=True)
+            print("[10/19] Generating Writeback...", end=" ", flush=True)
             from core.writeback_generator import generate_writeback
             wb_paths = generate_writeback(configs["industry"], configs["writeback"], output_dir)
             summary["writeback"] = f"{len(wb_paths)} files"
             print(f"OK  --  {len(wb_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[10/17] Skipping Writeback" + (" (no config)" if not configs.get("writeback") else " (--skip-writeback)"))
+            print("[10/19] Skipping Writeback" + (" (no config)" if not configs.get("writeback") else " (--skip-writeback)"))
             summary["writeback"] = "skipped"
 
         # Step 11: User Data Functions (writeback API bridge)
         if not args.skip_writeback and configs.get("writeback"):
             step_start = time.time()
-            print("[11/17] Generating User Data Functions...", end=" ", flush=True)
+            print("[11/19] Generating User Data Functions...", end=" ", flush=True)
             udf_paths = generate_udf(configs["industry"], configs["writeback"], output_dir)
             summary["udf"] = f"{len(udf_paths)} files"
             print(f"OK  --  {len(udf_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[11/17] Skipping User Data Functions")
+            print("[11/19] Skipping User Data Functions")
             summary["udf"] = "skipped"
 
         # Step 12: Data Agent
         if configs.get("data_agent"):
             step_start = time.time()
-            print("[12/17] Generating Data Agent...", end=" ", flush=True)
+            print("[12/19] Generating Data Agent...", end=" ", flush=True)
             agent_paths = generate_data_agent(configs["industry"], configs["data_agent"], output_dir)
             summary["agent"] = f"{len(agent_paths)} files"
             print(f"OK  --  {len(agent_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[12/17] Skipping Data Agent (no data-agent.json)")
+            print("[12/19] Skipping Data Agent (no data-agent.json)")
             summary["agent"] = "skipped"
 
         # Step 13: Deploy scripts
         if not args.skip_deploy:
             step_start = time.time()
-            print("[13/17] Generating deploy scripts...", end=" ", flush=True)
+            print("[13/19] Generating deploy scripts...", end=" ", flush=True)
             deploy_paths = generate_deploy_scripts(
                 configs["industry"],
                 configs.get("sample_data"),
@@ -843,12 +849,12 @@ def _generate_single(args, industry_id: str) -> int:
             summary["deploy_files"] = len(deploy_paths)
             print(f"OK  --  {len(deploy_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[13/17] Skipping deploy scripts (--skip-deploy)")
+            print("[13/19] Skipping deploy scripts (--skip-deploy)")
             summary["deploy_files"] = 0
 
         # Step 14: Task Flow + Workspace Icon
         step_start = time.time()
-        print("[14/17] Generating Task Flow + Workspace Icon...", end=" ", flush=True)
+        print("[14/19] Generating Task Flow + Workspace Icon...", end=" ", flush=True)
         ws_paths = generate_workspace_artifacts(
             configs["industry"],
             configs.get("sample_data"),
@@ -862,7 +868,7 @@ def _generate_single(args, industry_id: str) -> int:
 
         # Step 15: Copilot instructions
         step_start = time.time()
-        print("[15/17] Generating Copilot instructions...", end=" ", flush=True)
+        print("[15/19] Generating Copilot instructions...", end=" ", flush=True)
         copilot_paths = generate_copilot_instructions(
             configs["industry"],
             configs.get("semantic_model"),
@@ -875,20 +881,38 @@ def _generate_single(args, industry_id: str) -> int:
         # Step 16: Data Activator (Reflex triggers)
         if not args.skip_htap and configs.get("htap"):
             step_start = time.time()
-            print("[16/17] Generating Data Activator...", end=" ", flush=True)
+            print("[16/19] Generating Data Activator...", end=" ", flush=True)
             da_paths = generate_data_activator(
                 configs["industry"], configs["htap"], output_dir,
             )
             summary["activator"] = f"{len(da_paths)} files"
             print(f"OK  --  {len(da_paths)} files ({time.time() - step_start:.1f}s)")
         else:
-            print("[16/17] Skipping Data Activator (no HTAP config)")
+            print("[16/19] Skipping Data Activator (no HTAP config)")
             summary["activator"] = "skipped"
 
-        # Step 17: Post-generation validation
+        # Step 17: Shortcuts
+        step_start = time.time()
+        print("[17/19] Generating Shortcuts...", end=" ", flush=True)
+        sc_paths = generate_shortcuts(
+            configs["industry"], configs.get("sample_data"), output_dir,
+        )
+        summary["shortcuts"] = f"{len(sc_paths)} files"
+        print(f"OK  --  {len(sc_paths)} files ({time.time() - step_start:.1f}s)")
+
+        # Step 18: Mirroring
+        step_start = time.time()
+        print("[18/19] Generating Mirroring...", end=" ", flush=True)
+        mi_paths = generate_mirroring(
+            configs["industry"], configs.get("sample_data"), output_dir,
+        )
+        summary["mirroring"] = f"{len(mi_paths)} files"
+        print(f"OK  --  {len(mi_paths)} files ({time.time() - step_start:.1f}s)")
+
+        # Step 19: Post-generation validation
         if not args.skip_validate:
             step_start = time.time()
-            print("[17/17] Validating output...", end=" ", flush=True)
+            print("[19/19] Validating output...", end=" ", flush=True)
             validation = validate_and_report(
                 configs["industry"], configs, output_dir,
                 export=getattr(args, "export_validation", False))
@@ -902,7 +926,7 @@ def _generate_single(args, industry_id: str) -> int:
                     if r["severity"] == "ERROR":
                         print(f"       ERROR: [{r['category']}] {r['artifact']}: {r['message']}")
         else:
-            print("[17/17] Skipping validation (--skip-validate)")
+            print("[19/19] Skipping validation (--skip-validate)")
             summary["validation"] = "skipped"
 
         # Summary
@@ -925,6 +949,8 @@ def _generate_single(args, industry_id: str) -> int:
         print(f"  Workspace:      {summary.get('workspace', 'skipped')}")
         print(f"  Copilot:        {summary.get('copilot', 'skipped')}")
         print(f"  Activator:      {summary.get('activator', 'skipped')}")
+        print(f"  Shortcuts:      {summary.get('shortcuts', 'skipped')}")
+        print(f"  Mirroring:      {summary.get('mirroring', 'skipped')}")
         if isinstance(summary.get("validation"), dict):
             v = summary["validation"]
             print(f"  Validation:     {'PASS' if v['passed'] else 'FAIL'} ({v['errors']}E/{v['warnings']}W)")

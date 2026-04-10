@@ -32,6 +32,22 @@ EXPECTED = {
         "csv_min": 25, "tmdl_tables": 32, "measures_min": 120,
         "relationships_min": 35, "notebooks": 4,
     },
+    "woodgrove-bank": {
+        "csv_min": 20, "tmdl_tables": 21, "measures_min": 86,
+        "relationships_min": 31, "notebooks": 4,
+    },
+    "tailwind-traders": {
+        "csv_min": 22, "tmdl_tables": 23, "measures_min": 101,
+        "relationships_min": 35, "notebooks": 4,
+    },
+    "lamna-healthcare": {
+        "csv_min": 23, "tmdl_tables": 24, "measures_min": 101,
+        "relationships_min": 50, "notebooks": 4,
+    },
+    "adventure-works": {
+        "csv_min": 24, "tmdl_tables": 25, "measures_min": 103,
+        "relationships_min": 48, "notebooks": 4,
+    },
 }
 
 
@@ -141,6 +157,142 @@ class TestFabrikamGeneration(unittest.TestCase):
     """Fabrikam Manufacturing demo generation meets PLAN.md targets."""
 
     industry_id = "fabrikam-manufacturing"
+
+    @classmethod
+    def setUpClass(cls):
+        cls.configs = load_all_configs(cls.industry_id)
+        cls.tmpdir = Path(tempfile.mkdtemp(prefix=f"fabric_{cls.industry_id}_"))
+        cls.exp = EXPECTED[cls.industry_id]
+
+    def test_csv_count(self):
+        paths = generate_all_csvs(self.configs["sample_data"], self.tmpdir, seed=42)
+        self.assertGreaterEqual(len(paths), self.exp["csv_min"])
+
+    def test_tmdl_tables(self):
+        result = generate_semantic_model(
+            self.configs["industry"], self.configs["semantic_model"], self.tmpdir)
+        self.assertEqual(len(result["tables"]), self.exp["tmdl_tables"])
+
+    def test_tmdl_relationships(self):
+        result = generate_semantic_model(
+            self.configs["industry"], self.configs["semantic_model"], self.tmpdir)
+        self.assertGreaterEqual(len(result["relationships"]), self.exp["relationships_min"])
+
+    def test_measure_count(self):
+        measures = self.configs["semantic_model"]["semanticModel"]["measures"]
+        self.assertGreaterEqual(len(measures), self.exp["measures_min"])
+
+    def test_notebooks(self):
+        paths = generate_notebooks(self.configs["industry"], self.configs.get("sample_data"), self.tmpdir)
+        self.assertEqual(len(paths), self.exp["notebooks"])
+
+
+class TestWoodgroveBankGeneration(unittest.TestCase):
+    """Woodgrove Bank demo generation meets targets."""
+
+    industry_id = "woodgrove-bank"
+
+    @classmethod
+    def setUpClass(cls):
+        cls.configs = load_all_configs(cls.industry_id)
+        cls.tmpdir = Path(tempfile.mkdtemp(prefix=f"fabric_{cls.industry_id}_"))
+        cls.exp = EXPECTED[cls.industry_id]
+
+    def test_csv_count(self):
+        paths = generate_all_csvs(self.configs["sample_data"], self.tmpdir, seed=42)
+        self.assertGreaterEqual(len(paths), self.exp["csv_min"])
+
+    def test_tmdl_tables(self):
+        result = generate_semantic_model(
+            self.configs["industry"], self.configs["semantic_model"], self.tmpdir)
+        self.assertEqual(len(result["tables"]), self.exp["tmdl_tables"])
+
+    def test_tmdl_relationships(self):
+        result = generate_semantic_model(
+            self.configs["industry"], self.configs["semantic_model"], self.tmpdir)
+        self.assertGreaterEqual(len(result["relationships"]), self.exp["relationships_min"])
+
+    def test_measure_count(self):
+        measures = self.configs["semantic_model"]["semanticModel"]["measures"]
+        self.assertGreaterEqual(len(measures), self.exp["measures_min"])
+
+    def test_notebooks(self):
+        paths = generate_notebooks(self.configs["industry"], self.configs.get("sample_data"), self.tmpdir)
+        self.assertEqual(len(paths), self.exp["notebooks"])
+
+
+class TestTailwindTradersGeneration(unittest.TestCase):
+    """Tailwind Traders demo generation meets targets."""
+
+    industry_id = "tailwind-traders"
+
+    @classmethod
+    def setUpClass(cls):
+        cls.configs = load_all_configs(cls.industry_id)
+        cls.tmpdir = Path(tempfile.mkdtemp(prefix=f"fabric_{cls.industry_id}_"))
+        cls.exp = EXPECTED[cls.industry_id]
+
+    def test_csv_count(self):
+        paths = generate_all_csvs(self.configs["sample_data"], self.tmpdir, seed=42)
+        self.assertGreaterEqual(len(paths), self.exp["csv_min"])
+
+    def test_tmdl_tables(self):
+        result = generate_semantic_model(
+            self.configs["industry"], self.configs["semantic_model"], self.tmpdir)
+        self.assertEqual(len(result["tables"]), self.exp["tmdl_tables"])
+
+    def test_tmdl_relationships(self):
+        result = generate_semantic_model(
+            self.configs["industry"], self.configs["semantic_model"], self.tmpdir)
+        self.assertGreaterEqual(len(result["relationships"]), self.exp["relationships_min"])
+
+    def test_measure_count(self):
+        measures = self.configs["semantic_model"]["semanticModel"]["measures"]
+        self.assertGreaterEqual(len(measures), self.exp["measures_min"])
+
+    def test_notebooks(self):
+        paths = generate_notebooks(self.configs["industry"], self.configs.get("sample_data"), self.tmpdir)
+        self.assertEqual(len(paths), self.exp["notebooks"])
+
+
+class TestLamnaHealthcareGeneration(unittest.TestCase):
+    """Lamna Healthcare demo generation meets targets."""
+
+    industry_id = "lamna-healthcare"
+
+    @classmethod
+    def setUpClass(cls):
+        cls.configs = load_all_configs(cls.industry_id)
+        cls.tmpdir = Path(tempfile.mkdtemp(prefix=f"fabric_{cls.industry_id}_"))
+        cls.exp = EXPECTED[cls.industry_id]
+
+    def test_csv_count(self):
+        paths = generate_all_csvs(self.configs["sample_data"], self.tmpdir, seed=42)
+        self.assertGreaterEqual(len(paths), self.exp["csv_min"])
+
+    def test_tmdl_tables(self):
+        result = generate_semantic_model(
+            self.configs["industry"], self.configs["semantic_model"], self.tmpdir)
+        self.assertEqual(len(result["tables"]), self.exp["tmdl_tables"])
+
+    def test_tmdl_relationships(self):
+        result = generate_semantic_model(
+            self.configs["industry"], self.configs["semantic_model"], self.tmpdir)
+        self.assertGreaterEqual(len(result["relationships"]), self.exp["relationships_min"])
+
+    def test_measure_count(self):
+        measures = self.configs["semantic_model"]["semanticModel"]["measures"]
+        self.assertGreaterEqual(len(measures), self.exp["measures_min"])
+
+    def test_notebooks(self):
+        paths = generate_notebooks(self.configs["industry"], self.configs.get("sample_data"), self.tmpdir)
+        self.assertEqual(len(paths), self.exp["notebooks"])
+
+
+class TestAdventureWorksGeneration(unittest.TestCase):
+    """Adventure Works demo generation meets targets."""
+
+    industry_id = "adventure-works"
 
     @classmethod
     def setUpClass(cls):
