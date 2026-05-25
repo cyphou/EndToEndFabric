@@ -1,10 +1,10 @@
-# Fabric End-to-End Industry Demo Generator
+# 🏭 Fabric End-to-End Industry Demo Generator
 
 ## Multi-Agent Architecture & Implementation Plan
 
 > **Goal:** Build a reusable, multi-agent framework that generates complete Microsoft Fabric end-to-end demos for multiple industries — each with Medallion Lakehouse, Notebooks, Dataflows Gen2, Semantic Model (Direct Lake), Power BI Reports, Data Agent, Forecasting (Holt-Winters + MLflow), Planning (Fabric IQ), and **Transactional Analytics (HTAP)** — deployed in one command.
 
-> **Reference:** Architecture inspired by [TableauToPowerBI](../TableauToPowerBI) (8+1 agent model) and [FullDemoFabricBookUseCase](../FullDemoFabricBookUseCase) (Horizon Books demo pattern).
+> **Reference:** Architecture inspired by [Tableau → Power BI](https://github.com/cyphou/Tableau-To-PowerBI) (8+1 agent model) and [FullDemoFabricBookUseCase](../FullDemoFabricBookUseCase) (Horizon Books demo pattern).
 
 > **Status: ✅ ALL 8 PHASES COMPLETE** — 20 core modules, 24 templates, 11 agent definitions, 4 industries (10 config files each), 303 tests passing, CI/CD operational, generation under 1.2s per industry.
 
@@ -60,7 +60,7 @@ Each demo follows the **Horizon Books blueprint** but with industry-specific dat
 
 ## 2. Multi-Agent Architecture (11+1 Agents)
 
-Modeled after TableauToPowerBI's proven 8+1 agent pattern, adapted for Fabric demo generation.
+Modeled after [Tableau → Power BI](https://github.com/cyphou/Tableau-To-PowerBI)'s proven 8+1 agent pattern, adapted for Fabric demo generation.
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -580,7 +580,7 @@ Deploy-Full.ps1 -WorkspaceId "<guid>" -Industry "contoso-energy"
 ## 7. Project Structure
 
 ```
-FabricEndtoEnd/
+EndToEndFabric/
 ├── .github/
 │   ├── agents/                          # 🤖 Multi-agent definitions
 │   │   ├── shared.instructions.md       # Hard constraints (all agents)

@@ -1,6 +1,9 @@
-# Multi-Agent Architecture
+# 🤖 Multi-Agent Architecture
 
 This document describes the **11+1 specialized agents** used for AI-assisted development of the Fabric End-to-End Industry Demo Generator.
+
+> [!NOTE]
+> Architecture modeled after [Tableau → Power BI](https://github.com/cyphou/Tableau-To-PowerBI)'s proven 8+1 agent pattern, adapted for Fabric demo generation.
 
 Agent definitions live in `.github/agents/` and are inherited by GitHub Copilot when working in this repository.
 

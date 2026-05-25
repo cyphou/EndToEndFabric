@@ -1,4 +1,4 @@
-# Architecture
+# 🏗️ Architecture
 
 <p align="center">
   <img src="images/pipeline-architecture.png" alt="Pipeline Architecture" width="100%">
@@ -6,9 +6,12 @@
 
 This document describes the architecture of the **Fabric End-to-End Industry Demo Generator** — a config-driven Python engine that produces complete Microsoft Fabric demo projects from industry JSON configuration files.
 
+> [!NOTE]
+> Architecture inspired by [Tableau → Power BI](https://github.com/cyphou/Tableau-To-PowerBI) (8+1 agent model) and [FullDemoFabricBookUseCase](../FullDemoFabricBookUseCase) (Horizon Books demo pattern).
+
 ---
 
-## Design Principles
+## 🎯 Design Principles
 
 1. **Zero external dependencies** — The core engine runs on Python 3.12+ stdlib only.
 2. **Config-driven** — Industries are defined entirely by 10 JSON config files. No code changes to add a new vertical.
@@ -18,7 +21,7 @@ This document describes the architecture of the **Fabric End-to-End Industry Dem
 
 ---
 
-## High-Level Flow
+## ⚙️ High-Level Flow
 
 ```
                         ┌─────────────┐
@@ -60,7 +63,7 @@ This document describes the architecture of the **Fabric End-to-End Industry Dem
 
 ---
 
-## Medallion Lakehouse Pattern
+## 🏗️ Medallion Lakehouse Pattern
 
 <p align="center">
   <img src="images/medallion-architecture.png" alt="Medallion Architecture" width="100%">
@@ -85,7 +88,7 @@ Generated notebooks follow the **Bronze → Silver → Gold** medallion pattern:
 
 ---
 
-## Module Reference
+## 📚 Module Reference
 
 ### Entry Points
 
@@ -153,7 +156,7 @@ Validation runs at Step 1 before any generation begins.
 
 ---
 
-## Config-Driven Design
+## 🎯 Config-Driven Design
 
 <p align="center">
   <img src="images/config-driven-design.png" alt="Config-Driven Design" width="100%">
@@ -185,7 +188,7 @@ No Python code changes required.
 
 ---
 
-## Multi-Agent Architecture
+## 🤖 Multi-Agent Architecture
 
 <p align="center">
   <img src="images/multi-agent-architecture.png" alt="Multi-Agent Architecture" width="100%">
@@ -212,7 +215,7 @@ Each agent has clear ownership boundaries, preventing conflicting edits during m
 
 ---
 
-## Output Artifact Map
+## 📦 Output Artifact Map
 
 <p align="center">
   <img src="images/output-structure.png" alt="Output Structure" width="100%">
@@ -285,7 +288,7 @@ output/<industry>/
 
 ---
 
-## Data Flow Patterns
+## 🔀 Data Flow Patterns
 
 ### FK Integrity in Sample Data
 
@@ -315,7 +318,7 @@ The semantic model generator converts `semantic-model.json` definitions into TMD
 
 ---
 
-## Technology Stack
+## 🛠️ Technology Stack
 
 <p align="center">
   <img src="images/tech-stack.png" alt="Technology Stack" width="100%">
@@ -333,7 +336,7 @@ The semantic model generator converts `semantic-model.json` definitions into TMD
 
 ---
 
-## Testing Architecture
+## ✅ Testing Architecture
 
 ```
 tests/
@@ -378,7 +381,7 @@ Run: `python -m pytest tests/ -v`
 
 ---
 
-## Deployment & Autoplay
+## 🚀 Deployment & Autoplay
 
 ### deploy-to-fabric.ps1
 
@@ -418,7 +421,7 @@ Screenshots are saved to `output/<industry>/screenshots/<ReportName>/`.
 
 ---
 
-## Security Notes
+## 🔒 Security Notes
 
 - All file paths are validated before writing (no directory traversal)
 - JSON configs are validated against schemas before processing

@@ -1,45 +1,78 @@
-<p align="center">
-  <img src="docs/images/hero-banner.png" alt="Fabric End-to-End Industry Demo Generator" width="100%">
-</p>
+# 🏭 Fabric End-to-End Industry Demo Generator
 
-<p align="center">
-  <strong>Generate complete Microsoft Fabric end-to-end demos for any industry — in one command.</strong><br>
-  Medallion Lakehouse &bull; PySpark Notebooks &bull; Dataflow Gen2 &bull; TMDL Semantic Model &bull; PBIR Reports &bull; Forecasting &bull; HTAP &bull; Writeback &bull; UDF
-</p>
+**Automated Demo Generator** — produce complete Microsoft Fabric end-to-end demos for any industry in one command, fully automated, zero manual rework.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white" alt="Python 3.12+">
-  <img src="https://img.shields.io/badge/dependencies-zero-brightgreen" alt="Zero Dependencies">
-  <img src="https://img.shields.io/badge/tests-356%20passing-success" alt="356 Tests Passing">
-  <img src="https://img.shields.io/badge/industries-8-orange" alt="8 Industries">
-  <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT License">
-</p>
+| | |
+|---|---|
+| 🐍 **Python** | 3.12+ · zero external dependencies |
+| ✅ **Tests** | 356 passed |
+| 🏢 **Industries** | 8 verticals · 10 configs each |
+| 📜 **License** | MIT |
+
+| 🎯 **Capabilities** | Medallion Lakehouse · PySpark Notebooks · Dataflow Gen2 · TMDL Semantic Model · PBIR Reports · Forecasting · HTAP · Writeback · UDF |
 
 ---
 
-## Quick Start
+## ⚡ Quick Start
 
 ```powershell
-# List available industries
-python generate.py --list
-
-# Generate a complete Fabric demo
+# That's it. One command.
 python generate.py -i horizon-books
+```
+
+> [!TIP]
+> The output is a complete Fabric project — Lakehouse, Notebooks, Dataflows, Semantic Model (Direct Lake), Power BI Reports, Data Pipeline, and more. Deploy with `deploy-to-fabric.ps1`.
+
+<details>
+<summary><b>📦 Installation</b></summary>
+
+```bash
+git clone https://github.com/cyphou/EndToEndFabric.git
+cd EndToEndFabric
+python generate.py -i horizon-books
+```
+
+**Requirements:** Python 3.12+ • No `pip install` needed — pure standard library.
+
+Optional dependencies:
+```bash
+pip install matplotlib pillow   # For docs/generate_diagrams.py
+```
+</details>
+
+### More ways to generate
+
+#### 📄 Single industry
+
+```powershell
 
 # Custom output directory + reproducible seed
 python generate.py -i contoso-energy -o ./my-output --seed 42
+```
 
-# Preview without writing files
+#### 🔍 Preview & compare
+
+```powershell Preview without writing files
 python generate.py -i horizon-books --dry-run
 
 # Show diff against existing output
 python generate.py -i horizon-books --diff
+```
 
-# Interactive wizard
+#### 🧙 Interactive & batch
+
+```powershell Interactive wizard
 python generate.py --wizard
 
 # Cross-industry comparison report
 python generate.py --compare
+```
+
+#### 🚀 Deploy to Fabric
+
+```powershell
+.\deploy-to-fabric.ps1 -WorkspaceId "<guid>" -Industry "contoso-energy"
+.\deploy-to-fabric.ps1 -WorkspaceId "<guid>" -Industry "contoso-energy" -Clean -TriggerPipeline -Autoplay
 ```
 
 Or use the PowerShell wrapper:
@@ -49,11 +82,34 @@ Or use the PowerShell wrapper:
 .\generate.ps1 -List
 ```
 
-**That's it.** One command produces CSV data, PySpark notebooks, Dataflow Gen2 configs, a full TMDL semantic model, Power BI reports, a data pipeline, forecasting notebooks, real-time analytics (HTAP), writeback with User Data Functions, and PowerShell deployment scripts.
+> [!NOTE]
+> **Zero external dependencies** for core generation. The entire engine runs on Python's standard library.
 
 ---
 
-## 19-Step Generation Pipeline
+## ⚙️ How It Works
+
+```mermaid
+flowchart LR
+    A["📁 Industry Configs\n10 JSON files"] --> B["🔍 CONFIG LOADER\nValidate schemas"]
+    B --> C["🛠️ GENERATE\n19-step pipeline"]
+    C --> D["📦 Fabric Project\nComplete demo output"]
+    D -.-> E["🚀 DEPLOY\nFabric workspace"]
+
+    style A fill:#0078D4,color:#fff,stroke:#0078D4
+    style B fill:#4B8BBE,color:#fff,stroke:#4B8BBE
+    style C fill:#4B8BBE,color:#fff,stroke:#4B8BBE
+    style D fill:#F2C811,color:#000,stroke:#F2C811
+    style E fill:#F2C811,color:#000,stroke:#F2C811
+```
+
+**🔍 Step 1 — Load:** Validates 10 industry JSON configs against schemas
+
+**🛠️ Step 2 — Generate:** 19-step pipeline produces all Fabric artifacts (CSV, Notebooks, Dataflows, Semantic Model, Reports, Pipeline, Forecasting, HTAP, Writeback, UDF, Data Agent, and more)
+
+**🚀 Step 3 — Deploy** *(optional):* One-command deployment to a Fabric workspace via `deploy-to-fabric.ps1`
+
+### 📊 19-Step Generation Pipeline
 
 <p align="center">
   <img src="docs/images/pipeline-architecture.png" alt="19-Step Generation Pipeline" width="100%">
@@ -83,7 +139,7 @@ Or use the PowerShell wrapper:
 
 ---
 
-## Medallion Lakehouse Architecture
+## 🏗️ Medallion Lakehouse Architecture
 
 <p align="center">
   <img src="docs/images/medallion-architecture.png" alt="Medallion Architecture" width="100%">
@@ -108,7 +164,7 @@ Additional notebooks:
 
 ---
 
-## Available Industries
+## 🏢 Available Industries
 
 ### Horizon Books Publishing
 
@@ -282,7 +338,7 @@ Additional notebooks:
 
 ---
 
-## Config-Driven Design
+## 🎯 Config-Driven Design
 
 <p align="center">
   <img src="docs/images/config-driven-design.png" alt="Config-Driven Design" width="100%">
@@ -303,7 +359,7 @@ Each industry is defined by **10 JSON config files** — no code changes needed 
 | `writeback-config.json` | Writeback tables, stored procedures, API setup |
 | `data-agent.json` | Fabric AI Agent configuration and instructions |
 
-### Adding a New Industry
+### 🌱 Adding a New Industry
 
 ```bash
 # 1. Create config folder
@@ -320,7 +376,7 @@ All configs are validated against JSON schemas at load time (see `core/schemas/`
 
 ---
 
-## Technology Stack
+## 🛠️ Technology Stack
 
 <p align="center">
   <img src="docs/images/tech-stack.png" alt="Technology Stack" width="100%">
@@ -343,7 +399,7 @@ pip install matplotlib pillow   # For docs/generate_diagrams.py
 
 ---
 
-## Multi-Agent Architecture
+## 🤖 Multi-Agent Architecture
 
 <p align="center">
   <img src="docs/images/multi-agent-architecture.png" alt="Multi-Agent Architecture" width="100%">
@@ -368,7 +424,7 @@ The project uses **11+1 specialized agents** defined in `.github/agents/`:
 
 ---
 
-## Generated Output Structure
+## 📁 Generated Output Structure
 
 <p align="center">
   <img src="docs/images/output-structure.png" alt="Output Structure" width="100%">
@@ -450,10 +506,10 @@ output/<industry>/
 
 ---
 
-## Project Structure
+## 📂 Project Structure
 
 ```
-FabricEndtoEnd/
+EndToEndFabric/
 ├── generate.py                  # CLI entry point (19-step pipeline)
 ├── generate.ps1                 # PowerShell wrapper
 ├── deploy-to-fabric.ps1         # One-command Fabric deployment + Autoplay screenshots
@@ -507,7 +563,7 @@ FabricEndtoEnd/
 
 ---
 
-## Running Tests
+## ✅ Running Tests
 
 ```bash
 # Run all tests
@@ -552,7 +608,7 @@ python -m pytest tests/ -v --cov=core --cov-report=term-missing
 
 ---
 
-## Generation Results
+## 📊 Generation Results
 
 All 8 industries generate successfully with the full 19-step pipeline:
 
@@ -580,9 +636,9 @@ All 8 industries generate successfully with the full 19-step pipeline:
 
 ---
 
-## Advanced Features
+## 🎯 Key Features
 
-### Forecasting (Holt-Winters + MLflow)
+### 📈 Forecasting (Holt-Winters + MLflow)
 
 Each industry includes forecasting models with:
 - **Additive seasonal decomposition** (configurable alpha, beta, gamma)
@@ -590,14 +646,14 @@ Each industry includes forecasting models with:
 - **Fallback chain**: Holt-Winters → Naive seasonal
 - Configurable forecast horizons (6–12 months)
 
-### Planning in Fabric IQ
+### 📝 Planning in Fabric IQ
 
 Planning notebooks generate:
 - SQL schema setup for planning tables
 - Multi-scenario population (Base, Optimistic/Growth, Conservative/Austerity)
 - Plan vs. Actual comparison tables
 
-### HTAP — Real-Time Analytics
+### ⚡ HTAP — Real-Time Analytics
 
 Complete Eventhouse setup with:
 - **KQL database** definitions with retention policies
@@ -605,7 +661,7 @@ Complete Eventhouse setup with:
 - **Hot-cold bridge** queries joining real-time Eventhouse data with Lakehouse facts
 - KQL aggregation queries per event stream
 
-### Deployment Scripts
+### 🚀 Deployment Scripts
 
 Generated PowerShell scripts include:
 - `Deploy-Full.ps1` — End-to-end Fabric workspace provisioning
@@ -644,7 +700,7 @@ With **Autoplay**, the script also refreshes the DirectLake semantic model, expo
 
 ---
 
-## Requirements
+## 📋 Requirements
 
 | Requirement | Version | Notes |
 |---|---|---|
@@ -654,7 +710,7 @@ With **Autoplay**, the script also refreshes the DirectLake semantic model, expo
 
 ---
 
-## Roadmap
+## 🗺️ Roadmap
 
 All 8 implementation phases are **complete**. The roadmap below tracks planned improvements.
 
@@ -715,7 +771,7 @@ _All 8 industries are now implemented. See **Available Industries** above for de
 
 ---
 
-## Further Reading
+## 📚 Further Reading
 
 - [PLAN.md](PLAN.md) — Full implementation plan, phase roadmap, and industry specifications
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md) — Detailed architecture documentation
@@ -723,12 +779,13 @@ _All 8 industries are now implemented. See **Available Industries** above for de
 
 ---
 
-## License
+## 📜 License
 
 MIT
 
 ---
 
 <p align="center">
-  <sub>Built with zero dependencies. Powered by config-driven design.</sub>
+  <sub>Built with zero dependencies. Powered by config-driven design.<br>
+  Architecture inspired by <a href="https://github.com/cyphou/Tableau-To-PowerBI">Tableau → Power BI</a> (8+1 agent model).</sub>
 </p>

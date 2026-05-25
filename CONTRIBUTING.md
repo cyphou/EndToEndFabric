@@ -1,11 +1,11 @@
-# Contributing to Microsoft Fabric to End-to-End Demo Migration Tool
+# 🤝 Contributing to Fabric End-to-End Industry Demo Generator
 
 Thank you for your interest in contributing! This guide covers the development setup,
 coding standards, and contribution workflow.
 
 ---
 
-## Development Setup
+## 🛠️ Development Setup
 
 ### Prerequisites
 
@@ -16,8 +16,8 @@ coding standards, and contribution workflow.
 
 ```bash
 # Clone the repository
-git clone <repo-url>
-cd FabricEndtoEnd
+git clone https://github.com/cyphou/EndToEndFabric.git
+cd EndToEndFabric
 
 # Create a virtual environment
 python -m venv .venv
@@ -31,16 +31,18 @@ pip install -r requirements.txt
 pytest tests/ --tb=short -q
 ```
 
-### Project Structure
+### 📂 Project Structure
 
 ```
-src/   → Source extraction / parsing
-output/   → Target generation
-tests/        → Unit and integration tests
-docs/              → Documentation
+core/          → Generator modules (one per pipeline step)
+industries/    → Per-industry JSON configs (10 files each)
+templates/     → .tpl template files
+output/        → Generated Fabric demos
+tests/         → Unit and integration tests
+docs/          → Documentation
 ```
 
-## Coding Standards
+## 📝 Coding Standards
 
 ### Style
 
@@ -59,7 +61,7 @@ docs/              → Documentation
 - Run `pytest tests/ --tb=short -q` before committing
 - Never weaken assertions to make tests pass
 
-## Contribution Workflow
+## 🔄 Contribution Workflow
 
 1. Create a feature branch: `git checkout -b feat/your-feature`
 2. Make changes and add tests
@@ -67,7 +69,10 @@ docs/              → Documentation
 4. Commit with conventional messages: `feat:`, `fix:`, `test:`, `docs:`
 5. Push and create a pull request
 
-## Multi-Agent Architecture
+## 🤖 Multi-Agent Architecture
 
 This project uses a specialized agent model. See `docs/AGENTS.md` for details.
 Each agent has scoped ownership — check which agent owns the files you're modifying.
+
+> [!NOTE]
+> Architecture inspired by [Tableau → Power BI](https://github.com/cyphou/Tableau-To-PowerBI)'s 8+1 agent pattern.

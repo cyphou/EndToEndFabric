@@ -1,13 +1,14 @@
-<!-- Copilot instructions for the Microsoft Fabric to End-to-End Demo migration project -->
+<!-- Copilot instructions for the Fabric End-to-End Industry Demo Generator -->
 
-# Project: Microsoft Fabric to End-to-End Demo Migration
+# Project: Fabric End-to-End Industry Demo Generator
 
-Automated migration of Microsoft Fabric artifacts to End-to-End Demo format.
+Config-driven Python engine that generates complete Microsoft Fabric end-to-end demos for any industry.
+Architecture inspired by [Tableau → Power BI](https://github.com/cyphou/Tableau-To-PowerBI) (8+1 agent model).
 
 ## Architecture — Pipeline
 
 ```
-Microsoft Fabric → End-to-End Demo
+Industry JSON Configs → 19-Step Pipeline → Complete Fabric Demo
 ```
 
 ## Project Structure

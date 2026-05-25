@@ -1,4 +1,7 @@
-# Multi-Agent Architecture — Microsoft Fabric to End-to-End Demo Migration
+# 🤖 Multi-Agent Architecture — Fabric End-to-End Industry Demo Generator
+
+> [!NOTE]
+> Architecture modeled after [Tableau → Power BI](https://github.com/cyphou/Tableau-To-PowerBI)'s proven 8+1 agent pattern, adapted for Fabric demo generation.
 
 This project uses a **specialized agent model**. Each agent has scoped domain knowledge,
 file ownership, and clear boundaries.

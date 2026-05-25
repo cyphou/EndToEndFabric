@@ -70,7 +70,7 @@ function Invoke-Fabric {
     $resp = Invoke-FabricRaw -Method $Method -Uri $Uri -Body $Body
     if ($resp.StatusCode -eq 202) {
         # Long-running operation — poll until done
-        $opUrl = $resp.Headers["Location"]
+        $opUrl = $resp.Headers["Location"] | Select-Object -First 1
         if ($opUrl) {
             $result = Wait-LongRunning $opUrl
             return $result
@@ -93,7 +93,8 @@ function Wait-LongRunning {
         Write-Host "    LRO status: $($status.status) (${elapsed}s)" -ForegroundColor DarkGray
         if ($status.status -eq "Succeeded") { return $status }
         if ($status.status -eq "Failed") { throw "LRO failed: $($resp.Content)" }
-        if ($resp.Headers["Retry-After"]) { $retryAfter = [int]$resp.Headers["Retry-After"] }
+        $ra = $resp.Headers["Retry-After"]
+        if ($ra) { $retryAfter = [int]($ra | Select-Object -First 1) }
     }
     Write-Warning "LRO timed out after ${MaxWait}s at $OperationUrl"
 }
@@ -703,6 +704,7 @@ if ($smItem) {
 }
 
 # Deploy Writeback Semantic Model (DirectQuery to SQL Database) if it exists
+$wbSmId = $null
 $wbSmDir = Join-Path $OutputRoot "${Company}WritebackModel.SemanticModel"
 if ((Test-Path $wbSmDir) -and $tokens.ContainsKey("SQLDB_SERVER")) {
     Write-Host "`n  Deploying Writeback SemanticModel (DirectQuery)..." -ForegroundColor Cyan
@@ -737,7 +739,6 @@ if ((Test-Path $wbSmDir) -and $tokens.ContainsKey("SQLDB_SERVER")) {
         }
     }
 
-    $wbSmId = $null
     $existingWbSM = $allItems | Where-Object { $_.displayName -eq "${Company}WritebackModel" -and $_.type -eq "SemanticModel" } | Select-Object -First 1
     if ($existingWbSM) {
         Write-Host "  WritebackModel already exists: $($existingWbSM.id)" -ForegroundColor Yellow

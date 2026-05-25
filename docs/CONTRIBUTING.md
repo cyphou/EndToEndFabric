@@ -1,10 +1,10 @@
-# Contributing
+# 🤝 Contributing
 
 Thank you for your interest in improving the **Fabric End-to-End Industry Demo Generator**.
 
 ---
 
-## Prerequisites
+## 🛠️ Prerequisites
 
 | Tool | Version | Required For |
 |---|---|---|
@@ -16,11 +16,11 @@ No external Python packages are required for core generation.
 
 ---
 
-## Project Layout
+## 📂 Project Layout
 
 ```
-FabricEndtoEnd/
-├── generate.py              # CLI entry point (15-step pipeline)
+EndToEndFabric/
+├── generate.py              # CLI entry point (19-step pipeline)
 ├── generate.ps1             # PowerShell wrapper
 ├── deploy-to-fabric.ps1     # One-command Fabric deployment + Autoplay screenshots
 ├── core/                    # Generator modules (one per pipeline step)
@@ -36,17 +36,17 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for full details.
 
 ---
 
-## Development Workflow
+## 🔧 Development Workflow
 
 ### 1. Clone and verify
 
 ```bash
-git clone <repo-url>
-cd FabricEndtoEnd
+git clone https://github.com/cyphou/EndToEndFabric.git
+cd EndToEndFabric
 python -m pytest tests/ -v
 ```
 
-All 303 tests should pass before making changes.
+All 356 tests should pass before making changes.
 
 ### 2. Make changes
 
