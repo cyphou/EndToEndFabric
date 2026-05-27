@@ -58,27 +58,74 @@ function Get-StorageHeaders {
 }
 
 function Invoke-FabricRaw {
-    param([string]$Method = "GET", [string]$Uri, [object]$Body = $null)
-    $h = Get-Headers
-    $p = @{ Method = $Method; Uri = $Uri; Headers = $h; UseBasicParsing = $true }
-    if ($Body) { $p["Body"] = ($Body | ConvertTo-Json -Depth 30); $p["ContentType"] = "application/json" }
-    return Invoke-WebRequest @p
+    param([string]$Method = "GET", [string]$Uri, [object]$Body = $null, [int]$MaxRetries = 5)
+    $retryCount = 0
+    $baseDelay = 1
+    
+    while ($true) {
+        try {
+            $h = Get-Headers
+            $p = @{ Method = $Method; Uri = $Uri; Headers = $h; UseBasicParsing = $true }
+            if ($Body) { $p["Body"] = ($Body | ConvertTo-Json -Depth 30); $p["ContentType"] = "application/json" }
+            return Invoke-WebRequest @p
+        } catch {
+            # Check if this is a 429 (Too Many Requests) error
+            if ($_.Exception.Response.StatusCode -eq 429 -and $retryCount -lt $MaxRetries) {
+                $retryAfter = $_.Exception.Response.Headers["Retry-After"]
+                if ($retryAfter) {
+                    $delay = [int]$retryAfter
+                } else {
+                    # Exponential backoff: 1s, 2s, 4s, 8s, 16s
+                    $delay = $baseDelay * [math]::Pow(2, $retryCount)
+                }
+                $retryCount++
+                Write-Host "  [Rate Limited] Retry $retryCount/$MaxRetries in ${delay}s..." -ForegroundColor Yellow
+                Start-Sleep -Seconds $delay
+                continue
+            }
+            # For non-rate-limit errors or max retries exceeded, re-throw
+            throw
+        }
+    }
 }
 
 function Invoke-Fabric {
-    param([string]$Method = "GET", [string]$Uri, [object]$Body = $null)
-    $resp = Invoke-FabricRaw -Method $Method -Uri $Uri -Body $Body
-    if ($resp.StatusCode -eq 202) {
-        # Long-running operation — poll until done
-        $opUrl = $resp.Headers["Location"] | Select-Object -First 1
-        if ($opUrl) {
-            $result = Wait-LongRunning $opUrl
-            return $result
+    param([string]$Method = "GET", [string]$Uri, [object]$Body = $null, [int]$MaxRetries = 5)
+    $retryCount = 0
+    $baseDelay = 1
+    
+    while ($true) {
+        try {
+            $resp = Invoke-FabricRaw -Method $Method -Uri $Uri -Body $Body -MaxRetries $MaxRetries
+            if ($resp.StatusCode -eq 202) {
+                # Long-running operation — poll until done
+                $opUrl = $resp.Headers["Location"] | Select-Object -First 1
+                if ($opUrl) {
+                    $result = Wait-LongRunning $opUrl
+                    return $result
+                }
+                return $null
+            }
+            if ($resp.Content) { return ($resp.Content | ConvertFrom-Json) }
+            return $null
+        } catch {
+            # Check if this is a 429 (Too Many Requests) error
+            if ($_.Exception.Response.StatusCode -eq 429 -and $retryCount -lt $MaxRetries) {
+                $retryAfter = $_.Exception.Response.Headers["Retry-After"]
+                if ($retryAfter) {
+                    $delay = [int]$retryAfter
+                } else {
+                    # Exponential backoff
+                    $delay = $baseDelay * [math]::Pow(2, $retryCount)
+                }
+                $retryCount++
+                Write-Host "  [Rate Limited] Invoke-Fabric retry $retryCount/$MaxRetries in ${delay}s..." -ForegroundColor Yellow
+                Start-Sleep -Seconds $delay
+                continue
+            }
+            throw
         }
-        return $null
     }
-    if ($resp.Content) { return ($resp.Content | ConvertFrom-Json) }
-    return $null
 }
 
 function Wait-LongRunning {
@@ -87,16 +134,62 @@ function Wait-LongRunning {
     while ($elapsed -lt $MaxWait) {
         $retryAfter = 5
         Start-Sleep -Seconds $retryAfter; $elapsed += $retryAfter
-        $h = Get-Headers
-        $resp = Invoke-WebRequest -Uri $OperationUrl -Headers $h -UseBasicParsing
-        $status = $resp.Content | ConvertFrom-Json
-        Write-Host "    LRO status: $($status.status) (${elapsed}s)" -ForegroundColor DarkGray
-        if ($status.status -eq "Succeeded") { return $status }
-        if ($status.status -eq "Failed") { throw "LRO failed: $($resp.Content)" }
-        $ra = $resp.Headers["Retry-After"]
-        if ($ra) { $retryAfter = [int]($ra | Select-Object -First 1) }
+        
+        # Poll with retry on 429 errors
+        $pollRetries = 0
+        while ($true) {
+            try {
+                $h = Get-Headers
+                $resp = Invoke-WebRequest -Uri $OperationUrl -Headers $h -UseBasicParsing
+                $status = $resp.Content | ConvertFrom-Json
+                Write-Host "    LRO status: $($status.status) (${elapsed}s)" -ForegroundColor DarkGray
+                if ($status.status -eq "Succeeded") { return $status }
+                if ($status.status -eq "Failed") { throw "LRO failed: $($resp.Content)" }
+                $ra = $resp.Headers["Retry-After"]
+                if ($ra) { $retryAfter = [int]($ra | Select-Object -First 1) }
+                break
+            } catch {
+                # Handle 429 during polling
+                if ($_.Exception.Response.StatusCode -eq 429 -and $pollRetries -lt 3) {
+                    $pollRetries++
+                    $delayMs = 5000 * [math]::Pow(2, $pollRetries - 1)
+                    Write-Host "    [Poll Rate Limited] Waiting $([int]($delayMs/1000))s before retry..." -ForegroundColor Yellow
+                    Start-Sleep -Milliseconds $delayMs
+                    continue
+                }
+                throw
+            }
+        }
     }
     Write-Warning "LRO timed out after ${MaxWait}s at $OperationUrl"
+}
+
+function Invoke-StorageWithRetry {
+    param([string]$Method, [string]$Uri, [hashtable]$Headers, [object]$Body = $null, [int]$MaxRetries = 5)
+    $retryCount = 0
+    $baseDelay = 1
+    
+    while ($true) {
+        try {
+            $p = @{ Method = $Method; Uri = $Uri; Headers = $Headers; UseBasicParsing = $true }
+            if ($Body) { $p["Body"] = $Body }
+            return Invoke-RestMethod @p
+        } catch {
+            if ($_.Exception.Response.StatusCode -eq 429 -and $retryCount -lt $MaxRetries) {
+                $retryAfter = $_.Exception.Response.Headers["Retry-After"]
+                if ($retryAfter) {
+                    $delay = [int]$retryAfter
+                } else {
+                    $delay = $baseDelay * [math]::Pow(2, $retryCount)
+                }
+                $retryCount++
+                Write-Host "    [OneLake Rate Limited] Retry $retryCount/$MaxRetries in ${delay}s..." -ForegroundColor Yellow
+                Start-Sleep -Seconds $delay
+                continue
+            }
+            throw
+        }
+    }
 }
 
 function To-Base64 { param([string]$Text) return [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($Text)) }
@@ -338,16 +431,66 @@ foreach ($folderName in @("01 Data", "02 Transform", "03 Analytics", "04 Writeba
 }
 
 function Move-ToFolder {
-    param([string]$ItemId, [string]$FolderName)
-    if ($folderIds.ContainsKey($FolderName) -and $folderIds[$FolderName]) {
         for ($retry = 1; $retry -le 3; $retry++) {
             try {
-                Invoke-FabricRaw -Method POST -Uri "$FabricBase/workspaces/$WorkspaceId/items/$ItemId/move" -Body @{ targetFolderId = $folderIds[$FolderName] } | Out-Null
-                return $true
+                $resp = Invoke-FabricRaw -Method POST -Uri "$FabricBase/workspaces/$WorkspaceId/items/$ItemId/move" -Body @{ targetFolderId = $folderIds[$FolderName] }
+                # Check for success status (200-299) — move API returns successfully even though response parsing may show different fields
+                # The move completes if response is successful; return true regardless of response content
+                if ($resp.StatusCode -ge 200 -and $resp.StatusCode -lt 300) {
+                    return $true
+                }
             } catch {
+                # Check for RequestBlocked (rate limiting)
+                if ($_.Exception.Response.StatusCode -eq 403) {
+                    $errDetail = ""
+                    try {
+                        if ($_.Exception.Response -and $_.Exception.Response.GetResponseStream) {
+                            $sr = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream())
+                            $errDetail = $sr.ReadToEnd()
+                            $sr.Close()
+                        }
+                    } catch {}
+                    if ($errDetail -match "RequestBlocked") {
+                        $wait = $retry * 5
+                        Write-Host "    Rate limited (RequestBlocked), waiting ${wait}s (attempt $retry/3)..." -ForegroundColor DarkGray
+                        Start-Sleep -Seconds $wait
+                        continue
+                    }
+                }
+                # Check for 429 throttling
+                if ($_.Exception.Response.StatusCode -eq 429) {
+                    $wait = $retry * 5
+                    Write-Host "    Throttled (429), waiting ${wait}s (attempt $retry/3)..." -ForegroundColor DarkGray
+                    Start-Sleep -Seconds $wait
+                    continue
+                }
+                Write-Host "    Move failed: $($_.Exception.Message)" -ForegroundColor DarkYellow
+                return $false
+            }
+        }
+        Write-Host "    Move failed after 3 retries" -ForegroundColor DarkYellow
+        return $false
+        for ($retry = 1; $retry -le 3; $retry++) {
+            try {
+                $resp = Invoke-FabricRaw -Method POST -Uri "$FabricBase/workspaces/$WorkspaceId/items/$ItemId/move" -Body @{ targetFolderId = $folderIds[$FolderName] }
+                # Check for success status (200-299)
+                if ($resp.StatusCode -ge 200 -and $resp.StatusCode -lt 300) {
+                    return $true
+                }
+            } catch {
+                $statusCode = $_.Exception.Response.StatusCode.Value
                 $errDetail = $_.ToString()
-                try { $sr = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream()); $errDetail = $sr.ReadToEnd(); $sr.Close() } catch {}
-                if ($errDetail -match "429|TooManyRequests|Throttl" -or [string]::IsNullOrWhiteSpace($errDetail)) {
+                # Try to read error body safely
+                try {
+                    if ($_.Exception.Response -and $_.Exception.Response.GetResponseStream) {
+                        $sr = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream())
+                        $errDetail = $sr.ReadToEnd()
+                        $sr.Close()
+                    }
+                } catch {}
+                
+                # Handle 429 throttling
+                if ($statusCode -eq 429 -or $errDetail -match "429|TooManyRequests|Throttl") {
                     $wait = $retry * 10
                     Write-Host "    Throttled, waiting ${wait}s (attempt $retry/3)..." -ForegroundColor DarkGray
                     Start-Sleep -Seconds $wait
@@ -482,13 +625,13 @@ foreach ($domain in $domains) {
         $sh = Get-StorageHeaders
 
         # Create
-        Invoke-RestMethod -Method PUT -Uri "$($uri)?resource=file" -Headers $sh | Out-Null
+        Invoke-StorageWithRetry -Method PUT -Uri "$($uri)?resource=file" -Headers $sh | Out-Null
         # Append
         $bytes = [System.IO.File]::ReadAllBytes($csv.FullName)
         $sh2 = Get-StorageHeaders; $sh2["Content-Type"] = "application/octet-stream"
-        Invoke-RestMethod -Method PATCH -Uri "$($uri)?position=0&action=append" -Headers $sh2 -Body $bytes | Out-Null
+        Invoke-StorageWithRetry -Method PATCH -Uri "$($uri)?position=0&action=append" -Headers $sh2 -Body $bytes | Out-Null
         # Flush
-        Invoke-RestMethod -Method PATCH -Uri "$($uri)?position=$($bytes.Length)&action=flush" -Headers (Get-StorageHeaders) | Out-Null
+        Invoke-StorageWithRetry -Method PATCH -Uri "$($uri)?position=$($bytes.Length)&action=flush" -Headers (Get-StorageHeaders) | Out-Null
         $totalCsv++
         Write-Host "  [$totalCsv] $dest ($([math]::Round($bytes.Length/1KB,1)) KB)" -ForegroundColor Gray
     }
@@ -897,6 +1040,10 @@ foreach ($reportInfo in $reportDirs) {
             $content = $content -replace "\{\{WRITEBACK_MODEL_ID\}\}", $wbSmId
         }
         $content = $content -replace "\{\{WORKSPACE_ID\}\}", $WorkspaceId
+        # StaticResources must be at root level (sibling of definition/), not inside it
+        if ($relPath -match '^definition/StaticResources/') {
+            $relPath = $relPath.Substring('definition/'.Length)
+        }
         $rptParts += @{
             path = $relPath
             payload = (To-Base64 $content)
@@ -920,7 +1067,20 @@ foreach ($reportInfo in $reportDirs) {
         $errDetail = $_.ToString()
         try { $sr = New-Object System.IO.StreamReader($_.Exception.Response.GetResponseStream()); $errDetail = $sr.ReadToEnd(); $sr.Close() } catch {}
         if ($errDetail -match "already exists|ItemDisplayNameAlreadyInUse|NameAlreadyExists") {
-            Write-Host "  $($reportInfo.Name) already exists, skipping." -ForegroundColor Yellow
+            # Delete and recreate to ensure complete definition is deployed
+            Write-Host "  $($reportInfo.Name) already exists, replacing..." -ForegroundColor Yellow
+            try {
+                $existingReports = Invoke-Fabric -Method GET -Uri "$FabricBase/workspaces/$WorkspaceId/reports"
+                $existing = $existingReports.value | Where-Object { $_.displayName -eq $reportInfo.Name }
+                if ($existing) {
+                    Invoke-Fabric -Method DELETE -Uri "$FabricBase/workspaces/$WorkspaceId/reports/$($existing.id)"
+                    Start-Sleep -Seconds 3
+                    Invoke-Fabric -Method POST -Uri "$FabricBase/workspaces/$WorkspaceId/items" -Body $rptBody | Out-Null
+                    Write-Host "  Replaced report: $($reportInfo.Name)" -ForegroundColor Green
+                }
+            } catch {
+                Write-Warning "  Report replace failed ($($reportInfo.Name)): $_"
+            }
         } else {
             Write-Warning "  Report deploy failed ($($reportInfo.Name)): $errDetail"
         }
@@ -982,11 +1142,11 @@ foreach ($df in $dfAllFiles) {
     $dest = "Dataflows/$($df.Name)"
     $uri = "$OneLakeBase/$WorkspaceId/$goldId/Files/$dest"
     $sh = Get-StorageHeaders
-    Invoke-RestMethod -Method PUT -Uri "$($uri)?resource=file" -Headers $sh | Out-Null
+    Invoke-StorageWithRetry -Method PUT -Uri "$($uri)?resource=file" -Headers $sh | Out-Null
     $bytes = [System.IO.File]::ReadAllBytes($df.FullName)
     $sh2 = Get-StorageHeaders; $sh2["Content-Type"] = "application/octet-stream"
-    Invoke-RestMethod -Method PATCH -Uri "$($uri)?position=0&action=append" -Headers $sh2 -Body $bytes | Out-Null
-    Invoke-RestMethod -Method PATCH -Uri "$($uri)?position=$($bytes.Length)&action=flush" -Headers (Get-StorageHeaders) | Out-Null
+    Invoke-StorageWithRetry -Method PATCH -Uri "$($uri)?position=0&action=append" -Headers $sh2 -Body $bytes | Out-Null
+    Invoke-StorageWithRetry -Method PATCH -Uri "$($uri)?position=$($bytes.Length)&action=flush" -Headers (Get-StorageHeaders) | Out-Null
     Write-Host "  Uploaded $($df.Name)" -ForegroundColor Green
 }
 Write-Host "  Dataflow definitions: $($dfAllFiles.Count) files (JSON configs + Power Query M)" -ForegroundColor Green

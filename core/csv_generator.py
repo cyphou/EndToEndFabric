@@ -135,7 +135,7 @@ def _generate_value(col: dict, row_index: int, total_rows: int,
         return round(random.uniform(low, high), decimals)
 
     elif method == "random_choice":
-        choices = params.get("values", ["A", "B", "C"])
+        choices = params.get("choices", params.get("values", ["A", "B", "C"]))
         weights = params.get("weights")
         if weights and len(weights) == len(choices):
             return random.choices(choices, weights=weights, k=1)[0]

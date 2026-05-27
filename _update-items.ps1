@@ -21,7 +21,7 @@ function To-B64([string]$T) { return [Convert]::ToBase64String([Text.Encoding]::
 function Invoke-LRO([string]$Method, [string]$Uri, [string]$JsonBody) {
     $resp = Invoke-WebRequest -Method $Method -Uri $Uri -Headers (Get-FH) -Body $JsonBody -ContentType "application/json" -UseBasicParsing
     if ($resp.StatusCode -eq 202) {
-        $opUrl = $resp.Headers["Location"]
+        $opUrl = ($resp.Headers["Location"] | Select-Object -First 1)
         $elapsed = 0
         while ($elapsed -lt 300) {
             Start-Sleep -Seconds 10; $elapsed += 10
@@ -134,7 +134,7 @@ Write-Host "`nAll items updated. Triggering pipeline run..." -ForegroundColor Cy
 $trigUri = "$FabricBase/workspaces/$WorkspaceId/dataPipelines/$PipelineId/jobs/instances?jobType=Pipeline"
 $trigResp = Invoke-WebRequest -Method POST -Uri $trigUri -Headers (Get-FH) -Body "{}" -ContentType "application/json" -UseBasicParsing
 
-$jobLocation = $trigResp.Headers["Location"]
+$jobLocation = ($trigResp.Headers["Location"] | Select-Object -First 1)
 if (-not $jobLocation) {
     $jobBody = $trigResp.Content | ConvertFrom-Json
     $jobLocation = "$FabricBase/workspaces/$WorkspaceId/dataPipelines/$PipelineId/jobs/instances/$($jobBody.id)"

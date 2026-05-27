@@ -93,6 +93,7 @@ def _generate_report_json(report_dir: Path, report_def: dict,
     pbir = pbir_theme or {}
     base_theme_name = pbir.get("baseThemeName", DEFAULT_BASE_THEME_NAME)
     report_version = pbir.get("reportVersionAtImport", DEFAULT_REPORT_VERSION_AT_IMPORT)
+    custom_theme_name = f"{company_name}Theme"
 
     config = {
         "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/1.0.0/schema.json",
@@ -101,8 +102,26 @@ def _generate_report_json(report_dir: Path, report_def: dict,
                 "name": base_theme_name,
                 "reportVersionAtImport": report_version,
                 "type": "SharedResources"
+            },
+            "customTheme": {
+                "name": custom_theme_name,
+                "reportVersionAtImport": report_version,
+                "type": "RegisteredResources"
             }
         },
+        "resourcePackages": [
+            {
+                "name": "RegisteredResources",
+                "type": "RegisteredResources",
+                "items": [
+                    {
+                        "name": f"{custom_theme_name}.json",
+                        "path": f"{custom_theme_name}.json",
+                        "type": "CustomTheme"
+                    }
+                ]
+            }
+        ],
         "layoutOptimization": "None"
     }
 
@@ -236,7 +255,7 @@ def _generate_theme(report_dir: Path, theme: dict, company_name: str) -> Path:
         }
     }
 
-    theme_dir = report_dir / "StaticResources" / "SharedResources" / "BaseThemes"
+    theme_dir = report_dir / "StaticResources" / "RegisteredResources"
     theme_dir.mkdir(parents=True, exist_ok=True)
     path = theme_dir / f"{company_name}Theme.json"
     with open(path, "w", encoding="utf-8") as f:

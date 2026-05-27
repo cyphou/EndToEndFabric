@@ -61,13 +61,13 @@ class TestReportGenerator(unittest.TestCase):
 
     def test_theme_file_generated(self):
         theme_dir = (self.tmpdir / "HorizonBooksAnalytics.Report" / "definition" /
-                     "StaticResources" / "SharedResources" / "BaseThemes")
+                     "StaticResources" / "RegisteredResources")
         theme_files = list(theme_dir.glob("*.json"))
         self.assertEqual(len(theme_files), 1)
 
     def test_theme_colors(self):
         theme_path = (self.tmpdir / "HorizonBooksAnalytics.Report" / "definition" /
-                      "StaticResources" / "SharedResources" / "BaseThemes" /
+                      "StaticResources" / "RegisteredResources" /
                       "HorizonBooksTheme.json")
         data = json.loads(theme_path.read_text(encoding="utf-8"))
         self.assertIn("#1B3A5C", data["dataColors"])  # primary
